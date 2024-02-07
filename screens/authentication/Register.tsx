@@ -1,11 +1,11 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import PrimaryButton from "../components/button/PrimaryButton";
-import BodyText from "../components/text/BodyText";
-import HeaderText from "../components/text/HeaderText";
-import TextInput from "../components/input/TextInput";
-import { RootStackParamList } from "../types";
+import PrimaryButton from "../../components/button/PrimaryButton";
+import BodyText from "../../components/text/BodyText";
+import HeaderText from "../../components/text/HeaderText";
+import TextInput from "../../components/input/TextInput";
+import { RootStackParamList } from "../../types";
 
 export type RegisterProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -65,24 +65,10 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     gap: 10,
   },
-  headerText: {
-    fontSize: 28,
-    fontWeight: "500",
-    color: "#F14951",
-  },
   personalInfoContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
-  },
-  inputContainer: {
-    gap: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#7F7F7F",
-    borderRadius: 8,
-    padding: 5,
   },
   personalInfoInput: {
     flex: 1,

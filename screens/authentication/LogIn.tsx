@@ -2,12 +2,12 @@ import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import CheckboxInput from "../components/input/CheckBoxInput";
-import PrimaryButton from "../components/button/PrimaryButton";
-import HeaderText from "../components/text/HeaderText";
-import BodyText from "../components/text/BodyText";
-import TextInput from "../components/input/TextInput";
-import { RootStackParamList } from "../types";
+import CheckboxInput from "../../components/input/CheckBoxInput";
+import PrimaryButton from "../../components/button/PrimaryButton";
+import HeaderText from "../../components/text/HeaderText";
+import BodyText from "../../components/text/BodyText";
+import TextInput from "../../components/input/TextInput";
+import { RootStackParamList } from "../../types";
 
 export type LogInProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -71,17 +71,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     gap: 15,
   },
-  inputContainer: {
-    gap: 5,
-  },
   optionContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#7F7F7F",
-    borderRadius: 8,
-    padding: 5,
   },
 });

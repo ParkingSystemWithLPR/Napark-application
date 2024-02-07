@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   checkbox: {
+    backgroundColor: "white",
     borderColor: "#F14951",
     borderWidth: 1,
     borderRadius: 4,
