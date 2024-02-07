@@ -1,8 +1,14 @@
 import React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
-import { ButtonProps } from "../../types";
+import { Pressable, StyleSheet, View } from "react-native";
 
-const PrimaryButton: React.FC<ButtonProps> = ({ title, style }) => {
+import { ButtonProps } from "../../types";
+import BodyText from "../text/BodyText";
+
+const PrimaryButton: React.FC<ButtonProps> = ({
+  title,
+  buttonStyle,
+  textStyle,
+}) => {
   return (
     <Pressable
       android_ripple={{ color: "#ccc" }}
@@ -11,8 +17,8 @@ const PrimaryButton: React.FC<ButtonProps> = ({ title, style }) => {
         pressed ? styles.buttonPressed : null,
       ]}
     >
-      <View style={[styles.buttonContainer, style]}>
-        <Text style={styles.text}>{title}</Text>
+      <View style={[styles.buttonContainer, buttonStyle]}>
+        <BodyText text={title} textStyle={[styles.text, textStyle]} />
       </View>
     </Pressable>
   );
@@ -24,7 +30,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: "#F14951",
     borderRadius: 8,
-    padding: 5,
+    paddingVertical: 8,
     justifyContent: "center",
     alignItems: "center",
   },

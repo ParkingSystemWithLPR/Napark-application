@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, TextInput, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../components/button/PrimaryButton";
+import Checkbox from "../components/checkbox";
+import HeaderText from "../components/text/HeaderText";
 import { RootStackParamList } from "../types";
+import SubHeaderText from "../components/text/SubHeaderText";
+import BodyText from "../components/text/BodyText";
 
 export type LogInProps = {} & NativeStackScreenProps<
   RootStackParamList,
   "LogIn"
 >;
 
-const LogIn: React.FC<LogInProps> = () => {
+const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   const [isRemember, setIsRemember] = useState<boolean>(false);
 
   const handleCheckboxPress = () => {
@@ -19,22 +23,47 @@ const LogIn: React.FC<LogInProps> = () => {
     });
   };
 
+  const handleCreateAccountPress = () => {
+    navigation.navigate("Register");
+  };
+
+  const handleForgetPasswordPress = () => {
+    navigation.navigate("ForgetPassword");
+  };
+
   return (
     <View style={styles.loginContainer}>
-      <Text style={styles.headerText}>Log In</Text>
+      <HeaderText text="Log In" />
       <View style={styles.inputContainer}>
-        <Text>Email</Text>
+        <SubHeaderText text="Email" />
         <TextInput style={styles.input} placeholder="Your email" />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Password</Text>
+        <SubHeaderText text="Password" />
         <TextInput
           style={styles.input}
           secureTextEntry={true}
           placeholder="Your password"
         />
       </View>
+      <Checkbox
+        text="Remember me?"
+        isChecked={isRemember}
+        onPress={handleCheckboxPress}
+      />
       <PrimaryButton title="Login" />
+      <View style={styles.optionContainer}>
+        <View>
+          <Pressable onPress={handleCreateAccountPress}>
+            <BodyText text="Create account" />
+          </Pressable>
+        </View>
+        <View>
+          <Pressable onPress={handleForgetPasswordPress}>
+            <BodyText text="Forget password?" />
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };
@@ -45,27 +74,13 @@ const styles = StyleSheet.create({
   loginContainer: {
     flex: 1,
     justifyContent: "center",
-    paddingLeft: 40,
-    paddingRight: 40,
-    gap: 10,
-  },
-  headerText: {
-    fontSize: 28,
-    fontWeight: "500",
-    color: "#F14951",
+    paddingHorizontal: 40,
+    gap: 15,
   },
   inputContainer: {
     gap: 5,
   },
-  checkboxContainer: {
-    flexDirection: "row",
-  },
-  checkbox: {
-    width: 32,
-    height: 32,
-  },
   optionContainer: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
   },

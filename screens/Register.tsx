@@ -1,49 +1,63 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../components/button/PrimaryButton";
 import { RootStackParamList } from "../types";
+import BodyText from "../components/text/BodyText";
+import SubHeaderText from "../components/text/SubHeaderText";
+import HeaderText from "../components/text/HeaderText";
 
 export type RegisterProps = {} & NativeStackScreenProps<
   RootStackParamList,
   "Register"
 >;
 
-const Register: React.FC<RegisterProps> = () => {
+const Register: React.FC<RegisterProps> = ({ navigation }) => {
+  const handleLogInPress = () => {
+    navigation.navigate("LogIn");
+  };
+
   return (
     <View style={styles.loginContainer}>
-      <Text style={styles.headerText}>Register</Text>
+      <HeaderText text="Register" />
       <View style={styles.inputContainer}>
-        <Text>Email</Text>
+        <SubHeaderText text="Email" />
         <TextInput style={styles.input} placeholder="Your email" />
       </View>
       <View style={styles.inputContainer}>
-        <Text>Password</Text>
+        <SubHeaderText text="Password" />
         <TextInput
           style={styles.input}
           secureTextEntry={true}
           placeholder="Your password"
         />
       </View>
-      <View style={styles.personalInfoContainer}>
-        <View style={[styles.inputContainer, styles.personalInfoInput]}>
-          <Text>Firstname</Text>
-          <TextInput style={styles.input} placeholder="Your firstname" />
-        </View>
-        <View style={[styles.inputContainer, styles.personalInfoInput]}>
-          <Text>Lastname</Text>
-          <TextInput style={styles.input} placeholder="Your lastname" />
-        </View>
-      </View>
       <View style={styles.inputContainer}>
-        <Text>Confirm Password</Text>
+        <SubHeaderText text="Confirm Password" />
         <TextInput
           style={styles.input}
           secureTextEntry={true}
           placeholder="Confirm your password"
         />
       </View>
+      <View style={styles.personalInfoContainer}>
+        <View style={[styles.inputContainer, styles.personalInfoInput]}>
+          <SubHeaderText text="Firstname" />
+          <TextInput style={styles.input} placeholder="Your firstname" />
+        </View>
+        <View style={[styles.inputContainer, styles.personalInfoInput]}>
+          <SubHeaderText text="Lastname" />
+          <TextInput style={styles.input} placeholder="Your lastname" />
+        </View>
+      </View>
       <PrimaryButton title="Register" />
+      <View style={styles.optionContainer}>
+        <View>
+          <Pressable onPress={handleLogInPress}>
+            <BodyText text="Already have account?" />
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };
@@ -79,5 +93,9 @@ const styles = StyleSheet.create({
   },
   personalInfoInput: {
     flex: 1,
+  },
+  optionContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
 });
