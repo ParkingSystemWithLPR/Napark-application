@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
 import { TouchableOpacity, View, StyleSheet, Animated } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+
 import BodyText from "../text/BodyText";
 
-export type CheckboxProps = {
+export type CheckboxInputProps = {
   text: string;
   onPress: () => void;
   isChecked: boolean;
@@ -12,7 +13,7 @@ export type CheckboxProps = {
   checkboxStyle?: object;
 };
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const CheckboxInput: React.FC<CheckboxInputProps> = ({
   text,
   onPress,
   isChecked,
@@ -53,6 +54,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
   );
 };
 
+export default CheckboxInput;
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -70,5 +73,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#F14951",
   },
 });
-
-export default Checkbox;

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import CheckboxInput from "../components/input/CheckBoxInput";
 import PrimaryButton from "../components/button/PrimaryButton";
-import Checkbox from "../components/checkbox";
 import HeaderText from "../components/text/HeaderText";
-import { RootStackParamList } from "../types";
-import SubHeaderText from "../components/text/SubHeaderText";
 import BodyText from "../components/text/BodyText";
+import TextInput from "../components/input/TextInput";
+import { RootStackParamList } from "../types";
 
 export type LogInProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -34,19 +34,13 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Log In" />
-      <View style={styles.inputContainer}>
-        <SubHeaderText text="Email" />
-        <TextInput style={styles.input} placeholder="Your email" />
-      </View>
-      <View style={styles.inputContainer}>
-        <SubHeaderText text="Password" />
-        <TextInput
-          style={styles.input}
-          secureTextEntry={true}
-          placeholder="Your password"
-        />
-      </View>
-      <Checkbox
+      <TextInput title="Email" placeholder="Your email" />
+      <TextInput
+        title="Password"
+        placeholder="Your password"
+        secureTextEntry={true}
+      />
+      <CheckboxInput
         text="Remember me?"
         isChecked={isRemember}
         onPress={handleCheckboxPress}

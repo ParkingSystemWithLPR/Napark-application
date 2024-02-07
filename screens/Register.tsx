@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../components/button/PrimaryButton";
-import { RootStackParamList } from "../types";
 import BodyText from "../components/text/BodyText";
-import SubHeaderText from "../components/text/SubHeaderText";
 import HeaderText from "../components/text/HeaderText";
+import TextInput from "../components/input/TextInput";
+import { RootStackParamList } from "../types";
 
 export type RegisterProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -20,35 +20,28 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Register" />
-      <View style={styles.inputContainer}>
-        <SubHeaderText text="Email" />
-        <TextInput style={styles.input} placeholder="Your email" />
-      </View>
-      <View style={styles.inputContainer}>
-        <SubHeaderText text="Password" />
-        <TextInput
-          style={styles.input}
-          secureTextEntry={true}
-          placeholder="Your password"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <SubHeaderText text="Confirm Password" />
-        <TextInput
-          style={styles.input}
-          secureTextEntry={true}
-          placeholder="Confirm your password"
-        />
-      </View>
+      <TextInput title="Email" placeholder="Your email" />
+      <TextInput
+        title="Password"
+        placeholder="Your password"
+        secureTextEntry={true}
+      />
+      <TextInput
+        title="Confirm Password"
+        placeholder="Your password"
+        secureTextEntry={true}
+      />
       <View style={styles.personalInfoContainer}>
-        <View style={[styles.inputContainer, styles.personalInfoInput]}>
-          <SubHeaderText text="Firstname" />
-          <TextInput style={styles.input} placeholder="Your firstname" />
-        </View>
-        <View style={[styles.inputContainer, styles.personalInfoInput]}>
-          <SubHeaderText text="Lastname" />
-          <TextInput style={styles.input} placeholder="Your lastname" />
-        </View>
+        <TextInput
+          title="Firstname"
+          placeholder="Your firstname"
+          containerStyle={styles.personalInfoInput}
+        />
+        <TextInput
+          title="Lastname"
+          placeholder="Your lastname"
+          containerStyle={styles.personalInfoInput}
+        />
       </View>
       <PrimaryButton title="Register" />
       <View style={styles.optionContainer}>
