@@ -1,25 +1,64 @@
-import { useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View, StyleSheet, Text } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
-import PrimaryButton from "../../components/button/PrimaryButton";
-import HeaderText from "../../components/text/HeaderText";
-import TextInput from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
-import { useAuth } from "../../store/context/auth";
 
 export type LandingProps = {} & NativeStackScreenProps<
   RootStackParamList,
   "Landing"
 >;
 
+export type RegionType = {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
+
 const Landing: React.FC<LandingProps> = () => {
-  const { logout } = useAuth();
+  const [region, setRegion] = useState<RegionType>();
+
+  useEffect(() => {
+    (async () => {
+      // Request permission to access the device's location
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access location was denied");
+        return;
+      }
+
+      // Fetch the current location
+      let location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      console.log(latitude, longitude);
+      setRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    })();
+  }, []);
 
   return (
-    <View style={styles.loginContainer}>
-      <HeaderText text="Welcome to landing page!!" />
-      <Button title="logout" onPress={logout} />
+    <View style={{ flex: 1 }}>
+      {region ? (
+        <MapView style={{ flex: 1 }} initialRegion={region}>
+          <Marker
+            draggable
+            coordinate={{
+              latitude: region.latitude,
+              longitude: region.longitude,
+            }}
+            title="Your Location"
+          />
+        </MapView>
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </View>
   );
 };
@@ -27,10 +66,13 @@ const Landing: React.FC<LandingProps> = () => {
 export default Landing;
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    flex: 1,
+  container: {
+    alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 40,
-    gap: 15,
+  },
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
