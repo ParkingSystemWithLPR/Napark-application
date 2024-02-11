@@ -34,11 +34,12 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Log In" />
-      <TextInput title="Email" placeholder="Your email" />
+      <TextInput title="Email" placeholder="Your email" isRequired />
       <TextInput
         title="Password"
         placeholder="Your password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <CheckboxInput
         text="Remember me?"

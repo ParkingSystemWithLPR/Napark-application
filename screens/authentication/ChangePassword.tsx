@@ -18,17 +18,20 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
       <TextInput
         title="Old Password"
         placeholder="Your old password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <TextInput
         title="New Password"
         placeholder="Your new password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <TextInput
         title="Confirm Password"
         placeholder="Confirm your new password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <PrimaryButton title="Change Password" />
     </View>

@@ -20,26 +20,30 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Register" />
-      <TextInput title="Email" placeholder="Your email" />
+      <TextInput title="Email" placeholder="Your email" isRequired />
       <TextInput
         title="Password"
         placeholder="Your password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <TextInput
         title="Confirm Password"
         placeholder="Your password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <View style={styles.personalInfoContainer}>
         <TextInput
           title="Firstname"
           placeholder="Your firstname"
+          isRequired
           containerStyle={styles.personalInfoInput}
         />
         <TextInput
           title="Lastname"
           placeholder="Your lastname"
+          isRequired
           containerStyle={styles.personalInfoInput}
         />
       </View>

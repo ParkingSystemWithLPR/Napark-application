@@ -17,6 +17,6 @@ export default SubHeaderText;
 const styles = StyleSheet.create({
   text: {
     fontFamily: "Poppins-Medium",
-    fontSize: 18,
+    fontSize: 16,
   },
 });
