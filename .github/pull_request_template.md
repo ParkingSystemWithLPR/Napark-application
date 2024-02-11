@@ -1,6 +1,6 @@
 ## **Ticket**
 
-**JIRA ID:** [JIRA_ID](https://parking-system.atlassian.net/browse/[JIRA_ID])
+**JIRA ID:** [JIRA_ID](https://parking-system.atlassian.net/browse/JIRA_ID)
 
 ## Changes proposed in this pull request
 - [IMPORTANT] Reviewer **will not review** any PR without summary of changes
