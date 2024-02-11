@@ -18,12 +18,14 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       <TextInput
         title="New Password"
         placeholder="Your new password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <TextInput
         title="Confirm Password"
         placeholder="Confirm your new password"
-        secureTextEntry={true}
+        isRequired
+        secureTextEntry
       />
       <PrimaryButton title="Reset Password" />
     </View>
