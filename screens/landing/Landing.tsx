@@ -54,7 +54,7 @@ const Landing: React.FC<LandingProps> = () => {
     <View style={{ flex: 1 }}>
       {region ? (
         <>
-          <MapView style={{ flex: 1 }} initialRegion={region}>
+          <MapView style={{ flex: 1 }} initialRegion={region} zoomEnabled>
             <Marker
               draggable
               coordinate={{
