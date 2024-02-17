@@ -2,6 +2,7 @@ import { StyleSheet, View, TextInput } from "react-native";
 
 import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
+import Colors from "../../constants/color";
 
 export type TextInputProps = {
   title: string;
@@ -47,18 +48,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: "#7F7F7F",
+    borderColor: Colors.gray[800],
     borderRadius: 8,
     padding: 8,
     fontFamily: "Poppins-Medium",
     fontSize: 12,
   },
   errorText: {
-    color: "#F14951",
+    color: Colors.red[400],
   },
   requiredIndicator: {
-    color: "#F14951",
+    color: Colors.red[400],
   },
 });
