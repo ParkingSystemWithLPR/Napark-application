@@ -8,6 +8,7 @@ import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
 import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
+import auth from "../../utils/auth";
 
 export type LogInProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -47,6 +48,19 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         [identifierKey]: enteredValue,
       };
     });
+  };
+
+  const handleLogin = async () => {
+    const { email, password } = inputValue;
+
+    const emailIsValid = email.includes("@");
+    const passwordIsValid = password.length > 8;
+
+    const isValid = emailIsValid && passwordIsValid;
+
+    if (!isValid) {
+    }
+    const response = await auth.login(inputValue.email, inputValue.password);
   };
 
   return (

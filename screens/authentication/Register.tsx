@@ -7,6 +7,7 @@ import BodyText from "../../components/text/BodyText";
 import HeaderText from "../../components/text/HeaderText";
 import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
+import auth from "../../utils/auth";
 
 export type RegisterProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -41,6 +42,31 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
 
   const handleLogInPress = () => {
     navigation.replace("LogIn");
+  };
+
+  const handleRegister = async () => {
+    const { email, password, confirmPassword, firstname, lastname } =
+      inputValue;
+
+    const emailIsValid = email.includes("@");
+    const passwordIsValid = password.length > 8;
+    const passwordsAreMatch = password === confirmPassword;
+    const firstnameIsValid = firstname.length > 0;
+    const lastnameIsValid = lastname.length > 0;
+
+    const isValid =
+      emailIsValid &&
+      passwordIsValid &&
+      passwordsAreMatch &&
+      firstnameIsValid &&
+      lastnameIsValid;
+
+    if (!isValid) {
+    }
+    const response = await auth.createUser(
+      inputValue.email,
+      inputValue.password
+    );
   };
 
   return (
@@ -88,7 +114,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
           containerStyle={styles.personalInfoInput}
         />
       </View>
-      <PrimaryButton title="Register" />
+      <PrimaryButton title="Register" onPress={handleRegister} />
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleLogInPress}>
