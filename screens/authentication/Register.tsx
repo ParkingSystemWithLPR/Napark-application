@@ -65,8 +65,10 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     }
     const response = await auth.createUser(
       inputValue.email,
-      inputValue.password
+      inputValue.password,
+      "username"
     );
+    navigation.replace("LogIn");
   };
 
   return (
