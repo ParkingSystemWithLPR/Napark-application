@@ -1,5 +1,6 @@
 export type RootStackParamList = {
   Splash: undefined;
+  Auth: undefined;
   LogIn: undefined;
   Register: undefined;
   ForgetPassword: undefined;
@@ -10,6 +11,7 @@ export type RootStackParamList = {
 
 export type ButtonProps = {
   title: string;
+  onPress: () => void;
   buttonStyle?: object;
   textStyle?: object;
 };

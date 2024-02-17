@@ -40,7 +40,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
   };
 
   const handleLogInPress = () => {
-    navigation.navigate("LogIn");
+    navigation.replace("LogIn");
   };
 
   return (

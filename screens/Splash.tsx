@@ -31,7 +31,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
     ).start();
 
     setTimeout(() => {
-      navigation.navigate("Register");
+      navigation.navigate("Auth");
     }, 3000);
   }, [spinValue]);
 

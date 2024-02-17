@@ -12,6 +12,21 @@ import ResetPassword from "./screens/authentication/ResetPassword";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const AuthNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="LogIn"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
+    </Stack.Navigator>
+  );
+};
+
 const App = () => {
   return (
     <>
@@ -22,11 +37,7 @@ const App = () => {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Splash" component={Splash} />
-          <Stack.Screen name="LogIn" component={LogIn} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="ChangePassword" component={ChangePassword} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen name="Auth" component={AuthNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

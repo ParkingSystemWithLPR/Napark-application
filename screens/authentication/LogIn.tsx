@@ -33,11 +33,11 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   };
 
   const handleCreateAccountPress = () => {
-    navigation.navigate("Register");
+    navigation.replace("Register");
   };
 
   const handleForgetPasswordPress = () => {
-    navigation.navigate("ForgetPassword");
+    navigation.replace("ForgetPassword");
   };
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
@@ -73,7 +73,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         isChecked={isRemember}
         onPress={handleCheckboxPress}
       />
-      <PrimaryButton title="Login" />
+      <PrimaryButton title="Login" onPress={() => {}} />
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleCreateAccountPress}>

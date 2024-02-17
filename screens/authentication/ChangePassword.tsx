@@ -61,7 +61,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
         isRequired
         secureTextEntry
       />
-      <PrimaryButton title="Change Password" />
+      <PrimaryButton title="Change Password" onPress={() => {}} />
     </View>
   );
 };

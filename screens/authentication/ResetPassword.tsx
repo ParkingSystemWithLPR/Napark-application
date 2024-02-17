@@ -51,7 +51,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
         isRequired
         secureTextEntry
       />
-      <PrimaryButton title="Reset Password" />
+      <PrimaryButton title="Reset Password" onPress={() => {}} />
     </View>
   );
 };
