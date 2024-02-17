@@ -1,4 +1,29 @@
-const Colors: any = {
+import { ColorValue } from "react-native";
+
+export type ColorBreakdownType = {
+  50: ColorValue;
+  100: ColorValue;
+  200: ColorValue;
+  300: ColorValue;
+  400: ColorValue;
+  500: ColorValue;
+  600: ColorValue;
+  700: ColorValue;
+  800: ColorValue;
+  900: ColorValue;
+};
+
+export type ColorType = {
+  black: ColorValue;
+  white: ColorValue;
+  red: ColorBreakdownType;
+  gray: ColorBreakdownType;
+  blue: ColorBreakdownType;
+  lightBlue: ColorBreakdownType;
+  green: ColorBreakdownType;
+};
+
+const Colors: ColorType = {
   black: "#000",
   white: "#fff",
   red: {

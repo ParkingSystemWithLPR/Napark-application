@@ -17,37 +17,16 @@ const App = () => {
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
-          <Stack.Screen
-            name="Splash"
-            options={{ headerShown: false }}
-            component={Splash}
-          />
-          <Stack.Screen
-            name="LogIn"
-            options={{ headerShown: false }}
-            component={LogIn}
-          />
-          <Stack.Screen
-            name="Register"
-            options={{ headerShown: false }}
-            component={Register}
-          />
-          <Stack.Screen
-            name="ForgetPassword"
-            options={{ headerShown: false }}
-            component={ForgetPassword}
-          />
-          <Stack.Screen
-            name="ChangePassword"
-            options={{ headerShown: false }}
-            component={ChangePassword}
-          />
-          <Stack.Screen
-            name="ResetPassword"
-            options={{ headerShown: false }}
-            component={ResetPassword}
-          />
+        <Stack.Navigator
+          initialRouteName="Splash"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="LogIn" component={LogIn} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
