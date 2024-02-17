@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -12,7 +13,32 @@ export type RegisterProps = {} & NativeStackScreenProps<
   "Register"
 >;
 
+export type RegisterInputType = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstname: string;
+  lastname: string;
+};
+
 const Register: React.FC<RegisterProps> = ({ navigation }) => {
+  const [inputValue, setInputValue] = useState<RegisterInputType>({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstname: "",
+    lastname: "",
+  });
+
+  const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
+    setInputValue((curInputValue: RegisterInputType) => {
+      return {
+        ...curInputValue,
+        [identifierKey]: enteredValue,
+      };
+    });
+  };
+
   const handleLogInPress = () => {
     navigation.navigate("LogIn");
   };
@@ -20,16 +46,26 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Register" />
-      <TextInput title="Email" placeholder="Your email" isRequired />
+      <TextInput
+        title="Email"
+        placeholder="Your email"
+        value={inputValue.email}
+        onChangeText={handleOnChangeText.bind(this, "email")}
+        isRequired
+      />
       <TextInput
         title="Password"
         placeholder="Your password"
+        value={inputValue.password}
+        onChangeText={handleOnChangeText.bind(this, "password")}
         isRequired
         secureTextEntry
       />
       <TextInput
         title="Confirm Password"
         placeholder="Your password"
+        value={inputValue.confirmPassword}
+        onChangeText={handleOnChangeText.bind(this, "confirmPassword")}
         isRequired
         secureTextEntry
       />
@@ -37,12 +73,16 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
         <TextInput
           title="Firstname"
           placeholder="Your firstname"
+          value={inputValue.firstname}
+          onChangeText={handleOnChangeText.bind(this, "firstname")}
           isRequired
           containerStyle={styles.personalInfoInput}
         />
         <TextInput
           title="Lastname"
           placeholder="Your lastname"
+          value={inputValue.lastname}
+          onChangeText={handleOnChangeText.bind(this, "lastname")}
           isRequired
           containerStyle={styles.personalInfoInput}
         />

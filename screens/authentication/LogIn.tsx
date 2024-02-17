@@ -14,7 +14,16 @@ export type LogInProps = {} & NativeStackScreenProps<
   "LogIn"
 >;
 
+export type LoginInputType = {
+  email: string;
+  password: string;
+};
+
 const LogIn: React.FC<LogInProps> = ({ navigation }) => {
+  const [inputValue, setInputValue] = useState<LoginInputType>({
+    email: "",
+    password: "",
+  });
   const [isRemember, setIsRemember] = useState<boolean>(false);
 
   const handleCheckboxPress = () => {
@@ -31,13 +40,30 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     navigation.navigate("ForgetPassword");
   };
 
+  const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
+    setInputValue((curInputValue: LoginInputType) => {
+      return {
+        ...curInputValue,
+        [identifierKey]: enteredValue,
+      };
+    });
+  };
+
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Log In" />
-      <TextInput title="Email" placeholder="Your email" isRequired />
+      <TextInput
+        title="Email"
+        placeholder="Your email"
+        value={inputValue.email}
+        onChangeText={handleOnChangeText.bind(this, "email")}
+        isRequired
+      />
       <TextInput
         title="Password"
         placeholder="Your password"
+        value={inputValue.password}
+        onChangeText={handleOnChangeText.bind(this, "password")}
         isRequired
         secureTextEntry
       />

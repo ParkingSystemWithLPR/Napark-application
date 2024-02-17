@@ -4,10 +4,25 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
 
+export enum InputType {
+  Decimal = "decimal",
+  Email = "email",
+  None = "none",
+  Numeric = "numeric",
+  Search = "search",
+  Tel = "tel",
+  Text = "text",
+  URL = "url",
+}
+
 export type TextInputProps = {
   title: string;
   placeholder: string;
+  value: string;
+  onChangeText: (enteredValue: string) => void;
+  inputMode?: InputType;
   isRequired?: boolean;
+  multiline?: boolean;
   secureTextEntry?: boolean;
   errorText?: string;
   containerStyle?: object;
@@ -17,6 +32,10 @@ export type TextInputProps = {
 const MyTextInput: React.FC<TextInputProps> = ({
   title,
   placeholder,
+  value,
+  onChangeText,
+  inputMode = InputType.None,
+  multiline = false,
   isRequired = false,
   secureTextEntry = false,
   errorText,
@@ -32,6 +51,10 @@ const MyTextInput: React.FC<TextInputProps> = ({
       style={[styles.input, textInputStyle]}
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      inputMode={inputMode}
+      multiline={multiline}
     />
     {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
   </View>
