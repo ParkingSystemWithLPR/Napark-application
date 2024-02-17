@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 
 import { RootStackParamList } from "../types";
+import Colors from "../constants/color";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -50,17 +51,13 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground
-      source={require("../assets/images/splash.png")}
-      style={styles.background}
-    >
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <Animated.Image
-          source={require("../assets/images/icon.png")}
-          style={{ transform: [{ rotate: spin }] }}
-        />
-      </View>
-    </ImageBackground>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      <Animated.Image
+        source={require("../assets/images/logo.png")}
+        style={{ transform: [{ rotate: spin }], height: "25%", width: "25%" }}
+        resizeMode="contain"
+      />
+    </View>
   );
 };
 
@@ -68,12 +65,9 @@ export default Splash;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    backgroundColor: Colors.red[400],
   },
 });
