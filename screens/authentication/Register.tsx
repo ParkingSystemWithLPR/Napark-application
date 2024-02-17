@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import BodyText from "../../components/text/BodyText";
 import HeaderText from "../../components/text/HeaderText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 
 export type RegisterProps = {} & NativeStackScreenProps<
@@ -51,6 +51,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
         placeholder="Your email"
         value={inputValue.email}
         onChangeText={handleOnChangeText.bind(this, "email")}
+        inputMode={InputType.Email}
         isRequired
       />
       <TextInput

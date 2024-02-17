@@ -15,11 +15,19 @@ export enum InputType {
   URL = "url",
 }
 
+export enum AutoCapitalizeType {
+  None = "none",
+  Sentences = "sentences",
+  Words = "words",
+  Characters = "characters",
+}
+
 export type TextInputProps = {
   title: string;
   placeholder: string;
   value: string;
   onChangeText: (enteredValue: string) => void;
+  autoCapitalize?: AutoCapitalizeType;
   inputMode?: InputType;
   isRequired?: boolean;
   multiline?: boolean;
@@ -34,7 +42,8 @@ const MyTextInput: React.FC<TextInputProps> = ({
   placeholder,
   value,
   onChangeText,
-  inputMode = InputType.None,
+  autoCapitalize = AutoCapitalizeType.None,
+  inputMode = InputType.Text,
   multiline = false,
   isRequired = false,
   secureTextEntry = false,
@@ -49,6 +58,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
     </View>
     <TextInput
       style={[styles.input, textInputStyle]}
+      autoCapitalize={autoCapitalize}
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
       value={value}

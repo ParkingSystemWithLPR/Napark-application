@@ -6,7 +6,7 @@ import CheckboxInput from "../../components/input/CheckBoxInput";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 
 export type LogInProps = {} & NativeStackScreenProps<
@@ -57,6 +57,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         placeholder="Your email"
         value={inputValue.email}
         onChangeText={handleOnChangeText.bind(this, "email")}
+        inputMode={InputType.Email}
         isRequired
       />
       <TextInput
