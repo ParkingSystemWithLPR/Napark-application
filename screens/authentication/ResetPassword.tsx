@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 
 export type ResetPasswordProps = {} & NativeStackScreenProps<
@@ -13,21 +13,21 @@ export type ResetPasswordProps = {} & NativeStackScreenProps<
 >;
 
 export type ResetPasswordInputType = {
-  newPassword: string;
-  confirmPassword: string;
+  newPassword: InputValueType;
+  confirmPassword: InputValueType;
 };
 
 const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [inputValue, setInputValue] = useState<ResetPasswordInputType>({
-    newPassword: "",
-    confirmPassword: "",
+    newPassword: { value: "" },
+    confirmPassword: { value: "" },
   });
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: ResetPasswordInputType) => {
       return {
         ...curInputValue,
-        [identifierKey]: enteredValue,
+        [identifierKey]: { value: enteredValue },
       };
     });
   };
@@ -38,7 +38,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       <TextInput
         title="New Password"
         placeholder="Your new password"
-        value={inputValue.newPassword}
+        value={inputValue.newPassword.value}
         onChangeText={handleOnChangeText.bind(this, "newPassword")}
         isRequired
         secureTextEntry
@@ -46,7 +46,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       <TextInput
         title="Confirm Password"
         placeholder="Confirm your new password"
-        value={inputValue.confirmPassword}
+        value={inputValue.confirmPassword.value}
         onChangeText={handleOnChangeText.bind(this, "confirmPassword")}
         isRequired
         secureTextEntry

@@ -22,6 +22,11 @@ export enum AutoCapitalizeType {
   Characters = "characters",
 }
 
+export type InputValueType = {
+  value: string;
+  errorText?: string;
+};
+
 export type TextInputProps = {
   title: string;
   placeholder: string;
@@ -57,7 +62,11 @@ const MyTextInput: React.FC<TextInputProps> = ({
       {isRequired && <BodyText text="*" textStyle={styles.requiredIndicator} />}
     </View>
     <TextInput
-      style={[styles.input, textInputStyle]}
+      style={[
+        styles.input,
+        textInputStyle,
+        errorText ? styles.errorInputContainer : null,
+      ]}
       autoCapitalize={autoCapitalize}
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
@@ -89,8 +98,12 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
     fontSize: 12,
   },
+  errorInputContainer: {
+    borderColor: Colors.red[600],
+  },
   errorText: {
     color: Colors.red[400],
+    fontSize: 12,
   },
   requiredIndicator: {
     color: Colors.red[400],

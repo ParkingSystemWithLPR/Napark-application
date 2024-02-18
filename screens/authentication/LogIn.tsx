@@ -6,10 +6,11 @@ import CheckboxInput from "../../components/input/CheckBoxInput";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
-import TextInput, { InputType } from "../../components/input/TextInput";
+import TextInput, {
+  InputType,
+  InputValueType,
+} from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
-
-import auth from "../../utils/user";
 
 import { useAuth } from "../../store/context/auth";
 
@@ -19,15 +20,15 @@ export type LogInProps = {} & NativeStackScreenProps<
 >;
 
 export type LoginInputType = {
-  email: string;
-  password: string;
+  email: InputValueType;
+  password: InputValueType;
 };
 
 const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   const { login } = useAuth();
   const [inputValue, setInputValue] = useState<LoginInputType>({
-    email: "",
-    password: "",
+    email: { value: "" },
+    password: { value: "" },
   });
   const [isRemember, setIsRemember] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     setInputValue((curInputValue: LoginInputType) => {
       return {
         ...curInputValue,
-        [identifierKey]: enteredValue,
+        [identifierKey]: { value: enteredValue },
       };
     });
   };
@@ -57,21 +58,35 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
   const handleLogin = async () => {
     const { email, password } = inputValue;
 
-    const emailIsValid = email.includes("@");
-    const passwordIsValid = password.length > 8;
+    const emailIsValid = email.value.includes("@");
+    const passwordIsValid = password.value.length > 8;
 
     const isValid = emailIsValid && passwordIsValid;
     if (!isValid) {
-      return;
-    }
-    try {
-      await login(inputValue.email, inputValue.password);
-      navigation.replace("Authenticated");
-    } catch (error) {
-      Alert.alert(
-        "Authentication Failed",
-        "Please try logging in again!!: " + (error as Error).message
-      );
+      setInputValue((curInputValue: LoginInputType) => {
+        return {
+          email: {
+            ...curInputValue.email,
+            errorText: emailIsValid ? undefined : "Invalid email address",
+          },
+          password: {
+            ...curInputValue.password,
+            errorText: passwordIsValid
+              ? undefined
+              : "Create a password with at least 8 characters",
+          },
+        };
+      });
+    } else {
+      try {
+        await login(email.value, password.value);
+        navigation.replace("Authenticated");
+      } catch (error) {
+        Alert.alert(
+          "Authentication Failed",
+          "Please try logging in again!!: " + (error as Error).message
+        );
+      }
     }
   };
 
@@ -81,16 +96,18 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
       <TextInput
         title="Email"
         placeholder="Your email"
-        value={inputValue.email}
+        value={inputValue.email.value}
         onChangeText={handleOnChangeText.bind(this, "email")}
         inputMode={InputType.Email}
+        errorText={inputValue.email.errorText}
         isRequired
       />
       <TextInput
         title="Password"
         placeholder="Your password"
-        value={inputValue.password}
+        value={inputValue.password.value}
         onChangeText={handleOnChangeText.bind(this, "password")}
+        errorText={inputValue.password.errorText}
         isRequired
         secureTextEntry
       />

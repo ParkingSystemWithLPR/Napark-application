@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 import { useState } from "react";
 
@@ -13,23 +13,23 @@ export type ChangePasswordProps = {} & NativeStackScreenProps<
 >;
 
 export type ChangePasswordInputType = {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  oldPassword: InputValueType;
+  newPassword: InputValueType;
+  confirmPassword: InputValueType;
 };
 
 const ChangePassword: React.FC<ChangePasswordProps> = () => {
   const [inputValue, setInputValue] = useState<ChangePasswordInputType>({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    oldPassword: { value: "" },
+    newPassword: { value: "" },
+    confirmPassword: { value: "" },
   });
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: ChangePasswordInputType) => {
       return {
         ...curInputValue,
-        [identifierKey]: enteredValue,
+        [identifierKey]: { value: enteredValue },
       };
     });
   };
@@ -40,7 +40,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
       <TextInput
         title="Old Password"
         placeholder="Your old password"
-        value={inputValue.oldPassword}
+        value={inputValue.oldPassword.value}
         onChangeText={handleOnChangeText.bind(this, "oldPassword")}
         isRequired
         secureTextEntry
@@ -48,7 +48,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
       <TextInput
         title="New Password"
         placeholder="Your new password"
-        value={inputValue.newPassword}
+        value={inputValue.newPassword.value}
         onChangeText={handleOnChangeText.bind(this, "newPassword")}
         isRequired
         secureTextEntry
@@ -56,7 +56,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
       <TextInput
         title="Confirm Password"
         placeholder="Confirm your new password"
-        value={inputValue.confirmPassword}
+        value={inputValue.confirmPassword.value}
         onChangeText={handleOnChangeText.bind(this, "confirmPassword")}
         isRequired
         secureTextEntry
