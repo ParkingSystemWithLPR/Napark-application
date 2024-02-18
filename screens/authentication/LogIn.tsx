@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import CheckboxInput from "../../components/input/CheckBoxInput";
@@ -8,7 +8,10 @@ import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
 import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
-import auth from "../../utils/auth";
+
+import auth from "../../utils/user";
+
+import { useAuth } from "../../store/context/auth";
 
 export type LogInProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -21,6 +24,7 @@ export type LoginInputType = {
 };
 
 const LogIn: React.FC<LogInProps> = ({ navigation }) => {
+  const { login } = useAuth();
   const [inputValue, setInputValue] = useState<LoginInputType>({
     email: "",
     password: "",
@@ -57,10 +61,18 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     const passwordIsValid = password.length > 8;
 
     const isValid = emailIsValid && passwordIsValid;
-
     if (!isValid) {
+      return;
     }
-    const response = await auth.login(inputValue.email, inputValue.password);
+    try {
+      await login(inputValue.email, inputValue.password);
+      navigation.replace("Authenticated");
+    } catch (error) {
+      Alert.alert(
+        "Authentication Failed",
+        "Please try logging in again!!: " + (error as Error).message
+      );
+    }
   };
 
   return (
@@ -87,7 +99,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         isChecked={isRemember}
         onPress={handleCheckboxPress}
       />
-      <PrimaryButton title="Login" onPress={() => {}} />
+      <PrimaryButton title="Login" onPress={handleLogin} />
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleCreateAccountPress}>

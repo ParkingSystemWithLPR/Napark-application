@@ -1,12 +1,13 @@
 export type RootStackParamList = {
   Splash: undefined;
   Auth: undefined;
+  Authenticated: undefined;
   LogIn: undefined;
   Register: undefined;
   ForgetPassword: undefined;
   ResetPassword: undefined;
   ChangePassword: undefined;
-  Profile: undefined;
+  Landing: undefined;
 };
 
 export type ButtonProps = {

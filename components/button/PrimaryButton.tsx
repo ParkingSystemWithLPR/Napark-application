@@ -7,6 +7,7 @@ import Colors from "../../constants/color";
 
 const PrimaryButton: React.FC<ButtonProps> = ({
   title,
+  onPress,
   buttonStyle,
   textStyle,
 }) => {
@@ -17,6 +18,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
         styles.button,
         pressed ? styles.buttonPressed : null,
       ]}
+      onPress={onPress}
     >
       <View style={[styles.buttonContainer, buttonStyle]}>
         <BodyText text={title} textStyle={[styles.text, textStyle]} />

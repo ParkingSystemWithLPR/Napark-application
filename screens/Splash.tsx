@@ -1,11 +1,13 @@
 import { useEffect, useCallback, useRef } from "react";
-import { ImageBackground, StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View, Animated } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 
 import { RootStackParamList } from "../types";
 import Colors from "../constants/color";
+import { useAuth } from "../store/context/auth";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,6 +22,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
   });
   const spinValue = useRef(new Animated.Value(0)).current;
+  const { authenticate } = useAuth();
 
   useEffect(() => {
     Animated.loop(
@@ -30,10 +33,20 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
       })
     ).start();
 
-    setTimeout(() => {
-      navigation.replace("Auth");
-    }, 3000);
-  }, [spinValue]);
+    const fetchToken = async () => {
+      const storedAccessToken = await AsyncStorage.getItem("authToken");
+      const storedRefreshToken = await AsyncStorage.getItem("refreshToken");
+
+      if (storedAccessToken && storedRefreshToken) {
+        authenticate(storedAccessToken, storedRefreshToken);
+        navigation.replace("Authenticated");
+      } else {
+        navigation.replace("Auth");
+      }
+    };
+
+    if (fontsLoaded || fontError) fetchToken();
+  }, [fontsLoaded, fontError, spinValue, navigation]);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
@@ -7,7 +7,7 @@ import BodyText from "../../components/text/BodyText";
 import HeaderText from "../../components/text/HeaderText";
 import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
-import auth from "../../utils/auth";
+import user from "../../utils/user";
 
 export type RegisterProps = {} & NativeStackScreenProps<
   RootStackParamList,
@@ -62,13 +62,17 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       lastnameIsValid;
 
     if (!isValid) {
+      return;
     }
-    const response = await auth.createUser(
-      inputValue.email,
-      inputValue.password,
-      "username"
-    );
-    navigation.replace("LogIn");
+    try {
+      await user.createUser(inputValue.email, inputValue.password, "username");
+      navigation.replace("LogIn");
+    } catch (error) {
+      Alert.alert(
+        "Registration Failed",
+        "Please try again: " + (error as Error).message
+      );
+    }
   };
 
   return (
