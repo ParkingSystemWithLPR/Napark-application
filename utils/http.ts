@@ -13,7 +13,7 @@ export enum METHOD {
 
 const apiRequest = async <T>(
   url: string,
-  method: string,
+  method: METHOD,
   body?: object
 ): Promise<T> => {
   const { accessToken } = useAuth();
