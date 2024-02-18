@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 
 export type ForgetPasswordProps = {} & NativeStackScreenProps<
@@ -13,16 +14,24 @@ export type ForgetPasswordProps = {} & NativeStackScreenProps<
 >;
 
 const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>("");
   const handleLogInPress = () => {
-    navigation.navigate("LogIn");
+    navigation.replace("LogIn");
   };
 
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Forget Password" />
-      <TextInput title="Email" placeholder="Your email" isRequired />
+      <TextInput
+        title="Email"
+        placeholder="Your email"
+        value={email}
+        onChangeText={setEmail}
+        inputMode={InputType.Email}
+        isRequired
+      />
       <BodyText text="Please enter your email in the box above. We will send you a link to access further instructions." />
-      <PrimaryButton title="Submit" />
+      <PrimaryButton title="Submit" onPress={() => {}} />
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleLogInPress}>

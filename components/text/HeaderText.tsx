@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 
 import { TextProps } from "../../types";
+import Colors from "../../constants/color";
 
 const HeaderText: React.FC<TextProps> = ({
   text,
@@ -18,6 +19,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 28,
-    color: "#F14951",
+    color: Colors.red[400],
   },
 });

@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import { RootStackParamList } from "../../types";
 
 export type ResetPasswordProps = {} & NativeStackScreenProps<
@@ -11,23 +12,46 @@ export type ResetPasswordProps = {} & NativeStackScreenProps<
   "ResetPassword"
 >;
 
+export type ResetPasswordInputType = {
+  newPassword: InputValueType;
+  confirmPassword: InputValueType;
+};
+
 const ResetPassword: React.FC<ResetPasswordProps> = () => {
+  const [inputValue, setInputValue] = useState<ResetPasswordInputType>({
+    newPassword: { value: "" },
+    confirmPassword: { value: "" },
+  });
+
+  const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
+    setInputValue((curInputValue: ResetPasswordInputType) => {
+      return {
+        ...curInputValue,
+        [identifierKey]: { value: enteredValue },
+      };
+    });
+  };
+
   return (
     <View style={styles.loginContainer}>
       <HeaderText text="Reset Password" />
       <TextInput
         title="New Password"
         placeholder="Your new password"
+        value={inputValue.newPassword.value}
+        onChangeText={handleOnChangeText.bind(this, "newPassword")}
         isRequired
         secureTextEntry
       />
       <TextInput
         title="Confirm Password"
         placeholder="Confirm your new password"
+        value={inputValue.confirmPassword.value}
+        onChangeText={handleOnChangeText.bind(this, "confirmPassword")}
         isRequired
         secureTextEntry
       />
-      <PrimaryButton title="Reset Password" />
+      <PrimaryButton title="Reset Password" onPress={() => {}} />
     </View>
   );
 };

@@ -3,6 +3,7 @@ import { TouchableOpacity, View, StyleSheet, Animated } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import BodyText from "../text/BodyText";
+import Colors from "../../constants/color";
 
 export type CheckboxInputProps = {
   text: string;
@@ -63,14 +64,14 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   checkbox: {
-    backgroundColor: "white",
-    borderColor: "#F14951",
+    backgroundColor: Colors.white,
+    borderColor: Colors.red[400],
     borderWidth: 1,
     borderRadius: 4,
     height: 20,
     width: 20,
   },
   checkboxSelected: {
-    backgroundColor: "#F14951",
+    backgroundColor: Colors.red[400],
   },
 });
