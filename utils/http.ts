@@ -16,7 +16,7 @@ const apiRequest = async <T>(
   method: METHOD,
   body?: object
 ): Promise<T> => {
-  const { accessToken } = useAuth();
+  const { accessToken, authenticate } = useAuth();
   const headers = {
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
@@ -38,9 +38,22 @@ const apiRequest = async <T>(
     if (axiosError.response?.status === 401) {
       // Token expired, refresh and retry
       const refreshToken = await AsyncStorage.getItem("refreshToken");
-      await axios.post(AUTH_URL + "/auth_v1/auth/refresh-token", {
-        refresh_token: refreshToken,
-      });
+      const response = await axios.post(
+        AUTH_URL + "/auth_v1/auth/refresh-token",
+        {
+          refresh_token: refreshToken,
+        }
+      );
+      if (!response.data || !response.data.credential) {
+        throw new Error("Invalid response data");
+      }
+
+      const { access_token, refresh_token } = response.data.credential;
+      if (!access_token || !refresh_token) {
+        throw new Error("Missing access_token or refresh_token");
+      }
+
+      authenticate(access_token, refresh_token);
       // Retry the request with the new access token
       return apiRequest<T>(url, method, body);
     }
