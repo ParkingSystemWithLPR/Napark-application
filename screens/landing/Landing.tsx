@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import { View, StyleSheet, TextInput, Button } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,7 +25,7 @@ const Landing: React.FC<LandingProps> = () => {
   const { logout } = useAuth();
   const [region, setRegion] = useState<RegionType>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getCurrentLocation();
   }, []);
 
@@ -84,7 +84,6 @@ const Landing: React.FC<LandingProps> = () => {
                 placeholder={"Search"}
                 placeholderTextColor={"#666"}
               />
-              <Button title="logout" onPress={logout} />
             </SafeAreaView>
           </View>
         </>

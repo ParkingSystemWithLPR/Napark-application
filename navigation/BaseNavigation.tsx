@@ -18,7 +18,7 @@ import MyBooking from "../screens/booking/MyBooking";
 import Payment from "../screens/payment/Payment";
 import Account from "../screens/account/Account";
 import Other from "../screens/other/Other";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/color";
 
 export const Stack = createNativeStackNavigator<RootParamList>();
@@ -41,7 +41,9 @@ const AuthenticatedStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="MainScreen"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
       <Stack.Screen name="MainScreen" component={MainPageScreen} />
     </Stack.Navigator>
@@ -63,8 +65,12 @@ const MainPageScreen = () => {
         component={Landing}
         options={{
           tabBarLabel: "Explore",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="map-outline" size={size} color={color} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? "map-marker" : "map-marker-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -74,7 +80,11 @@ const MainPageScreen = () => {
         options={{
           tabBarLabel: "My booking",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
+            <MaterialCommunityIcons
+              name="calendar-cursor"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -83,8 +93,12 @@ const MainPageScreen = () => {
         component={Payment}
         options={{
           tabBarLabel: "Payment",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="card-outline" size={size} color={color} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? "credit-card" : "credit-card-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -93,8 +107,12 @@ const MainPageScreen = () => {
         component={Account}
         options={{
           tabBarLabel: "Account",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-circle-outline" size={size} color={color} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? "account-circle" : "account-circle-outline"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -102,14 +120,23 @@ const MainPageScreen = () => {
         name="Other"
         component={Other}
         options={{
+          headerShown: true,
+          title: "Menu",
           tabBarLabel: "More",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="ellipsis-horizontal-outline"
+            <MaterialCommunityIcons
+              name="dots-horizontal"
               size={size}
               color={color}
             />
           ),
+          headerTitleStyle: {
+            fontSize: 18,
+          },
+          headerStyle: {
+            backgroundColor: Colors.red[400],
+            shadowOpacity: 0,
+          },
         }}
       />
     </BottomTab.Navigator>

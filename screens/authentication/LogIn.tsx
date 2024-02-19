@@ -27,13 +27,6 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     email: { value: "" },
     password: { value: "" },
   });
-  const [isRemember, setIsRemember] = useState<boolean>(false);
-
-  const handleCheckboxPress = () => {
-    setIsRemember((prev) => {
-      return !prev;
-    });
-  };
 
   const handleCreateAccountPress = () => {
     navigation.replace("Register");
@@ -107,11 +100,6 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         errorText={inputValue.password.errorText}
         isRequired
         secureTextEntry
-      />
-      <CheckboxInput
-        text="Remember me?"
-        isChecked={isRemember}
-        onPress={handleCheckboxPress}
       />
       <PrimaryButton title="Login" onPress={handleLogin} />
       <View style={styles.optionContainer}>
