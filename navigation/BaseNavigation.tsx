@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { RootStackParamList } from "../types";
+import { RootBottomTabParamList, RootStackParamList } from "../types";
 
 import ChangePassword from "../screens/authentication/ChangePassword";
 import ResetPassword from "../screens/authentication/ResetPassword";
@@ -13,8 +14,15 @@ import Landing from "../screens/landing/Landing";
 import SplashScreen from "../screens/SplashScreen";
 
 import { AuthContext } from "../store/context/auth";
+import MyBooking from "../screens/booking/MyBooking";
+import Payment from "../screens/payment/Payment";
+import Account from "../screens/account/Account";
+import Other from "../screens/other/Other";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Colors from "../constants/color";
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
+export const BottomTab = createBottomTabNavigator<RootBottomTabParamList>();
 
 const AuthStack = () => {
   return (
@@ -32,11 +40,79 @@ const AuthStack = () => {
 const AuthenticatedStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Landing"
+      initialRouteName="MainScreen"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Landing" component={Landing} />
+      <Stack.Screen name="MainScreen" component={MainPageScreen} />
     </Stack.Navigator>
+  );
+};
+
+const MainPageScreen = () => {
+  return (
+    <BottomTab.Navigator
+      initialRouteName="Landing"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: Colors.red[400].toString(),
+        tabBarInactiveTintColor: Colors.gray[900].toString(),
+      }}
+    >
+      <BottomTab.Screen
+        name="Landing"
+        component={Landing}
+        options={{
+          tabBarLabel: "Explore",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="map-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="MyBooking"
+        component={MyBooking}
+        options={{
+          tabBarLabel: "My booking",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Payment"
+        component={Payment}
+        options={{
+          tabBarLabel: "Payment",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="card-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={Account}
+        options={{
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-circle-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Other"
+        component={Other}
+        options={{
+          tabBarLabel: "More",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="ellipsis-horizontal-outline"
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+    </BottomTab.Navigator>
   );
 };
 

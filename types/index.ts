@@ -7,7 +7,16 @@ export type RootStackParamList = {
   ForgetPassword: undefined;
   ResetPassword: undefined;
   ChangePassword: undefined;
+  MainScreen: undefined;
   Landing: undefined;
+};
+
+export type RootBottomTabParamList = {
+  Landing: undefined;
+  MyBooking: undefined;
+  Payment: undefined;
+  Account: undefined;
+  Other: undefined;
 };
 
 export type ButtonProps = {
