@@ -9,8 +9,6 @@ import { RootStackParamList } from "../types";
 import Colors from "../constants/color";
 import { useAuth } from "../store/context/auth";
 
-SplashScreen.preventAutoHideAsync();
-
 export type SplashProps = {} & NativeStackScreenProps<
   RootStackParamList,
   "Splash"

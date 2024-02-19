@@ -10,7 +10,7 @@ import ForgetPassword from "../screens/authentication/ForgetPassword";
 import LogIn from "../screens/authentication/LogIn";
 import Register from "../screens/authentication/Register";
 import Landing from "../screens/landing/Landing";
-import Splash from "../screens/Splash";
+import SplashScreen from "../screens/SplashScreen";
 
 import { AuthContext } from "../store/context/auth";
 
@@ -49,7 +49,7 @@ const BaseNavigation = () => {
         initialRouteName="Splash"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="Splash" component={SplashScreen} />
         {authCtx.isAuthenticated ? (
           <Stack.Screen name="Authenticated" component={AuthenticatedStack} />
         ) : (
