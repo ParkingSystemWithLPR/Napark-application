@@ -1,4 +1,6 @@
-import { StyleSheet, View, TextInput } from "react-native";
+import { useState } from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 
 import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
@@ -55,48 +57,79 @@ const MyTextInput: React.FC<TextInputProps> = ({
   errorText,
   containerStyle,
   textInputStyle,
-}) => (
-  <View style={[styles.inputContainer, containerStyle]}>
-    <View style={styles.titleContainer}>
-      <SubHeaderText text={title} />
-      {isRequired && <BodyText text="*" textStyle={styles.requiredIndicator} />}
+}) => {
+  const [showPassword, setShowPassword] = useState<boolean>(!secureTextEntry);
+
+  const toggleSecureEntry = () => {
+    setShowPassword((prev) => !prev);
+  };
+  return (
+    <View style={[styles.outerContainer, containerStyle]}>
+      <View style={styles.titleContainer}>
+        <SubHeaderText text={title} />
+        {isRequired && (
+          <BodyText text="*" textStyle={styles.requiredIndicator} />
+        )}
+      </View>
+
+      <View
+        style={[
+          styles.inputContainer,
+          errorText ? styles.errorInputContainer : null,
+        ]}
+      >
+        <TextInput
+          style={[styles.input, textInputStyle]}
+          autoCapitalize={autoCapitalize}
+          secureTextEntry={!showPassword}
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          inputMode={inputMode}
+          multiline={multiline}
+        />
+        {secureTextEntry && (
+          <TouchableOpacity onPress={toggleSecureEntry}>
+            <Ionicons
+              name={showPassword ? "eye-off" : "eye"}
+              size={20}
+              color="gray"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+      {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
     </View>
-    <TextInput
-      style={[
-        styles.input,
-        textInputStyle,
-        errorText ? styles.errorInputContainer : null,
-      ]}
-      autoCapitalize={autoCapitalize}
-      secureTextEntry={secureTextEntry}
-      placeholder={placeholder}
-      value={value}
-      onChangeText={onChangeText}
-      inputMode={inputMode}
-      multiline={multiline}
-    />
-    {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
-  </View>
-);
+  );
+};
 
 export default MyTextInput;
 
 const styles = StyleSheet.create({
-  inputContainer: {
+  outerContainer: {
     marginBottom: 10,
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-  input: {
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Colors.white,
     borderWidth: 1,
     borderColor: Colors.gray[800],
     borderRadius: 8,
     padding: 8,
+  },
+  input: {
+    flex: 1,
     fontFamily: "Poppins-Medium",
     fontSize: 12,
+  },
+  icon: {
+    marginLeft: 5,
   },
   errorInputContainer: {
     borderColor: Colors.red[600],

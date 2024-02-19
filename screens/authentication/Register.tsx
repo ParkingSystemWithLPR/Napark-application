@@ -52,7 +52,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       inputValue;
 
     const emailIsValid = email.value.includes("@");
-    const passwordIsValid = password.value.length > 8;
+    const passwordIsValid = password.value.length >= 8;
     const passwordsAreMatch = password.value === confirmPassword.value;
     const firstnameIsValid = firstname.value.length > 0;
     const lastnameIsValid = lastname.value.length > 0;

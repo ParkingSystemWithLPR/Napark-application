@@ -59,7 +59,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     const { email, password } = inputValue;
 
     const emailIsValid = email.value.includes("@");
-    const passwordIsValid = password.value.length > 8;
+    const passwordIsValid = password.value.length >= 8;
 
     const isValid = emailIsValid && passwordIsValid;
     if (!isValid) {
