@@ -10,14 +10,11 @@ import TextInput, {
   InputType,
   InputValueType,
 } from "../../components/input/TextInput";
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 
 import { useAuth } from "../../store/context/auth";
 
-export type LogInProps = {} & NativeStackScreenProps<
-  RootStackParamList,
-  "LogIn"
->;
+export type LogInProps = {} & NativeStackScreenProps<RootParamList, "LogIn">;
 
 export type LoginInputType = {
   email: InputValueType;
@@ -30,13 +27,6 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
     email: { value: "" },
     password: { value: "" },
   });
-  const [isRemember, setIsRemember] = useState<boolean>(false);
-
-  const handleCheckboxPress = () => {
-    setIsRemember((prev) => {
-      return !prev;
-    });
-  };
 
   const handleCreateAccountPress = () => {
     navigation.replace("Register");
@@ -110,11 +100,6 @@ const LogIn: React.FC<LogInProps> = ({ navigation }) => {
         errorText={inputValue.password.errorText}
         isRequired
         secureTextEntry
-      />
-      <CheckboxInput
-        text="Remember me?"
-        isChecked={isRemember}
-        onPress={handleCheckboxPress}
       />
       <PrimaryButton title="Login" onPress={handleLogin} />
       <View style={styles.optionContainer}>

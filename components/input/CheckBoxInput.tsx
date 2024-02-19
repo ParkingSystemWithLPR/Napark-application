@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { TouchableOpacity, View, StyleSheet, Animated } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
@@ -47,7 +47,7 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
         ]}
       >
         <Animated.View style={{ width: animatedWidth }}>
-          <Icon name="checkmark" size={20} style={{ color: "white" }} />
+          <MaterialCommunityIcons name="check" size={20} color={Colors.white} />
         </Animated.View>
       </TouchableOpacity>
       <BodyText text={text} textStyle={textStyle} />

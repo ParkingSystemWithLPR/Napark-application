@@ -5,14 +5,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 
-import { RootStackParamList } from "../types";
+import { RootParamList } from "../types";
 import Colors from "../constants/color";
 import { useAuth } from "../store/context/auth";
 
-export type SplashProps = {} & NativeStackScreenProps<
-  RootStackParamList,
-  "Splash"
->;
+export type SplashProps = {} & NativeStackScreenProps<RootParamList, "Splash">;
 
 const Splash: React.FC<SplashProps> = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({

@@ -1,4 +1,4 @@
-export type RootStackParamList = {
+export type RootParamList = {
   Splash: undefined;
   Auth: undefined;
   Authenticated: undefined;
@@ -8,10 +8,6 @@ export type RootStackParamList = {
   ResetPassword: undefined;
   ChangePassword: undefined;
   MainScreen: undefined;
-  Landing: undefined;
-};
-
-export type RootBottomTabParamList = {
   Landing: undefined;
   MyBooking: undefined;
   Payment: undefined;

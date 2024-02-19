@@ -9,11 +9,11 @@ import TextInput, {
   InputType,
   InputValueType,
 } from "../../components/input/TextInput";
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 import user from "../../utils/user";
 
 export type RegisterProps = {} & NativeStackScreenProps<
-  RootStackParamList,
+  RootParamList,
   "Register"
 >;
 

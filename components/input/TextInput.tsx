@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 
 import SubHeaderText from "../text/SubHeaderText";
@@ -90,10 +90,10 @@ const MyTextInput: React.FC<TextInputProps> = ({
         />
         {secureTextEntry && (
           <TouchableOpacity onPress={toggleSecureEntry}>
-            <Ionicons
+            <MaterialCommunityIcons
               name={showPassword ? "eye-off" : "eye"}
               size={20}
-              color="gray"
+              color={Colors.gray[800]}
               style={styles.icon}
             />
           </TouchableOpacity>

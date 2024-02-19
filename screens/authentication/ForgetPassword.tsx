@@ -6,10 +6,10 @@ import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";
 import TextInput, { InputType } from "../../components/input/TextInput";
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 
 export type ForgetPasswordProps = {} & NativeStackScreenProps<
-  RootStackParamList,
+  RootParamList,
   "ForgetPassword"
 >;
 
