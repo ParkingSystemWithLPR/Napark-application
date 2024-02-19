@@ -4,11 +4,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import TextInput, { InputValueType } from "../../components/input/TextInput";
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 import { useState } from "react";
 
 export type ChangePasswordProps = {} & NativeStackScreenProps<
-  RootStackParamList,
+  RootParamList,
   "ChangePassword"
 >;
 

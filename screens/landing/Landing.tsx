@@ -5,11 +5,12 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 import { useAuth } from "../../store/context/auth";
+import LoadingOverlay from "../../components/ui/LoadingOverlay";
 
 export type LandingProps = {} & NativeStackScreenProps<
-  RootStackParamList,
+  RootParamList,
   "Landing"
 >;
 
@@ -89,7 +90,7 @@ const Landing: React.FC<LandingProps> = () => {
         </>
       ) : (
         <SafeAreaView>
-          <Text>Loading...</Text>
+          <LoadingOverlay message="Loading" />
         </SafeAreaView>
       )}
     </View>

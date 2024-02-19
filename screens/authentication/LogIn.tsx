@@ -10,14 +10,11 @@ import TextInput, {
   InputType,
   InputValueType,
 } from "../../components/input/TextInput";
-import { RootStackParamList } from "../../types";
+import { RootParamList } from "../../types";
 
 import { useAuth } from "../../store/context/auth";
 
-export type LogInProps = {} & NativeStackScreenProps<
-  RootStackParamList,
-  "LogIn"
->;
+export type LogInProps = {} & NativeStackScreenProps<RootParamList, "LogIn">;
 
 export type LoginInputType = {
   email: InputValueType;

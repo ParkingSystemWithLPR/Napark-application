@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { RootBottomTabParamList, RootStackParamList } from "../types";
+import { RootParamList } from "../types";
 
 import ChangePassword from "../screens/authentication/ChangePassword";
 import ResetPassword from "../screens/authentication/ResetPassword";
@@ -21,8 +21,8 @@ import Other from "../screens/other/Other";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Colors from "../constants/color";
 
-export const Stack = createNativeStackNavigator<RootStackParamList>();
-export const BottomTab = createBottomTabNavigator<RootBottomTabParamList>();
+export const Stack = createNativeStackNavigator<RootParamList>();
+export const BottomTab = createBottomTabNavigator<RootParamList>();
 
 const AuthStack = () => {
   return (
