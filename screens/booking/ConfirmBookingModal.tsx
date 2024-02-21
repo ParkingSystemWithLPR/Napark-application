@@ -35,19 +35,17 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
         disabled={isCreatingBooking}
       >
         <View style={styles.modalSection}>
-          <TouchableWithoutFeedback>
-            {!isConfirm ? (
-              <ConfirmBookingModalContent
-                handlecloseModal={closeModal}
-                handleSendRequest={handleConfirm}
-              />
-            ) : (
-              <ProcessingModalContent
-                isCreatingBooking={isCreatingBooking}
-                closeModal={closeModal}
-              />
-            )}
-          </TouchableWithoutFeedback>
+          {!isConfirm ? (
+            <ConfirmBookingModalContent
+              handlecloseModal={closeModal}
+              handleSendRequest={handleConfirm}
+            />
+          ) : (
+            <ProcessingModalContent
+              isCreatingBooking={isCreatingBooking}
+              handlecloseModal={closeModal}
+            />
+          )}
         </View>
       </TouchableOpacity>
     </View>

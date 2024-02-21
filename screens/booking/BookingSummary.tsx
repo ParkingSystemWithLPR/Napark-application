@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { RootParamList } from "../../types";
 import BodyText from "../../components/text/BodyText";
 import PrimaryButton from "../../components/button/PrimaryButton";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Colors from "../../constants/color";
 import HyperLinkText from "../../components/text/HyperlinkText";
 
@@ -39,13 +39,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
     <View style={styles.screen}>
       <View style={styles.locationSection}>
         <View style={styles.locationContainer}>
-          <Ionicons
-            name="navigate-circle-outline"
-            style={styles.image}
-          ></Ionicons>
+          <Ionicons name="location-sharp" style={styles.pin}></Ionicons>
           <BodyText
             text="Engineer building 3, Chulalongkorn"
             containerStyle={styles.locationBox}
+            textStyle={Platform.OS === "ios" ? styles.iosText : {}}
           />
         </View>
       </View>
@@ -93,9 +91,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
+    borderRadius: 5,
+    elevation: 5,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
     // borderWidth: 1,
   },
-  image: {
+  pin: {
     fontSize: 25,
     marginRight: 5,
     // borderColor: "purple",
@@ -117,6 +121,12 @@ const styles = StyleSheet.create({
   bookingDetailContainer: {
     flex: 1,
     backgroundColor: Colors.white,
+    borderRadius: 5,
+    elevation: 5,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
     // borderColor: "pink",
     // borderWidth: 1,
   },
@@ -153,5 +163,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // borderColor: "black",
     // borderWidth: 1,
+  },
+  iosText: {
+    fontSize: 12,
   },
 });

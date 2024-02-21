@@ -1,44 +1,53 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+  Platform,
+} from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 export type ProcessingModalContentProps = {
   isCreatingBooking: boolean;
-  closeModal: () => void;
+  handlecloseModal: () => void;
 };
 const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
   isCreatingBooking,
-  closeModal,
+  handlecloseModal,
 }) => {
   return (
-    <View style={styles.modalContainer}>
-      {isCreatingBooking ? (
-        <View style={styles.textBox}>
-          <BodyText text={"Processing request..."} />
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name="checkmark-circle"
-              style={styles.closeButton}
-            ></Ionicons>
-          </View>
-          <View style={styles.textBox}>
+    <TouchableWithoutFeedback>
+      <View style={styles.modalContainer}>
+        {isCreatingBooking ? (
+          <View style={styles.processingTextBox}>
             <BodyText
-              text={"Space Successfully Booked"}
-              textStyle={{ fontSize: 12 }}
+              text={"Processing request..."}
+              textStyle={Platform.OS === "ios" ? styles.iosText : {}}
             />
+            <ActivityIndicator />
           </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton title={"close"} onPress={closeModal} />
-          </View>
-        </>
-      )}
-    </View>
+        ) : (
+          <>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name="check-circle"
+                style={styles.closeButton}
+              />
+              <BodyText
+                text={"Successfully Booked"}
+                textStyle={Platform.OS === "ios" ? styles.iosText : {}}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton title={"close"} onPress={handlecloseModal} />
+            </View>
+          </>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 export default ProcessingModalContent;
@@ -47,14 +56,25 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     width: 200,
     height: 200,
-    paddingHorizontal: 17,
+    paddingHorizontal: 15,
+    borderRadius: 10,
   },
-  iconContainer: { flex: 2, alignItems: "center" },
-  textBox: {
+  iconContainer: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    // borderWidth: 1,
+  },
+  processingTextBox: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
+    // borderWidth: 1,
+  },
+  successfulTextBox: {
+    flex: 1,
+    alignItems: "center",
   },
   buttonContainer: {
     flex: 1,
@@ -63,5 +83,8 @@ const styles = StyleSheet.create({
   closeButton: {
     fontSize: 100,
     color: "green",
+  },
+  iosText: {
+    fontSize: 12,
   },
 });
