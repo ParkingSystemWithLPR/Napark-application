@@ -16,7 +16,6 @@ export type RootParamList = {
   Booking: undefined;
   BookingSummary: undefined;
   ConfirmBookingModal: undefined;
-  ProcessingModal: undefined;
 };
 
 export type ButtonProps = {
