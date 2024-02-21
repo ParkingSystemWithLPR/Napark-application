@@ -10,6 +10,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import BodyText from "../../components/text/BodyText";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import { useBooking } from "../../store/context/booking";
+import Colors from "../../constants/color";
 
 export type ConfirmBookingModalProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -25,14 +26,11 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
   return (
     <View style={styles.screen}>
       <TouchableOpacity style={styles.modalOverLay} onPress={closeModal}>
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={styles.modalSection}>
           <TouchableWithoutFeedback>
             <View style={styles.modalContent}>
-              <TouchableOpacity
-                onPress={closeModal}
-                style={{ position: "absolute", top: 0, right: 0 }}
-              >
-                <Ionicons name="close" style={styles.closeButton}></Ionicons>
+              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+                <Ionicons name="close"></Ionicons>
               </TouchableOpacity>
               <View style={styles.textBox}>
                 <BodyText text={"Confirm booking"} />
@@ -60,13 +58,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     flex: 1,
   },
+  modalSection: { flex: 1, justifyContent: "center" },
   modalOverLay: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     width: 225,
     height: 150,
     paddingHorizontal: 20,

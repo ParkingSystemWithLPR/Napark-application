@@ -11,6 +11,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import BodyText from "../../components/text/BodyText";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import { useBooking } from "../../store/context/booking";
+import Colors from "../../constants/color";
 
 export type ProcessingModalProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -28,7 +29,7 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({ navigation }) => {
         onPress={closeModal}
         disabled={isCreatingBooking}
       >
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={styles.modalSection}>
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               {isCreatingBooking ? (
@@ -37,8 +38,8 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({ navigation }) => {
                   <ActivityIndicator />
                 </View>
               ) : (
-                <View style={{ flex: 1 }}>
-                  <View style={{ flex: 2, alignItems: "center" }}>
+                <>
+                  <View style={styles.iconContainer}>
                     <Ionicons
                       name="checkmark-circle"
                       style={styles.closeButton}
@@ -58,7 +59,7 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({ navigation }) => {
                       }}
                     />
                   </View>
-                </View>
+                </>
               )}
             </View>
           </TouchableWithoutFeedback>
@@ -74,8 +75,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     flex: 1,
   },
+  modalSection: { flex: 1, justifyContent: "center" },
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     width: 200,
     height: 200,
     paddingHorizontal: 17,
@@ -85,6 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  iconContainer: { flex: 2, alignItems: "center" },
   textBox: {
     flex: 1,
     justifyContent: "center",
