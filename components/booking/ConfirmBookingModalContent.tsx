@@ -1,8 +1,13 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Colors from "../../constants/color";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export type ConfirmBookingModalContentProps = {
   handlecloseModal: () => void;
@@ -14,17 +19,19 @@ const ConfirmBookingModalContent: React.FC<ConfirmBookingModalContentProps> = ({
   handleSendRequest,
 }) => {
   return (
-    <View style={styles.modalContent}>
-      <TouchableOpacity onPress={handlecloseModal} style={styles.closeButton}>
-        <Ionicons name="close"></Ionicons>
-      </TouchableOpacity>
-      <View style={styles.textBox}>
-        <BodyText text={"Confirm booking"} />
+    <TouchableWithoutFeedback>
+      <View style={styles.modalContent}>
+        <TouchableOpacity onPress={handlecloseModal} style={styles.closeButton}>
+          <MaterialCommunityIcons name="close" />
+        </TouchableOpacity>
+        <View style={styles.textBox}>
+          <BodyText text={"Confirm booking"} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton title={"Confirm"} onPress={handleSendRequest} />
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton title={"Confirm"} onPress={handleSendRequest} />
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 export default ConfirmBookingModalContent;
@@ -34,11 +41,13 @@ const styles = StyleSheet.create({
     width: 225,
     height: 150,
     paddingHorizontal: 20,
+    borderRadius: 10,
   },
   textBox: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
+    // borderWidth: 1,
   },
   buttonContainer: {
     flex: 1,
