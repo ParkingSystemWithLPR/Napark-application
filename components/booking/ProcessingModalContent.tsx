@@ -5,16 +5,16 @@ import BodyText from "../text/BodyText";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export type ProcessingModalContentProps = {
-  isSendingRequest: boolean;
+  isCreatingBooking: boolean;
   closeModal: () => void;
 };
 const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
-  isSendingRequest,
+  isCreatingBooking,
   closeModal,
 }) => {
   return (
     <View style={styles.modalContainer}>
-      {isSendingRequest ? (
+      {isCreatingBooking ? (
         <View style={styles.textBox}>
           <BodyText text={"Processing request..."} />
           <ActivityIndicator />
