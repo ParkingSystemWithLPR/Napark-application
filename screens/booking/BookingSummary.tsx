@@ -4,6 +4,8 @@ import { RootParamList } from "../../types";
 import BodyText from "../../components/text/BodyText";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Colors from "../../constants/color";
+import HyperLinkText from "../../components/text/HyperlinkText";
 
 export type BookingSummaryProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -60,7 +62,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
         </View>
         <View style={styles.routeContainer}>
           <BodyText text={"Don`t know the route?"} />
-          <BodyText text={"Get Directions"} textStyle={styles.colorText} />
+          <HyperLinkText
+            text={"Get Directions"}
+            textStyle={styles.colorText}
+            url={"https://www.youtube.com/watch?v=srcPwOKtH5E"}
+          />
         </View>
       </View>
       <View style={styles.buttonContainer}>
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     height: "70%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     // borderWidth: 1,
   },
   image: {
@@ -98,7 +104,7 @@ const styles = StyleSheet.create({
   locationBox: {
     flex: 1,
     // height: 50,
-    // backgroundColor: "white",
+    // backgroundColor: Colors.white,
     justifyContent: "center",
     // borderWidth: 1,
   },
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
   },
   bookingDetailContainer: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     // borderColor: "pink",
     // borderWidth: 1,
   },
@@ -141,7 +147,7 @@ const styles = StyleSheet.create({
     columnGap: 5,
   },
   colorText: {
-    color: "purple",
+    color: Colors.lightBlue[800],
   },
   buttonContainer: {
     flex: 1,

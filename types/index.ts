@@ -35,3 +35,6 @@ export type TextProps = {
   containerStyle?: object;
   textStyle?: object;
 };
+export type HyperlinkTextProps = TextProps & {
+  url: string;
+};
