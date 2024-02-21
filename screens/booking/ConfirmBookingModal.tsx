@@ -43,7 +43,7 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
               />
             ) : (
               <ProcessingModalContent
-                isSendingRequest={isCreatingBooking}
+                isCreatingBooking={isCreatingBooking}
                 closeModal={closeModal}
               />
             )}
