@@ -4,13 +4,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-import { RootParamList } from "../../types";
+import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import BodyText from "../../components/text/BodyText";
-import PrimaryButton from "../../components/button/PrimaryButton";
+import { RootParamList } from "../../types";
 import { useBooking } from "../../store/context/booking";
-import Colors from "../../constants/color";
+import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
+import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
 
 export type ConfirmBookingModalProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -19,32 +18,35 @@ export type ConfirmBookingModalProps = {} & NativeStackScreenProps<
 const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
   navigation,
 }) => {
+  const [isConfirm, setIsConfirm] = useState(false);
+  const { isCreatingBooking, sendCreateRequest } = useBooking();
   const closeModal = () => {
     navigation.pop();
   };
-  const { sendCreateRequest } = useBooking();
+  const handleConfirm = () => {
+    sendCreateRequest("abc"); //mock
+    setIsConfirm(true);
+  };
   return (
     <View style={styles.screen}>
-      <TouchableOpacity style={styles.modalOverLay} onPress={closeModal}>
+      <TouchableOpacity
+        style={styles.modalOverLay}
+        onPress={closeModal}
+        disabled={isCreatingBooking}
+      >
         <View style={styles.modalSection}>
           <TouchableWithoutFeedback>
-            <View style={styles.modalContent}>
-              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                <Ionicons name="close"></Ionicons>
-              </TouchableOpacity>
-              <View style={styles.textBox}>
-                <BodyText text={"Confirm booking"} />
-              </View>
-              <View style={styles.buttonContainer}>
-                <PrimaryButton
-                  title={"Confirm"}
-                  onPress={() => {
-                    sendCreateRequest("abc"); //mock
-                    navigation.replace("ProcessingModal");
-                  }}
-                />
-              </View>
-            </View>
+            {!isConfirm ? (
+              <ConfirmBookingModalContent
+                handlecloseModal={closeModal}
+                handleSendRequest={handleConfirm}
+              />
+            ) : (
+              <ProcessingModalContent
+                isSendingRequest={isCreatingBooking}
+                closeModal={closeModal}
+              />
+            )}
           </TouchableWithoutFeedback>
         </View>
       </TouchableOpacity>
@@ -63,26 +65,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  modalContent: {
-    backgroundColor: Colors.white,
-    width: 225,
-    height: 150,
-    paddingHorizontal: 20,
-  },
-  textBox: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  closeButton: {
-    position: "absolute",
-    right: 10,
-    top: 10,
-    fontSize: 10,
   },
 });
