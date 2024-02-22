@@ -5,7 +5,7 @@ import { ButtonProps } from "../../types";
 import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
 
-const PrimaryButton: React.FC<ButtonProps> = ({
+const SecondaryButton: React.FC<ButtonProps> = ({
   title,
   onPress,
   buttonStyle,
@@ -27,11 +27,11 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   );
 };
 
-export default PrimaryButton;
+export default SecondaryButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: Colors.red[400],
+    backgroundColor: Colors.gray[700],
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
