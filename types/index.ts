@@ -2,7 +2,7 @@ export type RootParamList = {
   Splash: undefined;
   Auth: undefined;
   Authenticated: undefined;
-  LogIn: undefined;
+  LogIn: { defaultEmail: string } | undefined;
   Register: undefined;
   ForgetPassword: undefined;
   ResetPassword: undefined;

@@ -21,10 +21,11 @@ export type LoginInputType = {
   password: InputValueType;
 };
 
-const LogIn: React.FC<LogInProps> = ({ navigation }) => {
+const LogIn: React.FC<LogInProps> = ({ navigation, route }) => {
   const { login } = useAuth();
+  const defaultEmail = route.params?.defaultEmail || "";
   const [inputValue, setInputValue] = useState<LoginInputType>({
-    email: { value: "" },
+    email: { value: defaultEmail },
     password: { value: "" },
   });
 

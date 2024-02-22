@@ -97,11 +97,13 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       });
     } else {
       try {
-        await user.createUser(
-          inputValue.email.value,
-          inputValue.password.value
+        const loginEmail = await user.createUser(
+          email.value,
+          password.value,
+          firstname.value,
+          lastname.value
         );
-        navigation.replace("LogIn");
+        navigation.replace("LogIn", { defaultEmail: loginEmail });
       } catch (error) {
         Alert.alert(
           "Registration Failed",
