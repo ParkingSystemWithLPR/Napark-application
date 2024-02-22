@@ -10,6 +10,10 @@ import { RootParamList } from "../types";
 import AuthStack from "./AuthStack";
 import AuthenticatedStack from "./AuthenticatedStack";
 
+import BookingSummary from "../screens/booking/BookingSummary";
+import ConfirmBookingModal from "../screens/booking/ConfirmBookingModal";
+import MyBooking from "../screens/booking/MyBooking";
+
 export const Stack = createNativeStackNavigator<RootParamList>();
 export const BottomTab = createBottomTabNavigator<RootParamList>();
 

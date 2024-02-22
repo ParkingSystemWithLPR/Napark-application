@@ -3,7 +3,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 
 import { RootParamList } from "../../types";
-import { useBooking } from "../../store/context/booking";
 import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
 import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
 
@@ -13,17 +12,24 @@ export type ConfirmBookingModalProps = {} & NativeStackScreenProps<
 >;
 const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
   navigation,
+  route,
 }) => {
   const [isConfirm, setIsConfirm] = useState(false);
-  const { isCreatingBooking, sendCreateRequest } = useBooking();
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
   const closeModal = () => {
     navigation.pop();
     if (isConfirm) {
       navigation.replace("MyBooking");
     }
   };
+  function sendCreateRequest(request: string) {
+    setIsSendingRequest(true);
+    setTimeout(() => {
+      setIsSendingRequest(false);
+    }, 2000);
+  }
   const handleConfirm = () => {
-    sendCreateRequest("abc"); //mock
+    sendCreateRequest(route.params.request); //mock
     setIsConfirm(true);
   };
   return (
@@ -31,7 +37,7 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
       <TouchableOpacity
         style={styles.modalOverLay}
         onPress={closeModal}
-        disabled={isCreatingBooking}
+        disabled={isSendingRequest}
       >
         <View style={styles.modalSection}>
           {!isConfirm ? (
@@ -41,7 +47,7 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
             />
           ) : (
             <ProcessingModalContent
-              isCreatingBooking={isCreatingBooking}
+              isCreatingBooking={isSendingRequest}
               handlecloseModal={closeModal}
             />
           )}

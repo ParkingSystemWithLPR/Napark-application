@@ -15,7 +15,7 @@ export type BookingSummaryProps = {} & NativeStackScreenProps<
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   const openModal = () => {
-    navigation.navigate("ConfirmBookingModal");
+    navigation.navigate("ConfirmBookingModal", { request: "abc" });
   };
   type BookingAttribute = {
     attribute: string;
