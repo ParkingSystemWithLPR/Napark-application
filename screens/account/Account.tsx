@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { RootParamList } from "../../types";
@@ -15,6 +15,8 @@ export type AccountProps = {} & NativeStackScreenProps<
   "Account"
 >;
 
+const IMAGE_SIZE = 100;
+
 const Account: React.FC<AccountProps> = () => {
   const [isEditing, setEditing] = useState<boolean>(false);
   const profile = {
@@ -29,6 +31,14 @@ const Account: React.FC<AccountProps> = () => {
     <BodyContainer>
       {!isEditing && (
         <View style={styles.headerContainer}>
+          <Image
+            style={styles.profileImage}
+            source={{
+              uri: "https://fastly.picsum.photos/id/157/200/300.jpg?hmac=-OZWQAIRoAdYWp7-qnHO1wl5t0TO3BMoAgW3tmR7wgE",
+            }}
+            height={IMAGE_SIZE}
+            width={IMAGE_SIZE}
+          />
           <IconButton
             icon="cog-outline"
             size={24}
@@ -44,7 +54,7 @@ const Account: React.FC<AccountProps> = () => {
             placeholder="Your firstname"
             value={profile.firstname}
             onChangeText={() => {}}
-            isRequired
+            isRequired={isEditing}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
@@ -53,7 +63,7 @@ const Account: React.FC<AccountProps> = () => {
             placeholder="Your lastname"
             value={profile.lastname}
             onChangeText={() => {}}
-            isRequired
+            isRequired={isEditing}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
@@ -63,7 +73,7 @@ const Account: React.FC<AccountProps> = () => {
           placeholder="Your email"
           value={profile.email}
           onChangeText={() => {}}
-          isRequired
+          isRequired={isEditing}
           editable={isEditing}
         />
         <View style={styles.rowContainer}>
@@ -72,7 +82,7 @@ const Account: React.FC<AccountProps> = () => {
             placeholder="Your birthdate"
             value={profile.dob}
             onChangeText={() => {}}
-            isRequired
+            isRequired={isEditing}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
@@ -81,7 +91,7 @@ const Account: React.FC<AccountProps> = () => {
             placeholder="08x-xxx-xxxx"
             value={profile.tel}
             onChangeText={() => {}}
-            isRequired
+            isRequired={isEditing}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
@@ -99,10 +109,19 @@ const Account: React.FC<AccountProps> = () => {
 
 export default Account;
 
+const { width } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
+    alignItems: "flex-start",
+    gap: width / 4 - IMAGE_SIZE / 4 - 6,
+    marginBottom: 10,
+  },
+  profileImage: {
+    borderRadius: 50,
+    marginHorizontal: 10,
   },
   informationContainer: {
     gap: 5,
