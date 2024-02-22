@@ -1,11 +1,12 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Platform, StyleSheet, View } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
 import { RootParamList } from "../../types";
-import BodyText from "../../components/text/BodyText";
 import PrimaryButton from "../../components/button/PrimaryButton";
-import Colors from "../../constants/color";
+import BodyText from "../../components/text/BodyText";
 import HyperLinkText from "../../components/text/HyperlinkText";
+import Colors from "../../constants/color";
 
 export type BookingSummaryProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -29,6 +30,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
         <BodyText
           text={attribute + ":"}
           containerStyle={styles.attributeField}
+          textStyle={styles.attributeTextColor}
         />
         <BodyText text={value} containerStyle={styles.valueField} />
       </View>
@@ -62,7 +64,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
           <BodyText text={"Don`t know the route?"} />
           <HyperLinkText
             text={"Get Directions"}
-            textStyle={styles.colorText}
+            textStyle={styles.colorLinkText}
             url={"https://www.youtube.com/watch?v=srcPwOKtH5E"}
           />
         </View>
@@ -83,8 +85,6 @@ const styles = StyleSheet.create({
   locationSection: {
     flex: 1,
     justifyContent: "center",
-    // borderColor: "green",
-    // borderWidth: 1,
   },
   locationContainer: {
     height: "70%",
@@ -97,26 +97,18 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    // borderWidth: 1,
   },
   pin: {
     fontSize: 25,
     marginRight: 5,
-    // borderColor: "purple",
-    // borderWidth: 1,
   },
   locationBox: {
     flex: 1,
-    // height: 50,
-    // backgroundColor: Colors.white,
     justifyContent: "center",
-    // borderWidth: 1,
   },
   bookingDetailSection: {
     flex: 5,
     gap: 15,
-    // borderColor: "red",
-    // borderWidth: 1,
   },
   bookingDetailContainer: {
     flex: 1,
@@ -127,25 +119,22 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    // borderColor: "pink",
-    // borderWidth: 1,
   },
   headerStyle: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // borderWidth: 1,
   },
   attributeContainer: {
     flex: 1,
     flexDirection: "row",
-    // borderColor: "black",
-    // borderWidth: 1,
   },
   attributeField: {
     flex: 4,
     marginLeft: 10,
-    // borderWidth: 1,
+  },
+  attributeTextColor: {
+    color: Colors.gray[800],
   },
   valueField: {
     flex: 2,
@@ -156,13 +145,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     columnGap: 5,
   },
-  colorText: {
+  colorLinkText: {
     color: Colors.lightBlue[800],
   },
   buttonContainer: {
     flex: 1,
-    // borderColor: "black",
-    // borderWidth: 1,
   },
   iosText: {
     fontSize: 12,

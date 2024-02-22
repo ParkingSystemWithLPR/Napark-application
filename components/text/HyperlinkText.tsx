@@ -1,13 +1,7 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  Linking,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, Text, Linking, TouchableHighlight } from "react-native";
+import { useState } from "react";
 
 import { HyperlinkTextProps } from "../../types";
-import { useState } from "react";
 import Colors from "../../constants/color";
 
 const HyperLinkText: React.FC<HyperlinkTextProps> = ({
