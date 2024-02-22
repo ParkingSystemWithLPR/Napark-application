@@ -13,6 +13,10 @@ export type RootParamList = {
   Payment: undefined;
   Account: undefined;
   Other: undefined;
+  ConfigParkingLot: undefined;
+  ParkingLotsList: undefined;
+  ParkingLotDetail: undefined;
+  RequestParkingLot: undefined;
 };
 
 export type ButtonProps = {

@@ -20,6 +20,9 @@ import Account from "../screens/account/Account";
 import Other from "../screens/other/Other";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/color";
+import ParkingLotDetail from "../screens/configuration-parking-lot/ParkingLotDetail";
+import ParkingLotsList from "../screens/configuration-parking-lot/ParkingLotsList";
+import RequestParkingLot from "../screens/configuration-parking-lot/RequestPakingLot";
 
 export const Stack = createNativeStackNavigator<RootParamList>();
 export const BottomTab = createBottomTabNavigator<RootParamList>();
@@ -27,12 +30,13 @@ export const BottomTab = createBottomTabNavigator<RootParamList>();
 const AuthStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="LogIn"
+      initialRouteName="ConfigParkingLot"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="LogIn" component={LogIn} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+      <Stack.Screen name="ConfigParkingLot" component={ConfigParkingLotStack} />
     </Stack.Navigator>
   );
 };
@@ -49,6 +53,21 @@ const AuthenticatedStack = () => {
     </Stack.Navigator>
   );
 };
+
+const ConfigParkingLotStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="ParkingLotsList"
+      screenOptions={{
+        headerShown: true,
+      }}
+    >
+      <Stack.Screen name="ParkingLotsList" component={ParkingLotsList}/>
+      <Stack.Screen name="ParkingLotDetail" component={ParkingLotDetail}/>
+      <Stack.Screen name="RequestParkingLot" component={RequestParkingLot}/>
+    </Stack.Navigator>
+  );
+}
 
 const MainPageScreen = () => {
   return (
@@ -160,6 +179,7 @@ const BaseNavigation = () => {
         )}
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen name="ConfigParkingLot" component={ConfigParkingLotStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );
