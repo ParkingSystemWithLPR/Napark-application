@@ -18,6 +18,7 @@ export type RootParamList = {
 export type ButtonProps = {
   title: string;
   onPress: () => void;
+  outerContainerStyle?: object;
   buttonStyle?: object;
   textStyle?: object;
 };

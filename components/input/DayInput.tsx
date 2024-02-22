@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import Colors from "../../constants/color";
 import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
+import ModalOverlay from "../ui/ModalOverlay";
 
 export type DayInputProps = {
   title: string;
@@ -22,9 +24,19 @@ const DayInput: React.FC<DayInputProps> = ({
   containerStyle,
 }) => {
   const [isOpenDayPicker, setOpenDayPicker] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const openDayPicker = () => {
     setOpenDayPicker(editable && true);
+  };
+
+  const closeDayPicker = () => setOpenDayPicker(false);
+
+  const handleDateChange = (event: any, date?: Date) => {
+    if (date) {
+      setSelectedDate(date);
+      closeDayPicker();
+    }
   };
 
   return (
@@ -48,6 +60,16 @@ const DayInput: React.FC<DayInputProps> = ({
           </View>
         </Pressable>
       </View>
+      <ModalOverlay visible={isOpenDayPicker} closeModal={closeDayPicker}>
+        <View style={styles.modalContent}>
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display="calendar"
+            onChange={handleDateChange}
+          />
+        </View>
+      </ModalOverlay>
     </View>
   );
 };
@@ -73,5 +95,13 @@ const styles = StyleSheet.create({
   },
   uneditableText: {
     color: Colors.gray[800],
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
 });

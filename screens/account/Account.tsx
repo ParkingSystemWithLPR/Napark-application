@@ -127,8 +127,16 @@ const Account: React.FC<AccountProps> = () => {
         </View>
         {isEditing && (
           <View style={styles.buttonContainer}>
-            <SecondaryButton title="Cancel" onPress={onCancel} />
-            <PrimaryButton title="Save" onPress={onSave} />
+            <SecondaryButton
+              title="Cancel"
+              onPress={onCancel}
+              outerContainerStyle={styles.button}
+            />
+            <PrimaryButton
+              title="Save"
+              onPress={onSave}
+              outerContainerStyle={styles.button}
+            />
           </View>
         )}
       </View>
@@ -167,5 +175,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
+    paddingHorizontal: "20%",
+  },
+  button: {
+    flex: 1,
   },
 });

@@ -44,7 +44,7 @@ const Other: React.FC<OtherProps> = () => {
       <PrimaryButton
         title="Sign out"
         onPress={logout}
-        buttonStyle={styles.button}
+        outerContainerStyle={styles.button}
       />
     </BodyContainer>
   );
@@ -60,6 +60,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    width: "50%",
   },
 });
