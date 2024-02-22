@@ -73,7 +73,6 @@ const MyTextInput: React.FC<TextInputProps> = ({
           <BodyText text="*" textStyle={styles.requiredIndicator} />
         )}
       </View>
-
       <View
         style={[
           styles.inputContainer,

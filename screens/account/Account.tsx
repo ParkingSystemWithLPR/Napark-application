@@ -3,28 +3,64 @@ import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { RootParamList } from "../../types";
-import TextInput from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
 import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
+import DayInput from "../../components/input/DayInput";
 
 export type AccountProps = {} & NativeStackScreenProps<
   RootParamList,
   "Account"
 >;
 
+interface Profile {
+  firstname: InputValueType;
+  lastname: InputValueType;
+  email: InputValueType;
+  dob: string;
+  mobileNo: InputValueType;
+}
+
 const IMAGE_SIZE = 100;
 
 const Account: React.FC<AccountProps> = () => {
-  const [isEditing, setEditing] = useState<boolean>(false);
-  const profile = {
-    firstname: "John",
-    lastname: "Doe",
-    email: "a@a.com",
+  const [defaultProfile, setDefaultProfile] = useState<Profile>({
+    firstname: { value: "John" },
+    lastname: { value: "Doe" },
+    email: { value: "a@a.com" },
     dob: "2002-05-05",
-    tel: "061-708-1377",
+    mobileNo: { value: "061-708-1377" },
+  });
+
+  const [profile, setProfile] = useState<Profile>({
+    firstname: { value: "John" },
+    lastname: { value: "Doe" },
+    email: { value: "a@a.com" },
+    dob: "2002-05-05",
+    mobileNo: { value: "061-708-1377" },
+  });
+  const [isEditing, setEditing] = useState<boolean>(false);
+
+  const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
+    setProfile((curInputValue: Profile) => {
+      return {
+        ...curInputValue,
+        [identifierKey]: { value: enteredValue },
+      };
+    });
+  };
+
+  const onCancel = () => {
+    setProfile(defaultProfile);
+    setEditing(false);
+  };
+
+  const onSave = () => {
+    setDefaultProfile(profile);
+    setEditing(false);
   };
 
   return (
@@ -51,55 +87,48 @@ const Account: React.FC<AccountProps> = () => {
         <View style={styles.rowContainer}>
           <TextInput
             title="Firstname"
-            placeholder="Your firstname"
-            value={profile.firstname}
-            onChangeText={() => {}}
-            isRequired={isEditing}
+            placeholder="John"
+            value={profile.firstname.value}
+            onChangeText={handleOnChangeText.bind(this, "firstname")}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
           <TextInput
             title="Lastname"
-            placeholder="Your lastname"
-            value={profile.lastname}
-            onChangeText={() => {}}
-            isRequired={isEditing}
+            placeholder="Doe"
+            value={profile.lastname.value}
+            onChangeText={handleOnChangeText.bind(this, "lastname")}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
         </View>
         <TextInput
           title="Email"
-          placeholder="Your email"
-          value={profile.email}
-          onChangeText={() => {}}
-          isRequired={isEditing}
+          placeholder="email@napark.com"
+          value={profile.email.value}
+          onChangeText={handleOnChangeText.bind(this, "email")}
           editable={isEditing}
         />
         <View style={styles.rowContainer}>
-          <TextInput
+          <DayInput
             title="Date of birth"
-            placeholder="Your birthdate"
             value={profile.dob}
-            onChangeText={() => {}}
-            isRequired={isEditing}
-            containerStyle={styles.infoInput}
             editable={isEditing}
+            outerContainerStyle={styles.infoInput}
           />
           <TextInput
             title="Mobile No."
             placeholder="08x-xxx-xxxx"
-            value={profile.tel}
-            onChangeText={() => {}}
-            isRequired={isEditing}
+            value={profile.mobileNo.value}
+            onChangeText={handleOnChangeText.bind(this, "mobileNo")}
             containerStyle={styles.infoInput}
             editable={isEditing}
           />
         </View>
         {isEditing && (
           <View style={styles.buttonContainer}>
-            <SecondaryButton title="Cancel" onPress={() => setEditing(false)} />
-            <PrimaryButton title="Save" onPress={() => {}} />
+            <SecondaryButton title="Cancel" onPress={onCancel} />
+            <PrimaryButton title="Save" onPress={onSave} />
           </View>
         )}
       </View>
