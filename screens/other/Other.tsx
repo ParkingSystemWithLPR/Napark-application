@@ -16,14 +16,31 @@ const Other: React.FC<OtherProps> = () => {
       containerStyle={styles.container}
       innerContainerStyle={styles.tabContainer}
     >
-      <ChangeScreenTab icon="lock-outline" screenName="Password & Security" />
+      <ChangeScreenTab
+        icon="lock-outline"
+        screenName="Password & Security"
+        onPress={() => {}}
+      />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
+        onPress={() => {}}
         screenName="My parking space"
       />
-      <ChangeScreenTab icon="car-outline" screenName="Car info settings" />
-      <ChangeScreenTab icon="cog-outline" screenName="Settings" />
-      <ChangeScreenTab icon="information-outline" screenName="About Us" />
+      <ChangeScreenTab
+        icon="car-outline"
+        screenName="Car info settings"
+        onPress={() => {}}
+      />
+      <ChangeScreenTab
+        icon="cog-outline"
+        screenName="Settings"
+        onPress={() => {}}
+      />
+      <ChangeScreenTab
+        icon="information-outline"
+        screenName="About Us"
+        onPress={() => {}}
+      />
       <PrimaryButton
         title="Sign out"
         onPress={logout}
