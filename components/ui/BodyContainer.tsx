@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../constants/color";
 
 export type BodyContainerProps = {
@@ -16,9 +15,7 @@ const BodyContainer: React.FC<BodyContainerProps> = ({
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <SafeAreaView style={[styles.tabContainer, innerContainerStyle]}>
-        {children}
-      </SafeAreaView>
+      <View style={[styles.tabContainer, innerContainerStyle]}>{children}</View>
     </View>
   );
 };
@@ -32,6 +29,7 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flex: 1,
+    paddingTop: 20,
     paddingHorizontal: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,

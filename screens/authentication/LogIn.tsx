@@ -2,7 +2,6 @@ import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import CheckboxInput from "../../components/input/CheckBoxInput";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import HeaderText from "../../components/text/HeaderText";
 import BodyText from "../../components/text/BodyText";

@@ -40,6 +40,7 @@ export type TextInputProps = {
   multiline?: boolean;
   secureTextEntry?: boolean;
   errorText?: string;
+  editable?: boolean;
   containerStyle?: object;
   textInputStyle?: object;
 };
@@ -54,6 +55,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   multiline = false,
   isRequired = false,
   secureTextEntry = false,
+  editable = true,
   errorText,
   containerStyle,
   textInputStyle,
@@ -71,15 +73,19 @@ const MyTextInput: React.FC<TextInputProps> = ({
           <BodyText text="*" textStyle={styles.requiredIndicator} />
         )}
       </View>
-
       <View
         style={[
           styles.inputContainer,
+          editable ? null : styles.uneditable,
           errorText ? styles.errorInputContainer : null,
         ]}
       >
         <TextInput
-          style={[styles.input, textInputStyle]}
+          style={[
+            styles.input,
+            textInputStyle,
+            editable ? null : styles.uneditableText,
+          ]}
           autoCapitalize={autoCapitalize}
           secureTextEntry={!showPassword}
           placeholder={placeholder}
@@ -87,6 +93,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
           onChangeText={onChangeText}
           inputMode={inputMode}
           multiline={multiline}
+          editable={editable}
         />
         {secureTextEntry && (
           <TouchableOpacity onPress={toggleSecureEntry}>
@@ -140,5 +147,12 @@ const styles = StyleSheet.create({
   },
   requiredIndicator: {
     color: Colors.red[400],
+  },
+  uneditable: {
+    borderColor: Colors.gray[400],
+    backgroundColor: Colors.gray[200],
+  },
+  uneditableText: {
+    color: Colors.gray[800],
   },
 });

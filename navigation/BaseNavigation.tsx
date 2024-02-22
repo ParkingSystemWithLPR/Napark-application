@@ -106,7 +106,9 @@ const MainPageScreen = () => {
         name="Account"
         component={Account}
         options={{
+          headerShown: true,
           tabBarLabel: "Account",
+          title: "My profile",
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "account-circle" : "account-circle-outline"}
@@ -114,6 +116,13 @@ const MainPageScreen = () => {
               color={color}
             />
           ),
+          headerTitleStyle: {
+            fontSize: 18,
+          },
+          headerStyle: {
+            backgroundColor: Colors.red[400],
+            shadowOpacity: 0,
+          },
         }}
       />
       <BottomTab.Screen

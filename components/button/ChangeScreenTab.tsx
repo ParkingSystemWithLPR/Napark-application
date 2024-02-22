@@ -7,14 +7,16 @@ import SubHeaderText from "../text/SubHeaderText";
 export type ChangeScreenTabProps = {
   icon: string;
   screenName: string;
+  onPress: () => void;
 };
 
 const ChangeScreenTab: React.FC<ChangeScreenTabProps> = ({
   icon,
   screenName,
+  onPress,
 }) => {
   return (
-    <TouchableOpacity activeOpacity={0.5}>
+    <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
       <View style={styles.tabContainer}>
         <MaterialCommunityIcons
           name={icon}
