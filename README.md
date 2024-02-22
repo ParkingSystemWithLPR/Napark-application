@@ -27,7 +27,7 @@ ngrok config edit #with below yml
 
 ```yml
 version: "2"
-authtoken: 2cWpVRAxBHc2YCgSK3Z0ApUM0mc_6CRXLsJjdRQ5Vrf1QsdZ3
+authtoken: <YOUR-AUTHTOKEN>
 tunnels:
   napark-auth:
     addr: 1323
