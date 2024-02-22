@@ -15,7 +15,9 @@ export type RootParamList = {
   Other: undefined;
   Booking: undefined;
   BookingSummary: undefined;
-  ConfirmBookingModal: undefined;
+  ConfirmBookingModal: {
+    request: string;
+  };
 };
 
 export type ButtonProps = {

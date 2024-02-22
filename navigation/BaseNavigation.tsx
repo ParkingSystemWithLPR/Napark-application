@@ -14,12 +14,15 @@ import Landing from "../screens/landing/Landing";
 import SplashScreen from "../screens/SplashScreen";
 
 import { AuthContext } from "../store/context/auth";
-import MyBooking from "../screens/booking/MyBooking";
 import Payment from "../screens/payment/Payment";
 import Account from "../screens/account/Account";
 import Other from "../screens/other/Other";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../constants/color";
+
+import BookingSummary from "../screens/booking/BookingSummary";
+import ConfirmBookingModal from "../screens/booking/ConfirmBookingModal";
+import MyBooking from "../screens/booking/MyBooking";
 
 export const Stack = createNativeStackNavigator<RootParamList>();
 export const BottomTab = createBottomTabNavigator<RootParamList>();
@@ -36,7 +39,25 @@ const AuthStack = () => {
     </Stack.Navigator>
   );
 };
-
+const BookingStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: true }}
+      initialRouteName="MyBooking"
+    >
+      <Stack.Screen name="MyBooking" component={MyBooking} />
+      <Stack.Screen name="BookingSummary" component={BookingSummary} />
+      <Stack.Screen
+        name="ConfirmBookingModal"
+        component={ConfirmBookingModal}
+        options={{
+          presentation: "transparentModal",
+          headerShown: false,
+        }}
+      ></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
 const AuthenticatedStack = () => {
   return (
     <Stack.Navigator
@@ -75,8 +96,8 @@ const MainPageScreen = () => {
         }}
       />
       <BottomTab.Screen
-        name="MyBooking"
-        component={MyBooking}
+        name="Booking"
+        component={BookingStack}
         options={{
           tabBarLabel: "My booking",
           tabBarIcon: ({ color, size }) => (
