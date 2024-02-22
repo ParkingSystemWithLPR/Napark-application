@@ -1,15 +1,11 @@
-import {
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { useState } from "react";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
+
 import { RootParamList } from "../../types";
 import { useBooking } from "../../store/context/booking";
-import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
 import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
+import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
 
 export type ConfirmBookingModalProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -22,6 +18,9 @@ const ConfirmBookingModal: React.FC<ConfirmBookingModalProps> = ({
   const { isCreatingBooking, sendCreateRequest } = useBooking();
   const closeModal = () => {
     navigation.pop();
+    if (isConfirm) {
+      navigation.replace("MyBooking");
+    }
   };
   const handleConfirm = () => {
     sendCreateRequest("abc"); //mock

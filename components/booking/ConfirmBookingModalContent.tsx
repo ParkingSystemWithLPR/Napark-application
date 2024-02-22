@@ -4,10 +4,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export type ConfirmBookingModalContentProps = {
   handlecloseModal: () => void;
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    // borderWidth: 1,
   },
   buttonContainer: {
     flex: 1,
