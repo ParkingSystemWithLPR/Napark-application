@@ -6,6 +6,7 @@ import {
   Platform,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
@@ -63,14 +64,12 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: "center",
     justifyContent: "flex-end",
-    // borderWidth: 1,
   },
   processingTextBox: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
-    // borderWidth: 1,
   },
   successfulTextBox: {
     flex: 1,
