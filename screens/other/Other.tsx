@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
     width: "50%",
   },
 });

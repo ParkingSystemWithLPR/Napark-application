@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -6,6 +7,8 @@ import TextInput from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
 import IconButton from "../../components/button/IconButton";
+import PrimaryButton from "../../components/button/PrimaryButton";
+import SecondaryButton from "../../components/button/SecondaryButton";
 
 export type AccountProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -13,6 +16,7 @@ export type AccountProps = {} & NativeStackScreenProps<
 >;
 
 const Account: React.FC<AccountProps> = () => {
+  const [isEditing, setEditing] = useState<boolean>(false);
   const profile = {
     firstname: "John",
     lastname: "Doe",
@@ -20,16 +24,19 @@ const Account: React.FC<AccountProps> = () => {
     dob: "2002-05-05",
     tel: "061-708-1377",
   };
+
   return (
     <BodyContainer>
-      <View style={styles.headerContainer}>
-        <IconButton
-          icon="cog-outline"
-          size={24}
-          color={Colors.gray[900]}
-          onPress={() => {}}
-        />
-      </View>
+      {!isEditing && (
+        <View style={styles.headerContainer}>
+          <IconButton
+            icon="cog-outline"
+            size={24}
+            color={Colors.gray[900]}
+            onPress={() => setEditing(true)}
+          />
+        </View>
+      )}
       <View style={styles.informationContainer}>
         <View style={styles.rowContainer}>
           <TextInput
@@ -39,7 +46,7 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={() => {}}
             isRequired
             containerStyle={styles.infoInput}
-            editable={false}
+            editable={isEditing}
           />
           <TextInput
             title="Lastname"
@@ -48,7 +55,7 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={() => {}}
             isRequired
             containerStyle={styles.infoInput}
-            editable={false}
+            editable={isEditing}
           />
         </View>
         <TextInput
@@ -57,7 +64,7 @@ const Account: React.FC<AccountProps> = () => {
           value={profile.email}
           onChangeText={() => {}}
           isRequired
-          editable={false}
+          editable={isEditing}
         />
         <View style={styles.rowContainer}>
           <TextInput
@@ -67,7 +74,7 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={() => {}}
             isRequired
             containerStyle={styles.infoInput}
-            editable={false}
+            editable={isEditing}
           />
           <TextInput
             title="Mobile No."
@@ -76,9 +83,15 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={() => {}}
             isRequired
             containerStyle={styles.infoInput}
-            editable={false}
+            editable={isEditing}
           />
         </View>
+        {isEditing && (
+          <View style={styles.buttonContainer}>
+            <SecondaryButton title="Cancel" onPress={() => setEditing(false)} />
+            <PrimaryButton title="Save" onPress={() => {}} />
+          </View>
+        )}
       </View>
     </BodyContainer>
   );
@@ -101,5 +114,10 @@ const styles = StyleSheet.create({
   },
   infoInput: {
     flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
   },
 });
