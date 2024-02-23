@@ -45,6 +45,7 @@ export type OtherStackParamList = {
 export type BookingStackParamList = {
   BookingDetail: undefined;
   BookingSummary: undefined;
+  BookingDetail: undefined;
 };
 
 export type ButtonProps = {
