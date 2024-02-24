@@ -30,13 +30,12 @@ export const BottomTab = createBottomTabNavigator<RootParamList>();
 const AuthStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ConfigParkingLot"
+      initialRouteName="LogIn"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="LogIn" component={LogIn} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-      <Stack.Screen name="ConfigParkingLot" component={ConfigParkingLotStack} />
     </Stack.Navigator>
   );
 };
@@ -54,19 +53,20 @@ const AuthenticatedStack = () => {
   );
 };
 
-const ConfigParkingLotStack = () => {
+const OtherStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ParkingLotsList"
+      initialRouteName="Other"
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
       }}
     >
+      <Stack.Screen name="Other" component={Other} />
       <Stack.Screen name="ParkingLotsList" component={ParkingLotsList}/>
       <Stack.Screen name="ParkingLotDetail" component={ParkingLotDetail}/>
       <Stack.Screen name="RequestParkingLot" component={RequestParkingLot}/>
     </Stack.Navigator>
-  );
+  )
 }
 
 const MainPageScreen = () => {
@@ -145,8 +145,8 @@ const MainPageScreen = () => {
         }}
       />
       <BottomTab.Screen
-        name="Other"
-        component={Other}
+        name="Others"
+        component={OtherStack}
         options={{
           headerShown: true,
           title: "Menu",
@@ -188,7 +188,6 @@ const BaseNavigation = () => {
         )}
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
-        <Stack.Screen name="ConfigParkingLot" component={ConfigParkingLotStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );

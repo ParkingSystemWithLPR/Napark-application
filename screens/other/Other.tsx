@@ -9,7 +9,7 @@ import { useAuth } from "../../store/context/auth";
 
 export type OtherProps = {} & NativeStackScreenProps<RootParamList, "Other">;
 
-const Other: React.FC<OtherProps> = () => {
+const Other: React.FC<OtherProps> = ({ navigation }) => {
   const { logout } = useAuth();
   return (
     <BodyContainer
@@ -23,7 +23,7 @@ const Other: React.FC<OtherProps> = () => {
       />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
-        onPress={() => {}}
+        onPress={() => {navigation.navigate("ParkingLotsList")}}
         screenName="My parking space"
       />
       <ChangeScreenTab
