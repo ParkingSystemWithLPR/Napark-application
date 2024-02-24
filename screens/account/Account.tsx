@@ -154,7 +154,7 @@ const Account: React.FC<AccountProps> = () => {
           />
           <TextInput
             title="Mobile No."
-            placeholder="08x-xxx-xxxx"
+            placeholder="08xxxxxxxx"
             value={profile.mobileNo.value}
             onChangeText={handleOnChangeText.bind(this, "mobileNo")}
             containerStyle={styles.infoInput}
