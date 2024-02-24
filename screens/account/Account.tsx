@@ -77,24 +77,55 @@ const Account: React.FC<AccountProps> = () => {
   };
 
   const onSave = async () => {
-    try {
-      await user.editProfile(
-        {
-          firstname: profile.firstname.value,
-          lastname: profile.lastname.value,
-          date_of_birth: profile.dob.value,
-          tel: profile.mobileNo.value,
-        },
-        accessToken,
-        authenticate
-      );
-      setDefaultProfile(profile);
-      setEditing(false);
-    } catch (error) {
-      Alert.alert(
-        "Updating Failed",
-        "Please try again!!: " + (error as Error).message
-      );
+    const { firstname, lastname, mobileNo } = profile;
+    console.log(firstname, lastname, mobileNo);
+    const isFirstnameValid = firstname.value.length > 0;
+    const isLastnameValid = lastname.value.length > 0;
+    const isMobileNoValid = /^(06|08|09)\d{8}$/.test(mobileNo.value);
+
+    const isValid = isFirstnameValid && isLastnameValid && isMobileNoValid;
+    if (!isValid) {
+      setProfile((curInputValue: ProfileInput) => {
+        return {
+          ...curInputValue,
+          firstname: {
+            ...curInputValue.firstname,
+            errorText: isFirstnameValid
+              ? undefined
+              : "Firstname should not be empty",
+          },
+          lastname: {
+            ...curInputValue.lastname,
+            errorText: isLastnameValid
+              ? undefined
+              : "Lastname should not be empty",
+          },
+          mobileNo: {
+            ...curInputValue.mobileNo,
+            errorText: isMobileNoValid ? undefined : "Invalid mobile number",
+          },
+        };
+      });
+    } else {
+      try {
+        await user.editProfile(
+          {
+            firstname: profile.firstname.value,
+            lastname: profile.lastname.value,
+            date_of_birth: profile.dob.value,
+            tel: profile.mobileNo.value,
+          },
+          accessToken,
+          authenticate
+        );
+        setDefaultProfile(profile);
+        setEditing(false);
+      } catch (error) {
+        Alert.alert(
+          "Updating Failed",
+          "Please try again!!: " + (error as Error).message
+        );
+      }
     }
   };
 
@@ -127,6 +158,8 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={handleOnChangeText.bind(this, "firstname")}
             containerStyle={styles.infoInput}
             editable={isEditing}
+            isRequired={isEditing}
+            errorText={profile.firstname.errorText}
           />
           <TextInput
             title="Lastname"
@@ -135,6 +168,8 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={handleOnChangeText.bind(this, "lastname")}
             containerStyle={styles.infoInput}
             editable={isEditing}
+            isRequired={isEditing}
+            errorText={profile.lastname.errorText}
           />
         </View>
         <TextInput
@@ -159,6 +194,8 @@ const Account: React.FC<AccountProps> = () => {
             onChangeText={handleOnChangeText.bind(this, "mobileNo")}
             containerStyle={styles.infoInput}
             editable={isEditing}
+            isRequired={isEditing}
+            errorText={profile.mobileNo.errorText}
           />
         </View>
         {isEditing && (
