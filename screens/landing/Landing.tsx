@@ -1,18 +1,14 @@
-import { useLayoutEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, TextInput, Button } from "react-native";
-import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { useLayoutEffect, useState } from "react";
+import { View, StyleSheet, TextInput } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { RootParamList } from "../../types";
-import { useAuth } from "../../store/context/auth";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
+import { RootParamList } from "../../types";
 
-export type LandingProps = {} & NativeStackScreenProps<
-  RootParamList,
-  "Landing"
->;
+export type LandingProps = NativeStackScreenProps<RootParamList, "Landing">;
 
 export type RegionType = {
   latitude: number;
@@ -22,7 +18,6 @@ export type RegionType = {
 };
 
 const Landing: React.FC<LandingProps> = () => {
-  const { logout } = useAuth();
   const [region, setRegion] = useState<RegionType>();
 
   useLayoutEffect(() => {
@@ -32,14 +27,14 @@ const Landing: React.FC<LandingProps> = () => {
   const getCurrentLocation = async () => {
     try {
       // Request permission to access the device's location
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.error("Permission to access location was denied");
         return;
       }
 
       // Fetch the current location
-      let location = await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       setRegion({
         latitude,
@@ -54,10 +49,10 @@ const Landing: React.FC<LandingProps> = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {region ? (
         <>
-          <MapView style={{ flex: 1 }} initialRegion={region} zoomEnabled>
+          <MapView style={styles.map} initialRegion={region} zoomEnabled>
             <Marker
               draggable
               coordinate={{
@@ -100,12 +95,9 @@ export default Landing;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  background: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+  },
+  map: {
+    flex: 1,
   },
 });

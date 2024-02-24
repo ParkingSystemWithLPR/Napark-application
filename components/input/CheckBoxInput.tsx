@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import { TouchableOpacity, View, StyleSheet, Animated } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
+import BodyText from "../text/BodyText";
 
 export type CheckboxInputProps = {
   text: string;

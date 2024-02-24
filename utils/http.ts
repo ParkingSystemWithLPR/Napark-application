@@ -1,6 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const AUTH_URL = process.env.EXPO_PUBLIC_AUTH_API_URL;
 

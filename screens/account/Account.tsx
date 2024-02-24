@@ -1,23 +1,20 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { RootParamList } from "../../types";
-import TextInput, { InputValueType } from "../../components/input/TextInput";
-import BodyContainer from "../../components/ui/BodyContainer";
-import Colors from "../../constants/color";
 import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import DayInput from "../../components/input/DayInput";
-import user, { Profile } from "../../utils/user";
-import { formatISODate } from "../../utils/date";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
+import BodyContainer from "../../components/ui/BodyContainer";
+import Colors from "../../constants/color";
 import { useAuth } from "../../store/context/auth";
+import { RootParamList } from "../../types";
+import { formatISODate } from "../../utils/date";
+import user, { Profile } from "../../utils/user";
 
-export type AccountProps = {} & NativeStackScreenProps<
-  RootParamList,
-  "Account"
->;
+export type AccountProps = NativeStackScreenProps<RootParamList, "Account">;
 
 interface ProfileInput {
   firstname: InputValueType;

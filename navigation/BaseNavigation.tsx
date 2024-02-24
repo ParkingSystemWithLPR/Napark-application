@@ -1,25 +1,22 @@
-import { useContext } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { RootParamList } from "../types";
-
+import Colors from "../constants/color";
+import Account from "../screens/account/Account";
 import ChangePassword from "../screens/authentication/ChangePassword";
-import ResetPassword from "../screens/authentication/ResetPassword";
 import ForgetPassword from "../screens/authentication/ForgetPassword";
 import LogIn from "../screens/authentication/LogIn";
 import Register from "../screens/authentication/Register";
-import Landing from "../screens/landing/Landing";
-import SplashScreen from "../screens/SplashScreen";
-
-import { AuthContext } from "../store/context/auth";
+import ResetPassword from "../screens/authentication/ResetPassword";
 import MyBooking from "../screens/booking/MyBooking";
-import Payment from "../screens/payment/Payment";
-import Account from "../screens/account/Account";
+import Landing from "../screens/landing/Landing";
 import Other from "../screens/other/Other";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Colors from "../constants/color";
+import Payment from "../screens/payment/Payment";
+import SplashScreen from "../screens/SplashScreen";
+import { useAuth } from "../store/context/auth";
+import { RootParamList } from "../types";
 
 export const Stack = createNativeStackNavigator<RootParamList>();
 export const BottomTab = createBottomTabNavigator<RootParamList>();
@@ -153,7 +150,7 @@ const MainPageScreen = () => {
 };
 
 const BaseNavigation = () => {
-  const authCtx = useContext(AuthContext);
+  const { isAuthenticated } = useAuth();
 
   return (
     <NavigationContainer>
@@ -162,7 +159,7 @@ const BaseNavigation = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
-        {authCtx.isAuthenticated ? (
+        {isAuthenticated ? (
           <Stack.Screen name="Authenticated" component={AuthenticatedStack} />
         ) : (
           <Stack.Screen name="Auth" component={AuthStack} />

@@ -1,15 +1,15 @@
-import { useEffect, useCallback, useRef } from "react";
-import { StyleSheet, View, Animated } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect, useCallback, useRef } from "react";
+import { StyleSheet, View, Animated } from "react-native";
 
-import { RootParamList } from "../types";
 import Colors from "../constants/color";
 import { useAuth } from "../store/context/auth";
+import { RootParamList } from "../types";
 
-export type SplashProps = {} & NativeStackScreenProps<RootParamList, "Splash">;
+export type SplashProps = NativeStackScreenProps<RootParamList, "Splash">;
 
 const Splash: React.FC<SplashProps> = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({

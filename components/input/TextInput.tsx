@@ -1,5 +1,4 @@
 import { useState } from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   StyleSheet,
   View,
@@ -7,10 +6,11 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import SubHeaderText from "../text/SubHeaderText";
-import BodyText from "../text/BodyText";
 import Colors from "../../constants/color";
+import BodyText from "../text/BodyText";
+import SubHeaderText from "../text/SubHeaderText";
 
 export enum InputType {
   Decimal = "decimal",

@@ -1,13 +1,13 @@
-import { StyleSheet } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
 
-import { RootParamList } from "../../types";
 import ChangeScreenTab from "../../components/button/ChangeScreenTab";
-import BodyContainer from "../../components/ui/BodyContainer";
 import PrimaryButton from "../../components/button/PrimaryButton";
+import BodyContainer from "../../components/ui/BodyContainer";
 import { useAuth } from "../../store/context/auth";
+import { RootParamList } from "../../types";
 
-export type OtherProps = {} & NativeStackScreenProps<RootParamList, "Other">;
+export type OtherProps = NativeStackScreenProps<RootParamList, "Other">;
 
 const Other: React.FC<OtherProps> = () => {
   const { logout } = useAuth();

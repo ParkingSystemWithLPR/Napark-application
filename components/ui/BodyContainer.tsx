@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
+
 import Colors from "../../constants/color";
 
 export type BodyContainerProps = {

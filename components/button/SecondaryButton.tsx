@@ -1,9 +1,9 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import Colors from "../../constants/color";
 import { ButtonProps } from "../../types";
 import BodyText from "../text/BodyText";
-import Colors from "../../constants/color";
 
 const SecondaryButton: React.FC<ButtonProps> = ({
   title,

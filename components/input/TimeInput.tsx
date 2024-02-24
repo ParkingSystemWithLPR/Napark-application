@@ -3,8 +3,9 @@ import { Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
-import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
+import SubHeaderText from "../text/SubHeaderText";
+import ModalOverlay from "../ui/ModalOverlay";
 
 export type TimeInputProps = {
   title: string;
@@ -24,7 +25,11 @@ const TimeInput: React.FC<TimeInputProps> = ({
   const [isOpenTimePicker, setOpenTimePicker] = useState<boolean>(false);
 
   const openTimePicker = () => {
-    setOpenTimePicker(editable && true);
+    editable && setOpenTimePicker(true);
+  };
+
+  const closeDayPicker = () => {
+    setOpenTimePicker(false);
   };
 
   return (
@@ -46,6 +51,9 @@ const TimeInput: React.FC<TimeInputProps> = ({
           <MaterialCommunityIcons name="clock-outline" />
         </View>
       </Pressable>
+      <ModalOverlay visible={isOpenTimePicker} closeModal={closeDayPicker}>
+        <View></View>
+      </ModalOverlay>
     </View>
   );
 };

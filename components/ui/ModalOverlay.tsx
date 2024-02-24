@@ -1,10 +1,5 @@
 import { ReactNode } from "react";
-import {
-  Modal,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import Colors from "../../constants/color";
 

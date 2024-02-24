@@ -1,19 +1,18 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import HeaderText from "../../components/text/HeaderText";
-import BodyText from "../../components/text/BodyText";
 import TextInput, {
   InputType,
   InputValueType,
 } from "../../components/input/TextInput";
+import BodyText from "../../components/text/BodyText";
+import HeaderText from "../../components/text/HeaderText";
+import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 
-import { useAuth } from "../../store/context/auth";
-
-export type LogInProps = {} & NativeStackScreenProps<RootParamList, "LogIn">;
+export type LogInProps = NativeStackScreenProps<RootParamList, "LogIn">;
 
 export type LoginInputType = {
   email: InputValueType;
