@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-import { useAuth } from "../store/context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AUTH_URL = process.env.EXPO_PUBLIC_AUTH_API_URL;
@@ -14,9 +13,10 @@ export enum METHOD {
 const apiRequest = async <T>(
   url: string,
   method: METHOD,
+  accessToken: string,
+  authenticate: (accessToken: string, refreshToken: string) => void,
   body?: object
 ): Promise<T> => {
-  const { accessToken, authenticate } = useAuth();
   const headers = {
     Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const apiRequest = async <T>(
 
       authenticate(access_token, refresh_token);
       // Retry the request with the new access token
-      return apiRequest<T>(url, method, body);
+      return apiRequest<T>(url, method, accessToken, authenticate, body);
     }
     throw error;
   }

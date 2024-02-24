@@ -1,6 +1,12 @@
 import { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 
 import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
@@ -84,7 +90,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
           style={[
             styles.input,
             textInputStyle,
-            editable ? null : styles.uneditableText,
+            editable ? undefined : styles.uneditableText,
           ]}
           autoCapitalize={autoCapitalize}
           secureTextEntry={!showPassword}
@@ -129,6 +135,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray[800],
     borderRadius: 8,
     padding: 8,
+    paddingVertical: Platform.OS === "android" ? 5 : null,
   },
   input: {
     flex: 1,

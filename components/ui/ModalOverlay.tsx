@@ -20,16 +20,13 @@ const ModalOverlay: React.FC<ModalOverlayProps> = ({
   children,
 }) => {
   return (
-    <Modal
-      visible={visible}
-      animationType="fade"
-      transparent={true}
-      onRequestClose={closeModal}
-    >
-      <TouchableWithoutFeedback onPress={closeModal}>
-        <View style={styles.modalOverlay} />
+    <Modal visible={visible} animationType="fade" transparent>
+      <TouchableWithoutFeedback
+        onPress={closeModal}
+        style={styles.modalOverlay}
+      >
+        {children}
       </TouchableWithoutFeedback>
-      {children}
     </Modal>
   );
 };
