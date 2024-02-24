@@ -82,7 +82,7 @@ const Account: React.FC<AccountProps> = () => {
         {
           firstname: profile.firstname.value,
           lastname: profile.lastname.value,
-          date_of_birth: new Date(profile.dob.value).toISOString(),
+          date_of_birth: profile.dob.value,
           tel: profile.mobileNo.value,
         },
         accessToken,

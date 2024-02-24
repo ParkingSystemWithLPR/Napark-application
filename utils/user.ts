@@ -3,12 +3,19 @@ import apiRequest, { METHOD } from "./http";
 
 const USER_URL = process.env.EXPO_PUBLIC_USER_API_URL + "/user_v1";
 
+export interface Car {
+  license_plate: string;
+  province_of_reg: string;
+  is_default: boolean;
+}
+
 export interface Profile {
   firstname: string;
   lastname: string;
   email: string;
   tel: string;
   date_of_birth: string;
+  user_car: Car[];
 }
 
 export interface EditProfile {
