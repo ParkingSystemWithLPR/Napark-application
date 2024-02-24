@@ -29,25 +29,23 @@ const TimeInput: React.FC<TimeInputProps> = ({
 
   return (
     <View style={[styles.outerContainer, outerContainerStyle]}>
-      <View>
-        <SubHeaderText text={title} />
-        <Pressable onPress={openTimePicker}>
-          <View
-            style={[
-              styles.container,
-              editable ? null : styles.uneditable,
-              containerStyle,
-            ]}
-          >
-            <BodyText
-              text={value}
-              containerStyle={styles.dateTextContainer}
-              textStyle={editable ? undefined : styles.uneditableText}
-            />
-            <MaterialCommunityIcons name="clock-outline" />
-          </View>
-        </Pressable>
-      </View>
+      <SubHeaderText text={title} />
+      <Pressable onPress={openTimePicker}>
+        <View
+          style={[
+            styles.container,
+            editable ? null : styles.uneditable,
+            containerStyle,
+          ]}
+        >
+          <BodyText
+            text={value}
+            containerStyle={styles.dateTextContainer}
+            textStyle={editable ? undefined : styles.uneditableText}
+          />
+          <MaterialCommunityIcons name="clock-outline" />
+        </View>
+      </Pressable>
     </View>
   );
 };
