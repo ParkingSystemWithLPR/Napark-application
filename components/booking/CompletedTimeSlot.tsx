@@ -10,7 +10,11 @@ const CompletedTimeSlot: React.FC<{}> = () => {
     <View style={styles.wrapper}>
       <View style={styles.topContainer}>
         <View style={styles.icon}>
-          <MaterialCommunityIcons name="check-circle" size={40} color={Colors.green[600]}/>
+          <MaterialCommunityIcons
+            name="check-circle"
+            size={40}
+            color={Colors.green[600]}
+          />
         </View>
         <View style={styles.licenseAndLocation}>
           <HeaderText text="กข 1234" textStyle={{ color: Colors.black }} />
@@ -55,10 +59,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   icon: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   licenseAndLocation: {
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   bottomContainer: {
     paddingTop: 5,
