@@ -15,6 +15,7 @@ export type RootParamList = {
   MyBooking: undefined;
   Payment: undefined;
   Account: undefined;
+  Others: undefined;
   Other: undefined;
   OtherStack: { screen: string };
   CarInfo: undefined;

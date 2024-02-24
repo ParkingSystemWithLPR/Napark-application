@@ -25,7 +25,7 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
       />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
-        onPress={() => {}}
+        onPress={() => {navigation.navigate("ParkingLotsList")}}
         screenName="My parking space"
       />
       <ChangeScreenTab

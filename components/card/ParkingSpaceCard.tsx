@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.gray[500],
     backgroundColor: Colors.gray[100],
-    width: 300,
     borderRadius: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 12,
+    marginBottom: 10,
     gap: 10,
     flexDirection: "row",
     justifyContent: "center",
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray[100],
   },
   textContainer: {
-    width: 154,
+    maxWidth: 154,
     gap: 5,
   },
   descriptionWrapper: {
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     overflow: "hidden",
     gap: 10,
-    width: 154,
   },
   card: {},
   cardPressed: {
