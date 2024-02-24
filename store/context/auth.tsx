@@ -5,7 +5,7 @@ import axios from "axios";
 const AUTH_URL = process.env.EXPO_PUBLIC_AUTH_API_URL;
 
 interface IAuthContext {
-  accessToken?: string;
+  accessToken: string;
   isAuthenticated: boolean;
   authenticate: (accessToken: string, refreshToken: string) => void;
   login: (email: string, password: string) => void;
@@ -13,7 +13,7 @@ interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
-  accessToken: undefined,
+  accessToken: "",
   isAuthenticated: false,
   authenticate: () => {},
   login: () => {},
@@ -29,7 +29,7 @@ export const useAuth = () => {
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [authToken, setAuthToken] = useState<string>();
+  const [authToken, setAuthToken] = useState<string>("");
 
   const authenticate = (accessToken: string, refreshToken: string) => {
     setAuthToken(accessToken);
@@ -38,7 +38,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    setAuthToken(undefined);
+    setAuthToken("");
     AsyncStorage.removeItem("authToken");
     AsyncStorage.removeItem("refreshToken");
   };

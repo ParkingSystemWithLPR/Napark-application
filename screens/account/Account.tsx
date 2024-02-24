@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { useLayoutEffect, useState } from "react";
+import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { RootParamList } from "../../types";
@@ -10,42 +10,60 @@ import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import DayInput from "../../components/input/DayInput";
+import user, { Profile } from "../../utils/user";
+import { formatISODate } from "../../utils/date";
+import { useAuth } from "../../store/context/auth";
 
 export type AccountProps = {} & NativeStackScreenProps<
   RootParamList,
   "Account"
 >;
 
-interface Profile {
+interface ProfileInput {
   firstname: InputValueType;
   lastname: InputValueType;
   email: InputValueType;
-  dob: string;
+  dob: InputValueType;
   mobileNo: InputValueType;
 }
 
 const IMAGE_SIZE = 100;
 
 const Account: React.FC<AccountProps> = () => {
-  const [defaultProfile, setDefaultProfile] = useState<Profile>({
-    firstname: { value: "John" },
-    lastname: { value: "Doe" },
-    email: { value: "a@a.com" },
-    dob: "2002-05-05",
-    mobileNo: { value: "061-708-1377" },
+  const { accessToken, authenticate } = useAuth();
+  const [defaultProfile, setDefaultProfile] = useState<ProfileInput>({
+    firstname: { value: "" },
+    lastname: { value: "" },
+    email: { value: "" },
+    dob: { value: "" },
+    mobileNo: { value: "" },
   });
-
-  const [profile, setProfile] = useState<Profile>({
-    firstname: { value: "John" },
-    lastname: { value: "Doe" },
-    email: { value: "a@a.com" },
-    dob: "2002-05-05",
-    mobileNo: { value: "061-708-1377" },
+  const [profile, setProfile] = useState<ProfileInput>({
+    firstname: { value: "" },
+    lastname: { value: "" },
+    email: { value: "" },
+    dob: { value: "" },
+    mobileNo: { value: "" },
   });
   const [isEditing, setEditing] = useState<boolean>(false);
 
+  useLayoutEffect(() => {
+    (async () => {
+      const profile: Profile = await user.getProfile(accessToken, authenticate);
+      const modProfile: ProfileInput = {
+        firstname: { value: profile.firstname },
+        lastname: { value: profile.lastname },
+        email: { value: profile.email },
+        mobileNo: { value: profile.tel },
+        dob: { value: formatISODate(profile.date_of_birth) },
+      };
+      setDefaultProfile(modProfile);
+      setProfile(modProfile);
+    })();
+  }, []);
+
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
-    setProfile((curInputValue: Profile) => {
+    setProfile((curInputValue: ProfileInput) => {
       return {
         ...curInputValue,
         [identifierKey]: { value: enteredValue },
@@ -58,9 +76,26 @@ const Account: React.FC<AccountProps> = () => {
     setEditing(false);
   };
 
-  const onSave = () => {
-    setDefaultProfile(profile);
-    setEditing(false);
+  const onSave = async () => {
+    try {
+      await user.editProfile(
+        {
+          firstname: profile.firstname.value,
+          lastname: profile.lastname.value,
+          date_of_birth: new Date(profile.dob.value).toISOString(),
+          tel: profile.mobileNo.value,
+        },
+        accessToken,
+        authenticate
+      );
+      setDefaultProfile(profile);
+      setEditing(false);
+    } catch (error) {
+      Alert.alert(
+        "Updating Failed",
+        "Please try again!!: " + (error as Error).message
+      );
+    }
   };
 
   return (
@@ -107,18 +142,19 @@ const Account: React.FC<AccountProps> = () => {
           placeholder="email@napark.com"
           value={profile.email.value}
           onChangeText={handleOnChangeText.bind(this, "email")}
-          editable={isEditing}
+          editable={false}
         />
         <View style={styles.rowContainer}>
           <DayInput
             title="Date of birth"
-            value={profile.dob}
+            date={profile.dob.value}
+            onChange={handleOnChangeText.bind(this, "dob")}
             editable={isEditing}
             outerContainerStyle={styles.infoInput}
           />
           <TextInput
             title="Mobile No."
-            placeholder="08x-xxx-xxxx"
+            placeholder="08xxxxxxxx"
             value={profile.mobileNo.value}
             onChangeText={handleOnChangeText.bind(this, "mobileNo")}
             containerStyle={styles.infoInput}
