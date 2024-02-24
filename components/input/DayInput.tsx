@@ -7,7 +7,7 @@ import Colors from "../../constants/color";
 import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
 import ModalOverlay from "../ui/ModalOverlay";
-import { formatDate, formatStringDate } from "../../utils/date";
+import { MINIMUM_DATE, formatDate, formatStringDate } from "../../utils/date";
 
 export type DayInputProps = {
   title: string;
@@ -30,6 +30,7 @@ const DayInput: React.FC<DayInputProps> = ({
   outerContainerStyle,
   containerStyle,
 }) => {
+  const minimumDate = formatDate(MINIMUM_DATE);
   const startDate = formatDate(new Date());
   const [isOpenDayPicker, setOpenDayPicker] = useState<boolean>(false);
 
@@ -77,7 +78,7 @@ const DayInput: React.FC<DayInputProps> = ({
           <View style={styles.dateTimePickerContainer}>
             <DatePicker
               mode="calendar"
-              minimumDate={setMinimumDate ? startDate : undefined}
+              minimumDate={setMinimumDate ? startDate : minimumDate}
               selected={date ?? startDate}
               onDateChange={handleOnSelectedChange}
             />
