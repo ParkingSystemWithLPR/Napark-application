@@ -8,7 +8,10 @@ const ActiveTimeSlot: React.FC<{}> = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.topContainer}>
-        <HeaderText text="กข 1234" textStyle={{ color: Colors.black }} />
+        <HeaderText
+          text="กข 1234"
+          textStyle={{ color: Colors.black, fontWeight: "bold" }}
+        />
         <BodyText text="Space 4c" textStyle={{ color: Colors.gray[900] }} />
       </View>
       <View style={styles.bottomContainer}>
@@ -18,7 +21,7 @@ const ActiveTimeSlot: React.FC<{}> = () => {
         />
         <SubHeaderText
           text="01hr : 30min"
-          textStyle={{ color: Colors.gray[900] }}
+          textStyle={{ color: Colors.gray[900], fontWeight: "bold" }}
         />
       </View>
     </View>

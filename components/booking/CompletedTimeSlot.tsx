@@ -17,7 +17,10 @@ const CompletedTimeSlot: React.FC<{}> = () => {
           />
         </View>
         <View style={styles.licenseAndLocation}>
-          <HeaderText text="กข 1234" textStyle={{ color: Colors.black }} />
+          <HeaderText
+            text="กข 1234"
+            textStyle={{ color: Colors.black, fontWeight: "bold" }}
+          />
           <BodyText text="Space 4c" textStyle={{ color: Colors.gray[900] }} />
         </View>
       </View>
@@ -30,7 +33,10 @@ const CompletedTimeSlot: React.FC<{}> = () => {
           text="02:00 pm"
           textStyle={{ color: Colors.gray[900] }}
         />
-        <SubHeaderText text="$100" textStyle={{ color: Colors.gray[900] }} />
+        <SubHeaderText
+          text="$100"
+          textStyle={{ color: Colors.gray[900], fontWeight: "bold" }}
+        />
       </View>
     </View>
   );
