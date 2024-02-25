@@ -24,6 +24,10 @@ import BookingSummary from "../screens/booking/BookingSummary";
 import ConfirmBookingModal from "../screens/booking/ConfirmBookingModal";
 import MyBooking from "../screens/booking/MyBooking";
 
+import BookingSummary from "../screens/booking/BookingSummary";
+import ConfirmBookingModal from "../screens/booking/ConfirmBookingModal";
+import MyBooking from "../screens/booking/MyBooking";
+
 export const Stack = createNativeStackNavigator<RootParamList>();
 export const BottomTab = createBottomTabNavigator<RootParamList>();
 

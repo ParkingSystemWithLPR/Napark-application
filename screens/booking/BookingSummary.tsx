@@ -7,13 +7,11 @@ import PrimaryButton from "../../components/button/PrimaryButton";
 import BodyText from "../../components/text/BodyText";
 import HyperLinkText from "../../components/text/HyperlinkText";
 import Colors from "../../constants/color";
-<<<<<<< HEAD
+
 import { useState } from "react";
 import ModalOverlay from "../../components/ui/ModalOverlay";
 import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
 import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
-=======
->>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
 
 export type BookingSummaryProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -21,7 +19,6 @@ export type BookingSummaryProps = {} & NativeStackScreenProps<
 >;
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
-<<<<<<< HEAD
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
@@ -43,10 +40,6 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   const handleConfirm = () => {
     sendCreateRequest("abc");
     setIsConfirm(true);
-=======
-  const openModal = () => {
-    navigation.navigate("ConfirmBookingModal", { request: "abc" });
->>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
   };
   type BookingAttribute = {
     attribute: string;
@@ -103,7 +96,6 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <PrimaryButton title={"Book"} onPress={openModal} />
       </View>
-<<<<<<< HEAD
       <ModalOverlay visible={isOpenModal} closeModal={closeModal}>
         <View style={styles.modalBackground}>
           {!isConfirm ? (
@@ -119,8 +111,6 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
           )}
         </View>
       </ModalOverlay>
-=======
->>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
     </View>
   );
 };
@@ -203,13 +193,10 @@ const styles = StyleSheet.create({
   iosText: {
     fontSize: 12,
   },
-<<<<<<< HEAD
   modalBackground: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-=======
->>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
 });
