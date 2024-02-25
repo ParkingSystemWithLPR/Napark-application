@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -38,10 +38,12 @@ export type InputValueType = {
 };
 
 export type TextInputProps = {
-  title: string;
   placeholder: string;
   value: string;
   onChangeText: (enteredValue: string) => void;
+  title?: string;
+  withTitile?: boolean;
+  icon?: ReactNode;
   autoCapitalize?: AutoCapitalizeType;
   inputMode?: InputType;
   isRequired?: boolean;
@@ -70,6 +72,8 @@ const MyTextInput: React.FC<TextInputProps> = ({
   errorText,
   containerStyle,
   textInputStyle,
+  withTitile = true,
+  icon,
   onSubmitEditing,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(!secureTextEntry);
@@ -79,12 +83,14 @@ const MyTextInput: React.FC<TextInputProps> = ({
   };
   return (
     <View style={[styles.outerContainer, containerStyle]}>
-      <View style={styles.titleContainer}>
-        <SubHeaderText text={title} />
-        {isRequired && (
-          <BodyText text="*" textStyle={styles.requiredIndicator} />
-        )}
-      </View>
+      {withTitile && title && (
+        <View style={styles.titleContainer}>
+          <SubHeaderText text={title} />
+          {isRequired && (
+            <BodyText text="*" textStyle={styles.requiredIndicator} />
+          )}
+        </View>
+      )}
       <View
         style={[
           styles.inputContainer,
@@ -99,8 +105,10 @@ const MyTextInput: React.FC<TextInputProps> = ({
             editable ? undefined : styles.uneditableText,
           ]}
           autoCapitalize={autoCapitalize}
+          autoCorrect={false}
           secureTextEntry={!showPassword}
           placeholder={placeholder}
+          placeholderTextColor={Colors.gray[600]}
           value={value}
           onChangeText={onChangeText}
           inputMode={inputMode}
@@ -108,7 +116,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
           editable={editable}
           onSubmitEditing={onSubmitEditing}
         />
-        {secureTextEntry && (
+        {secureTextEntry ? (
           <TouchableOpacity onPress={toggleSecureEntry}>
             <MaterialCommunityIcons
               name={showPassword ? "eye-off" : "eye"}
@@ -117,6 +125,8 @@ const MyTextInput: React.FC<TextInputProps> = ({
               style={styles.icon}
             />
           </TouchableOpacity>
+        ) : (
+          icon
         )}
       </View>
       {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}

@@ -1,12 +1,15 @@
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { View, StyleSheet, Platform } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import CustomBottomSheetModal from "../../components/bottomSheet/CustomBottomSheetModal";
+import TextInput from "../../components/input/TextInput";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import Colors from "../../constants/color";
 import { RootParamList } from "../../types";
@@ -22,7 +25,10 @@ export type RegionType = {
 
 const Landing: React.FC<LandingProps> = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const { dismiss } = useBottomSheetModal();
+  const [searchText, setSearchText] = useState<string>("");
   const [region, setRegion] = useState<RegionType>();
+  const [isSearch, setSearch] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -30,14 +36,11 @@ const Landing: React.FC<LandingProps> = () => {
 
   const getCurrentLocation = async () => {
     try {
-      // Request permission to access the device's location
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.error("Permission to access location was denied");
         return;
       }
-
-      // Fetch the current location
       const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       setRegion({
@@ -47,14 +50,35 @@ const Landing: React.FC<LandingProps> = () => {
         longitudeDelta: 0.0421,
       });
     } catch (error) {
-      // Handle the error appropriately, such as displaying an error message to the user
-      console.error("Error getting current location:");
+      console.error("Error getting current location:", error);
     }
   };
 
   const handlePresentModalPress = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
+    if (searchText.length > 0) {
+      bottomSheetRef.current?.present();
+    }
+  }, [searchText]);
+
+  const handleTextInputChange = (text: string) => {
+    setSearch(text.length > 0);
+    setSearchText(text);
+    dismiss();
+  };
+
+  const searchIcon = useCallback(
+    () => (
+      <TouchableOpacity onPress={() => handleTextInputChange("")}>
+        <MaterialIcons
+          name={isSearch ? "clear" : "search"}
+          size={20}
+          color={Colors.gray[800]}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
+    ),
+    [isSearch]
+  );
 
   return (
     <View style={styles.container}>
@@ -73,10 +97,14 @@ const Landing: React.FC<LandingProps> = () => {
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
               <TextInput
-                style={styles.searchContainer}
+                withTitile={false}
+                containerStyle={styles.searchContainer}
+                textInputStyle={styles.searchInput}
+                value={searchText}
+                onChangeText={handleTextInputChange}
                 placeholder={"Search"}
-                placeholderTextColor={"#666"}
                 onSubmitEditing={handlePresentModalPress}
+                icon={searchIcon()}
               />
               <CustomBottomSheetModal
                 ref={bottomSheetRef}
@@ -104,14 +132,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchContainer: {
-    borderRadius: 10,
-    margin: 10,
-    color: "#000",
-    borderColor: "#666",
-    backgroundColor: Colors.white,
-    borderWidth: 1,
-    height: 45,
-    paddingHorizontal: 10,
-    fontSize: 18,
+    padding: 10,
+  },
+  searchInput: {
+    paddingVertical: Platform.OS === "android" ? 3 : 0,
+    fontSize: 14,
+  },
+  icon: {
+    marginLeft: 5,
   },
 });
