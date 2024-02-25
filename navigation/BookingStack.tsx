@@ -1,7 +1,9 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BookingSummary from "../screens/booking/BookingSummary";
 import MyBooking from "../screens/booking/MyBooking";
+import { RootParamList } from "../types";
 
-import { Stack } from "./BaseNavigation";
+const Stack = createNativeStackNavigator<RootParamList>();
 
 const BookingStack = () => {
   return (
