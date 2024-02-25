@@ -76,6 +76,7 @@ const MainPageBottomTab = () => {
           ),
           headerTitleStyle: {
             fontSize: 18,
+            color: Colors.white,
           },
           headerStyle: {
             backgroundColor: Colors.red[400],
@@ -99,6 +100,7 @@ const MainPageBottomTab = () => {
           ),
           headerTitleStyle: {
             fontSize: 18,
+            color: Colors.white,
           },
           headerStyle: {
             backgroundColor: Colors.red[400],

@@ -1,12 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 
-import AuthContextProvider from "./store/context/auth";
 import BaseNavigation from "./navigation/BaseNavigation";
+import AuthContextProvider from "./store/context/auth";
 
 const App = () => {
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <AuthContextProvider>
         <BaseNavigation />
       </AuthContextProvider>
