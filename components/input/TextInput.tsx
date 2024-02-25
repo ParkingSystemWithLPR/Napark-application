@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -49,6 +51,9 @@ export type TextInputProps = {
   editable?: boolean;
   containerStyle?: object;
   textInputStyle?: object;
+  onSubmitEditing?: (
+    e: NativeSyntheticEvent<TextInputSubmitEditingEventData>
+  ) => void;
 };
 
 const MyTextInput: React.FC<TextInputProps> = ({
@@ -65,6 +70,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   errorText,
   containerStyle,
   textInputStyle,
+  onSubmitEditing,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(!secureTextEntry);
 
@@ -100,6 +106,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
           inputMode={inputMode}
           multiline={multiline}
           editable={editable}
+          onSubmitEditing={onSubmitEditing}
         />
         {secureTextEntry && (
           <TouchableOpacity onPress={toggleSecureEntry}>

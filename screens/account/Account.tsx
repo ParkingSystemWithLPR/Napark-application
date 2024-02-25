@@ -6,7 +6,10 @@ import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import DayInput from "../../components/input/DayInput";
-import TextInput, { InputValueType } from "../../components/input/TextInput";
+import TextInput, {
+  InputType,
+  InputValueType,
+} from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
 import { useAuth } from "../../store/context/auth";
@@ -193,6 +196,7 @@ const Account: React.FC<AccountProps> = () => {
             editable={isEditing}
             isRequired={isEditing}
             errorText={profile.mobileNo.errorText}
+            inputMode={InputType.Numeric}
           />
         </View>
         {isEditing && (

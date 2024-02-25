@@ -1,11 +1,14 @@
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import CustomBottomSheetModal from "../../components/bottomSheet/CustomBottomSheetModal";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
+import Colors from "../../constants/color";
 import { RootParamList } from "../../types";
 
 export type LandingProps = NativeStackScreenProps<RootParamList, "Landing">;
@@ -18,6 +21,7 @@ export type RegionType = {
 };
 
 const Landing: React.FC<LandingProps> = () => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [region, setRegion] = useState<RegionType>();
 
   useLayoutEffect(() => {
@@ -48,6 +52,10 @@ const Landing: React.FC<LandingProps> = () => {
     }
   };
 
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetRef.current?.present();
+  }, []);
+
   return (
     <View style={styles.container}>
       {region ? (
@@ -65,19 +73,14 @@ const Landing: React.FC<LandingProps> = () => {
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
               <TextInput
-                style={{
-                  borderRadius: 10,
-                  margin: 10,
-                  color: "#000",
-                  borderColor: "#666",
-                  backgroundColor: "#FFF",
-                  borderWidth: 1,
-                  height: 45,
-                  paddingHorizontal: 10,
-                  fontSize: 18,
-                }}
+                style={styles.searchContainer}
                 placeholder={"Search"}
                 placeholderTextColor={"#666"}
+                onSubmitEditing={handlePresentModalPress}
+              />
+              <CustomBottomSheetModal
+                ref={bottomSheetRef}
+                title="Recommended place"
               />
             </SafeAreaView>
           </View>
@@ -99,5 +102,16 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  searchContainer: {
+    borderRadius: 10,
+    margin: 10,
+    color: "#000",
+    borderColor: "#666",
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    height: 45,
+    paddingHorizontal: 10,
+    fontSize: 18,
   },
 });
