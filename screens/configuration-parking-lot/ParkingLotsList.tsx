@@ -9,6 +9,7 @@ import ParkingSpaceCard from "../../components/card/ParkingSpaceCard";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
 import HeaderText from "../../components/text/HeaderText";
+// import { getParkingLots } from "../../store/api/useGetParkingLots";
 
 export type ParkingLotsListProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -23,6 +24,8 @@ export type ParkingLot = {
 };
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
+
+  // const parkingLots = getParkingLots("65d76b018143af9faf0283fd");
   const useGetParkingLot = () : ParkingLot[] => {
     return [
       {
