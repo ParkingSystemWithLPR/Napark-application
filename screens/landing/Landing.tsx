@@ -2,15 +2,17 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, StyleSheet, Platform, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import CustomBottomSheetModal from "../../components/bottomSheet/CustomBottomSheetModal";
+import RangeInput from "../../components/input/RangeInput";
 import TextInput from "../../components/input/TextInput";
+import SubHeaderText from "../../components/text/SubHeaderText";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
+import ModalOverlay from "../../components/ui/ModalOverlay";
 import Colors from "../../constants/color";
 import { RootParamList } from "../../types";
 
@@ -29,6 +31,8 @@ const Landing: React.FC<LandingProps> = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [region, setRegion] = useState<RegionType>();
   const [isSearch, setSearch] = useState<boolean>(false);
+  const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
+  const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -96,16 +100,51 @@ const Landing: React.FC<LandingProps> = () => {
           </MapView>
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
-              <TextInput
-                withTitile={false}
-                containerStyle={styles.searchContainer}
-                textInputStyle={styles.searchInput}
-                value={searchText}
-                onChangeText={handleTextInputChange}
-                placeholder={"Search"}
-                onSubmitEditing={handlePresentModalPress}
-                icon={searchIcon()}
-              />
+              <View style={styles.headerContainer}>
+                <TextInput
+                  withTitile={false}
+                  containerStyle={styles.searchContainer}
+                  textInputStyle={styles.searchInput}
+                  value={searchText}
+                  onChangeText={handleTextInputChange}
+                  placeholder={"Search"}
+                  onSubmitEditing={handlePresentModalPress}
+                  icon={searchIcon()}
+                />
+                <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+                  <View style={styles.iconContainer}>
+                    <MaterialIcons
+                      name="more-vert"
+                      size={20}
+                      color={Colors.gray[800]}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <ModalOverlay
+                visible={showFilterOption}
+                closeModal={() => setShowFilterOption(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.filterContainer}>
+                    <View style={styles.closeContainer}>
+                      <MaterialIcons
+                        name="clear"
+                        size={20}
+                        color={Colors.gray[800]}
+                      />
+                    </View>
+                    <SubHeaderText text="Filter options" />
+                    <RangeInput
+                      values={priceRange}
+                      onChange={setPriceRange}
+                      title="Parking fee (per hour)"
+                      snapped
+                      allowOverlap
+                    />
+                  </View>
+                </View>
+              </ModalOverlay>
               <CustomBottomSheetModal
                 ref={bottomSheetRef}
                 title="Recommended place"
@@ -131,8 +170,21 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
   searchContainer: {
+    flex: 1,
     padding: 10,
+    marginBottom: 0,
+  },
+  iconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 5,
   },
   searchInput: {
     paddingVertical: Platform.OS === "android" ? 3 : 0,
@@ -140,5 +192,23 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 5,
+  },
+  modalContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  filterContainer: {
+    backgroundColor: Colors.white,
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    padding: 10,
+  },
+  closeContainer: {
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
 });

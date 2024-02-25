@@ -42,6 +42,7 @@ export type TextInputProps = {
   value: string;
   onChangeText: (enteredValue: string) => void;
   title?: string;
+  prefix?: string;
   withTitile?: boolean;
   icon?: ReactNode;
   autoCapitalize?: AutoCapitalizeType;
@@ -62,6 +63,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   title,
   placeholder,
   value,
+  prefix,
   onChangeText,
   autoCapitalize = AutoCapitalizeType.None,
   inputMode = InputType.Text,
@@ -98,6 +100,9 @@ const MyTextInput: React.FC<TextInputProps> = ({
           errorText ? styles.errorInputContainer : null,
         ]}
       >
+        {prefix && (
+          <BodyText text={prefix} containerStyle={styles.prefixContainer} />
+        )}
         <TextInput
           style={[
             styles.input,
@@ -178,5 +183,8 @@ const styles = StyleSheet.create({
   },
   uneditableText: {
     color: Colors.gray[800],
+  },
+  prefixContainer: {
+    marginRight: 5,
   },
 });
