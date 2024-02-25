@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Platform, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-modern-datepicker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   placeholderText: {
-    color: Platform.OS == "android" ? Colors.gray[800] : Colors.gray[600],
+    color: Colors.gray[600],
   },
   dateTextContainer: {},
   uneditable: {
