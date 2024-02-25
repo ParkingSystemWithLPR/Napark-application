@@ -8,14 +8,38 @@ import BodyText from "../../components/text/BodyText";
 import HyperLinkText from "../../components/text/HyperlinkText";
 import Colors from "../../constants/color";
 
+import { useState } from "react";
+import ModalOverlay from "../../components/ui/ModalOverlay";
+import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
+import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
+
 export type BookingSummaryProps = {} & NativeStackScreenProps<
   RootParamList,
   "BookingSummary"
 >;
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
   const openModal = () => {
-    navigation.navigate("ConfirmBookingModal", { request: "abc" });
+    setIsOpenModal(true);
+  };
+  const closeModal = () => {
+    setIsOpenModal(false);
+    if (isConfirm) {
+      navigation.replace("MyBooking");
+    }
+  };
+  function sendCreateRequest(request: string) {
+    setIsSendingRequest(true);
+    setTimeout(() => {
+      setIsSendingRequest(false);
+    }, 2000);
+  }
+  const handleConfirm = () => {
+    sendCreateRequest("abc");
+    setIsConfirm(true);
   };
   type BookingAttribute = {
     attribute: string;
@@ -72,6 +96,21 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <PrimaryButton title={"Book"} onPress={openModal} />
       </View>
+      <ModalOverlay visible={isOpenModal} closeModal={closeModal}>
+        <View style={styles.modalBackground}>
+          {!isConfirm ? (
+            <ConfirmBookingModalContent
+              handlecloseModal={closeModal}
+              handleSendRequest={handleConfirm}
+            />
+          ) : (
+            <ProcessingModalContent
+              isCreatingBooking={isSendingRequest}
+              handlecloseModal={closeModal}
+            />
+          )}
+        </View>
+      </ModalOverlay>
     </View>
   );
 };
@@ -153,5 +192,11 @@ const styles = StyleSheet.create({
   },
   iosText: {
     fontSize: 12,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });

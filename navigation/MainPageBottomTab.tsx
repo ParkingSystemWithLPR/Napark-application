@@ -9,6 +9,7 @@ import Other from "../screens/other/Other";
 import Payment from "../screens/payment/Payment";
 import { RootParamList } from "../types";
 
+import BookingStack from "./BookingStack";
 const BottomTab = createBottomTabNavigator<RootParamList>();
 
 const MainPageBottomTab = () => {
@@ -45,8 +46,8 @@ const MainPageBottomTab = () => {
         }}
       />
       <BottomTab.Screen
-        name="MyBooking"
-        component={MyBooking}
+        name="Booking"
+        component={BookingStack}
         options={{
           tabBarLabel: "My booking",
           tabBarIcon: ({ color, size }) => (
