@@ -7,6 +7,7 @@ import MyBooking from "../screens/booking/MyBooking";
 import Landing from "../screens/landing/Landing";
 import Other from "../screens/other/Other";
 import Payment from "../screens/payment/Payment";
+import BookingStack from "./BookingStack";
 
 const MainPageBottomTab = () => {
   return (
@@ -33,8 +34,8 @@ const MainPageBottomTab = () => {
         }}
       />
       <BottomTab.Screen
-        name="MyBooking"
-        component={MyBooking}
+        name="Booking"
+        component={BookingStack}
         options={{
           tabBarLabel: "My booking",
           tabBarIcon: ({ color, size }) => (

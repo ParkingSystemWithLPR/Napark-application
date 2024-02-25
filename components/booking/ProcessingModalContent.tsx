@@ -10,6 +10,10 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
+<<<<<<< HEAD
+import LoadingOverlay from "../ui/LoadingOverlay";
+=======
+>>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
 
 export type ProcessingModalContentProps = {
   isCreatingBooking: boolean;
@@ -23,6 +27,9 @@ const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
     <TouchableWithoutFeedback>
       <View style={styles.modalContainer}>
         {isCreatingBooking ? (
+<<<<<<< HEAD
+          <LoadingOverlay message={"Loading..."} />
+=======
           <View style={styles.processingTextBox}>
             <BodyText
               text={"Processing request..."}
@@ -30,6 +37,7 @@ const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
             />
             <ActivityIndicator />
           </View>
+>>>>>>> 396b49f14a897d0e8ec89da04bae167a5d37aafe
         ) : (
           <>
             <View style={styles.iconContainer}>
