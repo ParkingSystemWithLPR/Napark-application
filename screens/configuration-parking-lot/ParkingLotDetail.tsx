@@ -9,6 +9,8 @@ import BodyContainer from "../../components/ui/BodyContainer";
 import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
 import MapView, { Marker } from "react-native-maps";
 import { mockParkingLot } from "./mock";
+import ImageContainer from "../../components/ui/ImageContainer";
+import { getParkingLots } from "../../store/api/useGetParkingLots";
 
 export type ParkingLotDetailProps = {} & NativeStackScreenProps<
   RootParamList,
@@ -25,7 +27,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             text="PolSci's Parking building"
             textStyle={{ color: Colors.gray[900] }}
           />
-          <MapView style={{ borderWidth: 1, borderColor: Colors.red[400], height: "25%"  }} initialRegion={mockParkingLot.Region} zoomEnabled>
+          <MapView style={{ borderWidth: 1, borderColor: Colors.red[400], height: 130  }} initialRegion={mockParkingLot.Region} zoomEnabled>
             <Marker
               coordinate={{
                 latitude: mockParkingLot.Region.latitude,
@@ -64,6 +66,9 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
               }}
             />
           </View>
+          <SectionAppForm title={"Photos"} icon={"camera"}>
+            <ImageContainer images={['1', '2']}/>
+          </SectionAppForm>
           <SectionAppForm title={"Location"} icon={"google-maps"}>
             <BodyText
               text={
