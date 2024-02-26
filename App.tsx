@@ -14,12 +14,12 @@ const App = () => {
       <StatusBar style="dark" />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <AuthContextProvider>
-          <BottomSheetModalProvider>
-            <QueryClientProvider client={queryClient}>
-          <BaseNavigation />
-          </BottomSheetModalProvider>
+          <QueryClientProvider client={queryClient}>
+            <BottomSheetModalProvider>
+              <BaseNavigation />
+            </BottomSheetModalProvider>
           </QueryClientProvider>
-      </AuthContextProvider>
+        </AuthContextProvider>
       </GestureHandlerRootView>
     </>
   );
