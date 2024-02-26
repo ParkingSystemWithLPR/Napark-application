@@ -75,7 +75,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             <IconButtonWithTitle
               title={"Role"}
               icon={"head-cog-outline"}
-              onPress={() => {}}
+              onPress={() => {navigation.push("RoleList")}}
             />
           </View>
           <SectionAppForm title={"Photos"} icon={"camera"}>

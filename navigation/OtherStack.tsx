@@ -5,6 +5,7 @@ import Other from "../screens/other/Other";
 import ParkingLotsList from "../screens/configuration-parking-lot/ParkingLotsList";
 import ParkingLotDetail from "../screens/configuration-parking-lot/ParkingLotDetail";
 import Colors from "../constants/color";
+import RoleList from "../screens/role/RoleList";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -41,6 +42,14 @@ const OtherStack = () => {
           headerTitle: "Parking space detail",
         }}
       />
+       <Stack.Screen
+        name="RoleList"
+        component={RoleList}
+        options={{
+          headerTitle: "Role",
+        }}
+      />
+      
     </Stack.Navigator>
   );
 };
