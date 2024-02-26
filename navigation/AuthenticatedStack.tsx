@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainPageBottomTab from "./MainPageBottomTab";
 import OtherStack from "./OtherStack";
 import ResetPassword from "../screens/authentication/ResetPassword";
+import BookingSummary from "../screens/booking/BookingSummary";
 import { RootParamList } from "../types";
 
 const Stack = createNativeStackNavigator<RootParamList>();

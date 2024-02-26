@@ -10,7 +10,7 @@ export type RootParamList = {
   ForgetPassword: undefined;
   ResetPassword: undefined;
   ChangePassword: undefined;
-  MainScreen: undefined;
+  MainScreen: { screen: string } | undefined; //idk I use it for nested navigation type checking
   Landing: undefined;
   MyBooking: undefined;
   Payment: undefined;
@@ -20,6 +20,7 @@ export type RootParamList = {
   CarInfo: undefined;
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
   AllBookings: undefined;
+  BookingSummary: undefined;
 };
 
 export type ButtonProps = {

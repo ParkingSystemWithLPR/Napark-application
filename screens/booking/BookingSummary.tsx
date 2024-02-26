@@ -27,7 +27,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   const closeModal = () => {
     setIsOpenModal(false);
     if (isConfirm) {
-      navigation.replace("MyBooking");
+      navigation.replace("MainScreen", { screen: "MyBooking" });
     }
   };
   function sendCreateRequest() {
