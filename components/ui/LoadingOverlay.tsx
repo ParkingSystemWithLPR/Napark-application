@@ -1,4 +1,5 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
+
 import SubHeaderText from "../text/SubHeaderText";
 
 export type LoadingOverlayProps = {

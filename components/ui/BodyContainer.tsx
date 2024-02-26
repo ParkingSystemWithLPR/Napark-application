@@ -1,5 +1,8 @@
-import { ReactNode } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { setStatusBarStyle } from "expo-status-bar";
+import { ReactNode, useLayoutEffect } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
+
 import Colors from "../../constants/color";
 
 export type BodyContainerProps = {
@@ -13,6 +16,22 @@ const BodyContainer: React.FC<BodyContainerProps> = ({
   containerStyle,
   innerContainerStyle,
 }) => {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    const unsubscribeBlur = navigation.addListener("blur", () => {
+      setStatusBarStyle("dark");
+    });
+    const unsubscribeFocus = navigation.addListener("focus", () => {
+      setStatusBarStyle("light");
+    });
+
+    return () => {
+      unsubscribeBlur();
+      unsubscribeFocus();
+    };
+  }, [navigation]);
+
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.tabContainer, innerContainerStyle]}>{children}</View>

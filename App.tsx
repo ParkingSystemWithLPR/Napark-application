@@ -1,20 +1,26 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import AuthContextProvider from "./store/context/auth";
 import BaseNavigation from "./navigation/BaseNavigation";
+import AuthContextProvider from "./store/context/auth";
 
 const App = () => {
   const queryClient = new QueryClient();
 
   return (
     <>
-      <StatusBar style="auto" />
-      <AuthContextProvider>
-        <QueryClientProvider client={queryClient}>
+      <StatusBar style="dark" />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AuthContextProvider>
+          <BottomSheetModalProvider>
+            <QueryClientProvider client={queryClient}>
           <BaseNavigation />
-        </QueryClientProvider>
+          </BottomSheetModalProvider>
+          </QueryClientProvider>
       </AuthContextProvider>
+      </GestureHandlerRootView>
     </>
   );
 };

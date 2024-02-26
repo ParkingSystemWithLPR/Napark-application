@@ -1,10 +1,13 @@
-import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import AuthenticatedStack from "./AuthenticatedStack";
+import AuthStack from "./AuthStack";
+import SplashScreen from "../screens/SplashScreen";
+import { useAuth } from "../store/context/auth";
 import { RootParamList } from "../types";
 
+<<<<<<< HEAD
 import ChangePassword from "../screens/authentication/ChangePassword";
 import ResetPassword from "../screens/authentication/ResetPassword";
 import ForgetPassword from "../screens/authentication/ForgetPassword";
@@ -177,9 +180,12 @@ const MainPageScreen = () => {
     </BottomTab.Navigator>
   );
 };
+=======
+const Stack = createNativeStackNavigator<RootParamList>();
+>>>>>>> main
 
 const BaseNavigation = () => {
-  const authCtx = useContext(AuthContext);
+  const { isAuthenticated } = useAuth();
 
   return (
     <NavigationContainer>
@@ -188,13 +194,11 @@ const BaseNavigation = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
-        {authCtx.isAuthenticated ? (
+        {isAuthenticated ? (
           <Stack.Screen name="Authenticated" component={AuthenticatedStack} />
         ) : (
           <Stack.Screen name="Auth" component={AuthStack} />
         )}
-        <Stack.Screen name="ChangePassword" component={ChangePassword} />
-        <Stack.Screen name="ResetPassword" component={ResetPassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

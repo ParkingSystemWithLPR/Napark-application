@@ -1,13 +1,13 @@
-import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import HeaderText from "../../components/text/HeaderText";
 import TextInput, { InputValueType } from "../../components/input/TextInput";
+import HeaderText from "../../components/text/HeaderText";
 import { RootParamList } from "../../types";
-import { useState } from "react";
 
-export type ChangePasswordProps = {} & NativeStackScreenProps<
+export type ChangePasswordProps = NativeStackScreenProps<
   RootParamList,
   "ChangePassword"
 >;

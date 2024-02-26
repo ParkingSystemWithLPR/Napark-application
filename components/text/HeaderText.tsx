@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 
-import { TextProps } from "../../types";
 import Colors from "../../constants/color";
+import { TextProps } from "../../types";
 
 const HeaderText: React.FC<TextProps> = ({
   text,

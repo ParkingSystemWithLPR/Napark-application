@@ -1,29 +1,32 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import Colors from "../../constants/color";
 import { ButtonProps } from "../../types";
 import BodyText from "../text/BodyText";
-import Colors from "../../constants/color";
 
 const SecondaryButton: React.FC<ButtonProps> = ({
   title,
   onPress,
+  outerContainerStyle,
   buttonStyle,
   textStyle,
 }) => {
   return (
-    <Pressable
-      android_ripple={{ color: Colors.gray[600] }}
-      style={({ pressed }) => [
-        styles.button,
-        pressed ? styles.buttonPressed : null,
-      ]}
-      onPress={onPress}
-    >
-      <View style={[styles.buttonContainer, buttonStyle]}>
-        <BodyText text={title} textStyle={[styles.text, textStyle]} />
-      </View>
-    </Pressable>
+    <View style={outerContainerStyle}>
+      <Pressable
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [
+          styles.button,
+          pressed ? styles.buttonPressed : null,
+        ]}
+        onPress={onPress}
+      >
+        <View style={[styles.buttonContainer, buttonStyle]}>
+          <BodyText text={title} textStyle={[styles.text, textStyle]} />
+        </View>
+      </Pressable>
+    </View>
   );
 };
 
