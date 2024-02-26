@@ -10,10 +10,10 @@ const MyBookingStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="MyBooking"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: true }}
     >
-      <Stack.Screen name="MyBooking" component={MyBooking} />
-      <Stack.Screen name="AllBookings" component={AllBookings} />
+      <Stack.Screen name="MyBooking" component={MyBooking} options={{ headerTitle: "Booking history" }} />
+      <Stack.Screen name="AllBookings" component={AllBookings} options={{ headerTitle: "", headerBackTitle: "Back" }} />
     </Stack.Navigator>
   );
 };
