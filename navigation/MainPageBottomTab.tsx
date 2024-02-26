@@ -90,7 +90,7 @@ const MainPageBottomTab = () => {
         }}
       />
       <BottomTab.Screen
-        name="Other"
+        name="Others"
         component={OtherStack}
         options={{
           title: "Menu",

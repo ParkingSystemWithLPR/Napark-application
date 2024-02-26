@@ -58,6 +58,13 @@ const OtherStack = () => {
           headerLeft: backToOtherPage,
         }}
       />
+      <Stack.Screen
+        name="RoleList"
+        component={RoleList}
+        options={{
+          headerTitle: "Role",
+        }}
+      />
     </Stack.Navigator>
   );
 };

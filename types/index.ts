@@ -27,6 +27,7 @@ export type RootParamList = {
   ParkingLotsList: undefined;
   ParkingLotDetail: undefined;
   RequestParkingLot: undefined;
+  RoleList: undefined;
 };
 
 export type ButtonProps = {
