@@ -16,7 +16,6 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ images }) => {
         />
       )}
       horizontal={true}
-      style={styles.listContainer}
     />
   );
 };
@@ -24,18 +23,8 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ images }) => {
 export default ImageContainer;
 
 const styles = StyleSheet.create({
-  listContainer: {
-    height: 120,
-  },
   image: {
-    height: "100%",
-    // width: 100,
-    objectFit: "scale-down",
     borderRadius: 12,
-    marginRight: 5,
-    shadowColor: Colors.black,
-    shadowOffset: {width: 2, height: 4},
-    shadowOpacity: 1,
-    shadowRadius: 3,
+    marginRight: 10,
   },
 });

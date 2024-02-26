@@ -58,13 +58,29 @@ const OtherStack = () => {
     <Stack.Navigator
       initialRouteName="Other"
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        title: "Menu",
+        headerTitleStyle: {
+          fontSize: 18,
+        },
+        headerStyle: {
+          backgroundColor: Colors.red[400].toString(),
+        },
+        headerTintColor: Colors.white.toString(),
+        headerTitleAlign: "left",
+        headerBackTitleVisible: false,
       }}
     >
       <Stack.Screen name="Other" component={Other} />
-      <Stack.Screen name="ParkingLotsList" component={ParkingLotsList}/>
-      <Stack.Screen name="ParkingLotDetail" component={ParkingLotDetail}/>
-      <Stack.Screen name="RequestParkingLot" component={RequestParkingLot}/>
+      <Stack.Screen name="ParkingLotsList" component={ParkingLotsList} options={{
+        headerTitle: "My parking space",
+      }}/>
+      <Stack.Screen name="ParkingLotDetail" component={ParkingLotDetail} options={{
+        headerTitle: "Parking space detail"
+      }}/>
+      <Stack.Screen name="RequestParkingLot" component={RequestParkingLot} options={{
+        headerTitle: "Create parking lot"
+      }}/>
     </Stack.Navigator>
   )
 }
@@ -148,8 +164,6 @@ const MainPageScreen = () => {
         name="Others"
         component={OtherStack}
         options={{
-          headerShown: true,
-          title: "Menu",
           tabBarLabel: "More",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -158,13 +172,6 @@ const MainPageScreen = () => {
               color={color}
             />
           ),
-          headerTitleStyle: {
-            fontSize: 18,
-          },
-          headerStyle: {
-            backgroundColor: Colors.red[400],
-            shadowOpacity: 0,
-          },
         }}
       />
     </BottomTab.Navigator>
