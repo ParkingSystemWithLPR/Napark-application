@@ -27,7 +27,10 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   const closeModal = () => {
     setIsOpenModal(false);
     if (isConfirm) {
-      navigation.replace("MainScreen", { screen: "MyBooking" });
+      //reason to use this method https://github.com/react-navigation/react-navigation/issues/11259
+      setTimeout(() => {
+        navigation.replace("MainScreen", { screen: "MyBooking" });
+      }, 0);
     }
   };
   function sendCreateRequest() {
