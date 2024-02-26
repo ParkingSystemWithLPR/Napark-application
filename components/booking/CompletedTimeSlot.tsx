@@ -5,7 +5,21 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const CompletedTimeSlot: React.FC<{}> = () => {
+interface sessionData {
+  licensePlate: string;
+  space: string;
+  date: string;
+  time: string;
+  price: string;
+}
+
+const CompletedTimeSlot: React.FC<sessionData> = ({
+  licensePlate,
+  space,
+  date,
+  time,
+  price,
+}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.topContainer}>
@@ -18,23 +32,17 @@ const CompletedTimeSlot: React.FC<{}> = () => {
         </View>
         <View style={styles.licenseAndLocation}>
           <HeaderText
-            text="กข 1234"
+            text={licensePlate}
             textStyle={{ color: Colors.black, fontWeight: "bold" }}
           />
-          <BodyText text="Space 4c" textStyle={{ color: Colors.gray[900] }} />
+          <BodyText text={space} textStyle={{ color: Colors.gray[900] }} />
         </View>
       </View>
       <View style={styles.bottomContainer}>
+        <SubHeaderText text={date} textStyle={{ color: Colors.gray[900] }} />
+        <SubHeaderText text={time} textStyle={{ color: Colors.gray[900] }} />
         <SubHeaderText
-          text="02/08/2019"
-          textStyle={{ color: Colors.gray[900] }}
-        />
-        <SubHeaderText
-          text="02:00 pm"
-          textStyle={{ color: Colors.gray[900] }}
-        />
-        <SubHeaderText
-          text="$100"
+          text={`$${price}`}
           textStyle={{ color: Colors.gray[900], fontWeight: "bold" }}
         />
       </View>
@@ -47,7 +55,7 @@ export default CompletedTimeSlot;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginBottom: 20,
     height: "auto",
     backgroundColor: Colors.white,
     borderRadius: 8,
