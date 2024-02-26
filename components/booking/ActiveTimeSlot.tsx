@@ -17,7 +17,7 @@ const ActiveTimeSlot: React.FC<activeTimeSlotProps> = ({ licensePlate, space, ti
       <View style={styles.topContainer}>
         <HeaderText
           text={licensePlate}
-          textStyle={{ color: Colors.black, fontWeight: "bold" }}
+          textStyle={{ color: Colors.black }}
         />
         <BodyText text="Space 4c" textStyle={{ color: Colors.gray[900] }} />
       </View>
@@ -28,7 +28,7 @@ const ActiveTimeSlot: React.FC<activeTimeSlotProps> = ({ licensePlate, space, ti
         />
         <SubHeaderText
           text={timeRemaining}
-          textStyle={{ color: Colors.gray[900], fontWeight: "bold" }}
+          textStyle={{ color: Colors.gray[900] }}
         />
       </View>
     </View>
@@ -50,8 +50,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   topContainer: {
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingVertical: 5,
     borderBottomColor: Colors.gray[700],
     borderBottomWidth: 1,
     flexDirection: "column",
