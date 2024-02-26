@@ -1,19 +1,18 @@
-import { Platform, StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { RootParamList } from "../../types";
+import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
+import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import BodyText from "../../components/text/BodyText";
 import HyperLinkText from "../../components/text/HyperlinkText";
-import Colors from "../../constants/color";
-
-import { useState } from "react";
 import ModalOverlay from "../../components/ui/ModalOverlay";
-import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
-import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
+import Colors from "../../constants/color";
+import { RootParamList } from "../../types";
 
-export type BookingSummaryProps = {} & NativeStackScreenProps<
+export type BookingSummaryProps = NativeStackScreenProps<
   RootParamList,
   "BookingSummary"
 >;
@@ -31,14 +30,14 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
       navigation.replace("MyBooking");
     }
   };
-  function sendCreateRequest(request: string) {
+  function sendCreateRequest() {
     setIsSendingRequest(true);
     setTimeout(() => {
       setIsSendingRequest(false);
     }, 2000);
   }
   const handleConfirm = () => {
-    sendCreateRequest("abc");
+    sendCreateRequest();
     setIsConfirm(true);
   };
   type BookingAttribute = {

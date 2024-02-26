@@ -6,9 +6,9 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
-import Colors from "../../constants/color";
 
 export type ConfirmBookingModalContentProps = {
   handlecloseModal: () => void;

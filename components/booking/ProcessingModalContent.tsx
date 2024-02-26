@@ -1,7 +1,6 @@
 import {
   View,
   StyleSheet,
-  ActivityIndicator,
   TouchableWithoutFeedback,
   Platform,
 } from "react-native";

@@ -1,15 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import BookingStack from "./BookingStack";
 import Colors from "../constants/color";
 import Account from "../screens/account/Account";
-import MyBooking from "../screens/booking/MyBooking";
 import Landing from "../screens/landing/Landing";
 import Other from "../screens/other/Other";
 import Payment from "../screens/payment/Payment";
 import { RootParamList } from "../types";
 
-import BookingStack from "./BookingStack";
 const BottomTab = createBottomTabNavigator<RootParamList>();
 
 const MainPageBottomTab = () => {
