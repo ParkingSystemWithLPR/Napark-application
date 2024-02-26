@@ -59,7 +59,7 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
               color={Colors.gray[800]}
               style={styles.icon}
             />
-            <BodyText text={availabilty.toString() + ' slot left!!'}/>
+            <BodyText text={availabilty + ' slot left!!'}/>
           </View>
         </View>
         <MaterialCommunityIcons
@@ -77,6 +77,7 @@ export default ParkingSpaceCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
+    width: "100%",
     borderWidth: 1,
     borderColor: Colors.gray[500],
     backgroundColor: Colors.gray[100],
@@ -84,9 +85,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 12,
     marginBottom: 10,
-    gap: 10,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   image: {
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray[100],
   },
   textContainer: {
-    maxWidth: 154,
     gap: 5,
   },
   descriptionWrapper: {
