@@ -18,7 +18,11 @@ const MyBooking: React.FC<MyBookingProps> = ({ navigation }) => {
     <View style={styles.container}>
       <SafeAreaView>
         <SubHeaderText text="Active Session" textStyle={styles.activeSession} />
-        <ActiveTimeSlot />
+        <ActiveTimeSlot
+          licensePlate="กบ 1454"
+          space="space h3"
+          timeRemaining="01hr:30min"
+        />
         <View style={styles.completedSessionsWrapper}>
           <SubHeaderText
             text="Completed Sessions"
