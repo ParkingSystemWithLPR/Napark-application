@@ -1,11 +1,12 @@
-import { View, StyleSheet, Text } from "react-native";
-import Colors from "../../constants/color";
-import HeaderText from "../text/HeaderText";
-import SubHeaderText from "../text/SubHeaderText";
-import BodyText from "../text/BodyText";
+import { View, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-interface sessionData {
+import Colors from "../../constants/color";
+import BodyText from "../text/BodyText";
+import HeaderText from "../text/HeaderText";
+import SubHeaderText from "../text/SubHeaderText";
+
+interface completedTimeSlotProps {
   licensePlate: string;
   space: string;
   date: string;
@@ -13,7 +14,7 @@ interface sessionData {
   price: string;
 }
 
-const CompletedTimeSlot: React.FC<sessionData> = ({
+const CompletedTimeSlot: React.FC<completedTimeSlotProps> = ({
   licensePlate,
   space,
   date,
