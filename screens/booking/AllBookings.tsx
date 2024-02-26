@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
+
 import CompletedTimeSlot from "../../components/booking/CompletedTimeSlot";
 
 const mock = [
@@ -109,7 +110,9 @@ const mock = [
   },
 ];
 
-const AllBookings: React.FC<{}> = () => {
+interface allBookingProps { }
+
+const AllBookings: React.FC<allBookingProps> = () => {
   return (
     <View style={styles.container}>
       <FlatList
