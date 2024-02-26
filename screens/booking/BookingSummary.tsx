@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   locationContainer: {
-    height: "70%",
+    paddingVertical: 10,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
