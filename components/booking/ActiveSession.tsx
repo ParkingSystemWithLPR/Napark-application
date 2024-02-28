@@ -5,27 +5,25 @@ import BodyText from "../text/BodyText";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
 
-interface activeTimeSlotProps {
-  licensePlate: string,
-  space: string,
-  timeRemaining: string
+export interface activeSessionProps {
+  licensePlate: string;
+  space: string;
+  timeRemaining: string;
 }
 
-const ActiveTimeSlot: React.FC<activeTimeSlotProps> = ({ licensePlate, space, timeRemaining }) => {
+const ActiveSession: React.FC<activeSessionProps> = ({
+  licensePlate,
+  space,
+  timeRemaining,
+}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.topContainer}>
-        <HeaderText
-          text={licensePlate}
-          textStyle={{ color: Colors.black }}
-        />
-        <BodyText text="Space 4c" textStyle={{ color: Colors.gray[900] }} />
+        <HeaderText text={licensePlate} textStyle={{ color: Colors.black }} />
+        <BodyText text={space} textStyle={{ color: Colors.gray[900] }} />
       </View>
       <View style={styles.bottomContainer}>
-        <SubHeaderText
-          text={space}
-          textStyle={{ color: Colors.gray[900] }}
-        />
+        <SubHeaderText text="Time Remaining" textStyle={{ color: Colors.gray[900] }} />
         <SubHeaderText
           text={timeRemaining}
           textStyle={{ color: Colors.gray[900] }}
@@ -35,12 +33,12 @@ const ActiveTimeSlot: React.FC<activeTimeSlotProps> = ({ licensePlate, space, ti
   );
 };
 
-export default ActiveTimeSlot;
+export default ActiveSession;
 
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginBottom: 20,
     height: "auto",
     backgroundColor: Colors.white,
     borderRadius: 8,

@@ -6,7 +6,7 @@ import BodyText from "../text/BodyText";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
 
-interface completedTimeSlotProps {
+export interface completedSessionProps {
   licensePlate: string;
   space: string;
   date: string;
@@ -14,7 +14,7 @@ interface completedTimeSlotProps {
   price: string;
 }
 
-const CompletedTimeSlot: React.FC<completedTimeSlotProps> = ({
+const CompletedSession: React.FC<completedSessionProps> = ({
   licensePlate,
   space,
   date,
@@ -51,7 +51,7 @@ const CompletedTimeSlot: React.FC<completedTimeSlotProps> = ({
   );
 };
 
-export default CompletedTimeSlot;
+export default CompletedSession;
 
 const styles = StyleSheet.create({
   wrapper: {
