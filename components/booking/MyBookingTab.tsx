@@ -2,7 +2,7 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 
-import SessionsList from "../components/booking/SessionsList";
+import SessionsList from "./SessionsList";
 
 const FirstRoute = () => <SessionsList type="ACTIVE" />;
 
