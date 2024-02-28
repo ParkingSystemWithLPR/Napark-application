@@ -48,18 +48,26 @@ const Account: React.FC<AccountProps> = () => {
   const [isEditing, setEditing] = useState<boolean>(false);
 
   useLayoutEffect(() => {
-    (async () => {
-      const profile: Profile = await user.getProfile(accessToken, authenticate);
-      const modProfile: ProfileInput = {
-        firstname: { value: profile.firstname },
-        lastname: { value: profile.lastname },
-        email: { value: profile.email },
-        mobileNo: { value: profile.tel },
-        dob: { value: formatISODate(profile.date_of_birth) },
-      };
-      setDefaultProfile(modProfile);
-      setProfile(modProfile);
-    })();
+    const fetchProfileDetail = async () => {
+      try {
+        const profile: Profile = await user.getProfile(
+          accessToken,
+          authenticate
+        );
+        const modProfile: ProfileInput = {
+          firstname: { value: profile.firstname },
+          lastname: { value: profile.lastname },
+          email: { value: profile.email },
+          mobileNo: { value: profile.tel },
+          dob: { value: formatISODate(profile.date_of_birth) },
+        };
+        setDefaultProfile(modProfile);
+        setProfile(modProfile);
+      } catch (error) {
+        Alert.alert("Failed to get the profile", (error as Error).message);
+      }
+    };
+    fetchProfileDetail();
   }, []);
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
@@ -78,7 +86,6 @@ const Account: React.FC<AccountProps> = () => {
 
   const onSave = async () => {
     const { firstname, lastname, mobileNo } = profile;
-    console.log(firstname, lastname, mobileNo);
     const isFirstnameValid = firstname.value.length > 0;
     const isLastnameValid = lastname.value.length > 0;
     const isMobileNoValid = /^(06|08|09)\d{8}$/.test(mobileNo.value);
