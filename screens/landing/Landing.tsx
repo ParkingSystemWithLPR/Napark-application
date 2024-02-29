@@ -102,9 +102,7 @@ const Landing: React.FC<LandingProps> = () => {
             <SafeAreaView>
               <View style={styles.headerContainer}>
                 <TextInput
-                  withTitile={false}
                   containerStyle={styles.searchContainer}
-                  textInputStyle={styles.searchInput}
                   value={searchText}
                   onChangeText={handleTextInputChange}
                   placeholder={"Search"}
@@ -183,10 +181,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingRight: 5,
-  },
-  searchInput: {
-    paddingVertical: Platform.OS === "android" ? 3 : 0,
-    fontSize: 14,
   },
   icon: {
     marginLeft: 5,
