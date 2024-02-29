@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -16,46 +16,64 @@ const ChangeScreenTab: React.FC<ChangeScreenTabProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-      <View style={styles.tabContainer}>
-        <MaterialCommunityIcons
-          name={icon}
-          size={20}
-          color={Colors.gray[800]}
-          style={styles.icon}
-        />
-        <SubHeaderText
-          text={screenName}
-          containerStyle={styles.textContainer}
-        />
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={20}
-          color={Colors.gray[800]}
-        />
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <Pressable
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [pressed && styles.pressed]}
+        onPress={onPress}
+      >
+        <View style={styles.tabContainer}>
+          <MaterialCommunityIcons
+            name={icon}
+            size={20}
+            color={Colors.gray[800]}
+            style={styles.icon}
+          />
+          <SubHeaderText
+            text={screenName}
+            containerStyle={styles.textContainer}
+          />
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={20}
+            color={Colors.gray[800]}
+          />
+        </View>
+      </Pressable>
+    </View>
   );
 };
 
 export default ChangeScreenTab;
 
 const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
+    borderRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
   tabContainer: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.gray[100],
     padding: 15,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.gray[500],
   },
   icon: {
     marginHorizontal: 10,
   },
   textContainer: {
     flex: 1,
+  },
+  pressed: {
+    opacity: 0.5,
   },
 });

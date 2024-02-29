@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -17,19 +17,25 @@ const CarInfoCard: React.FC<CarInfoCardProps> = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-      <View style={styles.container}>
-        <View style={styles.infoContainer}>
-          <HeaderText text={licensePlate} textStyle={styles.licenseText} />
-          <SubHeaderText text={province} />
+    <View style={styles.container}>
+      <Pressable
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [pressed && styles.pressed]}
+        onPress={onPress}
+      >
+        <View style={styles.innerContainer}>
+          <View style={styles.infoContainer}>
+            <HeaderText text={licensePlate} textStyle={styles.licenseText} />
+            <SubHeaderText text={province} />
+          </View>
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={20}
+            color={Colors.gray[800]}
+          />
         </View>
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={20}
-          color={Colors.gray[800]}
-        />
-      </View>
-    </TouchableOpacity>
+      </Pressable>
+    </View>
   );
 };
 
@@ -38,18 +44,30 @@ export default CarInfoCard;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirection: "row",
-    backgroundColor: Colors.gray[100],
-    borderWidth: 1,
-    borderColor: Colors.gray[500],
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
     borderRadius: 8,
-    padding: 10,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
     marginVertical: 5,
+  },
+  innerContainer: {
+    width: "100%",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    padding: 10,
   },
   infoContainer: {},
   licenseText: {
     color: Colors.black,
+  },
+  pressed: {
+    opacity: 0.5,
   },
 });

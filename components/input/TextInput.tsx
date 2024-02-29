@@ -3,16 +3,15 @@ import {
   StyleSheet,
   View,
   TextInput,
-  TouchableOpacity,
   Platform,
   NativeSyntheticEvent,
   TextInputSubmitEditingEventData,
 } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
 import { AutoCapitalizeType } from "../../enum/AutoCapitalizeType";
 import { InputType } from "../../enum/InputType";
+import IconButton from "../button/IconButton";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
@@ -106,14 +105,13 @@ const MyTextInput: React.FC<TextInputProps> = ({
           onSubmitEditing={onSubmitEditing}
         />
         {secureTextEntry ? (
-          <TouchableOpacity onPress={toggleSecureEntry}>
-            <MaterialCommunityIcons
-              name={showPassword ? "eye-off" : "eye"}
-              size={20}
-              color={Colors.gray[800]}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
+          <IconButton
+            icon={showPassword ? "eye-off" : "eye"}
+            size={20}
+            color={Colors.gray[800]}
+            onPress={toggleSecureEntry}
+            buttonStyle={styles.icon}
+          />
         ) : (
           icon
         )}
@@ -156,7 +154,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   icon: {
-    marginLeft: 5,
+    margin: 0,
+    padding: 0,
+    marginHorizontal: 5,
   },
   errorInputContainer: {
     borderColor: Colors.red[600],
