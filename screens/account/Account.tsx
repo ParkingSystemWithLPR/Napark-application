@@ -6,13 +6,11 @@ import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import DayInput from "../../components/input/DayInput";
-import TextInput, {
-  InputType,
-  InputValueType,
-} from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import Colors from "../../constants/color";
+import { InputType } from "../../enum/InputType";
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { formatISODate } from "../../utils/date";
@@ -155,7 +153,7 @@ const Account: React.FC<AccountProps> = () => {
           <IconButton
             icon="cog-outline"
             size={24}
-            color={Colors.gray[900]}
+            color={Colors.gray[800]}
             onPress={() => setEditing(true)}
           />
         </View>

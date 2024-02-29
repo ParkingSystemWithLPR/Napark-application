@@ -3,12 +3,10 @@ import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import TextInput, {
-  InputType,
-  InputValueType,
-} from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import BodyText from "../../components/text/BodyText";
 import HeaderText from "../../components/text/HeaderText";
+import { InputType } from "../../enum/InputType";
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 

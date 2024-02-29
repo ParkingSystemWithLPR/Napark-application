@@ -3,9 +3,10 @@ import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import TextInput, { InputType } from "../../components/input/TextInput";
+import TextInput from "../../components/input/TextInput";
 import BodyText from "../../components/text/BodyText";
 import HeaderText from "../../components/text/HeaderText";
+import { InputType } from "../../enum/InputType";
 import { RootParamList } from "../../types";
 
 export type ForgetPasswordProps = NativeStackScreenProps<

@@ -9,7 +9,7 @@ import { RootParamList } from "../../types";
 
 export type OtherProps = NativeStackScreenProps<RootParamList, "Other">;
 
-const Other: React.FC<OtherProps> = () => {
+const Other: React.FC<OtherProps> = ({ navigation }) => {
   const { logout } = useAuth();
   return (
     <BodyContainer
@@ -29,7 +29,9 @@ const Other: React.FC<OtherProps> = () => {
       <ChangeScreenTab
         icon="car-outline"
         screenName="Car info settings"
-        onPress={() => {}}
+        onPress={() => {
+          navigation.push("OtherStack", { screen: "CarInfo" });
+        }}
       />
       <ChangeScreenTab
         icon="cog-outline"

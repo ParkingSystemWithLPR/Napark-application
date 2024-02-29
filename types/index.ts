@@ -1,3 +1,6 @@
+import { ActionMode } from "../enum/ActionMode";
+import { Car } from "../utils/user";
+
 export type RootParamList = {
   Splash: undefined;
   Auth: undefined;
@@ -13,6 +16,9 @@ export type RootParamList = {
   Payment: undefined;
   Account: undefined;
   Other: undefined;
+  OtherStack: { screen: string };
+  CarInfo: undefined;
+  CarInfoSetup: { mode: ActionMode; carInfo?: Car };
 };
 
 export type ButtonProps = {

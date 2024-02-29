@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const AUTH_URL = process.env.EXPO_PUBLIC_AUTH_API_URL;
 
-export enum METHOD {
+export enum HTTPMethod {
   GET = "get",
   POST = "post",
   PUT = "put",
@@ -11,7 +11,7 @@ export enum METHOD {
 
 const apiRequest = async <T>(
   url: string,
-  method: METHOD,
+  method: HTTPMethod,
   accessToken: string,
   authenticate: (accessToken: string, refreshToken: string) => void,
   body?: object

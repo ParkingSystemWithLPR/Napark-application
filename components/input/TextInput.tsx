@@ -11,26 +11,10 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
+import { AutoCapitalizeType } from "../../enum/AutoCapitalizeType";
+import { InputType } from "../../enum/InputType";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
-
-export enum InputType {
-  Decimal = "decimal",
-  Email = "email",
-  None = "none",
-  Numeric = "numeric",
-  Search = "search",
-  Tel = "tel",
-  Text = "text",
-  URL = "url",
-}
-
-export enum AutoCapitalizeType {
-  None = "none",
-  Sentences = "sentences",
-  Words = "words",
-  Characters = "characters",
-}
 
 export type InputValueType = {
   value: string;
