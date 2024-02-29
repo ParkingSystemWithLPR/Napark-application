@@ -25,6 +25,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
           onPress={() => {
             navigation.navigate("CarInfoSetup", {
               mode: ActionMode.EDIT,
+              carInfo: car,
             });
           }}
         />
@@ -46,6 +47,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("CarInfoSetup", {
                   mode: ActionMode.EDIT,
+                  carInfo: item,
                 });
               }}
             />

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { useLayoutEffect, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
@@ -16,12 +16,25 @@ export type CarInfoSetupProps = NativeStackScreenProps<
 >;
 
 const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
-  const { mode } = route.params;
+  const { mode, carInfo } = route.params;
   const [licensePlate, setLicensePlate] = useState<string>("");
   const [province, setProvince] = useState<string>("");
   const [isDefault, setDefault] = useState<boolean>(false);
 
   const onPressAction = () => {};
+
+  useLayoutEffect(() => {
+    if (mode === ActionMode.EDIT) {
+      if (carInfo) {
+        setLicensePlate(carInfo.license_plate);
+        setProvince(carInfo.province_of_reg);
+        setDefault(carInfo.is_default);
+      } else {
+        Alert.alert("Something wrong!");
+        navigation.goBack();
+      }
+    }
+  }, [carInfo]);
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
