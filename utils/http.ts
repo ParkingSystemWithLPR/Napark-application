@@ -54,7 +54,7 @@ const apiRequest = async <T>(
 
       authenticate(access_token, refresh_token);
       // Retry the request with the new access token
-      return apiRequest<T>(url, method, accessToken, authenticate, body);
+      return apiRequest<T>(url, method, access_token, authenticate, body);
     }
     throw error;
   }

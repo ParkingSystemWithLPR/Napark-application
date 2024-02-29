@@ -11,6 +11,7 @@ import TextInput, {
   InputValueType,
 } from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
+import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import Colors from "../../constants/color";
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
@@ -31,6 +32,7 @@ const IMAGE_SIZE = 100;
 
 const Account: React.FC<AccountProps> = () => {
   const { accessToken, authenticate } = useAuth();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [defaultProfile, setDefaultProfile] = useState<ProfileInput>({
     firstname: { value: "" },
     lastname: { value: "" },
@@ -63,6 +65,7 @@ const Account: React.FC<AccountProps> = () => {
         };
         setDefaultProfile(modProfile);
         setProfile(modProfile);
+        setLoading(false);
       } catch (error) {
         Alert.alert("Failed to get the profile", (error as Error).message);
       }
@@ -135,6 +138,7 @@ const Account: React.FC<AccountProps> = () => {
       }
     }
   };
+  if (isLoading) return <LoadingOverlay />;
 
   return (
     <BodyContainer>

@@ -3,10 +3,12 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import SubHeaderText from "../text/SubHeaderText";
 
 export type LoadingOverlayProps = {
-  message: string;
+  message?: string;
 };
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ message }) => {
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  message = "Loading",
+}) => {
   return (
     <View style={styles.screen}>
       <SubHeaderText text={message} />
@@ -23,5 +25,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
+    gap: 10,
   },
 });

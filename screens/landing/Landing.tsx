@@ -153,9 +153,7 @@ const Landing: React.FC<LandingProps> = () => {
           </View>
         </>
       ) : (
-        <SafeAreaView>
-          <LoadingOverlay message="Loading" />
-        </SafeAreaView>
+        <LoadingOverlay />
       )}
     </View>
   );
@@ -205,6 +203,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 8,
     padding: 10,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
   },
   closeContainer: {
     width: "90%",
