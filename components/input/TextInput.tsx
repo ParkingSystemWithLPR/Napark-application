@@ -27,7 +27,7 @@ export type TextInputProps = {
   onChangeText: (enteredValue: string) => void;
   title?: string;
   prefix?: string;
-  withTitile?: boolean;
+  withTitle?: boolean;
   icon?: ReactNode;
   autoCapitalize?: AutoCapitalizeType;
   inputMode?: InputType;
@@ -58,7 +58,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   errorText,
   containerStyle,
   textInputStyle,
-  withTitile = true,
+  withTitle = true,
   icon,
   onSubmitEditing,
 }) => {
@@ -69,7 +69,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   };
   return (
     <View style={[styles.outerContainer, containerStyle]}>
-      {withTitile && title && (
+      {withTitle && title && (
         <View style={styles.titleContainer}>
           <SubHeaderText text={title} />
           {isRequired && (
@@ -137,16 +137,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.gray[800],
     borderRadius: 8,
     padding: 8,
-    paddingVertical: Platform.OS === "android" ? 5 : null,
+    paddingVertical: Platform.OS === "android" ? 13 : 16,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+    marginVertical: 4,
   },
   input: {
     flex: 1,
     fontFamily: "Poppins-Medium",
-    fontSize: 12,
+    fontSize: 14,
   },
   icon: {
     marginLeft: 5,

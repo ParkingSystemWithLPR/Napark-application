@@ -5,8 +5,10 @@ import { Alert, StyleSheet, View } from "react-native";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import CheckboxInput from "../../components/input/CheckBoxInput";
+import DropdownInput from "../../components/input/DropdownInput";
 import TextInput from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
+import { THAI_PROVINCE } from "../../constants/province";
 import { ActionMode } from "../../enum/ActionMode";
 import { RootParamList } from "../../types";
 
@@ -44,11 +46,13 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
         value={licensePlate}
         onChangeText={setLicensePlate}
       />
-      <TextInput
+      <DropdownInput
         title="Province of registration"
         placeholder="Choose province of registration"
-        value={province}
-        onChangeText={setProvince}
+        selectedValue={province}
+        onSelect={setProvince}
+        items={THAI_PROVINCE}
+        withSearch
       />
       <CheckboxInput
         text="Set as default"
