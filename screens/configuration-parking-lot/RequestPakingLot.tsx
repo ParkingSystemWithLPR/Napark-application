@@ -36,7 +36,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   });
 
   const handleRequestParkingSpacePress = () => {
-    navigation.push("ParkingLotsList");
+    navigation.goBack();
   };
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {

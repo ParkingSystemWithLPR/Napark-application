@@ -11,6 +11,7 @@ import ImageContainer from "../../components/ui/ImageContainer";
 import SectionAppForm from "../../components/ui/SectionAppForm";
 import Colors from "../../constants/color";
 import { useGetParkingLot } from "../../store/api/useGetParkingLotById";
+import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { mockParkingLot } from "../../types/parking-lot/mock";
 import { ParkingLot } from "../../types/parking-lot/ParkingLot";
@@ -23,12 +24,16 @@ export type ParkingLotDetailProps = NativeStackScreenProps<
 
 const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
   const [parkingLot, setParkingLot] = useState<ParkingLot>(mockParkingLot);
+  const { accessToken, authenticate } = useAuth();
 
-  const getParkingLot = useGetParkingLot("65db2487548c61ff2ee3f9e1");
+  const getParkingLot = useGetParkingLot({
+    queryParams: { parkingLotId: "65db2487548c61ff2ee3f9e1" },
+    auth: { accessToken, authenticate },
+  });
 
   useEffect(() => {
     if (getParkingLot.data) {
-      setParkingLot(getParkingLot.data[0]);
+      if(getParkingLot.data[0]) setParkingLot(getParkingLot.data[0]);
     }
   }, [getParkingLot.data]);
 

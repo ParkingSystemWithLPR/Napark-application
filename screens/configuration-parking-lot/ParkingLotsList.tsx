@@ -9,6 +9,7 @@ import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
 import { useGetParkingLotsByUserId } from "../../store/api/useGetParkingLotsByUserId";
+import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { ParkingLot } from "../../types/parking-lot/ParkingLot";
 
@@ -18,19 +19,19 @@ export type ParkingLotsListProps = NativeStackScreenProps<
 >;
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
+  const { accessToken, authenticate } = useAuth();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
 
-  const getParkingLots = useGetParkingLotsByUserId("65d76b018143af9faf0283fd");
+  const getParkingLots = useGetParkingLotsByUserId({
+    queryParams: { userId: "65d76b018143af9faf0283fd" },
+    auth: { accessToken, authenticate },
+  });
 
   useEffect(() => {
-    if(getParkingLots.data) {
+    if (getParkingLots.data) {
       setParkingLots(getParkingLots.data);
     }
-  }, [getParkingLots.data])
-
-  const handleRequestParkingSpacePress = () => {
-    navigation.push("RequestParkingLot");
-  };
+  }, [getParkingLots.data]);
 
   const NoParkingLot = () => {
     return (
@@ -51,19 +52,23 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   return (
     <BodyContainer
       innerContainerStyle={
-        parkingLots ? styles.bodyContainer : styles.bodyContainerNoParking
+        parkingLots.length !== 0
+          ? styles.bodyContainer
+          : styles.bodyContainerNoParking
       }
     >
-      {parkingLots ? (
+      {parkingLots.length !== 0 ? (
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
             data={parkingLots}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
                 businessHours={"08:00 - 23:59"}
                 availabilty={0}
-                onPress={() => navigation.push("ParkingLotDetail")}
+                onPress={() =>
+                  navigation.push("OtherStack", { screen: "ParkingLotDetail" })
+                }
               />
             )}
           />
@@ -73,7 +78,9 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
       )}
       <PrimaryButton
         title="Request for your parking space"
-        onPress={handleRequestParkingSpacePress}
+        onPress={() =>
+          navigation.push("OtherStack", { screen: "RequestParkingLot" })
+        }
       />
     </BodyContainer>
   );
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     gap: 20,
     justifyContent: "space-between",
-    paddingVertical: 10,
+    paddingVertical: 50,
   },
   bodyContainerNoParking: {
     gap: 20,
