@@ -4,7 +4,7 @@ import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
 import Colors from "../../constants/color";
 import { BookingType } from "../../enum/BookingType";
-import { MOCKED_SESSIONS } from "../../mock/mockData";
+import { MOCKED_SESSIONS, mockedSessionsProps } from "../../mock/mockData";
 import { formatDateAndTime } from "../../utils/date";
 
 interface sessionsProps {
@@ -16,6 +16,7 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
     <View style={styles.container}>
       <FlatList
         data={MOCKED_SESSIONS}
+        keyExtractor={(item: mockedSessionsProps) => item.id}
         renderItem={({ item }) => {
           if (type === BookingType.ACTIVE) {
             return (

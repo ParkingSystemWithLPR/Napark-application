@@ -65,6 +65,7 @@ const TabBar = ({ state, descriptors, navigation }: MaterialTopTabBarProps) => {
                 : styles.rightTabBar,
               { backgroundColor: isFocused ? Colors.red[400] : Colors.white },
             ]}
+            key={label}
           >
             <BodyText
               text={label}
