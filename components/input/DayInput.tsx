@@ -15,6 +15,7 @@ export type DayInputProps = {
   date: string | null;
   placeholder?: string;
   onChange: (date: string) => void;
+  isRequired?: boolean;
   setMinimumDate?: boolean;
   editable?: boolean;
   outerContainerStyle?: object;
@@ -25,6 +26,7 @@ const DayInput: React.FC<DayInputProps> = ({
   title,
   date,
   onChange,
+  isRequired = false,
   placeholder = "YYYY-MM-DD",
   setMinimumDate = false,
   editable = false,
@@ -50,7 +52,12 @@ const DayInput: React.FC<DayInputProps> = ({
 
   return (
     <View style={[styles.outerContainer, outerContainerStyle]}>
-      <SubHeaderText text={title} />
+      <View style={styles.titleContainer}>
+        <SubHeaderText text={title} />
+        {isRequired && (
+          <BodyText text="*" textStyle={styles.requiredIndicator} />
+        )}
+      </View>
       <Pressable onPress={openDayPicker} disabled={!editable}>
         <View
           style={[
@@ -95,6 +102,10 @@ export default DayInput;
 
 const styles = StyleSheet.create({
   outerContainer: {},
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -115,6 +126,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
   },
   placeholderText: {
     color: Colors.gray[600],

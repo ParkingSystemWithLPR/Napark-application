@@ -1,5 +1,12 @@
-import { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import DatePicker from "react-native-modern-datepicker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
@@ -10,7 +17,9 @@ import Colors from "@/constants/color";
 
 export type TimeInputProps = {
   title: string;
-  value: string;
+  value: string | null;
+  onTimeChange: (date: string) => void;
+  placeholder?: string;
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
@@ -19,18 +28,23 @@ export type TimeInputProps = {
 const TimeInput: React.FC<TimeInputProps> = ({
   title,
   value,
+  placeholder = "HH:mm",
+  onTimeChange,
   editable = false,
   outerContainerStyle,
   containerStyle,
 }) => {
   const [isOpenTimePicker, setOpenTimePicker] = useState<boolean>(false);
-
   const openTimePicker = () => {
     editable && setOpenTimePicker(true);
   };
 
-  const closeDayPicker = () => {
+  const closeTimePicker = () => {
     setOpenTimePicker(false);
+  };
+  const timechangeHandler = (date: string) => {
+    onTimeChange(date);
+    closeTimePicker();
   };
 
   return (
@@ -45,15 +59,30 @@ const TimeInput: React.FC<TimeInputProps> = ({
           ]}
         >
           <BodyText
-            text={value}
+            text={value ?? placeholder}
             containerStyle={styles.dateTextContainer}
-            textStyle={editable ? undefined : styles.uneditableText}
+            textStyle={[
+              styles.text,
+              !editable && styles.uneditableText,
+              !value && styles.placeholderText,
+            ]}
           />
           <MaterialCommunityIcons name="clock-outline" />
         </View>
       </Pressable>
-      <ModalOverlay visible={isOpenTimePicker} closeModal={closeDayPicker}>
-        <View></View>
+      <ModalOverlay visible={isOpenTimePicker} closeModal={closeTimePicker}>
+        <TouchableWithoutFeedback>
+          <View style={styles.centeredContent}>
+            <View style={styles.dateTimePickerContainer}>
+              <DatePicker
+                mode="time"
+                onTimeChange={timechangeHandler}
+                minuteInterval={1}
+                current={value ?? ""}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
       </ModalOverlay>
     </View>
   );
@@ -68,10 +97,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: 5,
-    borderWidth: 1,
-    borderColor: Colors.gray[800],
     borderRadius: 8,
-    padding: 8,
+    padding: 16,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    backgroundColor: Colors.white,
+    elevation: Platform.OS === "android" ? 4 : 2,
+    marginVertical: 4,
+  },
+  text: {
+    fontSize: 14,
+  },
+  placeholderText: {
+    color: Colors.gray[600],
   },
   dateTextContainer: {},
   uneditable: {
@@ -80,5 +123,27 @@ const styles = StyleSheet.create({
   },
   uneditableText: {
     color: Colors.gray[800],
+  },
+  centeredContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  dateTimePickerContainer: {
+    backgroundColor: "white",
+    margin: 20,
+    borderRadius: 10,
+    padding: 20,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
   },
 });
