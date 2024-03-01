@@ -1,16 +1,23 @@
-import axios, { AxiosError } from "axios";
-import { ParkingLot } from "../../../types/parking-lot/ParkingLot";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
-type GetParkingLotService = (
-  parkingLotId: string
-) => Promise<ParkingLot>;
+import { ParkingLot } from "../../../types/parking-lot/ParkingLot";
+import apiRequest, { METHOD } from "../../../utils/http";
+import { useAuth } from "../../context/auth";
+
+type GetParkingLotService = (parkingLotId: string) => Promise<ParkingLot>;
 
 const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;
 
-export const getParkingLot: GetParkingLotService = async (parkingLotId: string) => {
-  const { data } = await axios.get(
-    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/${parkingLotId}`
+export const getParkingLot: GetParkingLotService = async (
+  parkingLotId: string
+) => {
+  const { accessToken, authenticate } = useAuth();
+  const data = await apiRequest<ParkingLot>(
+    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/${parkingLotId}`,
+    METHOD.GET,
+    accessToken,
+    authenticate
   );
   return data;
 };

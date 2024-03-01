@@ -1,23 +1,22 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
-import { RootParamList } from "../../types";
-import HeaderText from "../../components/text/HeaderText";
-import Colors from "../../constants/color";
-import BodyText from "../../components/text/BodyText";
-import SectionAppForm from "../../components/ui/SectionAppForm";
-import BodyContainer from "../../components/ui/BodyContainer";
-import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
-import MapView, { Marker } from "react-native-maps";
-import ImageContainer from "../../components/ui/ImageContainer";
-import { ParkingLot } from "../../types/parking-lot/ParkingLot";
 import { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+
+import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
+import BodyText from "../../components/text/BodyText";
+import HeaderText from "../../components/text/HeaderText";
+import BodyContainer from "../../components/ui/BodyContainer";
+import ImageContainer from "../../components/ui/ImageContainer";
+import SectionAppForm from "../../components/ui/SectionAppForm";
+import Colors from "../../constants/color";
 import { useGetParkingLot } from "../../store/api/useGetParkingLotById";
+import { RootParamList } from "../../types";
 import { mockParkingLot } from "../../types/parking-lot/mock";
+import { ParkingLot } from "../../types/parking-lot/ParkingLot";
 import { formatAddress } from "../../utils/address";
 
-export type ParkingLotDetailProps = {} & NativeStackScreenProps<
+export type ParkingLotDetailProps = NativeStackScreenProps<
   RootParamList,
   "ParkingLotDetail"
 >;
@@ -75,7 +74,9 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             <IconButtonWithTitle
               title={"Role"}
               icon={"head-cog-outline"}
-              onPress={() => {navigation.push("RoleList")}}
+              onPress={() => {
+                navigation.push("RoleList");
+              }}
             />
           </View>
           <SectionAppForm title={"Photos"} icon={"camera"}>
