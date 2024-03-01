@@ -1,9 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Platform,
-} from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -31,10 +26,7 @@ const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
                 name="check-circle"
                 style={styles.closeButton}
               />
-              <BodyText
-                text={"Successfully Booked"}
-                textStyle={Platform.OS === "ios" ? styles.iosText : {}}
-              />
+              <BodyText text="Successfully Booked" />
             </View>
             <View style={styles.buttonContainer}>
               <PrimaryButton title={"close"} onPress={handlecloseModal} />
@@ -75,9 +67,6 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     fontSize: 100,
-    color: "green",
-  },
-  iosText: {
-    fontSize: 12,
+    color: Colors.green[700],
   },
 });
