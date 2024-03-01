@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 
 import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
@@ -47,10 +47,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 8,
     shadowColor: Colors.black,
-    shadowOffset: { width: -2, height: 4 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 3,
+    elevation: Platform.OS === "android" ? 4 : 2,
   },
   topContainer: {
     paddingVertical: 5,
