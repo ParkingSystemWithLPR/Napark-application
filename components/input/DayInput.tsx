@@ -69,6 +69,7 @@ const DayInput: React.FC<DayInputProps> = ({
           />
           <MaterialCommunityIcons
             name="calendar-month-outline"
+            size={14}
             color={!editable ? Colors.gray[800] : undefined}
           />
         </View>
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
   },
   placeholderText: {
     color: Colors.gray[600],
