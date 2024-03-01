@@ -56,6 +56,7 @@ const MainPageBottomTab = () => {
               color={color}
             />
           ),
+          headerShown: true,
         }}
       />
       <BottomTab.Screen
