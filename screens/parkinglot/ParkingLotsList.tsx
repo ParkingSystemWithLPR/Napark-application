@@ -12,6 +12,7 @@ import { useGetParkingLotsByUserId } from "../../store/api/useGetParkingLotsByUs
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { ParkingLot } from "../../types/parking-lot/ParkingLot";
+import LoadingOverlay from "../../components/ui/LoadingOverlay";
 
 export type ParkingLotsListProps = NativeStackScreenProps<
   RootParamList,
@@ -21,6 +22,7 @@ export type ParkingLotsListProps = NativeStackScreenProps<
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const getParkingLots = useGetParkingLotsByUserId({
     queryParams: { userId: "65d76b018143af9faf0283fd" },
@@ -30,8 +32,11 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   useEffect(() => {
     if (getParkingLots.data) {
       setParkingLots(getParkingLots.data);
+      setLoading(false);
     }
   }, [getParkingLots.data]);
+
+  if(isLoading) return <LoadingOverlay message={"Loading..."} />
 
   const NoParkingLot = () => {
     return (
