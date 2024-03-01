@@ -19,6 +19,7 @@ const AuthenticatedStack = () => {
       <Stack.Screen name="MainScreen" component={MainPageBottomTab} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="OtherStack" component={OtherStack} />
+      <Stack.Screen name="BookingSummary" component={BookingSummary} />
     </Stack.Navigator>
   );
 };
