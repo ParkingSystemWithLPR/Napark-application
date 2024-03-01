@@ -22,7 +22,7 @@ const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;
 
 export const getParkingLotByUserId: GetParkingLotsService = async ({
   queryParams,
-  auth
+  auth,
 }) => {
   const data = await apiRequest<ParkingLot[]>(
     PARKING_LOT_URL + `/parkinglot_v1/parkinglot/own/${queryParams.userId}`,
@@ -39,6 +39,7 @@ export const useGetParkingLotsByUserId = (
   return useQuery({
     queryKey: ["parking-lot", input.queryParams],
     queryFn: async () => getParkingLotByUserId(input),
+    refetchOnWindowFocus: false,
     refetchInterval: 0,
   });
 };

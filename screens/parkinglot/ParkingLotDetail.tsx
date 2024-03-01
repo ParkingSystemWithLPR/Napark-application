@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
@@ -31,7 +31,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
     auth: { accessToken, authenticate },
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (getParkingLot.data) {
       if (getParkingLot.data[0]) setParkingLot(getParkingLot.data[0]);
     }
@@ -49,7 +49,11 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
           />
           <MapView
             style={styles.map}
-            initialRegion={parkingLot.coord}
+            initialRegion={{
+              ...parkingLot.coord,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
             zoomEnabled
           >
             <Marker
