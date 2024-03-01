@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -29,7 +29,7 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
         ]}
         onPress={onPress}
       >
-        <View style={styles.cardContainer}>
+        <View style={styles.innerContainer}>
           <Image
             style={styles.image}
             source={require("../../assets/images/icon.png")}
@@ -82,19 +82,17 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
     marginVertical: 5,
     marginHorizontal: 10,
   },
-  cardContainer: {
+  innerContainer: {
     width: "100%",
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    marginBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
   image: {
     borderRadius: 8,
@@ -120,3 +118,4 @@ const styles = StyleSheet.create({
   },
   icon: {},
 });
+

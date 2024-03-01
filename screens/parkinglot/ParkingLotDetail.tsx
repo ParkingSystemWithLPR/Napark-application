@@ -4,7 +4,6 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
-import BodyText from "../../components/text/BodyText";
 import DetailText from "../../components/text/DetailText";
 import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
@@ -106,26 +105,26 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
           </SectionAppForm>
           <SectionAppForm title={"Traffic"} icon={"car"}>
             <View style={styles.textWrapper}>
-              <BodyText text={"1st floor"} textStyle={styles.text} />
-              <BodyText text={"20/20"} />
+              <DetailText text={"1st floor"} textStyle={styles.text} />
+              <DetailText text={"20/20"} />
             </View>
             <View style={styles.textWrapper}>
-              <BodyText text={"2st floor"} textStyle={styles.text} />
-              <BodyText text={"19/20"} />
+              <DetailText text={"2st floor"} textStyle={styles.text} />
+              <DetailText text={"19/20"} />
             </View>
             <View style={styles.textWrapper}>
-              <BodyText text={"3st floor"} textStyle={styles.text} />
-              <BodyText text={"20/20"} />
+              <DetailText text={"3st floor"} textStyle={styles.text} />
+              <DetailText text={"20/20"} />
             </View>
             <View style={styles.textWrapper}>
-              <BodyText text={"4st floor"} textStyle={styles.text} />
-              <BodyText text={"11/12"} />
+              <DetailText text={"4st floor"} textStyle={styles.text} />
+              <DetailText text={"11/12"} />
             </View>
           </SectionAppForm>
           <SectionAppForm title={"Business hours"} icon={"clock"}>
             <View style={styles.textWrapper}>
-              <BodyText text={"Monday - Friday"} textStyle={styles.text} />
-              <BodyText text={"06:30 - 23.59"} />
+              <DetailText text={"Monday - Friday"} textStyle={styles.text} />
+              <DetailText text={"06:30 - 23.59"} />
             </View>
           </SectionAppForm>
         </View>
@@ -139,11 +138,14 @@ export default ParkingLotDetail;
 const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 8,
-    paddingVertical: 8,
+    paddingTop: 8,
+    paddingBottom: 20,
     gap: 15,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.gray[300],
   },
   bodyContainer: {
     gap: 10,

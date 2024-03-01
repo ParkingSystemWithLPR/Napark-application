@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Colors from "../../constants/color";
-import SubHeaderText from "../text/SubHeaderText";
+import { View, StyleSheet} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+import Colors from "../../constants/color";
+import BodyText from "../text/BodyText";
 
 type SectionAppFormProps = {
   title: string;
@@ -24,10 +24,9 @@ const SectionAppForm: React.FC<SectionAppFormProps> = ({
             name={icon}
             size={20}
             color={Colors.red[400]}
-            // style={styles.icon}
           />
         </View>
-        <SubHeaderText text={title}/>
+        <BodyText text={title}/>
       </View>
       <View style={styles.contentContainer}>
         {children}
@@ -51,6 +50,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray[100],
   },
   contentContainer: {
-    paddingLeft: 12,
+    paddingLeft: 30,
   }
 });

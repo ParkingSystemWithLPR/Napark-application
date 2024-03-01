@@ -13,45 +13,46 @@ export type RoleCardProps = {
 
 const RoleCard: React.FC<RoleCardProps> = ({ roleName, member, onPress }) => {
   return (
-    <Pressable
-      android_ripple={{ color: Colors.gray[600] }}
-      style={({ pressed }) => [
-        styles.card,
-        pressed ? styles.cardPressed : null,
-      ]}
-      onPress={onPress}
-    >
-      <View style={styles.cardContainer}>
-        <View style={styles.contentWrapper}>
-          <MaterialCommunityIcons
-            name={"human-male-female-child"}
-            size={20}
-            color={Colors.gray[800]}
-          />
-          <View style={styles.textContainer}>
-            <BodyText text={roleName} textStyle={{color: Colors.gray[900]}}/>
-            <BodyText text={member + ' Member(s)'} textStyle={{color: Colors.gray[700]}}/>
+    <View style={styles.container}>
+      <Pressable
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [
+          styles.card,
+          pressed ? styles.cardPressed : null,
+        ]}
+        onPress={onPress}
+      >
+        <View style={styles.innerContainer}>
+          <View style={styles.contentWrapper}>
+            <MaterialCommunityIcons
+              name={"human-male-female-child"}
+              size={20}
+              color={Colors.gray[800]}
+            />
+            <View style={styles.textContainer}>
+              <BodyText text={roleName} textStyle={{color: Colors.gray[900]}}/>
+              <BodyText text={member + ' Member(s)'} textStyle={{color: Colors.gray[700]}}/>
+            </View>
           </View>
+          <MaterialCommunityIcons
+            name={"chevron-right"}
+            size={35}
+            color={Colors.gray[800]}
+            style={styles.icon}
+          />
         </View>
-        <MaterialCommunityIcons
-          name={"chevron-right"}
-          size={35}
-          color={Colors.gray[800]}
-          style={styles.icon}
-        />
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
 export default RoleCard;
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    width: "100%",
-    borderRadius: 8,
+  container: {
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
+    borderRadius: 8,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -59,12 +60,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 4,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    marginBottom: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
+  innerContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
   contentWrapper: {
     flexDirection: "row",

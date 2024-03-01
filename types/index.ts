@@ -28,11 +28,6 @@ export type RootParamList = {
   AllBookings: undefined;
   BookingStack: { screen: string };
   BookingSummary: undefined;
-  ConfigParkingLot: undefined;
-  ParkingLotsList: undefined;
-  ParkingLotDetail: undefined;
-  RequestParkingLot: undefined;
-  RoleList: undefined;
 };
 
 export type ButtonProps = {
