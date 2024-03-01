@@ -1,55 +1,63 @@
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { RootParamList } from "../types";
-import Other from "../screens/other/Other";
-import ParkingLotsList from "../screens/configuration-parking-lot/ParkingLotsList";
-import ParkingLotDetail from "../screens/configuration-parking-lot/ParkingLotDetail";
+import IconButton from "../components/button/IconButton";
 import Colors from "../constants/color";
-import RoleList from "../screens/role/RoleList";
+import ChangePassword from "../screens/authentication/ChangePassword";
+import CarInfo from "../screens/other/CarInfo";
+import CarInfoSetup from "../screens/other/CarInfoSetup";
+import { RootParamList } from "../types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
 const OtherStack = () => {
+  const navigation = useNavigation();
+
+  const backToOtherPage = () => {
+    return (
+      <IconButton
+        icon={"chevron-left"}
+        size={28}
+        color={Colors.white}
+        buttonStyle={{ padding: 0 }}
+        onPress={() => navigation.goBack()}
+      />
+    );
+  };
   return (
     <Stack.Navigator
-      initialRouteName="Others"
       screenOptions={{
-        headerShown: true,
-        title: "Menu",
-        headerTitleStyle: {
-          fontSize: 18,
-        },
         headerStyle: {
           backgroundColor: Colors.red[400].toString(),
         },
+        headerTitleStyle: {
+          fontSize: 18,
+        },
         headerTintColor: Colors.white.toString(),
-        headerTitleAlign: "left",
-        headerBackTitleVisible: false,
+        headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="Other" component={Other} />
       <Stack.Screen
-        name="ParkingLotsList"
-        component={ParkingLotsList}
+        name="CarInfo"
+        component={CarInfo}
         options={{
-          headerTitle: "My parking space",
+          title: "My car",
+          headerLeft: backToOtherPage,
         }}
       />
       <Stack.Screen
-        name="ParkingLotDetail"
-        component={ParkingLotDetail}
+        name="CarInfoSetup"
+        component={CarInfoSetup}
+        options={{ title: "Set up" }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
         options={{
-          headerTitle: "Parking space detail",
+          title: "",
+          headerLeft: backToOtherPage,
         }}
       />
-       <Stack.Screen
-        name="RoleList"
-        component={RoleList}
-        options={{
-          headerTitle: "Role",
-        }}
-      />
-      
     </Stack.Navigator>
   );
 };

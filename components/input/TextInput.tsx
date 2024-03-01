@@ -3,34 +3,17 @@ import {
   StyleSheet,
   View,
   TextInput,
-  TouchableOpacity,
   Platform,
   NativeSyntheticEvent,
   TextInputSubmitEditingEventData,
 } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
+import { AutoCapitalizeType } from "../../enum/AutoCapitalizeType";
+import { InputType } from "../../enum/InputType";
+import IconButton from "../button/IconButton";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
-
-export enum InputType {
-  Decimal = "decimal",
-  Email = "email",
-  None = "none",
-  Numeric = "numeric",
-  Search = "search",
-  Tel = "tel",
-  Text = "text",
-  URL = "url",
-}
-
-export enum AutoCapitalizeType {
-  None = "none",
-  Sentences = "sentences",
-  Words = "words",
-  Characters = "characters",
-}
 
 export type InputValueType = {
   value: string;
@@ -43,7 +26,7 @@ export type TextInputProps = {
   onChangeText: (enteredValue: string) => void;
   title?: string;
   prefix?: string;
-  withTitile?: boolean;
+  withTitle?: boolean;
   icon?: ReactNode;
   autoCapitalize?: AutoCapitalizeType;
   inputMode?: InputType;
@@ -74,7 +57,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   errorText,
   containerStyle,
   textInputStyle,
-  withTitile = true,
+  withTitle = true,
   icon,
   onSubmitEditing,
 }) => {
@@ -85,7 +68,7 @@ const MyTextInput: React.FC<TextInputProps> = ({
   };
   return (
     <View style={[styles.outerContainer, containerStyle]}>
-      {withTitile && title && (
+      {withTitle && title && (
         <View style={styles.titleContainer}>
           <SubHeaderText text={title} />
           {isRequired && (
@@ -122,14 +105,13 @@ const MyTextInput: React.FC<TextInputProps> = ({
           onSubmitEditing={onSubmitEditing}
         />
         {secureTextEntry ? (
-          <TouchableOpacity onPress={toggleSecureEntry}>
-            <MaterialCommunityIcons
-              name={showPassword ? "eye-off" : "eye"}
-              size={20}
-              color={Colors.gray[800]}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
+          <IconButton
+            icon={showPassword ? "eye-off" : "eye"}
+            size={20}
+            color={Colors.gray[800]}
+            onPress={toggleSecureEntry}
+            buttonStyle={styles.icon}
+          />
         ) : (
           icon
         )}
@@ -153,19 +135,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.gray[800],
     borderRadius: 8,
     padding: 8,
-    paddingVertical: Platform.OS === "android" ? 5 : null,
+    paddingVertical: Platform.OS === "android" ? 13 : 16,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
+    marginVertical: 4,
   },
   input: {
     flex: 1,
     fontFamily: "Poppins-Medium",
-    fontSize: 12,
+    fontSize: 14,
   },
   icon: {
-    marginLeft: 5,
+    margin: 0,
+    padding: 0,
+    marginHorizontal: 5,
   },
   errorInputContainer: {
     borderColor: Colors.red[600],

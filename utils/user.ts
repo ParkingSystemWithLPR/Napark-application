@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import apiRequest, { METHOD } from "./http";
+import apiRequest, { HTTPMethod } from "./http";
 
 const USER_URL = process.env.EXPO_PUBLIC_USER_API_URL + "/user_v1";
 
@@ -48,7 +48,7 @@ const getProfile = async (
 ): Promise<Profile> => {
   const profile = await apiRequest<Profile>(
     USER_URL + "/user/myinfo",
-    METHOD.GET,
+    HTTPMethod.GET,
     accessToken,
     authenticate
   );
@@ -63,7 +63,7 @@ const editProfile = async (
 ) => {
   await apiRequest(
     USER_URL + "/user/edit",
-    METHOD.POST,
+    HTTPMethod.POST,
     accessToken,
     authenticate,
     newProfile

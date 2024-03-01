@@ -2,17 +2,18 @@ import { Platform, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
+import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
 
-export type ChangeScreenTabProps = {
-  icon: string;
-  screenName: string;
+export type CarInfoCardProps = {
+  licensePlate: string;
+  province: string;
   onPress: () => void;
 };
 
-const ChangeScreenTab: React.FC<ChangeScreenTabProps> = ({
-  icon,
-  screenName,
+const CarInfoCard: React.FC<CarInfoCardProps> = ({
+  licensePlate,
+  province,
   onPress,
 }) => {
   return (
@@ -22,17 +23,11 @@ const ChangeScreenTab: React.FC<ChangeScreenTabProps> = ({
         style={({ pressed }) => [pressed && styles.pressed]}
         onPress={onPress}
       >
-        <View style={styles.tabContainer}>
-          <MaterialCommunityIcons
-            name={icon}
-            size={20}
-            color={Colors.gray[800]}
-            style={styles.icon}
-          />
-          <SubHeaderText
-            text={screenName}
-            containerStyle={styles.textContainer}
-          />
+        <View style={styles.innerContainer}>
+          <View style={styles.infoContainer}>
+            <HeaderText text={licensePlate} textStyle={styles.licenseText} />
+            <SubHeaderText text={province} />
+          </View>
           <MaterialCommunityIcons
             name="chevron-right"
             size={20}
@@ -44,11 +39,10 @@ const ChangeScreenTab: React.FC<ChangeScreenTabProps> = ({
   );
 };
 
-export default ChangeScreenTab;
+export default CarInfoCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
     borderRadius: 8,
@@ -59,19 +53,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: Platform.OS === "android" ? 4 : 2,
-  },
-  tabContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 15,
-  },
-  icon: {
+    marginVertical: 5,
     marginHorizontal: 10,
   },
-  textContainer: {
-    flex: 1,
+  innerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+  },
+  infoContainer: {},
+  licenseText: {
+    color: Colors.black,
   },
   pressed: {
     opacity: 0.5,

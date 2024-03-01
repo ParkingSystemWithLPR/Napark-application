@@ -18,8 +18,10 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
     >
       <ChangeScreenTab
         icon="lock-outline"
-        screenName="Password & Security"
-        onPress={() => {}}
+        screenName="Change password"
+        onPress={() => {
+          navigation.push("OtherStack", { screen: "ChangePassword" });
+        }}
       />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
@@ -29,7 +31,9 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
       <ChangeScreenTab
         icon="car-outline"
         screenName="Car info settings"
-        onPress={() => {}}
+        onPress={() => {
+          navigation.push("OtherStack", { screen: "CarInfo" });
+        }}
       />
       <ChangeScreenTab
         icon="cog-outline"

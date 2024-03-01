@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import MainPageBottomTab from "./MainPageBottomTab";
-import ChangePassword from "../screens/authentication/ChangePassword";
+import OtherStack from "./OtherStack";
 import ResetPassword from "../screens/authentication/ResetPassword";
 import { RootParamList } from "../types";
 
@@ -16,8 +16,8 @@ const AuthenticatedStack = () => {
       }}
     >
       <Stack.Screen name="MainScreen" component={MainPageBottomTab} />
-      <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
+      <Stack.Screen name="OtherStack" component={OtherStack} />
     </Stack.Navigator>
   );
 };
