@@ -30,7 +30,8 @@
         {
           "fonts": [
             "./assets/fonts/Poppins-Medium.ttf",
-            "./assets/fonts/Poppins-SemiBold.ttf"
+            "./assets/fonts/Poppins-SemiBold.ttf",
+            "./assets/fonts/Poppins-Regular.ttf"
           ]
         }
       ],
