@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -10,9 +10,8 @@ export type ParkingSpaceCardProps = {
   parkingSpaceName: string;
   businessHours: string;
   availabilty: number;
-  onPress:() => void;
-}
-
+  onPress: () => void;
+};
 
 const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
   parkingSpaceName,
@@ -20,61 +19,75 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
   availabilty,
   onPress,
 }) => {
-
   return (
-    <Pressable
-      android_ripple={{ color: Colors.gray[600] }}
-      style={({ pressed }) => [
-        styles.card,
-        pressed ? styles.cardPressed : null,
-      ]}
-      onPress={onPress}
-    >
-      <View style={styles.cardContainer}>
-        <Image
-          style={styles.image}
-          source={require('../../assets/images/icon.png')}
-        />
-        <View style={styles.textContainer}>
-          <View style={styles.descriptionWrapper}>
-            <SubHeaderText text={parkingSpaceName}/>  
+    <View style={styles.container}>
+      <Pressable
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [
+          styles.card,
+          pressed ? styles.cardPressed : null,
+        ]}
+        onPress={onPress}
+      >
+        <View style={styles.cardContainer}>
+          <Image
+            style={styles.image}
+            source={require("../../assets/images/icon.png")}
+          />
+          <View style={styles.textContainer}>
+            <View style={styles.descriptionWrapper}>
+              <SubHeaderText text={parkingSpaceName} />
+            </View>
+            <View style={styles.descriptionWrapper}>
+              <MaterialCommunityIcons
+                name={"clock"}
+                size={20}
+                color={Colors.gray[800]}
+                style={styles.icon}
+              />
+              <BodyText text={businessHours} />
+            </View>
+            <View style={styles.descriptionWrapper}>
+              <MaterialCommunityIcons
+                name={"car"}
+                size={20}
+                color={Colors.gray[800]}
+                style={styles.icon}
+              />
+              <BodyText text={availabilty + " slot left!!"} />
+            </View>
           </View>
-          <View style={styles.descriptionWrapper}>
-            <MaterialCommunityIcons
-              name={"clock"}
-              size={20}
-              color={Colors.gray[800]}
-              style={styles.icon}
-            />
-            <BodyText text={businessHours}/>
-          </View>
-          <View style={styles.descriptionWrapper}>
-            <MaterialCommunityIcons
-              name={"car"}
-              size={20}
-              color={Colors.gray[800]}
-              style={styles.icon}
-            />
-            <BodyText text={availabilty + ' slot left!!'}/>
-          </View>
+          <MaterialCommunityIcons
+            name={"chevron-right"}
+            size={30}
+            color={Colors.gray[800]}
+            style={styles.icon}
+          />
         </View>
-        <MaterialCommunityIcons
-          name={"chevron-right"}
-          size={30}
-          color={Colors.gray[800]}
-          style={styles.icon}
-        />
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
 export default ParkingSpaceCard;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
+    borderRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
   cardContainer: {
     width: "100%",
-    backgroundColor: Colors.white,
     borderRadius: 8,
     paddingHorizontal: 15,
     paddingVertical: 12,
@@ -82,14 +95,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 4,
   },
   image: {
     borderRadius: 8,
@@ -113,7 +118,5 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.white,
   },
-  icon: {
-
-  }
+  icon: {},
 });

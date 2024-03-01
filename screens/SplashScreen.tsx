@@ -15,6 +15,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
   const spinValue = useRef(new Animated.Value(0)).current;
   const { authenticate } = useAuth();

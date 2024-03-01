@@ -5,6 +5,7 @@ import MapView, { Marker } from "react-native-maps";
 
 import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
 import BodyText from "../../components/text/BodyText";
+import DetailText from "../../components/text/DetailText";
 import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
 import ImageContainer from "../../components/ui/ImageContainer";
@@ -92,7 +93,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             <ImageContainer images={["image1", "image2"]} />
           </SectionAppForm>
           <SectionAppForm title={"Location"} icon={"google-maps"}>
-            <BodyText
+            <DetailText
               textStyle={styles.text}
               text={formatAddress({
                 address: parkingLot.address,
