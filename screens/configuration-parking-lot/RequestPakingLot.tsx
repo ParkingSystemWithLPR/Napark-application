@@ -1,13 +1,13 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootParamList } from "../../types";
-import BodyContainer from "../../components/ui/BodyContainer";
 import TextInput, { InputValueType } from "../../components/input/TextInput";
+import BodyContainer from "../../components/ui/BodyContainer";
+import { RootParamList } from "../../types";
 
-export type RequestParkingLotProps = {} & NativeStackScreenProps<
+export type RequestParkingLotProps = NativeStackScreenProps<
   RootParamList,
   "RequestParkingLot"
 >;

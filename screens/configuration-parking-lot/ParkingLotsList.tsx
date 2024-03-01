@@ -1,18 +1,18 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
-import { RootParamList } from "../../types";
 import ParkingSpaceCard from "../../components/card/ParkingSpaceCard";
+import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
-import HeaderText from "../../components/text/HeaderText";
 import { useGetParkingLotsByUserId } from "../../store/api/useGetParkingLotsByUserId";
+import { RootParamList } from "../../types";
 import { ParkingLot } from "../../types/parking-lot/ParkingLot";
 
-export type ParkingLotsListProps = {} & NativeStackScreenProps<
+export type ParkingLotsListProps = NativeStackScreenProps<
   RootParamList,
   "ParkingLotsList"
 >;
