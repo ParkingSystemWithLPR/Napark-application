@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
@@ -43,7 +43,6 @@ export default CarInfoCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
     borderRadius: 8,
@@ -53,8 +52,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
     marginVertical: 5,
+    marginHorizontal: 10,
   },
   innerContainer: {
     width: "100%",

@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "../../components/button/PrimaryButton";
 import CarInfoCard from "../../components/card/CarInfoCard";
+import BodyText from "../../components/text/BodyText";
 import SubHeaderText from "../../components/text/SubHeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
@@ -14,21 +15,33 @@ import { RootParamList } from "../../types";
 export type CarInfoProps = NativeStackScreenProps<RootParamList, "CarInfo">;
 
 const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
+  const emptyCar = useCallback(() => {
+    return (
+      <View style={styles.emptyContainer}>
+        <BodyText text="You haven't set up the car yet!" />
+      </View>
+    );
+  }, []);
+
   const defaultCar = useCallback(() => {
-    const car = MOCK_LICENSE_PLATE.filter((car) => car.is_default)[0];
+    const car = MOCK_LICENSE_PLATE.filter((car) => car.is_default);
     return (
       <View style={styles.defaultCarContainer}>
         <SubHeaderText text="Default" />
-        <CarInfoCard
-          licensePlate={car.license_plate}
-          province={car.province_of_reg}
-          onPress={() => {
-            navigation.navigate("CarInfoSetup", {
-              mode: ActionMode.EDIT,
-              carInfo: car,
-            });
-          }}
-        />
+        {car.length > 0 ? (
+          <CarInfoCard
+            licensePlate={car[0].license_plate}
+            province={car[0].province_of_reg}
+            onPress={() => {
+              navigation.navigate("CarInfoSetup", {
+                mode: ActionMode.EDIT,
+                carInfo: car[0],
+              });
+            }}
+          />
+        ) : (
+          emptyCar()
+        )}
       </View>
     );
   }, []);
@@ -38,21 +51,26 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
     return (
       <View style={styles.otherCarsContainer}>
         <SubHeaderText text="Other cars" />
-        <FlatList
-          data={filteredCar}
-          renderItem={({ item }) => (
-            <CarInfoCard
-              licensePlate={item.license_plate}
-              province={item.province_of_reg}
-              onPress={() => {
-                navigation.navigate("CarInfoSetup", {
-                  mode: ActionMode.EDIT,
-                  carInfo: item,
-                });
-              }}
-            />
-          )}
-        />
+        {filteredCar.length > 0 ? (
+          <FlatList
+            data={filteredCar}
+            renderItem={({ item }) => (
+              <CarInfoCard
+                licensePlate={item.license_plate}
+                province={item.province_of_reg}
+                onPress={() => {
+                  navigation.navigate("CarInfoSetup", {
+                    mode: ActionMode.EDIT,
+                    carInfo: item,
+                  });
+                }}
+              />
+            )}
+            overScrollMode="never"
+          />
+        ) : (
+          emptyCar()
+        )}
       </View>
     );
   }, []);
@@ -90,6 +108,9 @@ const styles = StyleSheet.create({
   otherCarsContainer: {
     flex: 1,
     gap: 5,
+    marginVertical: 10,
+  },
+  emptyContainer: {
     marginVertical: 10,
   },
 });

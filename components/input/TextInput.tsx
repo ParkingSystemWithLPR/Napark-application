@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
     marginVertical: 4,
   },
   input: {

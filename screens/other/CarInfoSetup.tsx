@@ -45,6 +45,7 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
         placeholder="Enter your license plate"
         value={licensePlate}
         onChangeText={setLicensePlate}
+        isRequired={mode === ActionMode.EDIT}
       />
       <DropdownInput
         title="Province of registration"
@@ -53,6 +54,7 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
         onSelect={setProvince}
         items={THAI_PROVINCE}
         withSearch
+        isRequired={mode === ActionMode.EDIT}
       />
       <CheckboxInput
         text="Set as default"

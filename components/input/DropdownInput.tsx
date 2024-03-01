@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 import Colors from "../../constants/color";
@@ -52,6 +52,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         search={withSearch}
         searchPlaceholder="Search..."
         style={styles.dropdown}
+        selectedTextStyle={styles.text}
         activeColor={Colors.red[400].toString()}
         autoScroll={false}
       />
@@ -82,6 +83,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
+  },
+  text: {
+    fontSize: 14,
   },
 });
