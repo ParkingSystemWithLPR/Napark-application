@@ -37,6 +37,6 @@ export const useGetParkingLot = (
   return useQuery({
     queryKey: ["parking-lot", input.queryParams],
     queryFn: async () => getParkingLot(input),
-    refetchInterval: false,
+    refetchInterval: 0,
   });
 };
