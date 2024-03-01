@@ -13,6 +13,9 @@ export const formatDateAndTime = (date: Date) => {
   };
 };
 
+export const formatTime = (date: Date) => {
+  return getFormatedDate(date, "hh:mm a");
+};
 export const formatStringDate = (date: string) => {
   return date.replaceAll("/", "-");
 };

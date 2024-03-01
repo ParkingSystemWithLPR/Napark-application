@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import DatePicker from "react-native-modern-datepicker";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
-import ModalOverlay from "../ui/ModalOverlay";
 
 import Colors from "@/constants/color";
 
@@ -42,8 +35,8 @@ const TimeInput: React.FC<TimeInputProps> = ({
   const closeTimePicker = () => {
     setOpenTimePicker(false);
   };
-  const timechangeHandler = (date: string) => {
-    onTimeChange(date);
+  const timechangeHandler = (date: Date) => {
+    onTimeChange(formatTime(date));
     closeTimePicker();
   };
 
@@ -70,20 +63,12 @@ const TimeInput: React.FC<TimeInputProps> = ({
           <MaterialCommunityIcons name="clock-outline" />
         </View>
       </Pressable>
-      <ModalOverlay visible={isOpenTimePicker} closeModal={closeTimePicker}>
-        <TouchableWithoutFeedback>
-          <View style={styles.centeredContent}>
-            <View style={styles.dateTimePickerContainer}>
-              <DatePicker
-                mode="time"
-                onTimeChange={timechangeHandler}
-                minuteInterval={1}
-                current={value ?? ""}
-              />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </ModalOverlay>
+      <DateTimePickerModal
+        isVisible={isOpenTimePicker}
+        mode="time"
+        onConfirm={timechangeHandler}
+        onCancel={closeTimePicker}
+      />
     </View>
   );
 };

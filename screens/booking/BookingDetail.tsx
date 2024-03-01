@@ -1,13 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  TouchableHighlight,
-} from "react-native";
+import { View, StyleSheet, ScrollView, Alert, Pressable } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BookingCardSummary from "../../components/booking/BookingCardSummary";
@@ -55,7 +49,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
     price,
   }) => {
     return (
-      <TouchableHighlight onPress={handleNavigation}>
+      <Pressable onPress={handleNavigation}>
         <View style={styles.recommendSlotContainer}>
           <View style={styles.rowContainer}>
             <View style={styles.parkingOutline}>
@@ -71,7 +65,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
           </View>
           <BodyText text={price}></BodyText>
         </View>
-      </TouchableHighlight>
+      </Pressable>
     );
   };
   return (

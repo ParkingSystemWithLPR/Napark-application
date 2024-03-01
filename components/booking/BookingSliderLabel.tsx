@@ -9,7 +9,7 @@ import BodyText from "../text/BodyText";
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
-const width = 75;
+const width = 80;
 const height = 40;
 type LabelBaseProps = {
   position: number;
@@ -81,6 +81,10 @@ const styles = StyleSheet.create({
     bottom: "100%",
     width: width,
     height: height,
+    elevation: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   sliderLabelTextContainer: {
     backgroundColor: Colors.white,
