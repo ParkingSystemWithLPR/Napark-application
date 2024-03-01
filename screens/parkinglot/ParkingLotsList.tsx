@@ -7,12 +7,12 @@ import PrimaryButton from "../../components/button/PrimaryButton";
 import ParkingSpaceCard from "../../components/card/ParkingSpaceCard";
 import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
+import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import Colors from "../../constants/color";
 import { useGetParkingLotsByUserId } from "../../store/api/useGetParkingLotsByUserId";
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { ParkingLot } from "../../types/parking-lot/ParkingLot";
-import LoadingOverlay from "../../components/ui/LoadingOverlay";
 
 export type ParkingLotsListProps = NativeStackScreenProps<
   RootParamList,

@@ -8,6 +8,7 @@ import DetailText from "../../components/text/DetailText";
 import HeaderText from "../../components/text/HeaderText";
 import BodyContainer from "../../components/ui/BodyContainer";
 import ImageContainer from "../../components/ui/ImageContainer";
+import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import SectionAppForm from "../../components/ui/SectionAppForm";
 import Colors from "../../constants/color";
 import { useGetParkingLot } from "../../store/api/useGetParkingLotById";
@@ -24,6 +25,7 @@ export type ParkingLotDetailProps = NativeStackScreenProps<
 
 const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
   const [parkingLot, setParkingLot] = useState<ParkingLot>(mockParkingLot);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
   const getParkingLot = useGetParkingLot({
@@ -34,8 +36,10 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
   useLayoutEffect(() => {
     if (getParkingLot.data) {
       if (getParkingLot.data[0]) setParkingLot(getParkingLot.data[0]);
+      setLoading(false);
     }
   }, [getParkingLot.data]);
+  if(isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   if (!parkingLot) return <></>;
 
