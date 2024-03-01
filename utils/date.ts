@@ -6,6 +6,13 @@ export const formatDate = (date: Date) => {
   return getFormatedDate(date, "YYYY-MM-DD");
 };
 
+export const formatDateAndTime = (date: Date) => {
+  return {
+    date: getFormatedDate(date, "YYYY-MM-DD"),
+    time: getFormatedDate(date, "h:m"),
+  };
+};
+
 export const formatStringDate = (date: string) => {
   return date.replaceAll("/", "-");
 };

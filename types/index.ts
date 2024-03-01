@@ -19,6 +19,7 @@ export type RootParamList = {
   OtherStack: { screen: string };
   CarInfo: undefined;
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
+  AllBookings: undefined;
 };
 
 export type ButtonProps = {
