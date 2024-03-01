@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import ConfirmBookingModalContent from "../../components/booking/ConfirmBookingModalContent";
 import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import BodyText from "../../components/text/BodyText";
@@ -19,30 +18,25 @@ export type BookingSummaryProps = NativeStackScreenProps<
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-  const closeModal = () => {
-    setIsOpenModal(false);
-    if (isConfirm) {
-      //reason to use this method https://github.com/react-navigation/react-navigation/issues/11259
-      setTimeout(() => {
-        navigation.replace("MainScreen", { screen: "MyBooking" });
-      }, 0);
-    }
-  };
-  function sendCreateRequest() {
+  const sendCreateRequest = () => {
     setIsSendingRequest(true);
     setTimeout(() => {
       setIsSendingRequest(false);
     }, 2000);
-  }
-  const handleConfirm = () => {
-    sendCreateRequest();
-    setIsConfirm(true);
   };
+  const openModal = () => {
+    setIsOpenModal(true);
+    sendCreateRequest();
+  };
+  const closeModal = () => {
+    setIsOpenModal(false);
+    //reason to use this method https://github.com/react-navigation/react-navigation/issues/11259
+    setTimeout(() => {
+      navigation.replace("MainScreen", { screen: "MyBooking" });
+    }, 0);
+  };
+
   type BookingAttribute = {
     attribute: string;
     value: string;
@@ -85,6 +79,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
           <RenderAttribute attribute="Check-in Time" value="11:00 am" />
           <RenderAttribute attribute="Check-out Time (Est)" value="05:00 pm" />
           <RenderAttribute attribute="Specifications" value="None" />
+          <RenderAttribute attribute="Cost per Unit" value="15฿/hr" />
         </View>
         <View style={styles.routeContainer}>
           <BodyText text={"Don`t know the route?"} />
@@ -96,21 +91,14 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton title={"Book"} onPress={openModal} />
+        <PrimaryButton title={"Confirm Booking"} onPress={openModal} />
       </View>
       <ModalOverlay visible={isOpenModal} closeModal={closeModal}>
         <View style={styles.modalBackground}>
-          {!isConfirm ? (
-            <ConfirmBookingModalContent
-              handlecloseModal={closeModal}
-              handleSendRequest={handleConfirm}
-            />
-          ) : (
-            <ProcessingModalContent
-              isCreatingBooking={isSendingRequest}
-              handlecloseModal={closeModal}
-            />
-          )}
+          <ProcessingModalContent
+            isCreatingBooking={isSendingRequest}
+            handlecloseModal={closeModal}
+          />
         </View>
       </ModalOverlay>
     </View>
