@@ -1,18 +1,18 @@
-import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StyleSheet, View } from "react-native";
 
-import { RootParamList } from "../../types";
-import BodyContainer from "../../components/ui/BodyContainer";
-import SubHeaderText from "../../components/text/SubHeaderText";
 import RoleCard from "../../components/card/RoleCard";
+import SubHeaderText from "../../components/text/SubHeaderText";
+import BodyContainer from "../../components/ui/BodyContainer";
 import Colors from "../../constants/color";
+import { RootParamList } from "../../types";
 
-export type RoleListProps = {} & NativeStackScreenProps<
+export type RoleListProps =  NativeStackScreenProps<
   RootParamList,
   "RoleList"
 >;
 
-const RoleList: React.FC<RoleListProps> = ({ navigation }) => {
+const RoleList: React.FC<RoleListProps> = () => {
   return (
     <BodyContainer>
       <SubHeaderText text="Everybody" />
@@ -23,10 +23,8 @@ const RoleList: React.FC<RoleListProps> = ({ navigation }) => {
       </View>
       <SubHeaderText text="Other Roles" />
       <View style={styles.roleCardContainer}>
-        <RoleCard roleName="Everybody" member="All" onPress={() => {}} />
-        <RoleCard roleName="Everybody" member="All" onPress={() => {}} />
-        <RoleCard roleName="Everybody" member="All" onPress={() => {}} />
-        <RoleCard roleName="Everybody" member="All" onPress={() => {}} />
+        <RoleCard roleName="VVIP" member="2" onPress={() => {}} />
+        <RoleCard roleName="C-level" member="10" onPress={() => {}} />
       </View>
     </BodyContainer>
   );

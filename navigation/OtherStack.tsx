@@ -4,12 +4,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IconButton from "../components/button/IconButton";
 import Colors from "../constants/color";
 import ChangePassword from "../screens/authentication/ChangePassword";
-import ParkingLotDetail from "../screens/configuration-parking-lot/ParkingLotDetail";
-import ParkingLotsList from "../screens/configuration-parking-lot/ParkingLotsList";
-import RequestParkingLot from "../screens/configuration-parking-lot/RequestPakingLot";
 import CarInfo from "../screens/other/CarInfo";
 import CarInfoSetup from "../screens/other/CarInfoSetup";
 import Other from "../screens/other/Other";
+import ParkingLotDetail from "../screens/parkinglot/ParkingLotDetail";
+import ParkingLotsList from "../screens/parkinglot/ParkingLotsList";
+import RequestParkingLot from "../screens/parkinglot/RequestPakingLot";
+import RoleList from "../screens/role/RoleList";
 import { RootParamList } from "../types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
@@ -88,6 +89,14 @@ const OtherStack = () => {
         component={ParkingLotDetail}
         options={{
           title: "ParkingSpaceDetail",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="RoleList"
+        component={RoleList}
+        options={{
+          title: "Role",
           headerLeft: backToOtherPage,
         }}
       />

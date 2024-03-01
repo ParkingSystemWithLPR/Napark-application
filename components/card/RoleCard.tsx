@@ -1,10 +1,9 @@
 import React from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
-import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export type RoleCardProps = {
   roleName: string;
@@ -50,8 +49,16 @@ export default RoleCard;
 const styles = StyleSheet.create({
   cardContainer: {
     width: "100%",
-    backgroundColor: Colors.gray[100],
     borderRadius: 8,
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
     paddingHorizontal: 15,
     paddingVertical: 8,
     marginBottom: 10,
