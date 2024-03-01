@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator<RootParamList>();
 const AuthenticatedStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="BookingStack"
+      initialRouteName="MainScreen"
       screenOptions={{
         headerShown: false,
       }}
