@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import BookingStack from "./BookingStack";
 import MainPageBottomTab from "./MainPageBottomTab";
 import OtherStack from "./OtherStack";
 import ResetPassword from "../screens/authentication/ResetPassword";
@@ -10,7 +11,7 @@ const Stack = createNativeStackNavigator<RootParamList>();
 const AuthenticatedStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="MainScreen"
+      initialRouteName="BookingStack"
       screenOptions={{
         headerShown: false,
       }}
@@ -18,6 +19,7 @@ const AuthenticatedStack = () => {
       <Stack.Screen name="MainScreen" component={MainPageBottomTab} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="OtherStack" component={OtherStack} />
+      <Stack.Screen name="BookingStack" component={BookingStack} />
     </Stack.Navigator>
   );
 };
