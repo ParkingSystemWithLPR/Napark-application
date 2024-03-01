@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
+import Colors from "../../constants/color";
 import { formatDateAndTime } from "../../utils/date";
 import { MOCKED_SESSIONS } from "../../utils/mockData";
 
@@ -49,5 +50,6 @@ export default SessionsList;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
+    backgroundColor: Colors.gray[50]
   },
 });
