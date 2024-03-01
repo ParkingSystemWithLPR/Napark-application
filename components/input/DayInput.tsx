@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-modern-datepicker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -98,10 +98,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: 5,
-    borderWidth: 1,
-    borderColor: Colors.gray[800],
     borderRadius: 8,
-    padding: 8,
+    padding: 16,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    backgroundColor: Colors.white,
+    elevation: Platform.OS === "android" ? 4 : 2,
+    marginVertical: 4,
   },
   text: {
     fontSize: 12,

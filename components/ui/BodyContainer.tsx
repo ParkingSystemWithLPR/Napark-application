@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.gray[50],
   },
 });

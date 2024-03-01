@@ -18,7 +18,16 @@ const MainPageBottomTab = () => {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Colors.red[400].toString(),
-        tabBarInactiveTintColor: Colors.gray[900].toString(),
+        tabBarInactiveTintColor: Colors.gray[800].toString(),
+        headerTitleStyle: {
+          fontSize: 18,
+          color: Colors.white,
+        },
+        headerStyle: {
+          backgroundColor: Colors.red[400],
+          shadowOpacity: 0,
+        },
+        headerTitleAlign: "center",
       }}
     >
       <BottomTab.Screen
@@ -77,14 +86,6 @@ const MainPageBottomTab = () => {
               color={color}
             />
           ),
-          headerTitleStyle: {
-            fontSize: 18,
-            color: Colors.white,
-          },
-          headerStyle: {
-            backgroundColor: Colors.red[400],
-            shadowOpacity: 0,
-          },
         }}
       />
       <BottomTab.Screen
@@ -101,14 +102,6 @@ const MainPageBottomTab = () => {
               color={color}
             />
           ),
-          headerTitleStyle: {
-            fontSize: 18,
-            color: Colors.white,
-          },
-          headerStyle: {
-            backgroundColor: Colors.red[400],
-            shadowOpacity: 0,
-          },
         }}
       />
     </BottomTab.Navigator>

@@ -2,7 +2,8 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 
-import TextInput, { InputType } from "./TextInput";
+import TextInput from "./TextInput";
+import { InputType } from "../../enum/InputType";
 import BodyText from "../text/BodyText";
 
 export type RangeInputProps = {

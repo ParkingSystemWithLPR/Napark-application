@@ -6,13 +6,11 @@ import IconButton from "../../components/button/IconButton";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SecondaryButton from "../../components/button/SecondaryButton";
 import DayInput from "../../components/input/DayInput";
-import TextInput, {
-  InputType,
-  InputValueType,
-} from "../../components/input/TextInput";
+import TextInput, { InputValueType } from "../../components/input/TextInput";
 import BodyContainer from "../../components/ui/BodyContainer";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import Colors from "../../constants/color";
+import { InputType } from "../../enum/InputType";
 import { useAuth } from "../../store/context/auth";
 import { RootParamList } from "../../types";
 import { formatISODate } from "../../utils/date";
@@ -155,76 +153,74 @@ const Account: React.FC<AccountProps> = () => {
           <IconButton
             icon="cog-outline"
             size={24}
-            color={Colors.gray[900]}
+            color={Colors.gray[800]}
             onPress={() => setEditing(true)}
           />
         </View>
       )}
-      <View style={styles.informationContainer}>
-        <View style={styles.rowContainer}>
-          <TextInput
-            title="Firstname"
-            placeholder="John"
-            value={profile.firstname.value}
-            onChangeText={handleOnChangeText.bind(this, "firstname")}
-            containerStyle={styles.infoInput}
-            editable={isEditing}
-            isRequired={isEditing}
-            errorText={profile.firstname.errorText}
-          />
-          <TextInput
-            title="Lastname"
-            placeholder="Doe"
-            value={profile.lastname.value}
-            onChangeText={handleOnChangeText.bind(this, "lastname")}
-            containerStyle={styles.infoInput}
-            editable={isEditing}
-            isRequired={isEditing}
-            errorText={profile.lastname.errorText}
-          />
-        </View>
+      <View style={styles.rowContainer}>
         <TextInput
-          title="Email"
-          placeholder="email@napark.com"
-          value={profile.email.value}
-          onChangeText={handleOnChangeText.bind(this, "email")}
-          editable={false}
+          title="Firstname"
+          placeholder="John"
+          value={profile.firstname.value}
+          onChangeText={handleOnChangeText.bind(this, "firstname")}
+          containerStyle={styles.infoInput}
+          editable={isEditing}
+          isRequired={isEditing}
+          errorText={profile.firstname.errorText}
         />
-        <View style={styles.rowContainer}>
-          <DayInput
-            title="Date of birth"
-            date={profile.dob.value}
-            onChange={handleOnChangeText.bind(this, "dob")}
-            editable={isEditing}
-            outerContainerStyle={styles.infoInput}
+        <TextInput
+          title="Lastname"
+          placeholder="Doe"
+          value={profile.lastname.value}
+          onChangeText={handleOnChangeText.bind(this, "lastname")}
+          containerStyle={styles.infoInput}
+          editable={isEditing}
+          isRequired={isEditing}
+          errorText={profile.lastname.errorText}
+        />
+      </View>
+      <TextInput
+        title="Email"
+        placeholder="email@napark.com"
+        value={profile.email.value}
+        onChangeText={handleOnChangeText.bind(this, "email")}
+        editable={false}
+      />
+      <View style={styles.rowContainer}>
+        <DayInput
+          title="Date of birth"
+          date={profile.dob.value}
+          onChange={handleOnChangeText.bind(this, "dob")}
+          editable={isEditing}
+          outerContainerStyle={styles.infoInput}
+        />
+        <TextInput
+          title="Mobile No."
+          placeholder="08xxxxxxxx"
+          value={profile.mobileNo.value}
+          onChangeText={handleOnChangeText.bind(this, "mobileNo")}
+          containerStyle={styles.infoInput}
+          editable={isEditing}
+          isRequired={isEditing}
+          errorText={profile.mobileNo.errorText}
+          inputMode={InputType.Numeric}
+        />
+      </View>
+      {isEditing && (
+        <View style={styles.buttonContainer}>
+          <SecondaryButton
+            title="Cancel"
+            onPress={onCancel}
+            outerContainerStyle={styles.button}
           />
-          <TextInput
-            title="Mobile No."
-            placeholder="08xxxxxxxx"
-            value={profile.mobileNo.value}
-            onChangeText={handleOnChangeText.bind(this, "mobileNo")}
-            containerStyle={styles.infoInput}
-            editable={isEditing}
-            isRequired={isEditing}
-            errorText={profile.mobileNo.errorText}
-            inputMode={InputType.Numeric}
+          <PrimaryButton
+            title="Save"
+            onPress={onSave}
+            outerContainerStyle={styles.button}
           />
         </View>
-        {isEditing && (
-          <View style={styles.buttonContainer}>
-            <SecondaryButton
-              title="Cancel"
-              onPress={onCancel}
-              outerContainerStyle={styles.button}
-            />
-            <PrimaryButton
-              title="Save"
-              onPress={onSave}
-              outerContainerStyle={styles.button}
-            />
-          </View>
-        )}
-      </View>
+      )}
     </BodyContainer>
   );
 };
@@ -245,13 +241,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 10,
   },
-  informationContainer: {
-    gap: 5,
-  },
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 10,
+    gap: 20,
   },
   infoInput: {
     flex: 1,

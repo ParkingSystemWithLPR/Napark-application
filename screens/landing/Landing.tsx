@@ -2,7 +2,7 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -102,9 +102,7 @@ const Landing: React.FC<LandingProps> = () => {
             <SafeAreaView>
               <View style={styles.headerContainer}>
                 <TextInput
-                  withTitile={false}
                   containerStyle={styles.searchContainer}
-                  textInputStyle={styles.searchInput}
                   value={searchText}
                   onChangeText={handleTextInputChange}
                   placeholder={"Search"}
@@ -183,10 +181,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingRight: 5,
-  },
-  searchInput: {
-    paddingVertical: Platform.OS === "android" ? 3 : 0,
-    fontSize: 14,
   },
   icon: {
     marginLeft: 5,
