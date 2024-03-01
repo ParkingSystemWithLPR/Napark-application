@@ -3,11 +3,12 @@ import { FlatList, StyleSheet, View } from "react-native";
 import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
 import Colors from "../../constants/color";
+import { BookingType } from "../../enum/BookingType";
+import { MOCKED_SESSIONS } from "../../mock/mockData";
 import { formatDateAndTime } from "../../utils/date";
-import { MOCKED_SESSIONS } from "../../utils/mockData";
 
 interface sessionsProps {
-  type: "ACTIVE" | "COMPLETED";
+  type: BookingType;
 }
 
 const SessionsList: React.FC<sessionsProps> = ({ type }) => {
@@ -16,7 +17,7 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
       <FlatList
         data={MOCKED_SESSIONS}
         renderItem={({ item }) => {
-          if (type === "ACTIVE") {
+          if (type === BookingType.ACTIVE) {
             return (
               <ActiveSession
                 licensePlate={item.licensePlate}
@@ -25,15 +26,15 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
               />
             );
           } else {
-            const dateAndTime = formatDateAndTime(
+            const { date, time } = formatDateAndTime(
               new Date(item.dateAndTime)
-            ).split(" ");
+            );
             return (
               <CompletedSession
                 licensePlate={item.licensePlate}
                 space={item.space}
-                date={dateAndTime[0]}
-                time={dateAndTime[1]}
+                date={date}
+                time={time}
                 price={item.price}
               />
             );
@@ -50,6 +51,6 @@ export default SessionsList;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    backgroundColor: Colors.gray[50]
+    backgroundColor: Colors.gray[50],
   },
 });

@@ -7,7 +7,10 @@ export const formatDate = (date: Date) => {
 };
 
 export const formatDateAndTime = (date: Date) => {
-  return getFormatedDate(date, "YYYY-MM-DD h:m");
+  return {
+    date: getFormatedDate(date, "YYYY-MM-DD"),
+    time: getFormatedDate(date, "h:m"),
+  };
 };
 
 export const formatStringDate = (date: string) => {
