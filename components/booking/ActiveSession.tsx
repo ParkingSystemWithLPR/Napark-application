@@ -20,13 +20,16 @@ const ActiveSession: React.FC<activeSessionProps> = ({
     <View style={styles.wrapper}>
       <View style={styles.topContainer}>
         <HeaderText text={licensePlate} textStyle={{ color: Colors.black }} />
-        <BodyText text={space} textStyle={{ color: Colors.gray[900] }} />
+        <BodyText text={space} textStyle={{ color: Colors.gray[800] }} />
       </View>
       <View style={styles.bottomContainer}>
-        <SubHeaderText text="Time Remaining" textStyle={{ color: Colors.gray[900] }} />
+        <SubHeaderText
+          text="Time Remaining"
+          textStyle={{ color: Colors.gray[800] }}
+        />
         <SubHeaderText
           text={timeRemaining}
-          textStyle={{ color: Colors.gray[900] }}
+          textStyle={{ color: Colors.gray[800] }}
         />
       </View>
     </View>

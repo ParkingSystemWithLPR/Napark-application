@@ -36,15 +36,15 @@ const CompletedSession: React.FC<completedSessionProps> = ({
             text={licensePlate}
             textStyle={{ color: Colors.black, fontWeight: "bold" }}
           />
-          <BodyText text={space} textStyle={{ color: Colors.gray[900] }} />
+          <BodyText text={space} textStyle={{ color: Colors.gray[800] }} />
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <SubHeaderText text={date} textStyle={{ color: Colors.gray[900] }} />
-        <SubHeaderText text={time} textStyle={{ color: Colors.gray[900] }} />
+        <SubHeaderText text={date} textStyle={{ color: Colors.gray[800] }} />
+        <SubHeaderText text={time} textStyle={{ color: Colors.gray[800] }} />
         <SubHeaderText
           text={`$${price}`}
-          textStyle={{ color: Colors.gray[900], fontWeight: "bold" }}
+          textStyle={{ color: Colors.gray[800], fontWeight: "bold" }}
         />
       </View>
     </View>
