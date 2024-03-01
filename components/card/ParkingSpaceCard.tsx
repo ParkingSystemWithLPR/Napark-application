@@ -1,10 +1,10 @@
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
-import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "../text/BodyText";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SubHeaderText from "../text/SubHeaderText";
 
 export type ParkingSpaceCardProps = {
   parkingSpaceName: string;
@@ -20,10 +20,6 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
   availabilty,
   onPress,
 }) => {
-
-  const handleOnParkingSpaceCardPress = () => {
-    navigator
-  }
 
   return (
     <Pressable
@@ -78,9 +74,7 @@ export default ParkingSpaceCard;
 const styles = StyleSheet.create({
   cardContainer: {
     width: "100%",
-    borderWidth: 1,
-    borderColor: Colors.gray[500],
-    backgroundColor: Colors.gray[100],
+    backgroundColor: Colors.white,
     borderRadius: 8,
     paddingHorizontal: 15,
     paddingVertical: 12,
@@ -88,6 +82,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
   },
   image: {
     borderRadius: 8,

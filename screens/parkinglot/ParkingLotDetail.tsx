@@ -80,7 +80,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
               title={"Role"}
               icon={"head-cog-outline"}
               onPress={() => {
-                navigation.push("RoleList");
+                navigation.navigate("OtherStack", {screen: "RoleList"});
               }}
             />
           </View>
