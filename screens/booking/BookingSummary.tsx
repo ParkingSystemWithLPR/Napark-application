@@ -1,15 +1,21 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import BodyText from "../../components/text/BodyText";
 import HyperLinkText from "../../components/text/HyperlinkText";
+import BodyContainer from "../../components/ui/BodyContainer";
 import ModalOverlay from "../../components/ui/ModalOverlay";
 import Colors from "../../constants/color";
 import { RootParamList } from "../../types";
+
+type BookingAttribute = {
+  attribute: string;
+  value: string;
+};
 
 export type BookingSummaryProps = NativeStackScreenProps<
   RootParamList,
@@ -31,16 +37,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   };
   const closeModal = () => {
     setIsOpenModal(false);
-    //reason to use this method https://github.com/react-navigation/react-navigation/issues/11259
     setTimeout(() => {
       navigation.replace("MainScreen", { screen: "MyBooking" });
     }, 0);
   };
 
-  type BookingAttribute = {
-    attribute: string;
-    value: string;
-  };
   const RenderAttribute: React.FC<BookingAttribute> = ({
     attribute,
     value,
@@ -58,15 +59,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screen}>
+    <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.locationSection}>
         <View style={styles.locationContainer}>
-          <Ionicons name="location-sharp" style={styles.pin}></Ionicons>
-          <BodyText
-            text="Engineer building 3, Chulalongkorn"
-            containerStyle={styles.locationBox}
-            textStyle={Platform.OS === "ios" ? styles.iosText : {}}
-          />
+          <MaterialIcons name="location-pin" size={25} style={styles.pin} />
+          <BodyText text="Engineer building 3, Chulalongkorn" />
         </View>
       </View>
       <View style={styles.bookingDetailSection}>
@@ -101,13 +98,12 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
           />
         </View>
       </ModalOverlay>
-    </View>
+    </BodyContainer>
   );
 };
 export default BookingSummary;
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
     paddingHorizontal: 40,
     gap: 15,
   },
@@ -116,24 +112,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   locationContainer: {
-    paddingVertical: 15,
+    padding: 15,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
-    borderRadius: 5,
-    elevation: 5,
+    borderRadius: 8,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
     shadowRadius: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
   },
   pin: {
-    fontSize: 25,
-    marginRight: 5,
-  },
-  locationBox: {
-    flex: 1,
-    justifyContent: "center",
+    marginHorizontal: 5,
   },
   bookingDetailSection: {
     flex: 5,
@@ -143,11 +134,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     borderRadius: 5,
-    elevation: 5,
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
+    elevation: Platform.OS === "android" ? 4 : 2,
   },
   headerStyle: {
     flex: 1,
@@ -179,9 +170,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-  },
-  iosText: {
-    fontSize: 12,
   },
   modalBackground: {
     flex: 1,

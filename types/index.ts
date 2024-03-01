@@ -20,6 +20,7 @@ export type RootParamList = {
   CarInfo: undefined;
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
   AllBookings: undefined;
+  BookingStack: { screen: string };
   BookingSummary: undefined;
 };
 
