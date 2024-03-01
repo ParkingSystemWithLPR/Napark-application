@@ -88,7 +88,7 @@ const OtherStack = () => {
         name="ParkingLotDetail"
         component={ParkingLotDetail}
         options={{
-          title: "ParkingSpaceDetail",
+          title: "Parking Space Detail",
           headerLeft: backToOtherPage,
         }}
       />
