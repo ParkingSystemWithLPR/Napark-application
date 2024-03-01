@@ -15,10 +15,16 @@ export type RootParamList = {
   MyBooking: undefined;
   Payment: undefined;
   Account: undefined;
+  Others: undefined;
   Other: undefined;
   OtherStack: { screen: string };
   CarInfo: undefined;
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
+  ConfigParkingLot: undefined;
+  ParkingLotsList: undefined;
+  ParkingLotDetail: undefined;
+  RequestParkingLot: undefined;
+  RoleList: undefined;
   AllBookings: undefined;
   BookingStack: { screen: string };
   BookingSummary: undefined;

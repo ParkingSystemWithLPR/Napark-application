@@ -6,6 +6,11 @@ import Colors from "../constants/color";
 import ChangePassword from "../screens/authentication/ChangePassword";
 import CarInfo from "../screens/other/CarInfo";
 import CarInfoSetup from "../screens/other/CarInfoSetup";
+import Other from "../screens/other/Other";
+import ParkingLotDetail from "../screens/parkinglot/ParkingLotDetail";
+import ParkingLotsList from "../screens/parkinglot/ParkingLotsList";
+import RequestParkingLot from "../screens/parkinglot/RequestPakingLot";
+import RoleList from "../screens/role/RoleList";
 import { RootParamList } from "../types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
@@ -38,6 +43,11 @@ const OtherStack = () => {
       }}
     >
       <Stack.Screen
+        name="Other"
+        component={Other}
+        options={{ title: "Menu" }}
+      />
+      <Stack.Screen
         name="CarInfo"
         component={CarInfo}
         options={{
@@ -55,6 +65,38 @@ const OtherStack = () => {
         component={ChangePassword}
         options={{
           title: "",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="ParkingLotsList"
+        component={ParkingLotsList}
+        options={{
+          title: "My parking sapce",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="RequestParkingLot"
+        component={RequestParkingLot}
+        options={{
+          title: "My parking sapce",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="ParkingLotDetail"
+        component={ParkingLotDetail}
+        options={{
+          title: "Parking Space Detail",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="RoleList"
+        component={RoleList}
+        options={{
+          title: "Role",
           headerLeft: backToOtherPage,
         }}
       />
