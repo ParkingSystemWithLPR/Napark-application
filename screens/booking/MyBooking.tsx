@@ -1,24 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { View, StyleSheet } from "react-native";
 
 import MyBookingTab from "../../components/booking/MyBookingTab";
 import { RootParamList } from "../../types";
 
 export type MyBookingProps = NativeStackScreenProps<RootParamList, "MyBooking">;
 
-const MyBooking: React.FC<MyBookingProps> = () => {
-  return (
-    <View style={styles.container}>
-      <MyBookingTab />
-    </View>
-  );
-};
+const MyBooking: React.FC<MyBookingProps> = () => <MyBookingTab />;
 
 export default MyBooking;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
