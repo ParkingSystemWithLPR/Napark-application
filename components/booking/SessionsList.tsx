@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, View } from "react-native";
 
-import ActiveTimeSlot from "./ActiveSession";
+import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
 import { formatDateAndTime } from "../../utils/date";
 import { MOCKED_SESSIONS } from "../../utils/mockData";
@@ -17,7 +17,7 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
         renderItem={({ item }) => {
           if (type === "ACTIVE") {
             return (
-              <ActiveTimeSlot
+              <ActiveSession
                 licensePlate={item.licensePlate}
                 space={item.space}
                 timeRemaining="01hr:30min"
@@ -38,6 +38,7 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
             );
           }
         }}
+        overScrollMode="never"
       />
     </View>
   );
@@ -48,6 +49,5 @@ export default SessionsList;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    marginTop: 20,
   },
 });
