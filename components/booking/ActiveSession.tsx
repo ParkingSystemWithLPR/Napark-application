@@ -38,6 +38,7 @@ export default ActiveSession;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
+    marginHorizontal: 10,
     marginBottom: 20,
     height: "auto",
     backgroundColor: Colors.white,

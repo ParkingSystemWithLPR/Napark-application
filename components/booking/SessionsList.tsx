@@ -48,6 +48,6 @@ export default SessionsList;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
 });

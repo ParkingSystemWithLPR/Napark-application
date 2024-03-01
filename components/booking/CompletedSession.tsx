@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginHorizontal: 10,
     height: "auto",
     backgroundColor: Colors.white,
     borderRadius: 8,
