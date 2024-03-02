@@ -30,6 +30,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     lastname: { value: "" },
   });
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { mutateAsync: createProfileAsync } = useCreateProfile();
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: RegisterInputType) => {
@@ -94,9 +95,8 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       });
     } else {
       try {
-        const { mutateAsync } = useCreateProfile();
         setLoading(true);
-        await mutateAsync(
+        await createProfileAsync(
           {
             body: {
               email: email.value,
@@ -112,6 +112,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
           }
         );
       } catch (error) {
+        setLoading(false);
         Alert.alert(
           "Registration Failed",
           "Please try again: " + (error as Error).message

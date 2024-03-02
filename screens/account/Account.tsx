@@ -49,6 +49,7 @@ const Account: React.FC<AccountProps> = () => {
   const [isEditing, setEditing] = useState<boolean>(false);
 
   const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
+  const { mutateAsync: editProfileAsync } = useEditProfile();
 
   useLayoutEffect(() => {
     if (getProfile.isSuccess) {
@@ -112,8 +113,7 @@ const Account: React.FC<AccountProps> = () => {
       });
     } else {
       try {
-        const { mutateAsync } = useEditProfile();
-        await mutateAsync({
+        await editProfileAsync({
           body: {
             firstname: profile.firstname.value,
             lastname: profile.lastname.value,
