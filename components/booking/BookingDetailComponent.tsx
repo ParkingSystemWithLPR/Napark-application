@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { useEffect } from "react";
+import { Alert, StyleSheet, View } from "react-native";
 
 import Specification from "./Specification";
 import Colors from "../../constants/color";
@@ -38,6 +39,29 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   setSpecification,
   closeSetting,
 }) => {
+  const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
+  const isCheckOutTimeEditable = checkOutDate != null;
+  const checkOutTimeHandler = (checkOutTime: string | null) => {
+    if (checkOutTime && checkInTime && checkInDate && checkOutDate) {
+      if (
+        checkInDate < checkOutDate ||
+        (checkInDate == checkOutDate && checkInTime < checkOutTime)
+      ) {
+        setCheckOutTime(checkOutTime);
+      } else {
+        Alert.alert("Please select later time");
+      }
+    }
+  };
+  useEffect(() => {
+    if (checkInDate != null && checkInDate != null) {
+      setCheckOutTime(null);
+      setCheckOutDate(null);
+    }
+  }, [checkInTime, checkInDate]);
+  useEffect(() => {
+    if (checkOutDate == checkInDate) setCheckOutTime(null);
+  }, [checkOutDate]);
   return (
     <View style={styles.outerContainer}>
       <DropdownInput
@@ -55,6 +79,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           onChange={(value: string) => {
             setCheckInDate(value);
           }}
+          setMinimumDate={true}
           outerContainerStyle={styles.dateContainer}
           editable={true}
           isRequired={true}
@@ -74,16 +99,18 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           onChange={(value: string) => {
             setCheckOutDate(value);
           }}
+          setMinimumDate={true}
           outerContainerStyle={styles.dateContainer}
-          editable={true}
+          editable={isCheckOutDateEditable}
+          minDateValue={checkInDate}
           isRequired={true}
         />
         <TimeInput
           title={""}
           value={checkOutTime}
-          onTimeChange={setCheckOutTime}
+          onTimeChange={checkOutTimeHandler}
           outerContainerStyle={styles.timeContainer}
-          editable={true}
+          editable={isCheckOutTimeEditable}
         />
       </View>
       <Specification

@@ -17,6 +17,7 @@ export type DayInputProps = {
   onChange: (date: string) => void;
   isRequired?: boolean;
   setMinimumDate?: boolean;
+  minDateValue?: string | null;
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
@@ -29,6 +30,7 @@ const DayInput: React.FC<DayInputProps> = ({
   isRequired = false,
   placeholder = "YYYY-MM-DD",
   setMinimumDate = false,
+  minDateValue = null,
   editable = false,
   outerContainerStyle,
   containerStyle,
@@ -87,7 +89,13 @@ const DayInput: React.FC<DayInputProps> = ({
           <View style={styles.dateTimePickerContainer}>
             <DatePicker
               mode="calendar"
-              minimumDate={setMinimumDate ? startDate : minimumDate}
+              minimumDate={
+                setMinimumDate
+                  ? minDateValue
+                    ? minDateValue
+                    : startDate
+                  : minimumDate
+              }
               selected={date ?? startDate}
               onDateChange={handleOnSelectedChange}
             />
