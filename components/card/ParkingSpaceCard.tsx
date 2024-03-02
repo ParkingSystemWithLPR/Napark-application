@@ -2,9 +2,10 @@ import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
 
 export type ParkingSpaceCardProps = {
   parkingSpaceName: string;
@@ -118,4 +119,3 @@ const styles = StyleSheet.create({
   },
   icon: {},
 });
-

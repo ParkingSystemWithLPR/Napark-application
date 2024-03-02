@@ -1,9 +1,10 @@
 import { View, StyleSheet, Platform } from "react-native";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
 
 export interface activeSessionProps {
   licensePlate: string;

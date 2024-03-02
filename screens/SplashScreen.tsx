@@ -5,9 +5,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useCallback, useRef } from "react";
 import { StyleSheet, View, Animated } from "react-native";
 
-import Colors from "../constants/color";
-import { useAuth } from "../store/context/auth";
-import { RootParamList } from "../types";
+import Colors from "@/constants/color";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
 
 export type SplashProps = NativeStackScreenProps<RootParamList, "Splash">;
 

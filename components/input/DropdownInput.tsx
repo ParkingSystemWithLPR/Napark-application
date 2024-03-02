@@ -1,9 +1,10 @@
 import { Platform, StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
 
 export interface DropdownItem {
   label: string;

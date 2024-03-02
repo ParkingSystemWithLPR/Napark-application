@@ -2,19 +2,21 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import CustomBottomSheetModal from "../../components/bottomSheet/CustomBottomSheetModal";
-import RangeInput from "../../components/input/RangeInput";
-import TextInput from "../../components/input/TextInput";
-import SubHeaderText from "../../components/text/SubHeaderText";
-import LoadingOverlay from "../../components/ui/LoadingOverlay";
-import ModalOverlay from "../../components/ui/ModalOverlay";
-import Colors from "../../constants/color";
-import { RootParamList } from "../../types";
+import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetModal";
+import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
+import RangeInput from "@/components/input/RangeInput";
+import TextInput from "@/components/input/TextInput";
+import SubHeaderText from "@/components/text/SubHeaderText";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import ModalOverlay from "@/components/ui/ModalOverlay";
+import Colors from "@/constants/color";
+import { RootParamList } from "@/types";
+import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
 export type LandingProps = NativeStackScreenProps<RootParamList, "Landing">;
 
@@ -33,6 +35,25 @@ const Landing: React.FC<LandingProps> = () => {
   const [isSearch, setSearch] = useState<boolean>(false);
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
   const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
+  const [parkingLots, setParkingLots] = useState<ParkingLot[]>([
+    {
+      _id: "1",
+      name: "PolSci's Parking building | Chulalongkorn university",
+      address: "1234",
+      sub_distict: "A",
+      distict: "B",
+      province: "Bangkok",
+      zip_code: "10140",
+      coord: {
+        latitude: 1,
+        longitude: 1,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
+      businessHours: "08:00 - 23:59",
+      availability: 100,
+    },
+  ]);
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -84,11 +105,82 @@ const Landing: React.FC<LandingProps> = () => {
     [isSearch]
   );
 
+  const renderHeader = useCallback(() => {
+    return (
+      <View style={styles.headerContainer}>
+        <TextInput
+          containerStyle={styles.searchContainer}
+          value={searchText}
+          onChangeText={handleTextInputChange}
+          placeholder={"Search"}
+          onSubmitEditing={handlePresentModalPress}
+          icon={searchIcon()}
+        />
+        <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+          <View style={styles.iconContainer}>
+            <MaterialIcons
+              name="more-vert"
+              size={20}
+              color={Colors.gray[800]}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }, [searchText, searchIcon]);
+
+  const renderfilterOptionsModal = useCallback(() => {
+    return (
+      <ModalOverlay
+        visible={showFilterOption}
+        closeModal={() => setShowFilterOption(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.filterContainer}>
+            <View style={styles.closeContainer}>
+              <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
+            </View>
+            <SubHeaderText text="Filter options" />
+            <RangeInput
+              values={priceRange}
+              onChange={setPriceRange}
+              title="Parking fee (per hour)"
+              snapped
+              allowOverlap
+            />
+          </View>
+        </View>
+      </ModalOverlay>
+    );
+  }, []);
+
+  const renderRecommendedParkingSpaces = useCallback(() => {
+    return (
+      <CustomBottomSheetModal ref={bottomSheetRef} title="Recommended place">
+        <FlatList
+          data={parkingLots}
+          renderItem={({ item }) => (
+            <ParkingSpaceCard
+              parkingSpaceName={item.name}
+              businessHours={item.businessHours ?? "Not available"}
+              availabilty={item.availability ?? 0}
+              onPress={() => {}}
+            />
+          )}
+        />
+      </CustomBottomSheetModal>
+    );
+  }, [bottomSheetRef, parkingLots]);
+
   return (
     <View style={styles.container}>
       {region ? (
         <>
-          <MapView style={styles.map} initialRegion={region} zoomEnabled>
+          <MapView
+            style={styles.map}
+            initialRegion={region}
+            provider={PROVIDER_GOOGLE}
+          >
             <Marker
               draggable
               coordinate={{
@@ -100,53 +192,9 @@ const Landing: React.FC<LandingProps> = () => {
           </MapView>
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
-              <View style={styles.headerContainer}>
-                <TextInput
-                  containerStyle={styles.searchContainer}
-                  value={searchText}
-                  onChangeText={handleTextInputChange}
-                  placeholder={"Search"}
-                  onSubmitEditing={handlePresentModalPress}
-                  icon={searchIcon()}
-                />
-                <TouchableOpacity onPress={() => setShowFilterOption(true)}>
-                  <View style={styles.iconContainer}>
-                    <MaterialIcons
-                      name="more-vert"
-                      size={20}
-                      color={Colors.gray[800]}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <ModalOverlay
-                visible={showFilterOption}
-                closeModal={() => setShowFilterOption(false)}
-              >
-                <View style={styles.modalContainer}>
-                  <View style={styles.filterContainer}>
-                    <View style={styles.closeContainer}>
-                      <MaterialIcons
-                        name="clear"
-                        size={20}
-                        color={Colors.gray[800]}
-                      />
-                    </View>
-                    <SubHeaderText text="Filter options" />
-                    <RangeInput
-                      values={priceRange}
-                      onChange={setPriceRange}
-                      title="Parking fee (per hour)"
-                      snapped
-                      allowOverlap
-                    />
-                  </View>
-                </View>
-              </ModalOverlay>
-              <CustomBottomSheetModal
-                ref={bottomSheetRef}
-                title="Recommended place"
-              />
+              {renderHeader()}
+              {renderfilterOptionsModal()}
+              {renderRecommendedParkingSpaces()}
             </SafeAreaView>
           </View>
         </>

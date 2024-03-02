@@ -1,4 +1,4 @@
-import { Car } from "../utils/user";
+import { Car } from "@/types/user";
 
 export const MOCK_LICENSE_PLATE: Car[] = [
   {

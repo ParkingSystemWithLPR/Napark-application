@@ -6,12 +6,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { TouchableOpacity, StyleSheet, Platform } from "react-native";
 
-import SessionsList from "../../components/booking/SessionsList";
-import BodyText from "../../components/text/BodyText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import Colors from "../../constants/color";
-import { BookingType } from "../../enum/BookingType";
-import { RootParamList } from "../../types";
+import SessionsList from "@/components/booking/SessionsList";
+import BodyText from "@/components/text/BodyText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import Colors from "@/constants/color";
+import { BookingType } from "@/enum/BookingType";
+import { RootParamList } from "@/types";
 
 export type MyBookingProps = NativeStackScreenProps<RootParamList, "MyBooking">;
 

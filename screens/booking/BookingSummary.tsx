@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import ProcessingModalContent from "../../components/booking/ProcessingModalContent";
-import PrimaryButton from "../../components/button/PrimaryButton";
-import BodyText from "../../components/text/BodyText";
-import HyperLinkText from "../../components/text/HyperlinkText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import ModalOverlay from "../../components/ui/ModalOverlay";
-import Colors from "../../constants/color";
-import { RootParamList } from "../../types";
+import ProcessingModalContent from "@/components/booking/ProcessingModalContent";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import BodyText from "@/components/text/BodyText";
+import HyperLinkText from "@/components/text/HyperlinkText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import ModalOverlay from "@/components/ui/ModalOverlay";
+import Colors from "@/constants/color";
+import { RootParamList } from "@/types";
 
 type BookingAttribute = {
   attribute: string;

@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 
-import ChangeScreenTab from "../../components/button/ChangeScreenTab";
-import PrimaryButton from "../../components/button/PrimaryButton";
-import BodyContainer from "../../components/ui/BodyContainer";
-import { useAuth } from "../../store/context/auth";
-import { RootParamList } from "../../types";
+import ChangeScreenTab from "@/components/button/ChangeScreenTab";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import BodyContainer from "@/components/ui/BodyContainer";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
 
 export type OtherProps = NativeStackScreenProps<RootParamList, "Other">;
 

@@ -2,8 +2,9 @@ import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
+
+import Colors from "@/constants/color";
 
 export type RoleCardProps = {
   roleName: string;
@@ -30,8 +31,14 @@ const RoleCard: React.FC<RoleCardProps> = ({ roleName, member, onPress }) => {
               color={Colors.gray[800]}
             />
             <View style={styles.textContainer}>
-              <BodyText text={roleName} textStyle={{color: Colors.gray[900]}}/>
-              <BodyText text={member + ' Member(s)'} textStyle={{color: Colors.gray[700]}}/>
+              <BodyText
+                text={roleName}
+                textStyle={{ color: Colors.gray[900] }}
+              />
+              <BodyText
+                text={member + " Member(s)"}
+                textStyle={{ color: Colors.gray[700] }}
+              />
             </View>
           </View>
           <MaterialCommunityIcons
@@ -87,5 +94,5 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: -10,
-  }
+  },
 });

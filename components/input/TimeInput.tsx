@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 import ModalOverlay from "../ui/ModalOverlay";
+
+import Colors from "@/constants/color";
 
 export type TimeInputProps = {
   title: string;

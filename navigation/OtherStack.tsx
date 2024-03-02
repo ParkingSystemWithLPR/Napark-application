@@ -1,17 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IconButton from "../components/button/IconButton";
-import Colors from "../constants/color";
-import ChangePassword from "../screens/authentication/ChangePassword";
-import CarInfo from "../screens/other/CarInfo";
-import CarInfoSetup from "../screens/other/CarInfoSetup";
-import Other from "../screens/other/Other";
-import ParkingLotDetail from "../screens/parkinglot/ParkingLotDetail";
-import ParkingLotsList from "../screens/parkinglot/ParkingLotsList";
-import RequestParkingLot from "../screens/parkinglot/RequestPakingLot";
-import RoleList from "../screens/role/RoleList";
-import { RootParamList } from "../types";
+import IconButton from "@/components/button/IconButton";
+import Colors from "@/constants/color";
+import ChangePassword from "@/screens/authentication/ChangePassword";
+import CarInfo from "@/screens/other/CarInfo";
+import CarInfoSetup from "@/screens/other/CarInfoSetup";
+import Other from "@/screens/other/Other";
+import ParkingLotDetail from "@/screens/parkinglot/ParkingLotDetail";
+import ParkingLotsList from "@/screens/parkinglot/ParkingLotsList";
+import RequestParkingLot from "@/screens/parkinglot/RequestPakingLot";
+import RoleList from "@/screens/role/RoleList";
+import { RootParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 

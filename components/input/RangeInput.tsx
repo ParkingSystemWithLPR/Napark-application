@@ -3,8 +3,9 @@ import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 
 import TextInput from "./TextInput";
-import { InputType } from "../../enum/InputType";
 import BodyText from "../text/BodyText";
+
+import { InputType } from "@/enum/InputType";
 
 export type RangeInputProps = {
   values: number[];

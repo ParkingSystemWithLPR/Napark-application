@@ -3,7 +3,7 @@ import { setStatusBarStyle } from "expo-status-bar";
 import { ReactNode, useLayoutEffect } from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 
-import Colors from "../../constants/color";
+import Colors from "@/constants/color";
 
 export type BodyContainerProps = {
   children: ReactNode;

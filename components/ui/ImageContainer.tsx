@@ -1,5 +1,4 @@
-import { StyleSheet, ScrollView, FlatList, Image, View } from "react-native";
-import Colors from "../../constants/color";
+import { StyleSheet, FlatList, Image } from "react-native";
 
 export type ImageContainerProps = {
   images: string[];
@@ -9,7 +8,7 @@ const ImageContainer: React.FC<ImageContainerProps> = ({ images }) => {
   return (
     <FlatList
       data={images}
-      renderItem={({ item }) => (
+      renderItem={() => (
         <Image
           source={require("../../assets/images/icon.png")}
           style={styles.image}

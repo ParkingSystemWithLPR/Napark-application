@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Modal, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-import Colors from "../../constants/color";
+import Colors from "@/constants/color";
 
 export type ModalOverlayProps = {
   visible: boolean;

@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IconButton from "../components/button/IconButton";
-import Colors from "../constants/color";
-import BookingSummary from "../screens/booking/BookingSummary";
-import { RootParamList } from "../types";
+import IconButton from "@/components/button/IconButton";
+import Colors from "@/constants/color";
+import BookingSummary from "@/screens/booking/BookingSummary";
+import { RootParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 

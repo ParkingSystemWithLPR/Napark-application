@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 
-import { TextProps } from "../../types";
+import { TextProps } from "@/types";
 
 const SubHeaderText: React.FC<TextProps> = ({
   text,

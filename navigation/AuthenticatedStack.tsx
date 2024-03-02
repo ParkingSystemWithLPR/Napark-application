@@ -3,8 +3,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BookingStack from "./BookingStack";
 import MainPageBottomTab from "./MainPageBottomTab";
 import OtherStack from "./OtherStack";
-import ResetPassword from "../screens/authentication/ResetPassword";
-import { RootParamList } from "../types";
+
+import ResetPassword from "@/screens/authentication/ResetPassword";
+import { RootParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 

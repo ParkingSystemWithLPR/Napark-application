@@ -1,5 +1,6 @@
-import { ActionMode } from "../enum/ActionMode";
-import { Car } from "../utils/user";
+import { Car } from "./user";
+
+import { ActionMode } from "@/enum/ActionMode";
 
 export type RootParamList = {
   Splash: undefined;

@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import PrimaryButton from "../../components/button/PrimaryButton";
-import ParkingSpaceCard from "../../components/card/ParkingSpaceCard";
-import HeaderText from "../../components/text/HeaderText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import LoadingOverlay from "../../components/ui/LoadingOverlay";
-import Colors from "../../constants/color";
-import { useGetParkingLotsByUserId } from "../../store/api/useGetParkingLotsByUserId";
-import { useAuth } from "../../store/context/auth";
-import { RootParamList } from "../../types";
-import { ParkingLot } from "../../types/parking-lot/ParkingLot";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
+import HeaderText from "@/components/text/HeaderText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import Colors from "@/constants/color";
+import { useGetParkingLotsByUserId } from "@/store/api/parking-lot/useGetParkingLotsByUserId";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
+import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
 export type ParkingLotsListProps = NativeStackScreenProps<
   RootParamList,
@@ -36,7 +36,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
     }
   }, [getParkingLots.data]);
 
-  if(isLoading) return <LoadingOverlay message={"Loading..."} />
+  if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   const NoParkingLot = () => {
     return (

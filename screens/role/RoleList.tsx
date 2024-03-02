@@ -1,16 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet, View } from "react-native";
 
-import RoleCard from "../../components/card/RoleCard";
-import SubHeaderText from "../../components/text/SubHeaderText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import Colors from "../../constants/color";
-import { RootParamList } from "../../types";
+import RoleCard from "@/components/card/RoleCard";
+import SubHeaderText from "@/components/text/SubHeaderText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import Colors from "@/constants/color";
+import { RootParamList } from "@/types";
 
-export type RoleListProps =  NativeStackScreenProps<
-  RootParamList,
-  "RoleList"
->;
+export type RoleListProps = NativeStackScreenProps<RootParamList, "RoleList">;
 
 const RoleList: React.FC<RoleListProps> = () => {
   return (
@@ -19,8 +16,7 @@ const RoleList: React.FC<RoleListProps> = () => {
       <View style={styles.roleCardContainer}>
         <RoleCard roleName="Everybody" member="All" onPress={() => {}} />
       </View>
-      <View style={styles.divider}>
-      </View>
+      <View style={styles.divider}></View>
       <SubHeaderText text="Other Roles" />
       <View style={styles.roleCardContainer}>
         <RoleCard roleName="VVIP" member="2" onPress={() => {}} />

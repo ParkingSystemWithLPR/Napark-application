@@ -2,10 +2,11 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
-import Colors from "../../constants/color";
-import { BookingType } from "../../enum/BookingType";
-import { MOCKED_SESSIONS, mockedSessionsProps } from "../../mock/mockData";
-import { formatDateAndTime } from "../../utils/date";
+
+import Colors from "@/constants/color";
+import { BookingType } from "@/enum/BookingType";
+import { MOCKED_SESSIONS, mockedSessionsProps } from "@/mock/mockData";
+import { formatDateAndTime } from "@/utils/date";
 
 interface sessionsProps {
   type: BookingType;

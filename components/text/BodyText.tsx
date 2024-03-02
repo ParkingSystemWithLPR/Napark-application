@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 
-import { TextProps } from "../../types";
+import { TextProps } from "@/types";
 
 const BodyText: React.FC<TextProps> = ({ text, containerStyle, textStyle }) => (
   <View style={[containerStyle]}>

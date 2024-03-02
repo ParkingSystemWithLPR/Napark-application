@@ -2,19 +2,20 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
 
-import IconButton from "../../components/button/IconButton";
-import PrimaryButton from "../../components/button/PrimaryButton";
-import SecondaryButton from "../../components/button/SecondaryButton";
-import DayInput from "../../components/input/DayInput";
-import TextInput, { InputValueType } from "../../components/input/TextInput";
-import BodyContainer from "../../components/ui/BodyContainer";
-import LoadingOverlay from "../../components/ui/LoadingOverlay";
-import Colors from "../../constants/color";
-import { InputType } from "../../enum/InputType";
-import { useAuth } from "../../store/context/auth";
-import { RootParamList } from "../../types";
-import { formatISODate } from "../../utils/date";
-import user, { Profile } from "../../utils/user";
+import IconButton from "@/components/button/IconButton";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
+import DayInput from "@/components/input/DayInput";
+import TextInput, { InputValueType } from "@/components/input/TextInput";
+import BodyContainer from "@/components/ui/BodyContainer";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import Colors from "@/constants/color";
+import { InputType } from "@/enum/InputType";
+import { useEditProfile } from "@/store/api/user/useEditProfile";
+import { useGetProfile } from "@/store/api/user/useGetProfile";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
+import { formatISODate } from "@/utils/date";
 
 export type AccountProps = NativeStackScreenProps<RootParamList, "Account">;
 
@@ -47,29 +48,24 @@ const Account: React.FC<AccountProps> = () => {
   });
   const [isEditing, setEditing] = useState<boolean>(false);
 
+  const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
+
   useLayoutEffect(() => {
-    const fetchProfileDetail = async () => {
-      try {
-        const profile: Profile = await user.getProfile(
-          accessToken,
-          authenticate
-        );
-        const modProfile: ProfileInput = {
-          firstname: { value: profile.firstname },
-          lastname: { value: profile.lastname },
-          email: { value: profile.email },
-          mobileNo: { value: profile.tel },
-          dob: { value: formatISODate(profile.date_of_birth) },
-        };
-        setDefaultProfile(modProfile);
-        setProfile(modProfile);
-        setLoading(false);
-      } catch (error) {
-        Alert.alert("Failed to get the profile", (error as Error).message);
-      }
-    };
-    fetchProfileDetail();
-  }, []);
+    if (getProfile.isSuccess) {
+      const modProfile: ProfileInput = {
+        firstname: { value: getProfile.data.firstname },
+        lastname: { value: getProfile.data.lastname },
+        email: { value: getProfile.data.email },
+        mobileNo: { value: getProfile.data.tel },
+        dob: { value: formatISODate(getProfile.data.date_of_birth) },
+      };
+      setDefaultProfile(modProfile);
+      setProfile(modProfile);
+      setLoading(false);
+    } else if (getProfile.isError) {
+      Alert.alert("Failed to get the profile", getProfile.error.message);
+    }
+  }, [getProfile.data]);
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setProfile((curInputValue: ProfileInput) => {
@@ -116,16 +112,16 @@ const Account: React.FC<AccountProps> = () => {
       });
     } else {
       try {
-        await user.editProfile(
-          {
+        const { mutateAsync } = useEditProfile();
+        await mutateAsync({
+          body: {
             firstname: profile.firstname.value,
             lastname: profile.lastname.value,
             date_of_birth: profile.dob.value,
             tel: profile.mobileNo.value,
           },
-          accessToken,
-          authenticate
-        );
+          auth: { accessToken, authenticate },
+        });
         setDefaultProfile(profile);
         setEditing(false);
       } catch (error) {

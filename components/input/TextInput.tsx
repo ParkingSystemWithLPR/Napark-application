@@ -8,12 +8,13 @@ import {
   TextInputSubmitEditingEventData,
 } from "react-native";
 
-import Colors from "../../constants/color";
-import { AutoCapitalizeType } from "../../enum/AutoCapitalizeType";
-import { InputType } from "../../enum/InputType";
 import IconButton from "../button/IconButton";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
+import { AutoCapitalizeType } from "@/enum/AutoCapitalizeType";
+import { InputType } from "@/enum/InputType";
 
 export type InputValueType = {
   value: string;

@@ -3,9 +3,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import AuthenticatedStack from "./AuthenticatedStack";
 import AuthStack from "./AuthStack";
-import SplashScreen from "../screens/SplashScreen";
-import { useAuth } from "../store/context/auth";
-import { RootParamList } from "../types";
+
+import SplashScreen from "@/screens/SplashScreen";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 

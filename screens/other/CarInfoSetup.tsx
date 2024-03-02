@@ -2,15 +2,15 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 
-import PrimaryButton from "../../components/button/PrimaryButton";
-import SecondaryButton from "../../components/button/SecondaryButton";
-import CheckboxInput from "../../components/input/CheckBoxInput";
-import DropdownInput from "../../components/input/DropdownInput";
-import TextInput from "../../components/input/TextInput";
-import BodyContainer from "../../components/ui/BodyContainer";
-import { THAI_PROVINCE } from "../../constants/province";
-import { ActionMode } from "../../enum/ActionMode";
-import { RootParamList } from "../../types";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
+import CheckboxInput from "@/components/input/CheckBoxInput";
+import DropdownInput from "@/components/input/DropdownInput";
+import TextInput from "@/components/input/TextInput";
+import BodyContainer from "@/components/ui/BodyContainer";
+import { THAI_PROVINCE } from "@/constants/province";
+import { ActionMode } from "@/enum/ActionMode";
+import { RootParamList } from "@/types";
 
 export type CarInfoSetupProps = NativeStackScreenProps<
   RootParamList,

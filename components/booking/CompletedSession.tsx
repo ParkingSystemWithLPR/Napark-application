@@ -1,10 +1,11 @@
 import { View, StyleSheet, Platform } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
 
 export interface completedSessionProps {
   licensePlate: string;

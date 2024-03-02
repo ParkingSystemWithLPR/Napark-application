@@ -3,11 +3,12 @@ import { Platform, Pressable, StyleSheet, View } from "react-native";
 import DatePicker from "react-native-modern-datepicker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
-import { MINIMUM_DATE, formatDate, formatStringDate } from "../../utils/date";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 import ModalOverlay from "../ui/ModalOverlay";
+
+import Colors from "@/constants/color";
+import { MINIMUM_DATE, formatDate, formatStringDate } from "@/utils/date";
 
 export type DayInputProps = {
   title: string;

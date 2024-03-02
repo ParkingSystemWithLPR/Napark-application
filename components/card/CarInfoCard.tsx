@@ -1,9 +1,10 @@
 import { Platform, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
+
+import Colors from "@/constants/color";
 
 export type CarInfoCardProps = {
   licensePlate: string;

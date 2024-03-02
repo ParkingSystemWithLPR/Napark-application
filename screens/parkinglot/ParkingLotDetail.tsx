@@ -3,20 +3,20 @@ import { useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
-import DetailText from "../../components/text/DetailText";
-import HeaderText from "../../components/text/HeaderText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import ImageContainer from "../../components/ui/ImageContainer";
-import LoadingOverlay from "../../components/ui/LoadingOverlay";
-import SectionAppForm from "../../components/ui/SectionAppForm";
-import Colors from "../../constants/color";
-import { useGetParkingLot } from "../../store/api/useGetParkingLotById";
-import { useAuth } from "../../store/context/auth";
-import { RootParamList } from "../../types";
-import { mockParkingLot } from "../../types/parking-lot/mock";
-import { ParkingLot } from "../../types/parking-lot/ParkingLot";
-import { formatAddress } from "../../utils/address";
+import IconButtonWithTitle from "@/components/button/IconButtonWithTitle";
+import DetailText from "@/components/text/DetailText";
+import HeaderText from "@/components/text/HeaderText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import ImageContainer from "@/components/ui/ImageContainer";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import SectionAppForm from "@/components/ui/SectionAppForm";
+import Colors from "@/constants/color";
+import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
+import { useAuth } from "@/store/context/auth";
+import { RootParamList } from "@/types";
+import { mockParkingLot } from "@/types/parking-lot/mock";
+import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { formatAddress } from "@/utils/address";
 
 export type ParkingLotDetailProps = NativeStackScreenProps<
   RootParamList,
@@ -29,7 +29,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
 
   const getParkingLot = useGetParkingLot({
-    queryParams: { parkingLotId: "65db2487548c61ff2ee3f9e1" },
+    queryParams: { parkingLotId: "65e1ecbfb8911ba3860666e5" },
     auth: { accessToken, authenticate },
   });
 
@@ -39,7 +39,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
       setLoading(false);
     }
   }, [getParkingLot.data]);
-  if(isLoading) return <LoadingOverlay message={"Loading..."} />;
+  if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   if (!parkingLot) return <></>;
 

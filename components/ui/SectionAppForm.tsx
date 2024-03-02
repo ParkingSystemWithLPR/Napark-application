@@ -1,15 +1,16 @@
 import { ReactNode } from "react";
-import { View, StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
+
+import Colors from "@/constants/color";
 
 type SectionAppFormProps = {
   title: string;
   icon: string;
   children: ReactNode;
-}
+};
 
 const SectionAppForm: React.FC<SectionAppFormProps> = ({
   children,
@@ -26,11 +27,9 @@ const SectionAppForm: React.FC<SectionAppFormProps> = ({
             color={Colors.red[400]}
           />
         </View>
-        <BodyText text={title}/>
+        <BodyText text={title} />
       </View>
-      <View style={styles.contentContainer}>
-        {children}
-      </View>
+      <View style={styles.contentContainer}>{children}</View>
     </View>
   );
 };
@@ -51,5 +50,5 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingLeft: 30,
-  }
+  },
 });

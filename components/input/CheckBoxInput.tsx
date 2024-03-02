@@ -2,8 +2,9 @@ import Checkbox from "expo-checkbox";
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
+
+import Colors from "@/constants/color";
 
 export type CheckboxInputProps = {
   text: string;

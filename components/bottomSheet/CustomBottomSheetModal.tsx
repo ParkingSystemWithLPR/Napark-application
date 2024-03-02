@@ -1,5 +1,5 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { forwardRef, useMemo } from "react";
+import { ReactNode, forwardRef, useMemo } from "react";
 import { StyleSheet } from "react-native";
 
 import SubHeaderText from "../text/SubHeaderText";
@@ -7,16 +7,18 @@ export type Ref = BottomSheetModal;
 
 export type BottomSheetModalProps = {
   title: string;
+  children: ReactNode;
 };
 
 const CustomBottomSheetModal: React.ForwardRefRenderFunction<
   Ref,
   BottomSheetModalProps
-> = ({ title }, ref) => {
+> = ({ title, children }, ref) => {
   const snapPoints = useMemo(() => ["25%", "75%"], []);
   return (
     <BottomSheetModal ref={ref} index={0} snapPoints={snapPoints}>
       <SubHeaderText containerStyle={styles.headerContainer} text={title} />
+      {children}
     </BottomSheetModal>
   );
 };

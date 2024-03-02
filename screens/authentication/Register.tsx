@@ -2,13 +2,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
 
-import PrimaryButton from "../../components/button/PrimaryButton";
-import TextInput, { InputValueType } from "../../components/input/TextInput";
-import BodyText from "../../components/text/BodyText";
-import HeaderText from "../../components/text/HeaderText";
-import { InputType } from "../../enum/InputType";
-import { RootParamList } from "../../types";
-import user from "../../utils/user";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import TextInput, { InputValueType } from "@/components/input/TextInput";
+import BodyText from "@/components/text/BodyText";
+import HeaderText from "@/components/text/HeaderText";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import { InputType } from "@/enum/InputType";
+import { useCreateProfile } from "@/store/api/user/useCreateProfile";
+import { RootParamList } from "@/types";
 
 export type RegisterProps = NativeStackScreenProps<RootParamList, "Register">;
 
@@ -28,6 +29,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     firstname: { value: "" },
     lastname: { value: "" },
   });
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: RegisterInputType) => {
@@ -92,13 +94,23 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       });
     } else {
       try {
-        const loginEmail = await user.createUser(
-          email.value,
-          password.value,
-          firstname.value,
-          lastname.value
+        const { mutateAsync } = useCreateProfile();
+        setLoading(true);
+        await mutateAsync(
+          {
+            body: {
+              email: email.value,
+              password: password.value,
+              firstname: firstname.value,
+              lastname: lastname.value,
+            },
+          },
+          {
+            onSuccess(data) {
+              navigation.replace("LogIn", { defaultEmail: data });
+            },
+          }
         );
-        navigation.replace("LogIn", { defaultEmail: loginEmail });
       } catch (error) {
         Alert.alert(
           "Registration Failed",
@@ -107,6 +119,8 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       }
     }
   };
+
+  if (isLoading) return <LoadingOverlay />;
 
   return (
     <View style={styles.loginContainer}>

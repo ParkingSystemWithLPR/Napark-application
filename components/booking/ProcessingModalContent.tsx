@@ -1,10 +1,11 @@
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
 import LoadingOverlay from "../ui/LoadingOverlay";
+
+import Colors from "@/constants/color";
 
 export type ProcessingModalContentProps = {
   isCreatingBooking: boolean;

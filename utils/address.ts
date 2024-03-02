@@ -1,4 +1,4 @@
-import { Address } from "../types/parking-lot/ParkingLot";
+import { Address } from "@/types/parking-lot/ParkingLot";
 
 export const formatAddress = ({
   address,

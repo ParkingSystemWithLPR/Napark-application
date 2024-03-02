@@ -2,12 +2,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
 
-import PrimaryButton from "../../components/button/PrimaryButton";
-import TextInput from "../../components/input/TextInput";
-import BodyText from "../../components/text/BodyText";
-import HeaderText from "../../components/text/HeaderText";
-import { InputType } from "../../enum/InputType";
-import { RootParamList } from "../../types";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import TextInput from "@/components/input/TextInput";
+import BodyText from "@/components/text/BodyText";
+import HeaderText from "@/components/text/HeaderText";
+import { InputType } from "@/enum/InputType";
+import { RootParamList } from "@/types";
 
 export type ForgetPasswordProps = NativeStackScreenProps<
   RootParamList,

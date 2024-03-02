@@ -1,12 +1,12 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { ParkingLot } from "../../../types/parking-lot/ParkingLot";
-import apiRequest, { HTTPMethod } from "../../../utils/http";
+import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import apiRequest, { HTTPMethod } from "@/utils/http";
 
-type GetParkingLotInput = {
+type GetParkingLotsInput = {
   queryParams: {
-    parkingLotId: string;
+    userId: string;
   };
   auth: {
     accessToken: string;
@@ -14,16 +14,18 @@ type GetParkingLotInput = {
   };
 };
 
-type GetParkingLotService = (input: GetParkingLotInput) => Promise<ParkingLot>;
+type GetParkingLotsService = (
+  input: GetParkingLotsInput
+) => Promise<ParkingLot[]>;
 
 const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;
 
-export const getParkingLot: GetParkingLotService = async ({
+export const getParkingLotByUserId: GetParkingLotsService = async ({
   queryParams,
   auth,
 }) => {
-  const data = await apiRequest<ParkingLot>(
-    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/${queryParams.parkingLotId}`,
+  const data = await apiRequest<ParkingLot[]>(
+    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/own/${queryParams.userId}`,
     HTTPMethod.GET,
     auth.accessToken,
     auth.authenticate
@@ -31,12 +33,12 @@ export const getParkingLot: GetParkingLotService = async ({
   return data;
 };
 
-export const useGetParkingLot = (
-  input: GetParkingLotInput
+export const useGetParkingLotsByUserId = (
+  input: GetParkingLotsInput
 ): UseQueryResult<ParkingLot[], AxiosError> => {
   return useQuery({
     queryKey: ["parking-lot", input.queryParams],
-    queryFn: async () => getParkingLot(input),
+    queryFn: async () => getParkingLotByUserId(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
   });
