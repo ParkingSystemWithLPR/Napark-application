@@ -9,6 +9,8 @@ import Colors from "@/constants/color";
 export interface DropdownItem {
   label: string;
   value: string;
+  price?: number;
+  unit?: string;
 }
 
 export type DropdownInputProps = {
@@ -20,6 +22,8 @@ export type DropdownInputProps = {
   title?: string;
   isRequired?: boolean;
   withSearch?: boolean;
+  renderItem?: (item: DropdownItem) => JSX.Element;
+  onSpecialSelect?: (item: DropdownItem) => void;
 };
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -31,7 +35,16 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   title,
   isRequired = false,
   withSearch = false,
+  renderItem,
+  onSpecialSelect,
 }) => {
+  const handleChange = (item: DropdownItem) => {
+    if (onSpecialSelect) {
+      onSpecialSelect(item);
+    } else {
+      onSelect(item.value);
+    }
+  };
   return (
     <View>
       {withTitle && title && (
@@ -49,13 +62,14 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         valueField={"value"}
         searchField={"value"}
         placeholder={placeholder}
-        onChange={(item: DropdownItem) => onSelect(item.value)}
+        onChange={handleChange}
         search={withSearch}
         searchPlaceholder="Search..."
         style={styles.dropdown}
         selectedTextStyle={styles.text}
         activeColor={Colors.red[400].toString()}
         autoScroll={false}
+        renderItem={renderItem}
       />
     </View>
   );

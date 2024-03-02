@@ -22,7 +22,11 @@ export type BookingSummaryProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
+const BookingSummary: React.FC<BookingSummaryProps> = ({
+  navigation,
+  route,
+}) => {
+  const bookingRequest = route.params.bookingRequest;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
   const sendCreateRequest = () => {
@@ -72,11 +76,31 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
             text="Booking Details"
             containerStyle={styles.headerStyle}
           />
-          <RenderAttribute attribute="Space" value="6a" />
-          <RenderAttribute attribute="Check-in Time" value="11:00 am" />
-          <RenderAttribute attribute="Check-out Time (Est)" value="05:00 pm" />
-          <RenderAttribute attribute="Specifications" value="None" />
-          <RenderAttribute attribute="Cost per Unit" value="15฿/hr" />
+          <RenderAttribute attribute="Space" value={bookingRequest.slot} />
+          <RenderAttribute
+            attribute="Check-in Date"
+            value={bookingRequest.checkInDate ?? ""}
+          />
+          <RenderAttribute
+            attribute="Check-in Time"
+            value={bookingRequest.checkInTime ?? ""}
+          />
+          <RenderAttribute
+            attribute="Check-out Date (Est)"
+            value={bookingRequest.checkOutDate ?? ""}
+          />
+          <RenderAttribute
+            attribute="Check-out Time (Est)"
+            value={bookingRequest.checkOutTime ?? ""}
+          />
+          <RenderAttribute
+            attribute="Specifications"
+            value={bookingRequest.specification}
+          />
+          <RenderAttribute
+            attribute="Cost per Unit"
+            value={bookingRequest.price + bookingRequest.unit}
+          />
         </View>
         <View style={styles.routeContainer}>
           <BodyText text={"Don`t know the route?"} />
@@ -131,7 +155,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   bookingDetailContainer: {
-    flex: 1,
+    flex: 2,
     backgroundColor: Colors.white,
     borderRadius: 5,
     shadowColor: Colors.black,

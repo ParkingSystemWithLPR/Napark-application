@@ -3,13 +3,14 @@ import { View, StyleSheet } from "react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import Colors from "../../constants/color";
 import SubHeaderText from "../text/SubHeaderText";
 export type SpecificationProps = {
-  selectedId: string | undefined;
+  specification: string | undefined;
   onChange: (id: string | undefined) => void;
 };
 const Specification: React.FC<SpecificationProps> = ({
-  selectedId,
+  specification,
   onChange,
 }) => {
   const radioButtons: RadioButtonProps[] = useMemo(
@@ -35,35 +36,41 @@ const Specification: React.FC<SpecificationProps> = ({
   );
 
   return (
-    <View style={styles.outerContainer}>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <View style={styles.parkingOutline}>
-            <MaterialCommunityIcons name="parking" style={styles.text} />
+    <>
+      <View style={styles.outerContainer}>
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <View style={styles.parkingOutline}>
+              <MaterialCommunityIcons name="parking" style={styles.text} />
+            </View>
+            <SubHeaderText
+              text={"Specification"}
+              containerStyle={styles.header}
+            />
           </View>
-          <SubHeaderText
-            text={"Specification"}
-            containerStyle={styles.header}
-          />
         </View>
+        <RadioGroup
+          radioButtons={radioButtons}
+          onPress={onChange}
+          selectedId={specification}
+          containerStyle={styles.radioButton}
+        />
       </View>
-      <RadioGroup
-        radioButtons={radioButtons}
-        onPress={onChange}
-        selectedId={selectedId}
-        containerStyle={styles.radioButton}
-      />
-    </View>
+    </>
   );
 };
 export default Specification;
 
 const styles = StyleSheet.create({
   outerContainer: {
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 4,
+    borderRadius: 8,
+    backgroundColor: Colors.white,
     paddingHorizontal: 8,
-    borderRadius: 12,
-    borderRightWidth: 1,
-    borderBottomWidth: 1,
   },
   container: {
     flexDirection: "row",

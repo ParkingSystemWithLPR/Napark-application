@@ -7,12 +7,14 @@ import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
 export type BookingCardSummaryProps = {
-  checkInDateTime: string;
+  checkInDate: string;
+  checkInTime: string;
   specification: string | undefined;
   openSetting: () => void;
 };
 const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
-  checkInDateTime,
+  checkInDate,
+  checkInTime,
   specification,
   openSetting,
 }) => {
@@ -46,7 +48,7 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
         </Pressable>
       </View>
       <View style={styles.propertyContainer}>
-        <Detail topic={"Check-in:"} value={checkInDateTime} />
+        <Detail topic={"Check-in:"} value={checkInDate + " " + checkInTime} />
         <Detail topic={"Specifications:"} value={specification ?? "None"} />
       </View>
     </View>

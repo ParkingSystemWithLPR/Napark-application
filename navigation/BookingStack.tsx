@@ -36,6 +36,14 @@ const BookingStack = () => {
       }}
     >
       <Stack.Screen
+        name="BookingDetail"
+        component={BookingDetail}
+        options={{
+          title: "Booking detail",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
         name="BookingSummary"
         component={BookingSummary}
         options={{

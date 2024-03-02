@@ -1,39 +1,41 @@
 import { StyleSheet, View } from "react-native";
 
-import CustomLabel from "./BookingSliderLabel";
 import Specification from "./Specification";
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
 import DropdownInput from "../input/DropdownInput";
-import SliderInput from "../input/SliderInput";
 import TimeInput from "../input/TimeInput";
 
 export type BookingDetailComponentProps = {
-  duration: number[];
-  setDuration: (value: number[]) => void;
+  checkOutTime: string | null;
+  setCheckOutTime: (value: string | null) => void;
+  checkOutDate: string | null;
+  setCheckOutDate: (value: string | null) => void;
   licensePlate: string;
   setLicensePlate: (value: string) => void;
-  date: string | null;
-  setDate: (value: string | null) => void;
-  time: string | null;
-  setTime: (value: string | null) => void;
-  selectedId: string | undefined;
-  setSelectedId: (value: string | undefined) => void;
+  checkInDate: string | null;
+  setCheckInDate: (value: string | null) => void;
+  checkInTime: string | null;
+  setCheckInTime: (value: string | null) => void;
+  specification: string | undefined;
+  setSpecification: (value: string | undefined) => void;
   closeSetting: () => void;
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
-  duration,
-  setDuration,
+  checkOutTime,
+  setCheckOutTime,
+  checkOutDate,
+  setCheckOutDate,
   licensePlate,
   setLicensePlate,
-  date,
-  setDate,
-  time,
-  setTime,
-  selectedId,
-  setSelectedId,
+  checkInDate,
+  setCheckInDate,
+  checkInTime,
+  setCheckInTime,
+  specification,
+  setSpecification,
   closeSetting,
 }) => {
   return (
@@ -49,31 +51,45 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       <View style={styles.dateTimeContainer}>
         <DayInput
           title={"Check-in"}
-          date={date}
-          onChange={setDate}
+          date={checkInDate}
+          onChange={(value: string) => {
+            setCheckInDate(value);
+          }}
           outerContainerStyle={styles.dateContainer}
           editable={true}
           isRequired={true}
         />
         <TimeInput
           title={""}
-          value={time}
-          onTimeChange={setTime}
+          value={checkInTime}
+          onTimeChange={setCheckInTime}
           outerContainerStyle={styles.timeContainer}
           editable={true}
         />
       </View>
-      <SliderInput
-        min={0.5}
-        max={8.5}
-        value={duration}
-        step={0.5}
-        onValuesChange={setDuration}
-        customLabel={CustomLabel}
-        title="Estimate Duration"
-        isRequired={true}
-      ></SliderInput>
-      <Specification selectedId={selectedId} onChange={setSelectedId} />
+      <View style={styles.dateTimeContainer}>
+        <DayInput
+          title={"Check-out"}
+          date={checkOutDate}
+          onChange={(value: string) => {
+            setCheckOutDate(value);
+          }}
+          outerContainerStyle={styles.dateContainer}
+          editable={true}
+          isRequired={true}
+        />
+        <TimeInput
+          title={""}
+          value={checkOutTime}
+          onTimeChange={setCheckOutTime}
+          outerContainerStyle={styles.timeContainer}
+          editable={true}
+        />
+      </View>
+      <Specification
+        specification={specification}
+        onChange={setSpecification}
+      />
       <PrimaryButton
         title={"Done"}
         onPress={closeSetting}

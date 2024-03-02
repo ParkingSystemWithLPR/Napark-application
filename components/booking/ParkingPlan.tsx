@@ -1,13 +1,17 @@
 import { Image, View, StyleSheet } from "react-native";
 
 import SecondaryButton from "../button/SecondaryButton";
-import DropdownInput from "../input/DropdownInput";
+import DropdownInput, { DropdownItem } from "../input/DropdownInput";
+import BodyText from "../text/BodyText";
 
 export type ParkingPlanProps = {
   floor: string;
   setFloor: (data: string) => void;
   slot: string;
   setSlot: (data: string) => void;
+  setPrice: (data: number) => void;
+  setUnit: (data: string) => void;
+
   handleConfirm: () => void;
 };
 
@@ -16,8 +20,25 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   setFloor,
   slot,
   setSlot,
+  setPrice,
+  setUnit,
   handleConfirm,
 }) => {
+  const renderItem = (item: DropdownItem) => {
+    return (
+      <View style={styles.item}>
+        <BodyText text={item.value} />
+        <BodyText
+          text={(item.price ? item.price.toString() : "") + item.unit ?? ""}
+        />
+      </View>
+    );
+  };
+  const onSpecialSelect = (item: DropdownItem) => {
+    setPrice(item.price ?? 0);
+    setSlot(item.value);
+    setUnit(item.unit ?? "");
+  };
   return (
     <View style={styles.container}>
       <DropdownInput
@@ -37,12 +58,14 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
           />
           <DropdownInput
             items={[
-              { label: "slot1", value: "a1" },
-              { label: "slot2", value: "a2" },
+              { label: "a1", value: "a1", price: 20, unit: "฿/hr" },
+              { label: "a2", value: "a2", price: 20, unit: "฿/hr" },
             ]}
             selectedValue={slot}
             onSelect={setSlot}
             placeholder={"Select Slot"}
+            renderItem={renderItem}
+            onSpecialSelect={onSpecialSelect}
           />
           <SecondaryButton
             title={"confirm"}
@@ -63,4 +86,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   centerContainer: { alignSelf: "center" },
+  item: {
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 });
