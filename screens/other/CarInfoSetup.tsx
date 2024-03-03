@@ -11,6 +11,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import { THAI_PROVINCE } from "@/constants/province";
 import { ActionMode } from "@/enum/ActionMode";
 import { useCreateUserCar } from "@/store/api/user/useCreateUserCar";
+import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
 
@@ -21,6 +22,7 @@ export type CarInfoSetupProps = NativeStackScreenProps<
 
 const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   const { mode, carInfo } = route.params;
+  const { accessToken, authenticate } = useAuth();
   const { setProfile } = useProfile();
   const [licensePlate, setLicensePlate] = useState<string>("");
   const [province, setProvince] = useState<string>("");
@@ -38,10 +40,15 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
               province_of_reg: province,
               is_default: isDefault,
             },
+            auth: {
+              accessToken,
+              authenticate,
+            },
           },
           {
             onSuccess(data) {
               setProfile(data);
+              navigation.goBack();
             },
           }
         );
