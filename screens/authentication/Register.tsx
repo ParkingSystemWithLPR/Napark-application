@@ -107,7 +107,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
           },
           {
             onSuccess(data) {
-              navigation.replace("LogIn", { defaultEmail: data });
+              navigation.replace("LogIn", { defaultEmail: data.email });
             },
           }
         );

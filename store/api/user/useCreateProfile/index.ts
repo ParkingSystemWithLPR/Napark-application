@@ -7,7 +7,9 @@ import axios, { AxiosError } from "axios";
 
 import { USER_URL } from "..";
 
-interface CreateProfileInput {
+import { Profile } from "@/types/user";
+
+export interface CreateProfileInput {
   body: {
     email: string;
     password: string;
@@ -16,16 +18,16 @@ interface CreateProfileInput {
   };
 }
 
-type CreateProfileService = (input: CreateProfileInput) => Promise<string>;
+type CreateProfileService = (input: CreateProfileInput) => Promise<Profile>;
 
 export const createUser: CreateProfileService = async ({ body }) => {
   const response = await axios.post(USER_URL + "/user/register", body);
-  return response.data.email;
+  return response.data;
 };
 
 export const useCreateProfile = (
-  options?: MutationOptions<string, AxiosError, CreateProfileInput>
-): UseMutationResult<string, AxiosError, CreateProfileInput> =>
+  options?: MutationOptions<Profile, AxiosError, CreateProfileInput>
+): UseMutationResult<Profile, AxiosError, CreateProfileInput> =>
   useMutation({
     mutationFn: createUser,
     retry: 0,

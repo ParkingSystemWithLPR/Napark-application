@@ -56,7 +56,7 @@ const apiRequest = async <T>(
       // Retry the request with the new access token
       return apiRequest<T>(url, method, access_token, authenticate, body);
     }
-    throw error;
+    throw AxiosError;
   }
 };
 

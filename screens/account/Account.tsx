@@ -12,8 +12,8 @@ import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
 import { useEditProfile } from "@/store/api/user/useEditProfile";
-import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
+import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
 import { formatISODate } from "@/utils/date";
 
@@ -31,14 +31,9 @@ const IMAGE_SIZE = 100;
 
 const Account: React.FC<AccountProps> = () => {
   const { accessToken, authenticate } = useAuth();
+  const { profile: defaultProfile, setProfile: setDefaultProfile } =
+    useProfile();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [defaultProfile, setDefaultProfile] = useState<ProfileInput>({
-    firstname: { value: "" },
-    lastname: { value: "" },
-    email: { value: "" },
-    dob: { value: "" },
-    mobileNo: { value: "" },
-  });
   const [profile, setProfile] = useState<ProfileInput>({
     firstname: { value: "" },
     lastname: { value: "" },
@@ -47,26 +42,21 @@ const Account: React.FC<AccountProps> = () => {
     mobileNo: { value: "" },
   });
   const [isEditing, setEditing] = useState<boolean>(false);
-
-  const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
   const { mutateAsync: editProfileAsync } = useEditProfile();
 
   useLayoutEffect(() => {
-    if (getProfile.isSuccess) {
+    if (defaultProfile) {
       const modProfile: ProfileInput = {
-        firstname: { value: getProfile.data.firstname },
-        lastname: { value: getProfile.data.lastname },
-        email: { value: getProfile.data.email },
-        mobileNo: { value: getProfile.data.tel },
-        dob: { value: formatISODate(getProfile.data.date_of_birth) },
+        firstname: { value: defaultProfile.firstname },
+        lastname: { value: defaultProfile.lastname },
+        email: { value: defaultProfile.email },
+        mobileNo: { value: defaultProfile.tel ?? "" },
+        dob: { value: formatISODate(defaultProfile.date_of_birth) },
       };
-      setDefaultProfile(modProfile);
       setProfile(modProfile);
       setLoading(false);
-    } else if (getProfile.isError) {
-      Alert.alert("Failed to get the profile", getProfile.error.message);
     }
-  }, [getProfile.data]);
+  }, [defaultProfile]);
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setProfile((curInputValue: ProfileInput) => {
@@ -78,7 +68,14 @@ const Account: React.FC<AccountProps> = () => {
   };
 
   const onCancel = () => {
-    setProfile(defaultProfile);
+    const modProfile: ProfileInput = {
+      firstname: { value: defaultProfile.firstname },
+      lastname: { value: defaultProfile.lastname },
+      email: { value: defaultProfile.email },
+      mobileNo: { value: defaultProfile.tel ?? "" },
+      dob: { value: formatISODate(defaultProfile.date_of_birth) },
+    };
+    setProfile(modProfile);
     setEditing(false);
   };
 
@@ -113,16 +110,22 @@ const Account: React.FC<AccountProps> = () => {
       });
     } else {
       try {
-        await editProfileAsync({
-          body: {
-            firstname: profile.firstname.value,
-            lastname: profile.lastname.value,
-            date_of_birth: profile.dob.value,
-            tel: profile.mobileNo.value,
+        await editProfileAsync(
+          {
+            body: {
+              firstname: profile.firstname.value,
+              lastname: profile.lastname.value,
+              date_of_birth: profile.dob.value,
+              tel: profile.mobileNo.value,
+            },
+            auth: { accessToken, authenticate },
           },
-          auth: { accessToken, authenticate },
-        });
-        setDefaultProfile(profile);
+          {
+            onSuccess(data) {
+              setDefaultProfile(data);
+            },
+          }
+        );
         setEditing(false);
       } catch (error) {
         Alert.alert(
