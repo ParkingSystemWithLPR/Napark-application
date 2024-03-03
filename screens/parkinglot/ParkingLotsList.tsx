@@ -65,7 +65,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
       {parkingLots.length !== 0 ? (
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
-            data={[...parkingLots]}
+            data={parkingLots}
             renderItem={({ item }) => (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
