@@ -25,7 +25,6 @@ export type RegisterInputType = {
 };
 
 const Register: React.FC<RegisterProps> = ({ navigation }) => {
-  const { createProfile } = useProfile();
   const [inputValue, setInputValue] = useState<RegisterInputType>({
     email: { value: "" },
     password: { value: "" },
@@ -34,6 +33,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     lastname: { value: "" },
   });
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { mutateAsync: createProfileAsync } = useCreateProfile();
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: RegisterInputType) => {
@@ -99,7 +99,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     } else {
       try {
         setLoading(true);
-        await createProfile(
+        await createProfileAsync(
           {
             body: {
               email: email.value,
