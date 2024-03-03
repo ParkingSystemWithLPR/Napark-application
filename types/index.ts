@@ -39,15 +39,17 @@ export type OtherStackParamList = {
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
   ConfigParkingLot: undefined;
   ParkingLotsList: undefined;
-  ParkingLotDetail: undefined;
+  ParkingLotDetail: { parkingLotId: string };
   RequestParkingLot: undefined;
   RoleList: undefined;
+  ConfigRole: { mode: ActionMode; roleId?: string };
   ChangePassword: undefined;
 };
 
 export type BookingStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
   BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
+  RoleMember: undefined;
 };
 
 export type AuthenticatedStackParamListProps =
