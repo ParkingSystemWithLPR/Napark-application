@@ -4,14 +4,15 @@ import { View, StyleSheet, ScrollView, Alert, Pressable } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import BookingCardSummary from "../../components/booking/BookingCardSummary";
-import BookingDetailComponent from "../../components/booking/BookingDetailComponent";
-import ParkingPlan from "../../components/booking/ParkingPlan";
-import BodyText from "../../components/text/BodyText";
-import SubHeaderText from "../../components/text/SubHeaderText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import Colors from "../../constants/color";
-import { RootParamList } from "../../types";
+import BookingCardSummary from "@/components/booking/BookingCardSummary";
+import BookingDetailComponent from "@/components/booking/BookingDetailComponent";
+import ParkingPlan from "@/components/booking/ParkingPlan";
+import BodyText from "@/components/text/BodyText";
+import SubHeaderText from "@/components/text/SubHeaderText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import Colors from "@/constants/color";
+import { ActionMode } from "@/enum/ActionMode";
+import { RootParamList } from "@/types";
 
 export type BookingDetailProps = NativeStackScreenProps<
   RootParamList,
@@ -86,6 +87,13 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
   const handleNavigation = () => {
     setGoToNextPage(true);
   };
+  const handleClickConfirm = () => {
+    if (bookingRequest.slot == "" || bookingRequest.floor == "") {
+      Alert.alert("Please select a slot");
+    } else {
+      handleNavigation();
+    }
+  };
   const handleClickRecommend = (slot: RecommendedSlotType) => {
     handleOnChange("slot", slot.slotName);
     handleOnChange("price", slot.price);
@@ -136,9 +144,18 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
           <View style={styles.bookingDetailComponentContainer}>
             <BookingDetailComponent
               licensePlate={bookingRequest.licensePlate}
-              setLicensePlate={(value: string) =>
-                handleOnChange("licensePlate", value)
-              }
+              setLicensePlate={(value: string) => {
+                if (value == "Not found your license plate") {
+                  navigation.navigate("OtherStack", {
+                    screen: "CarInfoSetup",
+                    params: {
+                      mode: ActionMode.CREATE,
+                    },
+                  });
+                } else {
+                  handleOnChange("licensePlate", value);
+                }
+              }}
               checkInDate={bookingRequest.checkInDate}
               setCheckInDate={(value: string | null) =>
                 handleOnChange("checkInDate", value)
@@ -202,7 +219,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
                 setFloor={(value: string) => handleOnChange("floor", value)}
                 slot={bookingRequest.slot}
                 setSlot={(value: string) => handleOnChange("slot", value)}
-                handleConfirm={handleNavigation}
+                handleConfirm={handleClickConfirm}
                 setPrice={(value: number) => handleOnChange("price", value)}
                 setUnit={(value: string) => handleOnChange("unit", value)}
               />

@@ -72,7 +72,13 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         selectedValue={licensePlate}
         placeholder={"ex.  กข1234"}
         onSelect={setLicensePlate}
-        items={[{ label: "กข1234", value: "กข1234" }]}
+        items={[
+          { label: "กข1234", value: "กข1234" },
+          {
+            label: "Not found your license plate",
+            value: "Not found your license plate",
+          },
+        ]}
         title="License Plate"
         isRequired={true}
       ></DropdownInput>
