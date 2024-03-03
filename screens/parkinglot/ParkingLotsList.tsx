@@ -65,7 +65,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
       {parkingLots.length !== 0 ? (
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
-            data={parkingLots}
+            data={[...parkingLots]}
             renderItem={({ item }) => (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
@@ -76,6 +76,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                 }
               />
             )}
+            overScrollMode="never"
           />
         </View>
       ) : (
@@ -105,9 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   parkingSpaceCardContainer: {
-    alignItems: "center",
-    maxHeight: "85%",
-    overflow: "scroll",
+    flex: 1,
   },
   noParkingContainer: {
     justifyContent: "center",
