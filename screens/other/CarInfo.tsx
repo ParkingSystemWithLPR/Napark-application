@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -9,12 +9,22 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
-import { MOCK_LICENSE_PLATE } from "@/mock";
+import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
+import { Car } from "@/types/user";
 
 export type CarInfoProps = NativeStackScreenProps<RootParamList, "CarInfo">;
 
 const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
+  const { profile } = useProfile();
+  const [cars, setCars] = useState<Car[]>([]);
+
+  useLayoutEffect(() => {
+    if (profile) {
+      setCars(profile.user_car ?? []);
+    }
+  }, [profile]);
+
   const emptyCar = useCallback(() => {
     return (
       <View style={styles.emptyContainer}>
@@ -24,7 +34,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   }, []);
 
   const defaultCar = useCallback(() => {
-    const car = MOCK_LICENSE_PLATE.filter((car) => car.is_default);
+    const car = cars.filter((car) => car.is_default);
     return (
       <View style={styles.defaultCarContainer}>
         <SubHeaderText text="Default" />
@@ -44,10 +54,10 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
         )}
       </View>
     );
-  }, []);
+  }, [cars]);
 
   const otherCars = useCallback(() => {
-    const filteredCar = MOCK_LICENSE_PLATE.filter((car) => !car.is_default);
+    const filteredCar = cars.filter((car) => !car.is_default);
     return (
       <View style={styles.otherCarsContainer}>
         <SubHeaderText text="Other cars" />
@@ -66,6 +76,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
                 }}
               />
             )}
+            keyExtractor={(item) => item.license_plate}
             overScrollMode="never"
           />
         ) : (
@@ -73,7 +84,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
         )}
       </View>
     );
-  }, []);
+  }, [cars]);
 
   return (
     <BodyContainer>

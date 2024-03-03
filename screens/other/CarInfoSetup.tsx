@@ -10,6 +10,8 @@ import TextInput from "@/components/input/TextInput";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { THAI_PROVINCE } from "@/constants/province";
 import { ActionMode } from "@/enum/ActionMode";
+import { useCreateUserCar } from "@/store/api/user/useCreateUserCar";
+import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
 
 export type CarInfoSetupProps = NativeStackScreenProps<
@@ -19,11 +21,35 @@ export type CarInfoSetupProps = NativeStackScreenProps<
 
 const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   const { mode, carInfo } = route.params;
+  const { setProfile } = useProfile();
   const [licensePlate, setLicensePlate] = useState<string>("");
   const [province, setProvince] = useState<string>("");
   const [isDefault, setDefault] = useState<boolean>(false);
 
-  const onPressAction = () => {};
+  const { mutateAsync: createUserCar } = useCreateUserCar();
+
+  const onPressAction = async () => {
+    switch (mode) {
+      case ActionMode.CREATE:
+        await createUserCar(
+          {
+            body: {
+              license_plate: licensePlate,
+              province_of_reg: province,
+              is_default: isDefault,
+            },
+          },
+          {
+            onSuccess(data) {
+              setProfile(data);
+            },
+          }
+        );
+        break;
+      case ActionMode.EDIT:
+        break;
+    }
+  };
 
   useLayoutEffect(() => {
     if (mode === ActionMode.EDIT) {
