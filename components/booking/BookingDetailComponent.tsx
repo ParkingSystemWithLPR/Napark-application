@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 
 import Specification from "./Specification";
@@ -39,6 +39,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   setSpecification,
   closeSetting,
 }) => {
+  const [isFirstMount, setIsFirstMount] = useState(true);
   const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
   const isCheckOutTimeEditable = checkOutDate != null;
   const checkOutTimeHandler = (checkOutTime: string | null) => {
@@ -54,13 +55,16 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     }
   };
   useEffect(() => {
-    if (checkInDate != null && checkInDate != null) {
+    if (!isFirstMount && checkInDate != null && checkInDate != null) {
       setCheckOutTime(null);
       setCheckOutDate(null);
+    } else {
+      setIsFirstMount(false);
     }
   }, [checkInTime, checkInDate]);
   useEffect(() => {
-    if (checkOutDate == checkInDate) setCheckOutTime(null);
+    if (checkOutDate && checkInDate && checkOutDate == checkInDate)
+      setCheckOutTime(null);
   }, [checkOutDate]);
   return (
     <View style={styles.outerContainer}>

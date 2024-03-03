@@ -7,6 +7,7 @@ import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
+import { formatTime } from "@/utils/date";
 
 export type TimeInputProps = {
   title: string;

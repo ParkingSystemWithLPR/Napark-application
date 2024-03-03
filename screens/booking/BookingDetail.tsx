@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Pressable } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -36,6 +36,7 @@ export type BookingRequest = {
   unit: string;
 };
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
+  const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
     licensePlate: "",
@@ -77,11 +78,15 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
       setIsSetting(false);
     }
   };
+  useEffect(() => {
+    goToNextPage &&
+      navigation.navigate("BookingSummary", { bookingRequest: bookingRequest });
+    setGoToNextPage(false);
+  }, [goToNextPage]);
   const handleNavigation = () => {
-    navigation.navigate("BookingSummary", { bookingRequest: bookingRequest });
+    setGoToNextPage(true);
   };
   const handleClickRecommend = (slot: RecommendedSlotType) => {
-    console.log(slot.slotName);
     handleOnChange("slot", slot.slotName);
     handleOnChange("price", slot.price);
     handleOnChange("unit", slot.unit);
