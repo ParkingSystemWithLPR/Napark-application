@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Pressable } from "react-native";
@@ -39,6 +40,7 @@ export type BookingRequest = {
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
+  const isFocused = useIsFocused();
   const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
     licensePlate: "",
     checkInDate: null,
@@ -84,6 +86,9 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
       navigation.navigate("BookingSummary", { bookingRequest: bookingRequest });
     setGoToNextPage(false);
   }, [goToNextPage]);
+  useEffect(() => {
+    isFocused && setBookingRequest(bookingRequest); //refresh screen
+  }, [isFocused]);
   const handleNavigation = () => {
     setGoToNextPage(true);
   };
@@ -117,12 +122,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
       >
         <View style={styles.recommendSlotContainer}>
           <View style={styles.rowContainer}>
-            <View style={styles.parkingOutline}>
-              <MaterialCommunityIcons
-                name="parking"
-                style={styles.iconParking}
-              />
-            </View>
+            <MaterialCommunityIcons
+              name="alpha-p-circle-outline"
+              style={styles.iconParking}
+              size={20}
+            />
             <View>
               <BodyText text={"Slot: " + slotName}></BodyText>
               <BodyText text={recommendType}></BodyText>
@@ -265,6 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 8,
     borderBottomWidth: 1,
+    borderColor: Colors.red[400],
   },
   parkingOutline: {
     borderRadius: 100,
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
     alignSelf: "baseline",
     marginRight: 10,
   },
-  iconParking: { fontSize: 15 },
+  iconParking: { marginRight: 10 },
   rowContainer: { flexDirection: "row" },
   scrollViewContent: { marginBottom: 100 },
 });

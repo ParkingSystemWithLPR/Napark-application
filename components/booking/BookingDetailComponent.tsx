@@ -39,7 +39,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   setSpecification,
   closeSetting,
 }) => {
-  const [isFirstMount, setIsFirstMount] = useState(true);
+  const [isFirstUpdate, setIsFirstUpdate] = useState(true);
   const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
   const isCheckOutTimeEditable = checkOutDate != null;
   const checkOutTimeHandler = (checkOutTime: string | null) => {
@@ -55,15 +55,20 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     }
   };
   useEffect(() => {
-    if (!isFirstMount && checkInDate != null && checkInDate != null) {
+    if (!isFirstUpdate && checkInDate != null && checkInDate != null) {
       setCheckOutTime(null);
       setCheckOutDate(null);
     } else {
-      setIsFirstMount(false);
+      setIsFirstUpdate(false);
     }
   }, [checkInTime, checkInDate]);
   useEffect(() => {
-    if (checkOutDate && checkInDate && checkOutDate == checkInDate)
+    if (
+      !isFirstUpdate &&
+      checkOutDate &&
+      checkInDate &&
+      checkOutDate == checkInDate
+    )
       setCheckOutTime(null);
   }, [checkOutDate]);
   return (

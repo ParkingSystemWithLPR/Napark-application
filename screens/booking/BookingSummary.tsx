@@ -128,7 +128,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
 export default BookingSummary;
 const styles = StyleSheet.create({
   screen: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     gap: 15,
   },
   locationSection: {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   locationContainer: {
-    padding: 15,
+    paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,

@@ -40,9 +40,7 @@ const Specification: React.FC<SpecificationProps> = ({
       <View style={styles.outerContainer}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            <View style={styles.parkingOutline}>
-              <MaterialCommunityIcons name="parking" style={styles.text} />
-            </View>
+            <MaterialCommunityIcons name="alpha-p-circle-outline" size={20} />
             <SubHeaderText
               text={"Specification"}
               containerStyle={styles.header}
@@ -77,6 +75,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
+    borderColor: Colors.red[400],
     paddingVertical: 10,
   },
   headerContainer: {
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   parkingOutline: { borderRadius: 20, borderWidth: 1, alignItems: "center" },
-  text: { fontSize: 20 },
-  header: { marginLeft: 5 },
+  header: { marginLeft: 5, alignSelf: "flex-start" },
   radioButton: { alignItems: "flex-start", marginVertical: 10 },
 });

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Image, View, StyleSheet } from "react-native";
 
 import SecondaryButton from "../button/SecondaryButton";
@@ -24,6 +25,14 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   setUnit,
   handleConfirm,
 }) => {
+  const [isFirstUpdate, setIsFirstUpdate] = useState(true);
+  useEffect(() => {
+    if (!isFirstUpdate && floor != null) {
+      setSlot("");
+    } else {
+      setIsFirstUpdate(false);
+    }
+  }, [floor]);
   const renderItem = (item: DropdownItem) => {
     return (
       <View style={styles.item}>
