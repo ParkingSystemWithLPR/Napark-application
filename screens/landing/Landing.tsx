@@ -2,12 +2,19 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetModal";
+import PrimaryButton from "@/components/button/PrimaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import RangeInput from "@/components/input/RangeInput";
 import TextInput from "@/components/input/TextInput";
@@ -15,6 +22,7 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
+import { MOCKED_PARKING_SPACE } from "@/mock/mockData";
 import { RootParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
@@ -27,33 +35,20 @@ export type RegionType = {
   longitudeDelta: number;
 };
 
-const Landing: React.FC<LandingProps> = () => {
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { dismiss } = useBottomSheetModal();
+const Landing: React.FC<LandingProps> = ({ navigation }) => {
+  const recommendedBottomSheetRef = useRef<BottomSheetModal>(null);
+  const parkingSpaceDetailBottomSheetRef = useRef<BottomSheetModal>(null);
+  const { dismiss, dismissAll } = useBottomSheetModal();
   const [searchText, setSearchText] = useState<string>("");
   const [region, setRegion] = useState<RegionType>();
   const [isSearch, setSearch] = useState<boolean>(false);
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
   const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
-  const [parkingLots, setParkingLots] = useState<ParkingLot[]>([
-    {
-      _id: "1",
-      name: "PolSci's Parking building | Chulalongkorn university",
-      address: "1234",
-      sub_distict: "A",
-      distict: "B",
-      province: "Bangkok",
-      zip_code: "10140",
-      coord: {
-        latitude: 1,
-        longitude: 1,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      },
-      businessHours: "08:00 - 23:59",
-      availability: 100,
-    },
+  const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>([
+    MOCKED_PARKING_SPACE,
   ]);
+  const [selectedParkingSpace, setSelectedParkingSpace] =
+    useState<ParkingLot>(MOCKED_PARKING_SPACE);
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -81,9 +76,14 @@ const Landing: React.FC<LandingProps> = () => {
 
   const handlePresentModalPress = useCallback(() => {
     if (searchText.length > 0) {
-      bottomSheetRef.current?.present();
+      recommendedBottomSheetRef.current?.present();
     }
   }, [searchText]);
+
+  const handleChooseParkingSpace = useCallback((parkingSpace: ParkingLot) => {
+    parkingSpaceDetailBottomSheetRef.current?.present();
+    setSelectedParkingSpace(parkingSpace);
+  }, []);
 
   const handleTextInputChange = (text: string) => {
     setSearch(text.length > 0);
@@ -156,21 +156,47 @@ const Landing: React.FC<LandingProps> = () => {
 
   const renderRecommendedParkingSpaces = useCallback(() => {
     return (
-      <CustomBottomSheetModal ref={bottomSheetRef} title="Recommended place">
+      <CustomBottomSheetModal
+        ref={recommendedBottomSheetRef}
+        title="Recommended place"
+      >
         <FlatList
-          data={parkingLots}
+          data={parkingSpaces}
           renderItem={({ item }) => (
             <ParkingSpaceCard
               parkingSpaceName={item.name}
               businessHours={item.businessHours ?? "Not available"}
               availabilty={item.availability ?? 0}
-              onPress={() => {}}
+              onPress={() => handleChooseParkingSpace(item)}
             />
           )}
         />
       </CustomBottomSheetModal>
     );
-  }, [bottomSheetRef, parkingLots]);
+  }, [recommendedBottomSheetRef, parkingSpaces]);
+
+  const renderParkingSpaceDetail = useCallback(() => {
+    return (
+      <CustomBottomSheetModal
+        ref={parkingSpaceDetailBottomSheetRef}
+        title={selectedParkingSpace?.name}
+      >
+        <View style={styles.bottomSheetContent}>
+          <ScrollView
+            contentContainerStyle={styles.scrollViewContent}
+          ></ScrollView>
+          <PrimaryButton
+            title="Book"
+            onPress={() => {
+              dismissAll();
+              navigation.navigate("BookingStack", { screen: "BookingSummary" });
+            }}
+            outerContainerStyle={styles.bookButton}
+          />
+        </View>
+      </CustomBottomSheetModal>
+    );
+  }, [parkingSpaceDetailBottomSheetRef, selectedParkingSpace]);
 
   return (
     <View style={styles.container}>
@@ -195,6 +221,7 @@ const Landing: React.FC<LandingProps> = () => {
               {renderHeader()}
               {renderfilterOptionsModal()}
               {renderRecommendedParkingSpaces()}
+              {renderParkingSpaceDetail()}
             </SafeAreaView>
           </View>
         </>
@@ -258,5 +285,15 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  bottomSheetContent: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  bookButton: {
+    margin: 20,
   },
 });
