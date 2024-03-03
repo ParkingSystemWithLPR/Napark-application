@@ -64,7 +64,7 @@ const OtherStack = () => {
         name="ChangePassword"
         component={ChangePassword}
         options={{
-          title: "",
+          title: "Change password",
           headerLeft: backToOtherPage,
         }}
       />

@@ -10,7 +10,7 @@ import { USER_URL } from "..";
 import { Car, Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-export interface CreateUserCarInput {
+interface CreateUserCarInput {
   body: Car;
   auth: {
     accessToken: string;
