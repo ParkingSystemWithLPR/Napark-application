@@ -8,7 +8,7 @@ import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { InputType } from "@/enum/InputType";
-import { useProfile } from "@/store/context/profile";
+import { useCreateProfile } from "@/store/api/user/useCreateProfile";
 import { RootParamList } from "@/types";
 
 export type RegisterProps = NativeStackScreenProps<RootParamList, "Register">;
@@ -22,7 +22,6 @@ export type RegisterInputType = {
 };
 
 const Register: React.FC<RegisterProps> = ({ navigation }) => {
-  const { createProfile } = useProfile();
   const [inputValue, setInputValue] = useState<RegisterInputType>({
     email: { value: "" },
     password: { value: "" },
@@ -31,6 +30,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     lastname: { value: "" },
   });
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { mutateAsync: createProfileAsync } = useCreateProfile();
 
   const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
     setInputValue((curInputValue: RegisterInputType) => {
@@ -96,7 +96,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
     } else {
       try {
         setLoading(true);
-        await createProfile(
+        await createProfileAsync(
           {
             body: {
               email: email.value,
@@ -105,8 +105,10 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
               lastname: lastname.value,
             },
           },
-          (data) => {
-            navigation.replace("LogIn", { defaultEmail: data.email });
+          {
+            onSuccess(data) {
+              navigation.replace("LogIn", { defaultEmail: data.email });
+            },
           }
         );
       } catch (error) {

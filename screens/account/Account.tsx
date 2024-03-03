@@ -11,6 +11,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
+import { useEditProfile } from "@/store/api/user/useEditProfile";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
@@ -30,7 +31,8 @@ const IMAGE_SIZE = 100;
 
 const Account: React.FC<AccountProps> = () => {
   const { accessToken, authenticate } = useAuth();
-  const { profile: defaultProfile, updateProfile } = useProfile();
+  const { profile: defaultProfile, setProfile: setDefaultProfile } =
+    useProfile();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<ProfileInput>({
     firstname: { value: "" },
@@ -40,6 +42,7 @@ const Account: React.FC<AccountProps> = () => {
     mobileNo: { value: "" },
   });
   const [isEditing, setEditing] = useState<boolean>(false);
+  const { mutateAsync: editProfileAsync } = useEditProfile();
 
   useLayoutEffect(() => {
     if (defaultProfile) {
@@ -107,15 +110,22 @@ const Account: React.FC<AccountProps> = () => {
       });
     } else {
       try {
-        await updateProfile({
-          body: {
-            firstname: profile.firstname.value,
-            lastname: profile.lastname.value,
-            date_of_birth: profile.dob.value,
-            tel: profile.mobileNo.value,
+        await editProfileAsync(
+          {
+            body: {
+              firstname: profile.firstname.value,
+              lastname: profile.lastname.value,
+              date_of_birth: profile.dob.value,
+              tel: profile.mobileNo.value,
+            },
+            auth: { accessToken, authenticate },
           },
-          auth: { accessToken, authenticate },
-        });
+          {
+            onSuccess(data) {
+              setDefaultProfile(data);
+            },
+          }
+        );
         setEditing(false);
       } catch (error) {
         Alert.alert(
