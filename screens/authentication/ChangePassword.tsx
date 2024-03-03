@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import TextInput, { InputValueType } from "@/components/input/TextInput";
