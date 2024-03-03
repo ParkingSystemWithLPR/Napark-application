@@ -96,8 +96,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    height: "100%",
-    justifyContent: "space-between",
   },
   descriptionWrapper: {
     flexDirection: "row",
