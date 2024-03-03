@@ -1,11 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import TextInput, { InputValueType } from "@/components/input/TextInput";
-import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
+import { useChangePassword } from "@/store/api/user/useChangePassword";
+import { useAuth } from "@/store/context/auth";
+import { useProfile } from "@/store/context/profile";
 import { RootParamList } from "@/types";
 
 export type ChangePasswordProps = NativeStackScreenProps<
@@ -19,7 +21,10 @@ export type ChangePasswordInputType = {
   confirmPassword: InputValueType;
 };
 
-const ChangePassword: React.FC<ChangePasswordProps> = () => {
+const ChangePassword: React.FC<ChangePasswordProps> = ({ navigation }) => {
+  const { accessToken, authenticate } = useAuth();
+  const { profile } = useProfile();
+  const { mutateAsync: changePassword } = useChangePassword();
   const [inputValue, setInputValue] = useState<ChangePasswordInputType>({
     oldPassword: { value: "" },
     newPassword: { value: "" },
@@ -64,13 +69,41 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
         };
       });
     } else {
-      // TODO
+      try {
+        await changePassword(
+          {
+            body: {
+              email: profile.email,
+              old_password: oldPassword.value,
+              new_password: newPassword.value,
+            },
+            auth: {
+              accessToken,
+              authenticate,
+            },
+          },
+          {
+            onSuccess() {
+              navigation.goBack();
+            },
+          }
+        );
+      } catch (error) {
+        setInputValue((curInputValue: ChangePasswordInputType) => {
+          return {
+            ...curInputValue,
+            oldPassword: {
+              ...curInputValue.oldPassword,
+              errorText: "Password is incorrect",
+            },
+          };
+        });
+      }
     }
   };
 
   return (
     <BodyContainer innerContainerStyle={styles.loginContainer}>
-      <HeaderText text="Change Password" />
       <TextInput
         title="Old Password"
         placeholder="Your old password"
@@ -108,7 +141,6 @@ export default ChangePassword;
 const styles = StyleSheet.create({
   loginContainer: {
     flex: 1,
-    justifyContent: "center",
     paddingHorizontal: 30,
     gap: 10,
   },

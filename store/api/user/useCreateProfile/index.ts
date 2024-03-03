@@ -9,7 +9,7 @@ import { USER_URL } from "..";
 
 import { Profile } from "@/types/user";
 
-export interface CreateProfileInput {
+interface CreateProfileInput {
   body: {
     email: string;
     password: string;
