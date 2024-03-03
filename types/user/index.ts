@@ -8,7 +8,7 @@ export interface Profile {
   firstname: string;
   lastname: string;
   email: string;
-  tel: string;
-  date_of_birth: string;
-  user_car: Car[];
+  tel?: string;
+  date_of_birth?: string;
+  user_car?: Car[];
 }

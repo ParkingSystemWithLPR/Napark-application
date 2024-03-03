@@ -21,6 +21,6 @@ const validateDate = (date: string): boolean => {
   return MINIMUM_DATE < new Date(date);
 };
 
-export const formatISODate = (date: string) => {
-  return validateDate(date) ? date.split("T")[0] : "";
+export const formatISODate = (date?: string) => {
+  return date && validateDate(date) ? date.split("T")[0] : "";
 };
