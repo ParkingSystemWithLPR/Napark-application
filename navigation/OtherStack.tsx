@@ -9,7 +9,9 @@ import ChangePassword from "@/screens/other/ChangePassword";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
+import ConfigRole from "@/screens/role/ConfigRole";
 import RoleList from "@/screens/role/RoleList";
+import RoleMember from "@/screens/role/RoleMember";
 import { OtherStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
@@ -34,6 +36,7 @@ const OtherStack = () => {
         headerStyle: {
           backgroundColor: Colors.red[400].toString(),
         },
+        headerBackTitleVisible: false,
         headerTitleStyle: {
           fontSize: 18,
         },
@@ -74,7 +77,7 @@ const OtherStack = () => {
         name="RequestParkingLot"
         component={RequestParkingLot}
         options={{
-          title: "My parking sapce",
+          title: "Create parking space",
           headerLeft: backToOtherPage,
         }}
       />
@@ -82,8 +85,7 @@ const OtherStack = () => {
         name="ParkingLotDetail"
         component={ParkingLotDetail}
         options={{
-          title: "Parking Space Detail",
-          headerLeft: backToOtherPage,
+          title: "Parking space detail",
         }}
       />
       <Stack.Screen
@@ -91,7 +93,20 @@ const OtherStack = () => {
         component={RoleList}
         options={{
           title: "Role",
-          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="ConfigRole"
+        component={ConfigRole}
+        options={{
+          title: "Role",
+        }}
+      />
+      <Stack.Screen
+        name="RoleMember"
+        component={RoleMember}
+        options={{
+          title: "Assign member",
         }}
       />
     </Stack.Navigator>
