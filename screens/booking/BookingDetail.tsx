@@ -150,6 +150,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
               licensePlate={bookingRequest.licensePlate}
               setLicensePlate={(value: string) => {
                 if (value == "Not found your license plate") {
+                  handleOnChange("licensePlate", "");
                   navigation.navigate("OtherStack", {
                     screen: "CarInfoSetup",
                     params: {
@@ -255,7 +256,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
   },
-  pin: { color: Colors.red[300], fontSize: 30 },
+  pin: { color: Colors.red[300] },
   bookingDetailComponentContainer: { flex: 1 },
   scrollViewContainer: { flex: 4 },
   header: { marginBottom: 10 },
