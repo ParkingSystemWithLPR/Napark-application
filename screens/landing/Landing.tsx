@@ -2,13 +2,8 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -45,6 +40,14 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
   const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
   const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>([
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
+    MOCKED_PARKING_SPACE,
     MOCKED_PARKING_SPACE,
   ]);
   const [selectedParkingSpace, setSelectedParkingSpace] =
@@ -170,6 +173,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               onPress={() => handleChooseParkingSpace(item)}
             />
           )}
+          overScrollMode="never"
         />
       </CustomBottomSheetModal>
     );
@@ -182,9 +186,6 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         title={selectedParkingSpace?.name}
       >
         <View style={styles.bottomSheetContent}>
-          <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
-          ></ScrollView>
           <PrimaryButton
             title="Book"
             onPress={() => {
@@ -193,6 +194,9 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             }}
             outerContainerStyle={styles.bookButton}
           />
+          <ScrollView
+            contentContainerStyle={styles.scrollViewContent}
+          ></ScrollView>
         </View>
       </CustomBottomSheetModal>
     );
