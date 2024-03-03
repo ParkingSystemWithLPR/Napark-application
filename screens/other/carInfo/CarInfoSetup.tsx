@@ -47,6 +47,10 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
               accessToken,
               authenticate,
             },
+            auth: {
+              accessToken,
+              authenticate,
+            },
           },
           {
             onSuccess(data) {
