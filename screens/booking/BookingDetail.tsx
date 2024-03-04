@@ -157,6 +157,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
             text={parkingLot.name}
             ellipsizeMode="tail"
             numberOfLines={1}
+            containerStyle={styles.locationTextContainer}
           />
           <MaterialIcons name="location-pin" size={30} style={styles.pin} />
         </View>
@@ -262,6 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
   },
+  locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: { color: Colors.red[300] },
   bookingDetailComponentContainer: { flex: 1 },
   scrollViewContainer: { flex: 4 },

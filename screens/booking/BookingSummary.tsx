@@ -27,6 +27,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   route,
 }) => {
   const bookingRequest = route.params.bookingRequest;
+  const parkingLot = route.params.parkingLot;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
 
@@ -70,7 +71,12 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
       <View style={styles.locationSection}>
         <View style={styles.locationContainer}>
           <MaterialIcons name="location-pin" size={25} style={styles.pin} />
-          <BodyText text="Engineer building 3, Chulalongkorn" />
+          <BodyText
+            text={parkingLot.name}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            containerStyle={styles.locationTextContainer}
+          />
         </View>
       </View>
       <View style={styles.bookingDetailSection}>
@@ -150,6 +156,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: Platform.OS === "android" ? 4 : 2,
   },
+  locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: {
     marginHorizontal: 5,
   },
