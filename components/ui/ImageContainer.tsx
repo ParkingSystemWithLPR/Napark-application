@@ -1,18 +1,15 @@
 import { StyleSheet, FlatList, Image } from "react-native";
 
 export type ImageContainerProps = {
-  images: string[];
+  imageUrls: string[];
 };
 
-const ImageContainer: React.FC<ImageContainerProps> = ({ images }) => {
+const ImageContainer: React.FC<ImageContainerProps> = ({ imageUrls }) => {
   return (
     <FlatList
-      data={images}
-      renderItem={() => (
-        <Image
-          source={require("../../assets/images/icon.png")}
-          style={styles.image}
-        />
+      data={imageUrls}
+      renderItem={({ item: imageUrl }) => (
+        <Image source={{ uri: imageUrl }} style={styles.image} />
       )}
       horizontal={true}
     />
