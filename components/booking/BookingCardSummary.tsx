@@ -7,6 +7,8 @@ import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
+import { joinDateAndTime } from "@/utils/date";
+
 export type BookingCardSummaryProps = {
   checkInDate: string;
   checkInTime: string;
@@ -54,7 +56,7 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
       <View style={styles.propertyContainer}>
         {renderDetail({
           topic: "Check-in:",
-          value: checkInDate + " " + checkInTime,
+          value: joinDateAndTime(checkInDate, checkInTime),
         })}
         {renderDetail({
           topic: "Specifications:",

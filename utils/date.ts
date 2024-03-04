@@ -27,3 +27,7 @@ const validateDate = (date: string): boolean => {
 export const formatISODate = (date?: string) => {
   return date && validateDate(date) ? date.split("T")[0] : "";
 };
+
+export const joinDateAndTime = (date: string, time: string) => {
+  return date + " " + time;
+};

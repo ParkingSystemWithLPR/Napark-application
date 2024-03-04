@@ -33,6 +33,7 @@ const BookingStack = () => {
         component={BookingSummary}
         options={{
           title: "Booking summary",
+          headerBackTitle: "back",
         }}
       />
     </Stack.Navigator>
