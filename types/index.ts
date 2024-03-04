@@ -28,7 +28,7 @@ export type MainPageBottomTabParamList = {
   MyBooking: undefined;
   Payment: undefined;
   Account: undefined;
-  Others: undefined;
+  Other: undefined;
 };
 
 export type OtherStackParamList = {
@@ -60,6 +60,7 @@ export type TextProps = {
   containerStyle?: object;
   textStyle?: object;
 };
+
 export type HyperlinkTextProps = TextProps & {
   url: string;
 };
