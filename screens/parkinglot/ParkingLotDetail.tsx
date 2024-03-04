@@ -93,12 +93,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             />
           </View>
           <SectionAppForm title={"Photos"} icon={"camera"}>
-            <ImageContainer
-              imageUrls={[
-                "../../assets/images/icon.png",
-                "../../assets/images/icon.png",
-              ]}
-            />
+            <ImageContainer imageUrls={["image1", "image2"]} />
           </SectionAppForm>
           <ParkingBasicInfo parkingLot={parkingLot} />
         </View>

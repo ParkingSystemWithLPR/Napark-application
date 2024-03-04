@@ -215,12 +215,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           </View>
           <View style={styles.horizontalSeparator}></View>
           <View>
-            <ImageContainer
-              imageUrls={[
-                "../../assets/images/icon.png",
-                "../../assets/images/icon.png",
-              ]}
-            />
+            <ImageContainer imageUrls={["image1", "image2"]} />
           </View>
           <View style={styles.horizontalSeparator}></View>
           <View>
