@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     gap: 20,
     justifyContent: "space-between",
-    paddingVertical: 50,
+    paddingBottom: 25,
   },
   bodyContainerNoParking: {
     gap: 20,

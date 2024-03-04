@@ -41,14 +41,6 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
   const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>([
     MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
-    MOCKED_PARKING_SPACE,
   ]);
   const [selectedParkingSpace, setSelectedParkingSpace] =
     useState<ParkingLot>(MOCKED_PARKING_SPACE);
