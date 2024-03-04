@@ -1,0 +1,1 @@
+export const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;

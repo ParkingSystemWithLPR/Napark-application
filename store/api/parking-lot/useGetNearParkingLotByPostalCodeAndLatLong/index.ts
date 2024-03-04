@@ -6,9 +6,12 @@ import { PARKING_LOT_URL } from "..";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-type GetParkingLotsInput = {
+type GerAddressInput = {
   queryParams: {
-    userId: string;
+    postal_code: string;
+    lat: string;
+    long: string;
+    radius?: string;
   };
   auth: {
     accessToken: string;
@@ -16,16 +19,18 @@ type GetParkingLotsInput = {
   };
 };
 
-type GetParkingLotsService = (
-  input: GetParkingLotsInput
-) => Promise<ParkingLot[]>;
+type GerAddressService = (input: GerAddressInput) => Promise<ParkingLot[]>;
 
-export const getParkingLotByUserId: GetParkingLotsService = async ({
+export const getAddressByLatLong: GerAddressService = async ({
   queryParams,
   auth,
 }) => {
+  const { postal_code, lat, long, radius } = queryParams;
   const data = await apiRequest<ParkingLot[]>(
-    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/own/${queryParams.userId}`,
+    PARKING_LOT_URL +
+      `/parkinglot_v1/parkinglot/nearby?zip_code=${postal_code}&lat=${lat}&long=${long}&radius=${
+        radius ?? 5
+      }`,
     HTTPMethod.GET,
     auth.accessToken,
     auth.authenticate
@@ -33,12 +38,12 @@ export const getParkingLotByUserId: GetParkingLotsService = async ({
   return data;
 };
 
-export const useGetParkingLotsByUserId = (
-  input: GetParkingLotsInput
+export const useGerAddressByUserId = (
+  input: GerAddressInput
 ): UseQueryResult<ParkingLot[], AxiosError> => {
   return useQuery({
-    queryKey: ["parking-lot", input.queryParams],
-    queryFn: async () => getParkingLotByUserId(input),
+    queryKey: ["postal-code-latlng-radius", input.queryParams],
+    queryFn: async () => getAddressByLatLong(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
   });
