@@ -1,4 +1,5 @@
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
@@ -22,10 +23,16 @@ import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
 import { MOCKED_PARKING_SPACE } from "@/mock/mockData";
-import { RootParamList } from "@/types";
+import {
+  AuthenticatedStackParamList,
+  MainPageBottomTabParamList,
+} from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
-export type LandingProps = NativeStackScreenProps<RootParamList, "Landing">;
+export type LandingProps = CompositeScreenProps<
+  NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 export type RegionType = {
   latitude: number;

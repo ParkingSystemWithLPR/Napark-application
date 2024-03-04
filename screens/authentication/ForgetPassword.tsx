@@ -7,10 +7,10 @@ import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import { InputType } from "@/enum/InputType";
-import { RootParamList } from "@/types";
+import { AuthStackParamList } from "@/types";
 
 export type ForgetPasswordProps = NativeStackScreenProps<
-  RootParamList,
+  AuthStackParamList,
   "ForgetPassword"
 >;
 

@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
@@ -8,11 +9,11 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import { useChangePassword } from "@/store/api/user/useChangePassword";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
-import { RootParamList } from "@/types";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
-export type ChangePasswordProps = NativeStackScreenProps<
-  RootParamList,
-  "ChangePassword"
+export type ChangePasswordProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ChangePassword">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 export type ChangePasswordInputType = {

@@ -5,10 +5,10 @@ import { StyleSheet, View } from "react-native";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import TextInput, { InputValueType } from "@/components/input/TextInput";
 import HeaderText from "@/components/text/HeaderText";
-import { RootParamList } from "@/types";
+import { AuthenticatedStackParamList } from "@/types";
 
 export type ResetPasswordProps = NativeStackScreenProps<
-  RootParamList,
+  AuthenticatedStackParamList,
   "ResetPassword"
 >;
 

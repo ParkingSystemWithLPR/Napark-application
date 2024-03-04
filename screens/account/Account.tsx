@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
@@ -14,10 +15,16 @@ import { InputType } from "@/enum/InputType";
 import { useEditProfile } from "@/store/api/user/useEditProfile";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
-import { RootParamList } from "@/types";
+import {
+  MainPageBottomTabParamList,
+  AuthenticatedStackParamList,
+} from "@/types";
 import { formatISODate } from "@/utils/date";
 
-export type AccountProps = NativeStackScreenProps<RootParamList, "Account">;
+export type AccountProps = CompositeScreenProps<
+  NativeStackScreenProps<MainPageBottomTabParamList, "Account">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 interface ProfileInput {
   firstname: InputValueType;

@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
@@ -11,12 +12,12 @@ import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
 import { useGetParkingLotsByUserId } from "@/store/api/parking-lot/useGetParkingLotsByUserId";
 import { useAuth } from "@/store/context/auth";
-import { RootParamList } from "@/types";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
-export type ParkingLotsListProps = NativeStackScreenProps<
-  RootParamList,
-  "ParkingLotsList"
+export type ParkingLotsListProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
@@ -71,9 +72,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                 parkingSpaceName={item.name}
                 businessHours={"08:00 - 23:59"}
                 availabilty={0}
-                onPress={() =>
-                  navigation.push("OtherStack", { screen: "ParkingLotDetail" })
-                }
+                onPress={() => navigation.navigate("ParkingLotDetail")}
               />
             )}
             overScrollMode="never"
@@ -84,9 +83,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
       )}
       <PrimaryButton
         title="Request for your parking space"
-        onPress={() =>
-          navigation.push("OtherStack", { screen: "RequestParkingLot" })
-        }
+        onPress={() => navigation.navigate("RequestParkingLot")}
       />
     </BodyContainer>
   );

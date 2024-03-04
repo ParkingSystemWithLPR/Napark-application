@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
@@ -10,10 +11,13 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
 import { useProfile } from "@/store/context/profile";
-import { RootParamList } from "@/types";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import { Car } from "@/types/user";
 
-export type CarInfoProps = NativeStackScreenProps<RootParamList, "CarInfo">;
+export type CarInfoProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "CarInfo">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   const { profile } = useProfile();

@@ -11,9 +11,9 @@ import ResetPassword from "@/screens/authentication/ResetPassword";
 import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
-import { RootParamList } from "@/types";
+import { AuthenticatedStackParamList } from "@/types";
 
-const Stack = createNativeStackNavigator<RootParamList>();
+const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 
 const AuthenticatedStack = () => {
   const { accessToken, authenticate, logout } = useAuth();

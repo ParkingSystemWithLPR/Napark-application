@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
@@ -13,11 +14,11 @@ import { ActionMode } from "@/enum/ActionMode";
 import { useCreateUserCar } from "@/store/api/user/useCreateUserCar";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
-import { RootParamList } from "@/types";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
-export type CarInfoSetupProps = NativeStackScreenProps<
-  RootParamList,
-  "CarInfoSetup"
+export type CarInfoSetupProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "CarInfoSetup">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {

@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
@@ -10,16 +11,15 @@ import HyperLinkText from "@/components/text/HyperlinkText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
-import { RootParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 
 type BookingAttribute = {
   attribute: string;
   value: string;
 };
-
-export type BookingSummaryProps = NativeStackScreenProps<
-  RootParamList,
-  "BookingSummary"
+export type BookingSummaryProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingStackParamList, "BookingSummary">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {

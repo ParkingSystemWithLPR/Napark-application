@@ -1,24 +1,37 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
+
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
 
 export type RootParamList = {
   Splash: undefined;
-  Auth: undefined;
-  Authenticated: undefined;
+  Auth: NavigatorScreenParams<AuthStackParamList>;
+  Authenticated: NavigatorScreenParams<AuthenticatedStackParamList>;
+};
+
+export type AuthStackParamList = {
   LogIn: { defaultEmail: string } | undefined;
   Register: undefined;
   ForgetPassword: undefined;
+};
+
+export type AuthenticatedStackParamList = {
   ResetPassword: undefined;
-  ChangePassword: undefined;
-  MainScreen: { screen: string } | undefined; //idk I use it for nested navigation type checking
+  MainScreen: NavigatorScreenParams<MainPageBottomTabParamList>;
+  OtherStack: NavigatorScreenParams<OtherStackParamList>;
+  BookingStack: NavigatorScreenParams<BookingStackParamList>;
+};
+
+export type MainPageBottomTabParamList = {
   Landing: undefined;
   MyBooking: undefined;
   Payment: undefined;
   Account: undefined;
   Others: undefined;
-  Other: undefined;
-  OtherStack: { screen: string };
+};
+
+export type OtherStackParamList = {
   CarInfo: undefined;
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
   ConfigParkingLot: undefined;
@@ -26,8 +39,11 @@ export type RootParamList = {
   ParkingLotDetail: undefined;
   RequestParkingLot: undefined;
   RoleList: undefined;
-  AllBookings: undefined;
-  BookingStack: { screen: string };
+  ChangePassword: undefined;
+};
+
+export type BookingStackParamList = {
+  BookingDetail: undefined;
   BookingSummary: undefined;
 };
 

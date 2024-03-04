@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
@@ -13,13 +14,13 @@ import SectionAppForm from "@/components/ui/SectionAppForm";
 import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
-import { RootParamList } from "@/types";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { mockParkingLot } from "@/types/parking-lot/mock";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
-export type ParkingLotDetailProps = NativeStackScreenProps<
-  RootParamList,
-  "ParkingLotDetail"
+export type ParkingLotDetailProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ParkingLotDetail">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {

@@ -6,14 +6,13 @@ import Colors from "@/constants/color";
 import CarInfo from "@/screens/other/carInfo/CarInfo";
 import CarInfoSetup from "@/screens/other/carInfo/CarInfoSetup";
 import ChangePassword from "@/screens/other/ChangePassword";
-import Other from "@/screens/other/Other";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
 import RoleList from "@/screens/role/RoleList";
-import { RootParamList } from "@/types";
+import { OtherStackParamList } from "@/types";
 
-const Stack = createNativeStackNavigator<RootParamList>();
+const Stack = createNativeStackNavigator<OtherStackParamList>();
 
 const OtherStack = () => {
   const navigation = useNavigation();
@@ -42,11 +41,6 @@ const OtherStack = () => {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen
-        name="Other"
-        component={Other}
-        options={{ title: "Menu" }}
-      />
       <Stack.Screen
         name="CarInfo"
         component={CarInfo}

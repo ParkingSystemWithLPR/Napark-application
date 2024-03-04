@@ -2,6 +2,7 @@ import {
   MaterialTopTabBarProps,
   createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { TouchableOpacity, StyleSheet, Platform } from "react-native";
@@ -11,9 +12,15 @@ import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { BookingType } from "@/enum/BookingType";
-import { RootParamList } from "@/types";
+import {
+  MainPageBottomTabParamList,
+  AuthenticatedStackParamList,
+} from "@/types";
 
-export type MyBookingProps = NativeStackScreenProps<RootParamList, "MyBooking">;
+export type MyBookingProps = CompositeScreenProps<
+  NativeStackScreenProps<MainPageBottomTabParamList, "MyBooking">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 const ActiveSessions = () => <SessionsList type={BookingType.ACTIVE} />;
 const CompletedSessions = () => <SessionsList type={BookingType.COMPLETED} />;

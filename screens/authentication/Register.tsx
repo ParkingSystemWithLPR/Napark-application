@@ -9,9 +9,12 @@ import HeaderText from "@/components/text/HeaderText";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { InputType } from "@/enum/InputType";
 import { useCreateProfile } from "@/store/api/user/useCreateProfile";
-import { RootParamList } from "@/types";
+import { AuthStackParamList } from "@/types";
 
-export type RegisterProps = NativeStackScreenProps<RootParamList, "Register">;
+export type RegisterProps = NativeStackScreenProps<
+  AuthStackParamList,
+  "Register"
+>;
 
 export type RegisterInputType = {
   email: InputValueType;

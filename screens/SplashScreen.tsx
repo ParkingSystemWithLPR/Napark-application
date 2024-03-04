@@ -35,9 +35,12 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
 
       if (storedAccessToken && storedRefreshToken) {
         authenticate(storedAccessToken, storedRefreshToken);
-        navigation.replace("Authenticated");
+        navigation.navigate("Authenticated", {
+          screen: "MainScreen",
+          params: { screen: "Landing" },
+        });
       } else {
-        navigation.replace("Auth");
+        navigation.navigate("Auth", { screen: "LogIn" });
       }
     };
 

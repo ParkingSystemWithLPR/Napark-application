@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
@@ -8,9 +9,12 @@ import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import { InputType } from "@/enum/InputType";
 import { useAuth } from "@/store/context/auth";
-import { RootParamList } from "@/types";
+import { AuthStackParamList, RootParamList } from "@/types";
 
-export type LogInProps = NativeStackScreenProps<RootParamList, "LogIn">;
+export type LogInProps = CompositeScreenProps<
+  NativeStackScreenProps<AuthStackParamList, "LogIn">,
+  NativeStackScreenProps<RootParamList>
+>;
 
 export type LoginInputType = {
   email: InputValueType;
@@ -67,7 +71,10 @@ const LogIn: React.FC<LogInProps> = ({ navigation, route }) => {
     } else {
       try {
         await login(email.value, password.value);
-        navigation.replace("Authenticated");
+        navigation.navigate("Authenticated", {
+          screen: "MainScreen",
+          params: { screen: "Landing" },
+        });
       } catch (error) {
         Alert.alert(
           "Authentication Failed",

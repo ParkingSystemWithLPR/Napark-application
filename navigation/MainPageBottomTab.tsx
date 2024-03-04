@@ -1,16 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import OtherStack from "./OtherStack";
-
 import Colors from "@/constants/color";
 import Account from "@/screens/account/Account";
 import MyBooking from "@/screens/booking/MyBooking";
 import Landing from "@/screens/landing/Landing";
+import Other from "@/screens/other/Other";
 import Payment from "@/screens/payment/Payment";
-import { RootParamList } from "@/types";
+import { MainPageBottomTabParamList } from "@/types";
 
-const BottomTab = createBottomTabNavigator<RootParamList>();
+const BottomTab = createBottomTabNavigator<MainPageBottomTabParamList>();
 
 const MainPageBottomTab = () => {
   return (
@@ -91,9 +90,10 @@ const MainPageBottomTab = () => {
         }}
       />
       <BottomTab.Screen
-        name="Others"
-        component={OtherStack}
+        name="Other"
+        component={Other}
         options={{
+          headerShown: true,
           title: "Menu",
           tabBarLabel: "More",
           tabBarIcon: ({ color, size }) => (
