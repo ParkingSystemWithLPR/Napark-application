@@ -3,13 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
-import ChangePassword from "@/screens/authentication/ChangePassword";
-import CarInfo from "@/screens/other/CarInfo";
-import CarInfoSetup from "@/screens/other/CarInfoSetup";
+import CarInfo from "@/screens/other/carInfo/CarInfo";
+import CarInfoSetup from "@/screens/other/carInfo/CarInfoSetup";
+import ChangePassword from "@/screens/other/ChangePassword";
 import Other from "@/screens/other/Other";
-import ParkingLotDetail from "@/screens/parkinglot/ParkingLotDetail";
-import ParkingLotsList from "@/screens/parkinglot/ParkingLotsList";
-import RequestParkingLot from "@/screens/parkinglot/RequestPakingLot";
+import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
+import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
+import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
 import RoleList from "@/screens/role/RoleList";
 import { RootParamList } from "@/types";
 
