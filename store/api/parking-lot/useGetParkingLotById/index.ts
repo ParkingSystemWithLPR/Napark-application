@@ -1,6 +1,8 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+import { PARKING_LOT_URL } from "..";
+
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
@@ -15,8 +17,6 @@ type GetParkingLotInput = {
 };
 
 type GetParkingLotService = (input: GetParkingLotInput) => Promise<ParkingLot>;
-
-const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;
 
 export const getParkingLot: GetParkingLotService = async ({
   queryParams,

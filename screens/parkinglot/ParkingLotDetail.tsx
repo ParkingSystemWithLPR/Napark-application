@@ -1,10 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 import IconButtonWithTitle from "@/components/button/IconButtonWithTitle";
-import DetailText from "@/components/text/DetailText";
+import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ImageContainer from "@/components/ui/ImageContainer";
@@ -16,7 +16,6 @@ import { useAuth } from "@/store/context/auth";
 import { RootParamList } from "@/types";
 import { mockParkingLot } from "@/types/parking-lot/mock";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
-import { formatAddress } from "@/utils/address";
 
 export type ParkingLotDetailProps = NativeStackScreenProps<
   RootParamList,
@@ -58,6 +57,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
+            provider={PROVIDER_GOOGLE}
             zoomEnabled
           >
             <Marker
@@ -93,44 +93,9 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
             />
           </View>
           <SectionAppForm title={"Photos"} icon={"camera"}>
-            <ImageContainer images={["image1", "image2"]} />
+            <ImageContainer imageUrls={["image1", "image2"]} />
           </SectionAppForm>
-          <SectionAppForm title={"Location"} icon={"google-maps"}>
-            <DetailText
-              textStyle={styles.text}
-              text={formatAddress({
-                address: parkingLot.address,
-                sub_distict: parkingLot.sub_distict,
-                distict: parkingLot.distict,
-                province: parkingLot.province,
-                zip_code: parkingLot.zip_code,
-              })}
-            />
-          </SectionAppForm>
-          <SectionAppForm title={"Traffic"} icon={"car"}>
-            <View style={styles.textWrapper}>
-              <DetailText text={"1st floor"} textStyle={styles.text} />
-              <DetailText text={"20/20"} />
-            </View>
-            <View style={styles.textWrapper}>
-              <DetailText text={"2st floor"} textStyle={styles.text} />
-              <DetailText text={"19/20"} />
-            </View>
-            <View style={styles.textWrapper}>
-              <DetailText text={"3st floor"} textStyle={styles.text} />
-              <DetailText text={"20/20"} />
-            </View>
-            <View style={styles.textWrapper}>
-              <DetailText text={"4st floor"} textStyle={styles.text} />
-              <DetailText text={"11/12"} />
-            </View>
-          </SectionAppForm>
-          <SectionAppForm title={"Business hours"} icon={"clock"}>
-            <View style={styles.textWrapper}>
-              <DetailText text={"Monday - Friday"} textStyle={styles.text} />
-              <DetailText text={"06:30 - 23.59"} />
-            </View>
-          </SectionAppForm>
+          <ParkingBasicInfo parkingLot={parkingLot} />
         </View>
       </ScrollView>
     </BodyContainer>

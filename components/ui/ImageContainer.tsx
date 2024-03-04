@@ -1,20 +1,27 @@
 import { StyleSheet, FlatList, Image } from "react-native";
 
 export type ImageContainerProps = {
-  images: string[];
+  imageUrls: string[];
 };
 
-const ImageContainer: React.FC<ImageContainerProps> = ({ images }) => {
+const IMAGE_SIZE = 100;
+
+const ImageContainer: React.FC<ImageContainerProps> = ({ imageUrls }) => {
   return (
     <FlatList
-      data={images}
+      data={imageUrls}
       renderItem={() => (
         <Image
-          source={require("../../assets/images/icon.png")}
+          source={{
+            uri: "https://fastly.picsum.photos/id/157/200/300.jpg?hmac=-OZWQAIRoAdYWp7-qnHO1wl5t0TO3BMoAgW3tmR7wgE",
+          }}
+          height={IMAGE_SIZE}
+          width={IMAGE_SIZE}
           style={styles.image}
         />
       )}
       horizontal={true}
+      overScrollMode="never"
     />
   );
 };

@@ -2,7 +2,7 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,10 +13,14 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import RangeInput from "@/components/input/RangeInput";
 import TextInput from "@/components/input/TextInput";
+import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
+import StatusDetail from "@/components/parking/StatusDetail";
 import SubHeaderText from "@/components/text/SubHeaderText";
+import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
+import { ParkingLotStatus } from "@/enum/ParkingLot";
 import { MOCKED_PARKING_SPACE } from "@/mock/mockData";
 import { RootParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
@@ -33,7 +37,7 @@ export type RegionType = {
 const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const recommendedBottomSheetRef = useRef<BottomSheetModal>(null);
   const parkingSpaceDetailBottomSheetRef = useRef<BottomSheetModal>(null);
-  const { dismiss, dismissAll } = useBottomSheetModal();
+  const { dismissAll } = useBottomSheetModal();
   const [searchText, setSearchText] = useState<string>("");
   const [region, setRegion] = useState<RegionType>();
   const [isSearch, setSearch] = useState<boolean>(false);
@@ -83,7 +87,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const handleTextInputChange = (text: string) => {
     setSearch(text.length > 0);
     setSearchText(text);
-    dismiss();
+    dismissAll();
   };
 
   const searchIcon = useCallback(
@@ -172,24 +176,52 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   }, [recommendedBottomSheetRef, parkingSpaces]);
 
   const renderParkingSpaceDetail = useCallback(() => {
+    const isOpen = true;
     return (
       <CustomBottomSheetModal
         ref={parkingSpaceDetailBottomSheetRef}
         title={selectedParkingSpace?.name}
+        modalContainerStyle={styles.parkingDetailContainer}
       >
-        <View style={styles.bottomSheetContent}>
-          <PrimaryButton
-            title="Book"
-            onPress={() => {
-              dismissAll();
-              navigation.navigate("BookingStack", { screen: "BookingSummary" });
-            }}
-            outerContainerStyle={styles.bookButton}
-          />
-          <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
-          ></ScrollView>
-        </View>
+        <PrimaryButton
+          title="Book"
+          onPress={() => {
+            dismissAll();
+            navigation.navigate("BookingStack", { screen: "BookingSummary" });
+          }}
+        />
+        <ScrollView
+          contentContainerStyle={styles.informationContainer}
+          overScrollMode="never"
+        >
+          <View style={styles.statusContainer}>
+            <StatusDetail
+              title="Status"
+              value={isOpen ? ParkingLotStatus.OPEN : ParkingLotStatus.CLOSE}
+              bodyTextStyle={{
+                color: isOpen ? Colors.green[700] : Colors.red[400],
+              }}
+            />
+            <View style={styles.verticalSeparator}></View>
+            <StatusDetail
+              title="Traffic"
+              value="92% (2 slots left)"
+              bodyTextStyle={{
+                color: false ? Colors.green[700] : Colors.red[400],
+              }}
+            />
+            <View style={styles.verticalSeparator}></View>
+            <StatusDetail title="Distance" value="2.0km" />
+          </View>
+          <View style={styles.horizontalSeparator}></View>
+          <View>
+            <ImageContainer imageUrls={["image1", "image2"]} />
+          </View>
+          <View style={styles.horizontalSeparator}></View>
+          <View>
+            <ParkingBasicInfo parkingLot={selectedParkingSpace} />
+          </View>
+        </ScrollView>
       </CustomBottomSheetModal>
     );
   }, [parkingSpaceDetailBottomSheetRef, selectedParkingSpace]);
@@ -282,14 +314,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
   },
-  bottomSheetContent: {
+  parkingDetailContainer: {
     flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: Platform.OS === "ios" ? 40 : 20,
+    gap: 10,
     justifyContent: "space-between",
   },
-  scrollViewContent: {
-    flexGrow: 1,
+  informationContainer: {
+    gap: 20,
   },
-  bookButton: {
-    margin: 20,
+  statusContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-around",
+  },
+  verticalSeparator: {
+    height: "100%",
+    width: 1,
+    backgroundColor: Colors.gray[800],
+  },
+  horizontalSeparator: {
+    height: 1,
+    width: "100%",
+    backgroundColor: Colors.gray[800],
   },
 });
