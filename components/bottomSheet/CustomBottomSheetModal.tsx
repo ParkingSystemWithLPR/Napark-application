@@ -14,9 +14,9 @@ const CustomBottomSheetModal: React.ForwardRefRenderFunction<
   Ref,
   BottomSheetModalProps
 > = ({ title, children }, ref) => {
-  const snapPoints = useMemo(() => ["25%", "75%"], []);
+  const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
   return (
-    <BottomSheetModal ref={ref} index={0} snapPoints={snapPoints}>
+    <BottomSheetModal ref={ref} index={1} snapPoints={snapPoints}>
       <SubHeaderText containerStyle={styles.headerContainer} text={title} />
       {children}
     </BottomSheetModal>

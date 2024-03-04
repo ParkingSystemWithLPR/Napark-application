@@ -76,6 +76,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                 }
               />
             )}
+            overScrollMode="never"
           />
         </View>
       ) : (
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     gap: 20,
     justifyContent: "space-between",
-    paddingVertical: 50,
+    paddingBottom: 25,
   },
   bodyContainerNoParking: {
     gap: 20,
@@ -105,9 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   parkingSpaceCardContainer: {
-    alignItems: "center",
-    maxHeight: "85%",
-    overflow: "scroll",
+    flex: 1,
   },
   noParkingContainer: {
     justifyContent: "center",

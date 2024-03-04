@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
-import SubHeaderText from "../text/SubHeaderText";
+import DetailText from "../text/DetailText";
 
 import Colors from "@/constants/color";
 
@@ -24,10 +24,7 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
     <View style={styles.container}>
       <Pressable
         android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [
-          styles.card,
-          pressed ? styles.cardPressed : null,
-        ]}
+        style={({ pressed }) => [pressed ? styles.cardPressed : null]}
         onPress={onPress}
       >
         <View style={styles.innerContainer}>
@@ -36,33 +33,31 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
             source={require("../../assets/images/icon.png")}
           />
           <View style={styles.textContainer}>
+            <BodyText
+              text={parkingSpaceName}
+              textStyle={{ flexWrap: "wrap" }}
+            />
             <View style={styles.descriptionWrapper}>
-              <SubHeaderText text={parkingSpaceName} />
+              <MaterialCommunityIcons
+                name={"clock-outline"}
+                size={20}
+                color={Colors.gray[800]}
+              />
+              <DetailText text={businessHours} />
             </View>
             <View style={styles.descriptionWrapper}>
               <MaterialCommunityIcons
-                name={"clock"}
+                name={"car-side"}
                 size={20}
                 color={Colors.gray[800]}
-                style={styles.icon}
               />
-              <BodyText text={businessHours} />
-            </View>
-            <View style={styles.descriptionWrapper}>
-              <MaterialCommunityIcons
-                name={"car"}
-                size={20}
-                color={Colors.gray[800]}
-                style={styles.icon}
-              />
-              <BodyText text={availabilty + " slot left!!"} />
+              <DetailText text={availabilty + " slot left!!"} />
             </View>
           </View>
           <MaterialCommunityIcons
             name={"chevron-right"}
             size={30}
             color={Colors.gray[800]}
-            style={styles.icon}
           />
         </View>
       </Pressable>
@@ -90,32 +85,24 @@ const styles = StyleSheet.create({
   innerContainer: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    padding: 10,
+    gap: 10,
   },
   image: {
     borderRadius: 8,
     width: 80,
     height: 80,
-    backgroundColor: Colors.gray[100],
   },
   textContainer: {
-    gap: 5,
+    flex: 1,
   },
   descriptionWrapper: {
-    display: "flex",
     flexDirection: "row",
-    overflow: "hidden",
+    alignItems: "center",
     gap: 10,
   },
-  card: {},
   cardPressed: {
     opacity: 0.5,
   },
-  text: {
-    color: Colors.white,
-  },
-  icon: {},
 });
