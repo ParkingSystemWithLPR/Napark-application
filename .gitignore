@@ -33,3 +33,8 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Android credentials
+android/keystores/release.keystore
+
+credentials.json

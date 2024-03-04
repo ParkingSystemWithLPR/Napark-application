@@ -2,6 +2,7 @@
   "expo": {
     "name": "Napark",
     "slug": "Napark",
+    "description": "This is an application which make you manage your time and your parking space much easier.",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
@@ -13,13 +14,21 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.napark.Napark"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#f14951"
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.ACCESS_BACKGROUND_LOCATION"
+      ],
+      "package": "com.napark.Napark"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
@@ -43,6 +52,11 @@
           "isAndroidBackgroundLocationEnabled": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ecd34399-4d5b-429e-aea1-07d11669f4cb"
+      }
+    }
   }
 }
