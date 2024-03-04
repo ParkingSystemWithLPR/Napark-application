@@ -47,7 +47,7 @@ export type OtherStackParamList = {
 
 export type BookingStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
-  BookingSummary: { bookingRequest: BookingRequest };
+  BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
 };
 
 export type AuthenticatedStackParamListProps =
@@ -65,6 +65,8 @@ export type TextProps = {
   text: string;
   containerStyle?: object;
   textStyle?: object;
+  ellipsizeMode?: "middle" | "clip" | "head" | "tail";
+  numberOfLines?: number;
 };
 
 export type HyperlinkTextProps = TextProps & {

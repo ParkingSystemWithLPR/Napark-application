@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, Alert } from "react-native";
 
+import PrimaryButton from "../button/PrimaryButton";
 import SecondaryButton from "../button/SecondaryButton";
 import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
@@ -25,14 +26,22 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   handleConfirm,
 }) => {
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
-
+  const [canClickConfirm, setCanClickConfirm] = useState(false);
   useLayoutEffect(() => {
-    if (!isFirstUpdate && floor != null) {
+    if (!isFirstUpdate && floor != "") {
       setSlot("");
     } else {
       setIsFirstUpdate(false);
     }
   }, [floor]);
+
+  useLayoutEffect(() => {
+    if (floor != "" && slot != "") {
+      setCanClickConfirm(true);
+    } else {
+      setCanClickConfirm(false);
+    }
+  }, [floor, slot]);
 
   const renderItem = (item: DropdownItem) => {
     return (
@@ -51,6 +60,9 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
     setUnit(item.unit ?? "");
   };
 
+  const unableToConfirmHandler = () => {
+    Alert.alert("Please select a slot");
+  };
   return (
     <View style={styles.container}>
       <DropdownInput
@@ -79,12 +91,21 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
             renderItem={renderItem}
             onSpecialSelect={onSpecialSelect}
           />
-          <SecondaryButton
-            title={"confirm"}
-            onPress={handleConfirm}
-            buttonStyle={styles.buttonStyle}
-            outerContainerStyle={styles.centerContainer}
-          />
+          {canClickConfirm ? (
+            <PrimaryButton
+              title={"confirm"}
+              onPress={handleConfirm}
+              buttonStyle={styles.buttonStyle}
+              outerContainerStyle={styles.centerContainer}
+            />
+          ) : (
+            <SecondaryButton
+              title={"Confirm"}
+              onPress={unableToConfirmHandler}
+              buttonStyle={styles.buttonStyle}
+              outerContainerStyle={styles.centerContainer}
+            />
+          )}
         </View>
       )}
     </View>

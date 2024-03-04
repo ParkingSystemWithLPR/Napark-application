@@ -20,18 +20,22 @@ const Specification: React.FC<SpecificationProps> = ({
       {
         id: "Disable Parking",
         label: "Disable Parking",
+        color: Colors.red[400].toString(),
       },
       {
         id: "Ladies Parking",
         label: "Ladies Parking",
+        color: Colors.red[400].toString(),
       },
       {
         id: "Bus Parking",
         label: "Bus Parking",
+        color: Colors.red[400].toString(),
       },
       {
         id: "None",
         label: "None",
+        color: Colors.red[400].toString(),
       },
     ],
     []
@@ -85,6 +89,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   parkingOutline: { borderRadius: 20, borderWidth: 1, alignItems: "center" },
-  header: { marginLeft: 5, alignSelf: "flex-start" },
-  radioButton: { alignItems: "flex-start", marginVertical: 10 },
+  header: { marginLeft: 5 },
+  radioButton: {
+    alignItems: "flex-start",
+    marginVertical: 10,
+  },
 });

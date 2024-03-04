@@ -43,7 +43,8 @@ export type BookingRequest = {
   price: number;
   unit: string;
 };
-const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
+const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
+  const parkingLot = route.params.parkingLot;
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const isFocused = useIsFocused();
@@ -92,7 +93,10 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
 
   useLayoutEffect(() => {
     goToNextPage &&
-      navigation.navigate("BookingSummary", { bookingRequest: bookingRequest });
+      navigation.navigate("BookingSummary", {
+        bookingRequest: bookingRequest,
+        parkingLot: parkingLot,
+      });
     setGoToNextPage(false);
   }, [goToNextPage]);
 
@@ -102,14 +106,6 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
 
   const handleNavigation = () => {
     setGoToNextPage(true);
-  };
-
-  const handleClickConfirm = () => {
-    if (bookingRequest.slot == "" || bookingRequest.floor == "") {
-      Alert.alert("Please select a slot");
-    } else {
-      handleNavigation();
-    }
   };
 
   const handleClickRecommend = (slot: RecommendedSlotType) => {
@@ -157,7 +153,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.bookingDetailContainer}>
         <View style={styles.locationContainer}>
-          <BodyText text={"Engineer building 3, Chulalongkorn"} />
+          <BodyText
+            text={parkingLot.name}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+          />
           <MaterialIcons name="location-pin" size={30} style={styles.pin} />
         </View>
         {isSetting ? (
@@ -230,7 +230,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
                 setFloor={(value: string) => handleOnChange("floor", value)}
                 slot={bookingRequest.slot}
                 setSlot={(value: string) => handleOnChange("slot", value)}
-                handleConfirm={handleClickConfirm}
+                handleConfirm={handleNavigation}
                 setPrice={(value: number) => handleOnChange("price", value)}
                 setUnit={(value: string) => handleOnChange("unit", value)}
               />
