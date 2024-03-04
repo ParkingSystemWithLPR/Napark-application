@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -29,16 +29,19 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   const bookingRequest = route.params.bookingRequest;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
+
   const sendCreateRequest = () => {
     setIsSendingRequest(true);
     setTimeout(() => {
       setIsSendingRequest(false);
     }, 2000);
   };
+
   const openModal = () => {
     setIsOpenModal(true);
     sendCreateRequest();
   };
+
   const closeModal = () => {
     setIsOpenModal(false);
     setTimeout(() => {
@@ -46,21 +49,21 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     }, 0);
   };
 
-  const RenderAttribute: React.FC<BookingAttribute> = ({
-    attribute,
-    value,
-  }) => {
-    return (
-      <View style={styles.attributeContainer}>
-        <BodyText
-          text={attribute + ":"}
-          containerStyle={styles.attributeField}
-          textStyle={styles.attributeTextColor}
-        />
-        <BodyText text={value} containerStyle={styles.valueField} />
-      </View>
-    );
-  };
+  const renderAttribute = useCallback(
+    ({ attribute, value }: BookingAttribute) => {
+      return (
+        <View style={styles.attributeContainer}>
+          <BodyText
+            text={attribute + ":"}
+            containerStyle={styles.attributeField}
+            textStyle={styles.attributeTextColor}
+          />
+          <BodyText text={value} containerStyle={styles.valueField} />
+        </View>
+      );
+    },
+    []
+  );
 
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
@@ -76,31 +79,31 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
             text="Booking Details"
             containerStyle={styles.headerStyle}
           />
-          <RenderAttribute attribute="Space" value={bookingRequest.slot} />
-          <RenderAttribute
-            attribute="Check-in Date"
-            value={bookingRequest.checkInDate ?? ""}
-          />
-          <RenderAttribute
-            attribute="Check-in Time"
-            value={bookingRequest.checkInTime ?? ""}
-          />
-          <RenderAttribute
-            attribute="Check-out Date (Est)"
-            value={bookingRequest.checkOutDate ?? ""}
-          />
-          <RenderAttribute
-            attribute="Check-out Time (Est)"
-            value={bookingRequest.checkOutTime ?? ""}
-          />
-          <RenderAttribute
-            attribute="Specifications"
-            value={bookingRequest.specification}
-          />
-          <RenderAttribute
-            attribute="Cost per Unit"
-            value={bookingRequest.price + bookingRequest.unit}
-          />
+          {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
+          {renderAttribute({
+            attribute: "Check-in Date",
+            value: bookingRequest.checkInDate ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-in Time",
+            value: bookingRequest.checkInTime ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-out Date (Est)",
+            value: bookingRequest.checkOutDate ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-out Time (Est)",
+            value: bookingRequest.checkOutTime ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Specifications",
+            value: bookingRequest.specification,
+          })}
+          {renderAttribute({
+            attribute: "Cost per Unit",
+            value: bookingRequest.price + bookingRequest.unit,
+          })}
         </View>
         <View style={styles.routeContainer}>
           <BodyText text={"Don`t know the route?"} />

@@ -1,7 +1,14 @@
-import { useIsFocused } from "@react-navigation/native";
+import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Alert, Pressable } from "react-native";
+import { useCallback, useLayoutEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  Pressable,
+  Platform,
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -12,12 +19,11 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { ActionMode } from "@/enum/ActionMode";
-import { RootParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 
-export type BookingDetailProps = NativeStackScreenProps<
-  RootParamList,
-  "BookingDetail"
+export type BookingDetailProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 type RecommendedSlotType = {
   slotName: string;
@@ -53,6 +59,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
     price: 0,
     unit: "",
   });
+
   const handleOnChange = function <T>(
     identifierKey: string,
     enteredValue: T
@@ -68,6 +75,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
   const openSetting = () => {
     setIsSetting(true);
   };
+
   const closeSetting = () => {
     if (
       bookingRequest.licensePlate == "" ||
@@ -81,17 +89,21 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
       setIsSetting(false);
     }
   };
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     goToNextPage &&
       navigation.navigate("BookingSummary", { bookingRequest: bookingRequest });
     setGoToNextPage(false);
   }, [goToNextPage]);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     isFocused && setBookingRequest(bookingRequest); //refresh screen
   }, [isFocused]);
+
   const handleNavigation = () => {
     setGoToNextPage(true);
   };
+
   const handleClickConfirm = () => {
     if (bookingRequest.slot == "" || bookingRequest.floor == "") {
       Alert.alert("Please select a slot");
@@ -99,44 +111,48 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
       handleNavigation();
     }
   };
+
   const handleClickRecommend = (slot: RecommendedSlotType) => {
     handleOnChange("slot", slot.slotName);
     handleOnChange("price", slot.price);
     handleOnChange("unit", slot.unit);
     handleNavigation();
   };
-  const RecommendedSlot: React.FC<RecommendedSlotType> = ({
-    slotName,
-    recommendType,
-    price,
-    unit,
-  }) => {
-    return (
-      <Pressable
-        onPress={handleClickRecommend.bind(this, {
-          slotName,
-          recommendType,
-          price,
-          unit,
-        })}
-      >
-        <View style={styles.recommendSlotContainer}>
-          <View style={styles.rowContainer}>
-            <MaterialCommunityIcons
-              name="alpha-p-circle-outline"
-              style={styles.iconParking}
-              size={20}
-            />
-            <View>
-              <BodyText text={"Slot: " + slotName}></BodyText>
-              <BodyText text={recommendType}></BodyText>
+
+  const renderRecommendedSlot = useCallback(
+    ({ slotName, recommendType, price, unit }: RecommendedSlotType) => {
+      return (
+        <Pressable
+          onPress={handleClickRecommend.bind(this, {
+            slotName,
+            recommendType,
+            price,
+            unit,
+          })}
+        >
+          <View style={styles.recommendSlotContainer}>
+            <View style={styles.rowContainer}>
+              <MaterialCommunityIcons
+                name="alpha-p-circle-outline"
+                style={styles.iconParking}
+                size={20}
+              />
+              <View
+                style={{
+                  gap: 5,
+                }}
+              >
+                <BodyText text={"Slot: " + slotName}></BodyText>
+                <BodyText text={recommendType}></BodyText>
+              </View>
             </View>
+            <BodyText text={price.toString() + unit}></BodyText>
           </View>
-          <BodyText text={price.toString() + unit}></BodyText>
-        </View>
-      </Pressable>
-    );
-  };
+        </Pressable>
+      );
+    },
+    []
+  );
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.bookingDetailContainer}>
@@ -149,17 +165,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
             <BookingDetailComponent
               licensePlate={bookingRequest.licensePlate}
               setLicensePlate={(value: string) => {
-                if (value == "Not found your license plate") {
-                  handleOnChange("licensePlate", "");
-                  navigation.navigate("OtherStack", {
-                    screen: "CarInfoSetup",
-                    params: {
-                      mode: ActionMode.CREATE,
-                    },
-                  });
-                } else {
-                  handleOnChange("licensePlate", value);
-                }
+                handleOnChange("licensePlate", value);
               }}
               checkInDate={bookingRequest.checkInDate}
               setCheckInDate={(value: string | null) =>
@@ -202,18 +208,18 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation }) => {
                 containerStyle={styles.header}
               />
               <View style={styles.recommendSlotOuterContainer}>
-                <RecommendedSlot
-                  slotName={"6A"}
-                  recommendType={"Cheapest slot"}
-                  price={1}
-                  unit="฿/hr"
-                />
-                <RecommendedSlot
-                  slotName={"8B"}
-                  recommendType={"Nearest to the entrance"}
-                  price={1.5}
-                  unit="฿/hr"
-                />
+                {renderRecommendedSlot({
+                  slotName: "6A",
+                  recommendType: "Cheapest slot",
+                  price: 1,
+                  unit: "฿/hr",
+                })}
+                {renderRecommendedSlot({
+                  slotName: "8B",
+                  recommendType: "Nearest to the entrance",
+                  price: 1.5,
+                  unit: "฿/hr",
+                })}
               </View>
               <SubHeaderText
                 text={"View All Slot"}
@@ -262,13 +268,13 @@ const styles = StyleSheet.create({
   header: { marginBottom: 10 },
   recommendSlotOuterContainer: {
     flex: 1,
-    gap: 20,
+    gap: Platform.OS == "ios" ? 25 : 20,
     marginBottom: 10,
   },
   recommendSlotContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 8,
+    marginHorizontal: 10,
     borderBottomWidth: 1,
     borderColor: Colors.red[400],
   },

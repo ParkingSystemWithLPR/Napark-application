@@ -1,27 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
+import BookingDetail from "@/screens/booking/BookingDetail";
 import BookingSummary from "@/screens/booking/BookingSummary";
 import { BookingStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<BookingStackParamList>();
 
 const BookingStack = () => {
-  const navigation = useNavigation();
-
-  const backToOtherPage = () => {
-    return (
-      <IconButton
-        icon={"chevron-left"}
-        size={28}
-        color={Colors.white}
-        buttonStyle={{ padding: 0 }}
-        onPress={() => navigation.goBack()}
-      />
-    );
-  };
   return (
     <Stack.Navigator
       screenOptions={{
@@ -40,7 +26,6 @@ const BookingStack = () => {
         component={BookingDetail}
         options={{
           title: "Booking detail",
-          headerLeft: backToOtherPage,
         }}
       />
       <Stack.Screen
@@ -48,7 +33,6 @@ const BookingStack = () => {
         component={BookingSummary}
         options={{
           title: "Booking summary",
-          headerLeft: backToOtherPage,
         }}
       />
     </Stack.Navigator>

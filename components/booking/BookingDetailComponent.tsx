@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect, useState } from "react";
+import { Alert, Platform, StyleSheet, View } from "react-native";
 
 import Specification from "./Specification";
 import Colors from "../../constants/color";
@@ -7,6 +8,9 @@ import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
 import DropdownInput from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
+
+import { ActionMode } from "@/enum/ActionMode";
+import { AuthenticatedStackParamListProps } from "@/types";
 
 export type BookingDetailComponentProps = {
   checkOutTime: string | null;
@@ -39,9 +43,11 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   setSpecification,
   closeSetting,
 }) => {
+  const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
   const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
   const isCheckOutTimeEditable = checkOutDate != null;
+
   const checkOutTimeHandler = (checkOutTime: string | null) => {
     if (checkOutTime && checkInTime && checkInDate && checkOutDate) {
       if (
@@ -54,7 +60,22 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       }
     }
   };
-  useEffect(() => {
+
+  const setLicensePlateHandler = (value: string) => {
+    if (value == "Not found your license plate") {
+      setLicensePlate("");
+      navigation.navigate("OtherStack", {
+        screen: "CarInfoSetup",
+        params: {
+          mode: ActionMode.CREATE,
+        },
+      });
+    } else {
+      setLicensePlate(value);
+    }
+  };
+
+  useLayoutEffect(() => {
     if (!isFirstUpdate && checkInDate != null && checkInDate != null) {
       setCheckOutTime(null);
       setCheckOutDate(null);
@@ -62,7 +83,8 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       setIsFirstUpdate(false);
     }
   }, [checkInTime, checkInDate]);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     if (
       !isFirstUpdate &&
       checkOutDate &&
@@ -71,12 +93,13 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     )
       setCheckOutTime(null);
   }, [checkOutDate]);
+
   return (
     <View style={styles.outerContainer}>
       <DropdownInput
         selectedValue={licensePlate}
         placeholder={"ex.  กข1234"}
-        onSelect={setLicensePlate}
+        onSelect={setLicensePlateHandler}
         items={[
           { label: "กข1234", value: "กข1234" },
           {
@@ -86,7 +109,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         ]}
         title="License Plate"
         isRequired={true}
-      ></DropdownInput>
+      />
       <View style={styles.dateTimeContainer}>
         <DayInput
           title={"Check-in"}
@@ -145,7 +168,7 @@ export default BookingDetailComponent;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    gap: 10,
+    gap: Platform.OS == "ios" ? 20 : 10,
     paddingHorizontal: 10,
     paddingVertical: 8,
     backgroundColor: Colors.white,
@@ -158,6 +181,7 @@ const styles = StyleSheet.create({
   dateTimeContainer: {
     flexDirection: "row",
     alignItems: "flex-end",
+    gap: 10,
   },
   dateContainer: {
     flex: 3,

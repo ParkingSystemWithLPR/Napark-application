@@ -1,5 +1,7 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 
+import { ParkingLot } from "./parking-lot/ParkingLot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
@@ -44,10 +46,12 @@ export type OtherStackParamList = {
 };
 
 export type BookingStackParamList = {
-  BookingDetail: undefined;
-  BookingSummary: undefined;
-  BookingDetail: undefined;
+  BookingDetail: { parkingLot: ParkingLot };
+  BookingSummary: { bookingRequest: BookingRequest };
 };
+
+export type AuthenticatedStackParamListProps =
+  NavigationProp<AuthenticatedStackParamList>;
 
 export type ButtonProps = {
   title: string;

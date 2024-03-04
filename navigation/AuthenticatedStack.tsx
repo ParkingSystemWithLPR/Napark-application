@@ -33,7 +33,7 @@ const AuthenticatedStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="MainScreen"
+      initialRouteName="BookingStack"
       screenOptions={{
         headerShown: false,
       }}

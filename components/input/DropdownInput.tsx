@@ -70,6 +70,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         activeColor={Colors.red[400].toString()}
         autoScroll={false}
         renderItem={renderItem}
+        placeholderStyle={styles.placeholderText}
       />
     </View>
   );
@@ -102,5 +103,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+  },
+  placeholderText: {
+    color: Colors.gray[600],
   },
 });

@@ -5,10 +5,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import Colors from "../../constants/color";
 import SubHeaderText from "../text/SubHeaderText";
+
 export type SpecificationProps = {
   specification: string | undefined;
   onChange: (id: string | undefined) => void;
 };
+
 const Specification: React.FC<SpecificationProps> = ({
   specification,
   onChange,
@@ -16,7 +18,7 @@ const Specification: React.FC<SpecificationProps> = ({
   const radioButtons: RadioButtonProps[] = useMemo(
     () => [
       {
-        id: "Disable Parking", // acts as primary key, should be unique and non-empty string
+        id: "Disable Parking",
         label: "Disable Parking",
       },
       {

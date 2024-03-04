@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useCallback } from "react";
 import { View, StyleSheet, Pressable, Platform } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -12,24 +13,27 @@ export type BookingCardSummaryProps = {
   specification: string | undefined;
   openSetting: () => void;
 };
+
+type DetailProps = {
+  topic: string;
+  value: string;
+};
+
 const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
   checkInDate,
   checkInTime,
   specification,
   openSetting,
 }) => {
-  type DetailProps = {
-    topic: string;
-    value: string;
-  };
-  const Detail: React.FC<DetailProps> = ({ topic, value }) => {
+  const renderDetail = useCallback(({ topic, value }: DetailProps) => {
     return (
       <View style={styles.detailContainer}>
         <BodyText text={topic} />
         <BodyText text={value} />
       </View>
     );
-  };
+  }, []);
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.container}>
@@ -48,8 +52,14 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
         </Pressable>
       </View>
       <View style={styles.propertyContainer}>
-        <Detail topic={"Check-in:"} value={checkInDate + " " + checkInTime} />
-        <Detail topic={"Specifications:"} value={specification ?? "None"} />
+        {renderDetail({
+          topic: "Check-in:",
+          value: checkInDate + " " + checkInTime,
+        })}
+        {renderDetail({
+          topic: "Specifications:",
+          value: specification ?? "None",
+        })}
       </View>
     </View>
   );

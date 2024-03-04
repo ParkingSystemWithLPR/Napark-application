@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Image, View, StyleSheet } from "react-native";
 
 import SecondaryButton from "../button/SecondaryButton";
@@ -12,7 +12,6 @@ export type ParkingPlanProps = {
   setSlot: (data: string) => void;
   setPrice: (data: number) => void;
   setUnit: (data: string) => void;
-
   handleConfirm: () => void;
 };
 
@@ -26,13 +25,15 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   handleConfirm,
 }) => {
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     if (!isFirstUpdate && floor != null) {
       setSlot("");
     } else {
       setIsFirstUpdate(false);
     }
   }, [floor]);
+
   const renderItem = (item: DropdownItem) => {
     return (
       <View style={styles.item}>
@@ -43,11 +44,13 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
       </View>
     );
   };
+
   const onSpecialSelect = (item: DropdownItem) => {
     setPrice(item.price ?? 0);
     setSlot(item.value);
     setUnit(item.unit ?? "");
   };
+
   return (
     <View style={styles.container}>
       <DropdownInput
@@ -90,7 +93,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
 export default ParkingPlan;
 
 const styles = StyleSheet.create({
-  container: { gap: 10 },
+  container: { gap: 10, marginHorizontal: 10 },
   buttonStyle: {
     paddingHorizontal: 50,
   },
