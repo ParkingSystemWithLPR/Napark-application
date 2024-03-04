@@ -15,7 +15,9 @@ export type DayInputProps = {
   date: string | null;
   placeholder?: string;
   onChange: (date: string) => void;
+  isRequired?: boolean;
   setMinimumDate?: boolean;
+  minDateValue?: string | null;
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
@@ -25,8 +27,10 @@ const DayInput: React.FC<DayInputProps> = ({
   title,
   date,
   onChange,
+  isRequired = false,
   placeholder = "YYYY-MM-DD",
   setMinimumDate = false,
+  minDateValue = null,
   editable = false,
   outerContainerStyle,
   containerStyle,
@@ -50,7 +54,12 @@ const DayInput: React.FC<DayInputProps> = ({
 
   return (
     <View style={[styles.outerContainer, outerContainerStyle]}>
-      <SubHeaderText text={title} />
+      <View style={styles.titleContainer}>
+        <SubHeaderText text={title} />
+        {isRequired && (
+          <BodyText text="*" textStyle={styles.requiredIndicator} />
+        )}
+      </View>
       <Pressable onPress={openDayPicker} disabled={!editable}>
         <View
           style={[
@@ -80,7 +89,13 @@ const DayInput: React.FC<DayInputProps> = ({
           <View style={styles.dateTimePickerContainer}>
             <DatePicker
               mode="calendar"
-              minimumDate={setMinimumDate ? startDate : minimumDate}
+              minimumDate={
+                setMinimumDate
+                  ? minDateValue
+                    ? minDateValue
+                    : startDate
+                  : minimumDate
+              }
               selected={date ?? startDate}
               onDateChange={handleOnSelectedChange}
             />
@@ -95,6 +110,10 @@ export default DayInput;
 
 const styles = StyleSheet.create({
   outerContainer: {},
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -115,6 +134,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
   },
   placeholderText: {
     color: Colors.gray[600],

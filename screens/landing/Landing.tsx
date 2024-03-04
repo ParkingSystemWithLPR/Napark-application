@@ -194,7 +194,10 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           title="Book"
           onPress={() => {
             dismissAll();
-            navigation.navigate("BookingStack", { screen: "BookingSummary" });
+            navigation.navigate("BookingStack", {
+              screen: "BookingDetail",
+              params: { parkingLot: selectedParkingSpace },
+            });
           }}
         />
         <ScrollView

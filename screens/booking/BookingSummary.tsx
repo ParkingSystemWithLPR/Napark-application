@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -22,19 +22,27 @@ export type BookingSummaryProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
+const BookingSummary: React.FC<BookingSummaryProps> = ({
+  navigation,
+  route,
+}) => {
+  const bookingRequest = route.params.bookingRequest;
+  const parkingLot = route.params.parkingLot;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
+
   const sendCreateRequest = () => {
     setIsSendingRequest(true);
     setTimeout(() => {
       setIsSendingRequest(false);
     }, 2000);
   };
+
   const openModal = () => {
     setIsOpenModal(true);
     sendCreateRequest();
   };
+
   const closeModal = () => {
     setIsOpenModal(false);
     setTimeout(() => {
@@ -42,28 +50,33 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
     }, 0);
   };
 
-  const RenderAttribute: React.FC<BookingAttribute> = ({
-    attribute,
-    value,
-  }) => {
-    return (
-      <View style={styles.attributeContainer}>
-        <BodyText
-          text={attribute + ":"}
-          containerStyle={styles.attributeField}
-          textStyle={styles.attributeTextColor}
-        />
-        <BodyText text={value} containerStyle={styles.valueField} />
-      </View>
-    );
-  };
+  const renderAttribute = useCallback(
+    ({ attribute, value }: BookingAttribute) => {
+      return (
+        <View style={styles.attributeContainer}>
+          <BodyText
+            text={attribute + ":"}
+            containerStyle={styles.attributeField}
+            textStyle={styles.attributeTextColor}
+          />
+          <BodyText text={value} containerStyle={styles.valueField} />
+        </View>
+      );
+    },
+    []
+  );
 
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.locationSection}>
         <View style={styles.locationContainer}>
           <MaterialIcons name="location-pin" size={25} style={styles.pin} />
-          <BodyText text="Engineer building 3, Chulalongkorn" />
+          <BodyText
+            text={parkingLot.name}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            containerStyle={styles.locationTextContainer}
+          />
         </View>
       </View>
       <View style={styles.bookingDetailSection}>
@@ -72,11 +85,31 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
             text="Booking Details"
             containerStyle={styles.headerStyle}
           />
-          <RenderAttribute attribute="Space" value="6a" />
-          <RenderAttribute attribute="Check-in Time" value="11:00 am" />
-          <RenderAttribute attribute="Check-out Time (Est)" value="05:00 pm" />
-          <RenderAttribute attribute="Specifications" value="None" />
-          <RenderAttribute attribute="Cost per Unit" value="15฿/hr" />
+          {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
+          {renderAttribute({
+            attribute: "Check-in Date",
+            value: bookingRequest.checkInDate ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-in Time",
+            value: bookingRequest.checkInTime ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-out Date (Est)",
+            value: bookingRequest.checkOutDate ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Check-out Time (Est)",
+            value: bookingRequest.checkOutTime ?? "",
+          })}
+          {renderAttribute({
+            attribute: "Specifications",
+            value: bookingRequest.specification,
+          })}
+          {renderAttribute({
+            attribute: "Cost per Unit",
+            value: bookingRequest.price + bookingRequest.unit,
+          })}
         </View>
         <View style={styles.routeContainer}>
           <BodyText text={"Don`t know the route?"} />
@@ -104,7 +137,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({ navigation }) => {
 export default BookingSummary;
 const styles = StyleSheet.create({
   screen: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     gap: 15,
   },
   locationSection: {
@@ -112,7 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   locationContainer: {
-    padding: 15,
+    paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.white,
@@ -123,6 +156,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: Platform.OS === "android" ? 4 : 2,
   },
+  locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: {
     marginHorizontal: 5,
   },
@@ -131,7 +165,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   bookingDetailContainer: {
-    flex: 1,
+    flex: 2,
     backgroundColor: Colors.white,
     borderRadius: 5,
     shadowColor: Colors.black,

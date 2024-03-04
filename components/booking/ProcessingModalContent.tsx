@@ -42,8 +42,8 @@ export default ProcessingModalContent;
 const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: Colors.white,
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 220,
     paddingHorizontal: 15,
     borderRadius: 10,
   },
