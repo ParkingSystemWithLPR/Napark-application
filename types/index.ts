@@ -49,6 +49,12 @@ export type OtherStackParamList = {
   RoleMember: undefined;
   ConfigRole: { mode: ActionMode; roleId?: string };
   ChangePassword: undefined;
+  AllBookings: undefined;
+  BookingStack: { screen: string };
+  BookingSummary: undefined;
+  AccountAndCard: undefined;
+  ScanQR: undefined;
+  PayTheBill: undefined;
 };
 
 export type BookingStackParamList = {
