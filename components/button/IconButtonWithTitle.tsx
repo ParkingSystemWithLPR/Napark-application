@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { ColorValue, Pressable, StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
@@ -7,17 +7,24 @@ import BodyText from "../text/BodyText";
 import Colors from "@/constants/color";
 import { ButtonProps } from "@/types";
 
-type IconButtonWithTitleProps = ButtonProps & { icon: string };
+type IconButtonWithTitleProps = ButtonProps & {
+  icon: string;
+  iconColor?: ColorValue;
+  iconSize?: number;
+};
 
 const IconButtonWithTitle: React.FC<IconButtonWithTitleProps> = ({
   title,
   onPress,
   buttonStyle,
+  containerStyle,
   textStyle,
   icon,
+  iconColor = Colors.red[400],
+  iconSize = 30,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Pressable
         android_ripple={{ color: Colors.gray[600] }}
         style={({ pressed }) => [
@@ -29,8 +36,8 @@ const IconButtonWithTitle: React.FC<IconButtonWithTitleProps> = ({
         <View style={[styles.buttonContainer, buttonStyle]}>
           <MaterialCommunityIcons
             name={icon}
-            size={30}
-            color={Colors.red[400]}
+            size={iconSize}
+            color={iconColor}
           />
           <BodyText text={title} textStyle={[styles.text, textStyle]} />
         </View>
@@ -43,6 +50,8 @@ export default IconButtonWithTitle;
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: Colors.black,
     shadowOffset: { width: 2, height: 4 },
     shadowOpacity: 0.2,
@@ -56,8 +65,9 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   buttonContainer: {
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
+    height: "100%",
   },
   button: {},
   buttonPressed: {

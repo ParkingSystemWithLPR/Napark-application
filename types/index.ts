@@ -59,6 +59,7 @@ export type ButtonProps = {
   outerContainerStyle?: object;
   buttonStyle?: object;
   textStyle?: object;
+  containerStyle?: object;
 };
 
 export type TextProps = {
