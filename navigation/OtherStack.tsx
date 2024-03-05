@@ -10,6 +10,9 @@ import Other from "../screens/other/Other";
 import ParkingLotDetail from "../screens/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "../screens/parkinglot/ParkingLotsList";
 import RequestParkingLot from "../screens/parkinglot/RequestPakingLot";
+import AccountAndCard from "../screens/payment/AccountAndCard";
+import PayTheBill from "../screens/payment/PayTheBill";
+import ScanQR from "../screens/payment/ScanQR";
 import RoleList from "../screens/role/RoleList";
 import { RootParamList } from "../types";
 
@@ -97,6 +100,30 @@ const OtherStack = () => {
         component={RoleList}
         options={{
           title: "Role",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="AccountAndCard"
+        component={AccountAndCard}
+        options={{
+          title: "Account and Card",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="ScanQR"
+        component={ScanQR}
+        options={{
+          title: "Scan QR",
+          headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="PayTheBill"
+        component={PayTheBill}
+        options={{
+          title: "Pay the bill",
           headerLeft: backToOtherPage,
         }}
       />

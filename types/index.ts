@@ -28,6 +28,9 @@ export type RootParamList = {
   AllBookings: undefined;
   BookingStack: { screen: string };
   BookingSummary: undefined;
+  AccountAndCard: undefined;
+  ScanQR: undefined;
+  PayTheBill: undefined;
 };
 
 export type ButtonProps = {
@@ -36,6 +39,7 @@ export type ButtonProps = {
   outerContainerStyle?: object;
   buttonStyle?: object;
   textStyle?: object;
+  containerStyle?: object;
 };
 
 export type TextProps = {
