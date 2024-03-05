@@ -24,6 +24,7 @@ export type AuthenticatedStackParamList = {
   MainScreen: NavigatorScreenParams<MainPageBottomTabParamList>;
   OtherStack: NavigatorScreenParams<OtherStackParamList>;
   BookingStack: NavigatorScreenParams<BookingStackParamList>;
+  PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
 };
 
 export type MainPageBottomTabParamList = {
@@ -43,18 +44,19 @@ export type OtherStackParamList = {
   RequestParkingLot: undefined;
   RoleList: undefined;
   ChangePassword: undefined;
-  AllBookings: undefined;
-  BookingStack: { screen: string };
-  BookingSummary: undefined;
-  AccountAndCard: undefined;
-  ScanQR: undefined;
-  PayTheBill: undefined;
 };
 
 export type BookingStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
   BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
 };
+
+export type PaymentStackParamList = {
+  Payment: undefined;
+  AccountAndCard: undefined;
+  ScanQR: undefined;
+  PayTheBill: undefined;
+}
 
 export type AuthenticatedStackParamListProps =
   NavigationProp<AuthenticatedStackParamList>;

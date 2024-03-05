@@ -2,13 +2,6 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet, View } from "react-native";
 
-import IconButtonWithTitle from "../../components/button/IconButtonWithTitle";
-import HeaderText from "../../components/text/HeaderText";
-import SubHeaderText from "../../components/text/SubHeaderText";
-import BodyContainer from "../../components/ui/BodyContainer";
-import Colors from "../../constants/color";
-import { RootParamList } from "../../types";
-
 import IconButtonWithTitle from "@/components/button/IconButtonWithTitle";
 import HeaderText from "@/components/text/HeaderText";
 import SubHeaderText from "@/components/text/SubHeaderText";
@@ -43,7 +36,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
         <IconButtonWithTitle
           title="Account and Card"
           onPress={() => {
-            navigation.navigate("OtherStack", { screen: "AccountAndCard" });
+            navigation.navigate("PaymentStack", { screen: "AccountAndCard" });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
@@ -54,7 +47,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
         <IconButtonWithTitle
           title="Scan QR"
           onPress={() => {
-            navigation.navigate("OtherStack", { screen: "ScanQR" });
+            navigation.navigate("PaymentStack", { screen: "ScanQR" });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={[styles.textContainer]}
@@ -65,7 +58,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
         <IconButtonWithTitle
           title="Pay the bill"
           onPress={() => {
-            navigation.navigate("OtherStack", { screen: "PayTheBill" });
+            navigation.navigate("PaymentStack", { screen: "PayTheBill" });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}

@@ -9,9 +9,6 @@ import ChangePassword from "@/screens/other/ChangePassword";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
-import AccountAndCard from "@/screens/payment/AccountAndCard";
-import PayTheBill from "@/screens/payment/PayTheBill";
-import ScanQR from "@/screens/payment/ScanQR";
 import RoleList from "@/screens/role/RoleList";
 import { OtherStackParamList } from "@/types";
 
@@ -94,30 +91,6 @@ const OtherStack = () => {
         component={RoleList}
         options={{
           title: "Role",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="AccountAndCard"
-        component={AccountAndCard}
-        options={{
-          title: "Account and Card",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="ScanQR"
-        component={ScanQR}
-        options={{
-          title: "Scan QR",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="PayTheBill"
-        component={PayTheBill}
-        options={{
-          title: "Pay the bill",
           headerLeft: backToOtherPage,
         }}
       />
