@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-<<<<<<< HEAD
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import CarInfo from "@/screens/other/carInfo/CarInfo";
@@ -10,24 +9,11 @@ import ChangePassword from "@/screens/other/ChangePassword";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
+import AccountAndCard from "@/screens/payment/AccountAndCard";
+import PayTheBill from "@/screens/payment/PayTheBill";
+import ScanQR from "@/screens/payment/ScanQR";
 import RoleList from "@/screens/role/RoleList";
 import { OtherStackParamList } from "@/types";
-=======
-import IconButton from "../components/button/IconButton";
-import Colors from "../constants/color";
-import ChangePassword from "../screens/authentication/ChangePassword";
-import CarInfo from "../screens/other/CarInfo";
-import CarInfoSetup from "../screens/other/CarInfoSetup";
-import Other from "../screens/other/Other";
-import ParkingLotDetail from "../screens/parkinglot/ParkingLotDetail";
-import ParkingLotsList from "../screens/parkinglot/ParkingLotsList";
-import RequestParkingLot from "../screens/parkinglot/RequestPakingLot";
-import AccountAndCard from "../screens/payment/AccountAndCard";
-import PayTheBill from "../screens/payment/PayTheBill";
-import ScanQR from "../screens/payment/ScanQR";
-import RoleList from "../screens/role/RoleList";
-import { RootParamList } from "../types";
->>>>>>> bc2ff497ea1c717b233b8a49fc6cd1dd074ace08
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
