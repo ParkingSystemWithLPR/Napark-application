@@ -108,30 +108,6 @@ const OtherStack = () => {
           title: "Assign member",
         }}
       />
-      <Stack.Screen
-        name="AccountAndCard"
-        component={AccountAndCard}
-        options={{
-          title: "Account and Card",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="ScanQR"
-        component={ScanQR}
-        options={{
-          title: "Scan QR",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="PayTheBill"
-        component={PayTheBill}
-        options={{
-          title: "Pay the bill",
-          headerLeft: backToOtherPage,
-        }}
-      />
     </Stack.Navigator>
   );
 };
