@@ -5,7 +5,7 @@ interface AccountAndCardProps {}
 const AccountAndCard: React.FC<AccountAndCardProps> = () => {
   return (
     <View>
-      <Text>Pay the bill</Text>
+      <Text>Account and Card</Text>
     </View>
   );
 };

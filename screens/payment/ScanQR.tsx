@@ -5,7 +5,7 @@ interface ScanQRProps {}
 const ScanQR: React.FC<ScanQRProps> = () => {
   return (
     <View>
-      <Text>Pay the bill</Text>
+      <Text>Scan QR</Text>
     </View>
   );
 };
