@@ -116,9 +116,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           title={"Check-in"}
           date={checkInDate}
           shownDate={
-            checkInDate
-              ? formatHumanReadableDateFromDateString(checkInDate)
-              : undefined
+            checkInDate && formatHumanReadableDateFromDateString(checkInDate)
           }
           onChange={(value: string) => {
             setCheckInDate(value);
@@ -141,9 +139,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           title={"Check-out"}
           date={checkOutDate}
           shownDate={
-            checkOutDate
-              ? formatHumanReadableDateFromDateString(checkOutDate)
-              : undefined
+            checkOutDate && formatHumanReadableDateFromDateString(checkOutDate)
           }
           onChange={(value: string) => {
             setCheckOutDate(value);

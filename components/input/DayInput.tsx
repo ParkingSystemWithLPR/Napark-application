@@ -13,7 +13,7 @@ import { MINIMUM_DATE, formatDate, formatStringDate } from "@/utils/date";
 export type DayInputProps = {
   title: string;
   date: string | null;
-  shownDate?: string;
+  shownDate: string | null;
   placeholder?: string;
   onChange: (date: string) => void;
   isRequired?: boolean;
