@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: { color: Colors.red[300] },
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   parkingOutline: {
     borderRadius: 100,

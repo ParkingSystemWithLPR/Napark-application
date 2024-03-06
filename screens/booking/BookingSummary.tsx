@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useState } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import ProcessingModalContent from "@/components/booking/ProcessingModalContent";
@@ -16,7 +16,7 @@ import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 type BookingAttribute = {
   attribute: string;
-  value: string;
+  value: string | null;
 };
 export type BookingSummaryProps = CompositeScreenProps<
   NativeStackScreenProps<BookingStackParamList, "BookingSummary">,
@@ -60,7 +60,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
             containerStyle={styles.attributeField}
             textStyle={styles.attributeTextColor}
           />
-          <BodyText text={value} containerStyle={styles.valueField} />
+          <BodyText text={value ?? ""} containerStyle={styles.valueField} />
         </View>
       );
     },
@@ -89,11 +89,9 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
           {renderAttribute({
             attribute: "Check-in Date",
-            value: bookingRequest.checkInDate
-              ? formatHumanReadableDateFromDateString(
-                  bookingRequest.checkInDate
-                )
-              : "",
+            value:
+              bookingRequest.checkInDate &&
+              formatHumanReadableDateFromDateString(bookingRequest.checkInDate),
           })}
           {renderAttribute({
             attribute: "Check-in Time",
@@ -101,11 +99,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           })}
           {renderAttribute({
             attribute: "Check-out Date (Est)",
-            value: bookingRequest.checkOutDate
-              ? formatHumanReadableDateFromDateString(
-                  bookingRequest.checkOutDate
-                )
-              : "",
+            value:
+              bookingRequest.checkOutDate &&
+              formatHumanReadableDateFromDateString(
+                bookingRequest.checkOutDate
+              ),
           })}
           {renderAttribute({
             attribute: "Check-out Time (Est)",
@@ -163,7 +161,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: {
@@ -181,7 +179,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   headerStyle: {
     flex: 1,

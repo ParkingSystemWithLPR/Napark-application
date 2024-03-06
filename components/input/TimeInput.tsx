@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     backgroundColor: Colors.white,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
     marginVertical: 4,
   },
   text: {
