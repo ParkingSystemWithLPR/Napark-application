@@ -89,10 +89,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
           {renderAttribute({
             attribute: "Check-in Date",
-            value:
-              formatHumanReadableDateFromDateString(
-                bookingRequest.checkInDate
-              ) ?? "",
+            value: bookingRequest.checkInDate
+              ? formatHumanReadableDateFromDateString(
+                  bookingRequest.checkInDate
+                )
+              : "",
           })}
           {renderAttribute({
             attribute: "Check-in Time",
@@ -100,10 +101,11 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           })}
           {renderAttribute({
             attribute: "Check-out Date (Est)",
-            value:
-              formatHumanReadableDateFromDateString(
-                bookingRequest.checkOutDate
-              ) ?? "",
+            value: bookingRequest.checkOutDate
+              ? formatHumanReadableDateFromDateString(
+                  bookingRequest.checkOutDate
+                )
+              : "",
           })}
           {renderAttribute({
             attribute: "Check-out Time (Est)",

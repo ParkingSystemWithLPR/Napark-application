@@ -60,7 +60,7 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
         {renderDetail({
           topic: "Check-in:",
           value: joinDateAndTime(
-            formatHumanReadableDateFromDateString(checkInDate) ?? "",
+            formatHumanReadableDateFromDateString(checkInDate),
             checkInTime
           ),
         })}
