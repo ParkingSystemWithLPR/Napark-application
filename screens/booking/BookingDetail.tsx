@@ -142,7 +142,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 <BodyText text={recommendType}></BodyText>
               </View>
             </View>
-            <BodyText text={price.toString() + unit}></BodyText>
+            <BodyText text={price.toString() + " " + unit}></BodyText>
           </View>
         </Pressable>
       );
@@ -212,14 +212,14 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 {renderRecommendedSlot({
                   slotName: "6A",
                   recommendType: "Cheapest slot",
-                  price: 1,
-                  unit: "฿/hr",
+                  price: 20,
+                  unit: "Baht/hr",
                 })}
                 {renderRecommendedSlot({
                   slotName: "8B",
                   recommendType: "Nearest to the entrance",
-                  price: 1.5,
-                  unit: "฿/hr",
+                  price: 30,
+                  unit: "Baht/hr",
                 })}
               </View>
               <SubHeaderText

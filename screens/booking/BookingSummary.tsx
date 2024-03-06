@@ -12,6 +12,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 type BookingAttribute = {
   attribute: string;
@@ -88,7 +89,10 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
           {renderAttribute({
             attribute: "Check-in Date",
-            value: bookingRequest.checkInDate ?? "",
+            value:
+              formatHumanReadableDateFromDateString(
+                bookingRequest.checkInDate
+              ) ?? "",
           })}
           {renderAttribute({
             attribute: "Check-in Time",
@@ -96,7 +100,10 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           })}
           {renderAttribute({
             attribute: "Check-out Date (Est)",
-            value: bookingRequest.checkOutDate ?? "",
+            value:
+              formatHumanReadableDateFromDateString(
+                bookingRequest.checkOutDate
+              ) ?? "",
           })}
           {renderAttribute({
             attribute: "Check-out Time (Est)",
@@ -108,7 +115,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           })}
           {renderAttribute({
             attribute: "Cost per Unit",
-            value: bookingRequest.price + bookingRequest.unit,
+            value: bookingRequest.price + " " + bookingRequest.unit,
           })}
         </View>
         <View style={styles.routeContainer}>

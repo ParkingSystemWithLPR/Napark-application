@@ -22,7 +22,7 @@ export type TimeInputProps = {
 const TimeInput: React.FC<TimeInputProps> = ({
   title,
   value,
-  placeholder = "HH:mm",
+  placeholder = "Select Time",
   onTimeChange,
   editable = false,
   outerContainerStyle,
