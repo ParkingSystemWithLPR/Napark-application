@@ -1,7 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import Arriving from "@/screens/parkingFlow/Arriving";
 import { ParkingFlowStackParamList } from "@/types";
@@ -9,19 +7,6 @@ import { ParkingFlowStackParamList } from "@/types";
 const Stack = createNativeStackNavigator<ParkingFlowStackParamList>();
 
 const ParkingFlowStack = () => {
-  const navigation = useNavigation();
-
-  const backToOtherPage = () => {
-    return (
-      <IconButton
-        icon={"chevron-left"}
-        size={28}
-        color={Colors.white}
-        buttonStyle={{ padding: 0 }}
-        onPress={() => navigation.goBack()}
-      />
-    );
-  };
   return (
     <Stack.Navigator
       screenOptions={{
@@ -40,7 +25,7 @@ const ParkingFlowStack = () => {
         component={Arriving}
         options={{
           title: "Arriving",
-          headerLeft: backToOtherPage,
+          headerBackTitle: "Back",
         }}
       />
     </Stack.Navigator>

@@ -14,7 +14,7 @@ import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
-type BookingAttribute = {
+export type BookingAttribute = {
   attribute: string;
   value: string | null;
 };
