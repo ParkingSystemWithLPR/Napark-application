@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Colors from "@/constants/color";
 import Arriving from "@/screens/parkingFlow/Arriving";
+import ParkingConfirmation from "@/screens/parkingFlow/ParkingConfirmation";
 import { ParkingFlowStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<ParkingFlowStackParamList>();
@@ -26,6 +27,13 @@ const ParkingFlowStack = () => {
         options={{
           title: "Arriving",
           headerBackTitle: "Back",
+        }}
+      />
+      <Stack.Screen
+        name="ParkingConfirmation"
+        component={ParkingConfirmation}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

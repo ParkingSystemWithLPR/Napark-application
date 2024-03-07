@@ -1,3 +1,5 @@
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Platform } from "react-native";
@@ -10,8 +12,16 @@ import { RegionType } from "../landing/Landing";
 import BodyText from "@/components/text/BodyText";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
+import {
+  AuthenticatedStackParamList,
+  ParkingFlowStackParamList,
+} from "@/types";
 
-const Arriving: React.FC = () => {
+export type ArrivingProps = CompositeScreenProps<
+  NativeStackScreenProps<ParkingFlowStackParamList, "Arriving">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
+const Arriving: React.FC<ArrivingProps> = () => {
   const [region, setRegion] = useState<RegionType>();
 
   useLayoutEffect(() => {
