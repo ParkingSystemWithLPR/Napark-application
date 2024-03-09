@@ -12,6 +12,7 @@ import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
 import { useGetParkingLotsByUserId } from "@/store/api/parking-lot/useGetParkingLotsByUserId";
 import { useAuth } from "@/store/context/auth";
+import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
@@ -22,11 +23,12 @@ export type ParkingLotsListProps = CompositeScreenProps<
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
+  const { profile } = useProfile();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
-
+  console.log('profile', profile);
   const getParkingLots = useGetParkingLotsByUserId({
-    queryParams: { userId: "65d76b018143af9faf0283fd" },
+    queryParams: { userId: profile._id },
     auth: { accessToken, authenticate },
   });
 
@@ -72,7 +74,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                 parkingSpaceName={item.name}
                 businessHours={"08:00 - 23:59"}
                 availabilty={0}
-                onPress={() => navigation.navigate("ParkingLotDetail")}
+                onPress={() => navigation.navigate("ParkingLotDetail", { parkingLotId: item._id })}
               />
             )}
             overScrollMode="never"

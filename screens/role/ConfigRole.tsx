@@ -11,10 +11,10 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { RootParamList } from "@/types";
+import { OtherStackParamList } from "@/types";
 
 export type ConfigRoleProps = NativeStackScreenProps<
-  RootParamList,
+  OtherStackParamList,
   "ConfigRole"
 >;
 
@@ -133,7 +133,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               placeholder="reservation period"
               value={value}
               onChangeText={(value) => onChange(value)}
-              containerStyle={{flex: 1}}
+              containerStyle={{ flex: 1 }}
             />
           )}
         />
@@ -146,16 +146,27 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               placeholder="maximum duration"
               value={value}
               onChangeText={(value) => onChange(value)}
-              containerStyle={{flex: 1}}
+              containerStyle={{ flex: 1 }}
             />
           )}
         />
       </View>
-      <SubHeaderText text="Assign to"/>
-      <ChangeScreenTab icon={"human-male-female-child"} screenName={"Members"} onPress={() => {navigation.navigate("RoleMember")}}/>
+      <SubHeaderText text="Assign to" />
+      <ChangeScreenTab
+        icon={"human-male-female-child"}
+        screenName={"Members"}
+        onPress={() => {
+          navigation.navigate("RoleMember");
+        }}
+      />
       <View style={styles.buttonContainer}>
-        <SecondaryButton title="Cancle" onPress={() => {navigation.goBack()}}/>
-        <PrimaryButton title={"Save"} onPress={handleSubmit(onSubmit)}/>
+        <SecondaryButton
+          title="Cancle"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <PrimaryButton title={"Save"} onPress={handleSubmit(onSubmit)} />
       </View>
     </BodyContainer>
   );
@@ -193,5 +204,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     paddingTop: 20,
-  }
+  },
 });
