@@ -48,7 +48,9 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
       <View style={styles.item}>
         <BodyText text={item.value} />
         <BodyText
-          text={(item.price ? item.price.toString() : "") + item.unit ?? ""}
+          text={
+            (item.price ? item.price.toString() : "") + " " + item.unit ?? ""
+          }
         />
       </View>
     );
@@ -82,8 +84,8 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
           />
           <DropdownInput
             items={[
-              { label: "a1", value: "a1", price: 20, unit: "฿/hr" },
-              { label: "a2", value: "a2", price: 20, unit: "฿/hr" },
+              { label: "a1", value: "a1", price: 20, unit: "baht/hr" },
+              { label: "a2", value: "a2", price: 20, unit: "baht/hr" },
             ]}
             selectedValue={slot}
             onSelect={setSlot}
