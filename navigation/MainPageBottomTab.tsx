@@ -63,6 +63,7 @@ const MainPageBottomTab = () => {
         name="Payment"
         component={Payment}
         options={{
+          headerShown: true,
           tabBarLabel: "Payment",
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
