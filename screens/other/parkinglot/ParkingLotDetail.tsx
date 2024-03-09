@@ -23,13 +23,15 @@ export type ParkingLotDetailProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
+const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation, route }) => {
+  const parkingLotId = route.params.parkingLotId;
   const [parkingLot, setParkingLot] = useState<ParkingLot>(mockParkingLot);
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
+  console.log('parkingLotId')
   const getParkingLot = useGetParkingLot({
-    queryParams: { parkingLotId: "65e1ecbfb8911ba3860666e5" },
+    queryParams: { parkingLotId },
     auth: { accessToken, authenticate },
   });
 
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
     gap: 15,
+    paddingLeft: -10,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

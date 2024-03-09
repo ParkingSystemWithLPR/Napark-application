@@ -5,6 +5,7 @@ export interface Car {
 }
 
 export interface Profile {
+  _id: string;
   firstname: string;
   lastname: string;
   email: string;

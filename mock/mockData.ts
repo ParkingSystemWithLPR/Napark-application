@@ -54,11 +54,13 @@ export const MOCKED_SESSIONS = [
 export const MOCKED_PARKING_SPACE = {
   _id: "1",
   name: "PolSci's Parking building | Chulalongkorn university",
-  address: "1234",
-  sub_distict: "A",
-  distict: "B",
-  province: "Bangkok",
-  zip_code: "10140",
+  address: {
+    address: "1234",
+    sub_distict: "A",
+    distict: "B",
+    province: "Bangkok",
+    zip_code: "10140",
+  },
   coord: {
     latitude: 1,
     longitude: 1,
