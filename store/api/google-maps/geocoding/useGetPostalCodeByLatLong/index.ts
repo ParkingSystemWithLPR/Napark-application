@@ -1,10 +1,10 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-type GerAddressInput = {
+type GetAddressInput = {
   queryParams: {
-    lat: string;
-    long: string;
+    lat: number;
+    long: number;
   };
 };
 
@@ -23,34 +23,34 @@ interface AddressComponent {
   types: string[];
 }
 
-type GerAddressService = (input: GerAddressInput) => Promise<string>;
+type GetPostalCodeService = (input: GetAddressInput) => Promise<string>;
 
 const GG_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const RESULT_TYPE = "postal_code";
 
-const extractDistrict = (components: AddressComponent[]): string => {
+const extracePostalCode = (components: AddressComponent[]): string => {
   const filtered = components.filter((component) =>
     component.types.includes(RESULT_TYPE)
   );
   return filtered.length > 0 ? filtered[0].long_name : "";
 };
 
-export const getAddressByLatLong: GerAddressService = async ({
+export const getPostalCodeByLatLong: GetPostalCodeService = async ({
   queryParams,
 }) => {
   const response = await axios.get<AddressResult>(
     GG_GEOCODING_URL +
       `?result_type=${RESULT_TYPE}&latlng=${queryParams.lat},${queryParams.long}&key=`
   );
-  return extractDistrict(response.data.results[0].address_components);
+  return extracePostalCode(response.data.results[0].address_components);
 };
 
-export const useGerAddressByUserId = (
-  input: GerAddressInput
+export const useGetPostalCodeByLatLong = (
+  input: GetAddressInput
 ): UseQueryResult<string, AxiosError> => {
   return useQuery({
     queryKey: ["latlng", input.queryParams],
-    queryFn: async () => getAddressByLatLong(input),
+    queryFn: async () => getPostalCodeByLatLong(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
   });

@@ -2,7 +2,13 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -23,6 +29,9 @@ import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
 import { MOCKED_PARKING_SPACE } from "@/mock/mockData";
+import { useGetPostalCodeByLatLong } from "@/store/api/google-maps/geocoding/useGetPostalCodeByLatLong";
+import { useGetParkingSpacesByLatLong } from "@/store/api/parking-lot/useGetNearParkingLotByPostalCodeAndLatLong";
+import { useAuth } from "@/store/context/auth";
 import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,
@@ -44,21 +53,56 @@ export type RegionType = {
 const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const recommendedBottomSheetRef = useRef<BottomSheetModal>(null);
   const parkingSpaceDetailBottomSheetRef = useRef<BottomSheetModal>(null);
+  const { accessToken, authenticate } = useAuth();
+
   const { dismissAll } = useBottomSheetModal();
+
   const [searchText, setSearchText] = useState<string>("");
   const [region, setRegion] = useState<RegionType>();
   const [isSearch, setSearch] = useState<boolean>(false);
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
-  const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
-  const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>([
-    MOCKED_PARKING_SPACE,
-  ]);
+  const [priceRange, setPriceRange] = useState<number[]>([20, 50]);
+  const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>();
   const [selectedParkingSpace, setSelectedParkingSpace] =
     useState<ParkingLot>(MOCKED_PARKING_SPACE);
+  const [postalCode, setPostalCode] = useState<string>();
+
+  const getPostalCode = region
+    ? useGetPostalCodeByLatLong({
+        queryParams: {
+          lat: region.latitude,
+          long: region.longitude,
+        },
+      })
+    : null;
+  const getParkingSpaces =
+    region && postalCode
+      ? useGetParkingSpacesByLatLong({
+          queryParams: {
+            postal_code: postalCode,
+            lat: region.latitude,
+            long: region.longitude,
+          },
+          auth: { accessToken, authenticate },
+        })
+      : null;
 
   useLayoutEffect(() => {
     getCurrentLocation();
   }, []);
+
+  useEffect(() => {
+    if (getPostalCode?.data) {
+      console.log(getPostalCode.data);
+      setPostalCode(getPostalCode.data);
+    }
+  }, [getPostalCode?.data]);
+
+  useEffect(() => {
+    if (getParkingSpaces?.data) {
+      setParkingSpaces(getParkingSpaces.data);
+    }
+  }, [getParkingSpaces?.data]);
 
   const getCurrentLocation = async () => {
     try {
