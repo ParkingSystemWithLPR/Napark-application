@@ -8,9 +8,9 @@ import apiRequest, { HTTPMethod } from "@/utils/http";
 
 type GerParkingSpacesInput = {
   queryParams: {
-    postal_code: string;
-    lat: number;
-    long: number;
+    postal_code: string | undefined;
+    lat: number | undefined;
+    long: number | undefined;
     radius?: string;
   };
   auth: {
@@ -43,10 +43,13 @@ export const getParkingSpacesByLatLong: GerParkingSpacesService = async ({
 export const useGetParkingSpacesByLatLong = (
   input: GerParkingSpacesInput
 ): UseQueryResult<ParkingLot[], AxiosError> => {
+  const { queryParams } = input;
   return useQuery({
-    queryKey: ["postal-code-latlng-radius", input.queryParams],
+    queryKey: ["postal-code-latlng-radius", queryParams],
     queryFn: async () => getParkingSpacesByLatLong(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
+    enabled:
+      !!queryParams.postal_code && !!queryParams.lat && !!queryParams.long,
   });
 };

@@ -67,42 +67,37 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     useState<ParkingLot>(MOCKED_PARKING_SPACE);
   const [postalCode, setPostalCode] = useState<string>();
 
-  const getPostalCode = region
-    ? useGetPostalCodeByLatLong({
-        queryParams: {
-          lat: region.latitude,
-          long: region.longitude,
-        },
-      })
-    : null;
-  const getParkingSpaces =
-    region && postalCode
-      ? useGetParkingSpacesByLatLong({
-          queryParams: {
-            postal_code: postalCode,
-            lat: region.latitude,
-            long: region.longitude,
-          },
-          auth: { accessToken, authenticate },
-        })
-      : null;
+  const getPostalCode = useGetPostalCodeByLatLong({
+    queryParams: {
+      lat: region?.latitude,
+      long: region?.longitude,
+    },
+  });
+
+  const getParkingSpaces = useGetParkingSpacesByLatLong({
+    queryParams: {
+      postal_code: postalCode,
+      lat: region?.latitude,
+      long: region?.longitude,
+    },
+    auth: { accessToken, authenticate },
+  });
 
   useLayoutEffect(() => {
     getCurrentLocation();
   }, []);
 
   useEffect(() => {
-    if (getPostalCode?.data) {
-      console.log(getPostalCode.data);
+    if (getPostalCode.isSuccess) {
       setPostalCode(getPostalCode.data);
     }
-  }, [getPostalCode?.data]);
+  }, [getPostalCode.data]);
 
   useEffect(() => {
-    if (getParkingSpaces?.data) {
+    if (getParkingSpaces.isSuccess) {
       setParkingSpaces(getParkingSpaces.data);
     }
-  }, [getParkingSpaces?.data]);
+  }, [getParkingSpaces.data]);
 
   const getCurrentLocation = async () => {
     try {
@@ -132,6 +127,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
 
   const handleChooseParkingSpace = useCallback((parkingSpace: ParkingLot) => {
     parkingSpaceDetailBottomSheetRef.current?.present();
+    console.log(parkingSpace);
     setSelectedParkingSpace(parkingSpace);
   }, []);
 
@@ -216,7 +212,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             <ParkingSpaceCard
               parkingSpaceName={item.name}
               businessHours={item.businessHours ?? "Not available"}
-              availabilty={item.availability ?? 0}
+              availabilty={item.availability}
               onPress={() => handleChooseParkingSpace(item)}
             />
           )}
