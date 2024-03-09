@@ -11,6 +11,7 @@ import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { AuthenticatedStackParamListProps } from "@/types";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type BookingDetailComponentProps = {
   checkOutTime: string | null;
@@ -114,6 +115,9 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         <DayInput
           title={"Check-in"}
           date={checkInDate}
+          shownDate={
+            checkInDate && formatHumanReadableDateFromDateString(checkInDate)
+          }
           onChange={(value: string) => {
             setCheckInDate(value);
           }}
@@ -134,6 +138,9 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         <DayInput
           title={"Check-out"}
           date={checkOutDate}
+          shownDate={
+            checkOutDate && formatHumanReadableDateFromDateString(checkOutDate)
+          }
           onChange={(value: string) => {
             setCheckOutDate(value);
           }}

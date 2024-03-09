@@ -142,7 +142,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 <BodyText text={recommendType}></BodyText>
               </View>
             </View>
-            <BodyText text={price.toString() + unit}></BodyText>
+            <BodyText text={price.toString() + " " + unit}></BodyText>
           </View>
         </Pressable>
       );
@@ -212,14 +212,14 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 {renderRecommendedSlot({
                   slotName: "6A",
                   recommendType: "Cheapest slot",
-                  price: 1,
-                  unit: "฿/hr",
+                  price: 20,
+                  unit: "Baht/hr",
                 })}
                 {renderRecommendedSlot({
                   slotName: "8B",
                   recommendType: "Nearest to the entrance",
-                  price: 1.5,
-                  unit: "฿/hr",
+                  price: 30,
+                  unit: "Baht/hr",
                 })}
               </View>
               <SubHeaderText
@@ -256,12 +256,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: Colors.white,
     justifyContent: "space-around",
-    elevation: 5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    borderRadius: 5,
     paddingVertical: 10,
+    shadowColor: Colors.black,
+    borderRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
   },
   locationTextContainer: { flex: 1, marginHorizontal: 5 },
   pin: { color: Colors.red[300] },
@@ -277,8 +281,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: Colors.red[400],
+    backgroundColor: Colors.white,
+    padding: 10,
+    shadowColor: Colors.black,
+    borderRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
   },
   parkingOutline: {
     borderRadius: 100,
