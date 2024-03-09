@@ -1,3 +1,4 @@
+import { format, parseISO } from "date-fns";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
 export const MINIMUM_DATE = new Date(1900, 1, 1);
@@ -5,7 +6,10 @@ export const MINIMUM_DATE = new Date(1900, 1, 1);
 export const formatDate = (date: Date) => {
   return getFormatedDate(date, "YYYY-MM-DD");
 };
-
+export const formatHumanReadableDateFromDateString = (date: string) => {
+  const dateObject = parseISO(date);
+  return format(dateObject, "d MMMM yyyy");
+};
 export const formatDateAndTime = (date: Date) => {
   return {
     date: getFormatedDate(date, "YYYY-MM-DD"),
