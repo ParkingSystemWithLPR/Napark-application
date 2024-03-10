@@ -84,8 +84,8 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
           />
           <DropdownInput
             items={[
-              { label: "a1", value: "a1", price: 20, unit: "baht/hr" },
-              { label: "a2", value: "a2", price: 20, unit: "baht/hr" },
+              { label: "a1", value: "a1", price: 25, unit: "baht/hr" },
+              { label: "a2", value: "a2", price: 25, unit: "baht/hr" },
             ]}
             selectedValue={slot}
             onSelect={setSlot}
@@ -116,7 +116,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
 export default ParkingPlan;
 
 const styles = StyleSheet.create({
-  container: { gap: 10, marginHorizontal: 10 },
+  container: { gap: 10, marginHorizontal: 5 },
   buttonStyle: {
     paddingHorizontal: 50,
   },

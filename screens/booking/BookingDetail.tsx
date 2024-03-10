@@ -19,6 +19,7 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 
 export type BookingDetailProps = CompositeScreenProps<
@@ -48,8 +49,13 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const isFocused = useIsFocused();
+  const { profile } = useProfile();
+  const licensePlateList = profile.user_car?.map((car) => car.license_plate);
+  const defaultLicensePlate = profile.user_car
+    ?.filter((car) => car.is_default)
+    .map((defaultcar) => defaultcar.license_plate)[0];
   const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
-    licensePlate: "",
+    licensePlate: defaultLicensePlate ?? "",
     checkInDate: null,
     checkInTime: null,
     checkOutDate: null,
@@ -189,6 +195,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               setCheckOutDate={(value: string | null) =>
                 handleOnChange("checkOutDate", value)
               }
+              licensePlateList={licensePlateList}
             />
           </View>
         ) : (
@@ -280,7 +287,7 @@ const styles = StyleSheet.create({
   recommendSlotContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     backgroundColor: Colors.white,
     padding: 10,
     shadowColor: Colors.black,
