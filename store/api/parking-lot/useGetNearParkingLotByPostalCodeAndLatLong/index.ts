@@ -6,11 +6,11 @@ import { PARKING_LOT_URL } from "..";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-type GerAddressInput = {
+type GerParkingSpacesInput = {
   queryParams: {
-    postal_code: string;
-    lat: string;
-    long: string;
+    postal_code: string | undefined;
+    lat: number | undefined;
+    long: number | undefined;
     radius?: string;
   };
   auth: {
@@ -19,9 +19,11 @@ type GerAddressInput = {
   };
 };
 
-type GerAddressService = (input: GerAddressInput) => Promise<ParkingLot[]>;
+type GerParkingSpacesService = (
+  input: GerParkingSpacesInput
+) => Promise<ParkingLot[]>;
 
-export const getAddressByLatLong: GerAddressService = async ({
+export const getParkingSpacesByLatLong: GerParkingSpacesService = async ({
   queryParams,
   auth,
 }) => {
@@ -38,13 +40,16 @@ export const getAddressByLatLong: GerAddressService = async ({
   return data;
 };
 
-export const useGerAddressByUserId = (
-  input: GerAddressInput
+export const useGetParkingSpacesByLatLong = (
+  input: GerParkingSpacesInput
 ): UseQueryResult<ParkingLot[], AxiosError> => {
+  const { queryParams } = input;
   return useQuery({
-    queryKey: ["postal-code-latlng-radius", input.queryParams],
-    queryFn: async () => getAddressByLatLong(input),
+    queryKey: ["postal-code-latlng-radius", queryParams],
+    queryFn: async () => getParkingSpacesByLatLong(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
+    enabled:
+      !!queryParams.postal_code && !!queryParams.lat && !!queryParams.long,
   });
 };

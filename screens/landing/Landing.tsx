@@ -2,9 +2,22 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Image,
+} from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -13,7 +26,6 @@ import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetMo
 import PrimaryButton from "@/components/button/PrimaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import RangeInput from "@/components/input/RangeInput";
-import TextInput from "@/components/input/TextInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
 import SubHeaderText from "@/components/text/SubHeaderText";
@@ -22,7 +34,9 @@ import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
-import { MOCKED_PARKING_SPACE } from "@/mock/mockData";
+import { GG_PLACE_API_KEY } from "@/store/api/google-maps/place";
+import { useGetParkingSpacesByLatLong } from "@/store/api/parking-lot/useGetNearParkingLotByPostalCodeAndLatLong";
+import { useAuth } from "@/store/context/auth";
 import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,
@@ -44,21 +58,36 @@ export type RegionType = {
 const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const recommendedBottomSheetRef = useRef<BottomSheetModal>(null);
   const parkingSpaceDetailBottomSheetRef = useRef<BottomSheetModal>(null);
+  const { accessToken, authenticate } = useAuth();
+
   const { dismissAll } = useBottomSheetModal();
-  const [searchText, setSearchText] = useState<string>("");
+
   const [region, setRegion] = useState<RegionType>();
-  const [isSearch, setSearch] = useState<boolean>(false);
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
-  const [priceRange, setPriceRange] = React.useState<number[]>([20, 50]);
-  const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>([
-    MOCKED_PARKING_SPACE,
-  ]);
+  const [priceRange, setPriceRange] = useState<number[]>([20, 50]);
+  const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>();
   const [selectedParkingSpace, setSelectedParkingSpace] =
-    useState<ParkingLot>(MOCKED_PARKING_SPACE);
+    useState<ParkingLot>();
+  const [postalCode, setPostalCode] = useState<string>();
+
+  const getParkingSpaces = useGetParkingSpacesByLatLong({
+    queryParams: {
+      postal_code: postalCode,
+      lat: region?.latitude,
+      long: region?.longitude,
+    },
+    auth: { accessToken, authenticate },
+  });
 
   useLayoutEffect(() => {
     getCurrentLocation();
   }, []);
+
+  useEffect(() => {
+    if (getParkingSpaces.isSuccess) {
+      setParkingSpaces(getParkingSpaces.data);
+    }
+  }, [getParkingSpaces.data]);
 
   const getCurrentLocation = async () => {
     try {
@@ -72,55 +101,57 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       setRegion({
         latitude,
         longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.0522,
+        longitudeDelta: 0.0121,
       });
     } catch (error) {
       console.error("Error getting current location:", error);
     }
   };
 
-  const handlePresentModalPress = useCallback(() => {
-    if (searchText.length > 0) {
-      recommendedBottomSheetRef.current?.present();
-    }
-  }, [searchText]);
-
   const handleChooseParkingSpace = useCallback((parkingSpace: ParkingLot) => {
     parkingSpaceDetailBottomSheetRef.current?.present();
     setSelectedParkingSpace(parkingSpace);
   }, []);
 
-  const handleTextInputChange = (text: string) => {
-    setSearch(text.length > 0);
-    setSearchText(text);
-    dismissAll();
-  };
-
-  const searchIcon = useCallback(
-    () => (
-      <TouchableOpacity onPress={() => handleTextInputChange("")}>
-        <MaterialIcons
-          name={isSearch ? "clear" : "search"}
-          size={20}
-          color={Colors.gray[800]}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
-    ),
-    [isSearch]
-  );
-
-  const renderHeader = useCallback(() => {
+  const renderHeader = () => {
     return (
       <View style={styles.headerContainer}>
-        <TextInput
-          containerStyle={styles.searchContainer}
-          value={searchText}
-          onChangeText={handleTextInputChange}
-          placeholder={"Search"}
-          onSubmitEditing={handlePresentModalPress}
-          icon={searchIcon()}
+        <GooglePlacesAutocomplete
+          placeholder="Search"
+          GooglePlacesDetailsQuery={{ fields: "address_components,geometry" }}
+          query={{
+            key: GG_PLACE_API_KEY,
+            language: "th",
+            components: "country:th",
+          }}
+          fetchDetails={true}
+          onPress={(data, details = null) => {
+            if (details) {
+              const postalCode = details.address_components.find((component) =>
+                component.types.includes("postal_code")
+              )?.long_name;
+              const { lat, lng } = details.geometry.location;
+              setRegion({
+                latitude: lat,
+                longitude: lng,
+                latitudeDelta: 0.0522,
+                longitudeDelta: 0.0121,
+              });
+              setPostalCode(postalCode);
+              recommendedBottomSheetRef.current?.present();
+            }
+          }}
+          textInputProps={{
+            autoCorrect: false,
+            onChangeText: (text: string) => {
+              if (text.length === 0) {
+                dismissAll();
+              } else {
+                recommendedBottomSheetRef.current?.snapToIndex(0);
+              }
+            },
+          }}
         />
         <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
@@ -133,7 +164,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     );
-  }, [searchText, searchIcon]);
+  };
 
   const renderfilterOptionsModal = useCallback(() => {
     return (
@@ -172,7 +203,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             <ParkingSpaceCard
               parkingSpaceName={item.name}
               businessHours={item.businessHours ?? "Not available"}
-              availabilty={item.availability ?? 0}
+              availabilty={item.availability}
               onPress={() => handleChooseParkingSpace(item)}
             />
           )}
@@ -184,56 +215,57 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
 
   const renderParkingSpaceDetail = useCallback(() => {
     const isOpen = true;
-    return (
-      <CustomBottomSheetModal
-        ref={parkingSpaceDetailBottomSheetRef}
-        title={selectedParkingSpace?.name}
-        modalContainerStyle={styles.parkingDetailContainer}
-      >
-        <PrimaryButton
-          title="Book"
-          onPress={() => {
-            dismissAll();
-            navigation.navigate("BookingStack", {
-              screen: "BookingDetail",
-              params: { parkingLot: selectedParkingSpace },
-            });
-          }}
-        />
-        <ScrollView
-          contentContainerStyle={styles.informationContainer}
-          overScrollMode="never"
+    if (selectedParkingSpace)
+      return (
+        <CustomBottomSheetModal
+          ref={parkingSpaceDetailBottomSheetRef}
+          title={selectedParkingSpace.name}
+          modalContainerStyle={styles.parkingDetailContainer}
         >
-          <View style={styles.statusContainer}>
-            <StatusDetail
-              title="Status"
-              value={isOpen ? ParkingLotStatus.OPEN : ParkingLotStatus.CLOSE}
-              bodyTextStyle={{
-                color: isOpen ? Colors.green[700] : Colors.red[400],
-              }}
-            />
-            <View style={styles.verticalSeparator}></View>
-            <StatusDetail
-              title="Traffic"
-              value="92% (2 slots left)"
-              bodyTextStyle={{
-                color: false ? Colors.green[700] : Colors.red[400],
-              }}
-            />
-            <View style={styles.verticalSeparator}></View>
-            <StatusDetail title="Distance" value="2.0km" />
-          </View>
-          <View style={styles.horizontalSeparator}></View>
-          <View>
-            <ImageContainer imageUrls={["image1", "image2"]} />
-          </View>
-          <View style={styles.horizontalSeparator}></View>
-          <View>
-            <ParkingBasicInfo parkingLot={selectedParkingSpace} />
-          </View>
-        </ScrollView>
-      </CustomBottomSheetModal>
-    );
+          <PrimaryButton
+            title="Book"
+            onPress={() => {
+              dismissAll();
+              navigation.navigate("BookingStack", {
+                screen: "BookingDetail",
+                params: { parkingLot: selectedParkingSpace },
+              });
+            }}
+          />
+          <ScrollView
+            contentContainerStyle={styles.informationContainer}
+            overScrollMode="never"
+          >
+            <View style={styles.statusContainer}>
+              <StatusDetail
+                title="Status"
+                value={isOpen ? ParkingLotStatus.OPEN : ParkingLotStatus.CLOSE}
+                bodyTextStyle={{
+                  color: isOpen ? Colors.green[700] : Colors.red[400],
+                }}
+              />
+              <View style={styles.verticalSeparator}></View>
+              <StatusDetail
+                title="Traffic"
+                value="92% (2 slots left)"
+                bodyTextStyle={{
+                  color: false ? Colors.green[700] : Colors.red[400],
+                }}
+              />
+              <View style={styles.verticalSeparator}></View>
+              <StatusDetail title="Distance" value="2.0km" />
+            </View>
+            <View style={styles.horizontalSeparator}></View>
+            <View>
+              <ImageContainer imageUrls={["image1", "image2"]} />
+            </View>
+            <View style={styles.horizontalSeparator}></View>
+            <View>
+              <ParkingBasicInfo parkingLot={selectedParkingSpace} />
+            </View>
+          </ScrollView>
+        </CustomBottomSheetModal>
+      );
   }, [parkingSpaceDetailBottomSheetRef, selectedParkingSpace]);
 
   return (
@@ -243,16 +275,37 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           <MapView
             style={styles.map}
             initialRegion={region}
+            region={region}
             provider={PROVIDER_GOOGLE}
           >
             <Marker
-              draggable
               coordinate={{
                 latitude: region.latitude,
                 longitude: region.longitude,
               }}
               title="Your Location"
-            />
+              pinColor={Colors.blue[600].toString()}
+            >
+              <Image
+                source={require("../../assets/images/destination-pin.png")}
+              />
+            </Marker>
+            {parkingSpaces &&
+              parkingSpaces.map((parkingSpace: ParkingLot) => (
+                <Marker
+                  key={parkingSpace._id}
+                  coordinate={{
+                    latitude: parkingSpace.coord.lat,
+                    longitude: parkingSpace.coord.lng,
+                  }}
+                  title={parkingSpace.name}
+                  onPress={() => handleChooseParkingSpace(parkingSpace)}
+                >
+                  <Image
+                    source={require("../../assets/images/parking-space-pin.png")}
+                  />
+                </Marker>
+              ))}
           </MapView>
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
@@ -282,21 +335,12 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
+    marginHorizontal: 10,
     flex: 1,
-  },
-  searchContainer: {
-    flex: 1,
-    padding: 10,
-    marginBottom: 0,
   },
   iconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingRight: 5,
-  },
-  icon: {
-    marginLeft: 5,
+    paddingTop: 12,
   },
   modalContainer: {
     justifyContent: "center",
