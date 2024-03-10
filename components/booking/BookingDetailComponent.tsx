@@ -12,6 +12,7 @@ import TimeInput from "../input/TimeInput";
 import { ActionMode } from "@/enum/ActionMode";
 import { AuthenticatedStackParamListProps } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import { formatDropdownFromLicensePlates } from "@/utils/dropdown";
 
 export type BookingDetailComponentProps = {
   checkOutTime: string | null;
@@ -27,6 +28,7 @@ export type BookingDetailComponentProps = {
   specification: string | undefined;
   setSpecification: (value: string | undefined) => void;
   closeSetting: () => void;
+  licensePlateList?: string[];
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
@@ -43,12 +45,15 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   specification,
   setSpecification,
   closeSetting,
+  licensePlateList,
 }) => {
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
   const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
   const isCheckOutTimeEditable = checkOutDate != null;
-
+  const licensePlateDropdown =
+    (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
+    [];
   const checkOutTimeHandler = (checkOutTime: string | null) => {
     if (checkOutTime && checkInTime && checkInDate && checkOutDate) {
       if (
@@ -102,7 +107,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         placeholder={"ex.  กข1234"}
         onSelect={setLicensePlateHandler}
         items={[
-          { label: "กข1234", value: "กข1234" },
+          ...licensePlateDropdown,
           {
             label: "Not found your license plate",
             value: "Not found your license plate",
