@@ -142,6 +142,16 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               recommendedBottomSheetRef.current?.present();
             }
           }}
+          textInputProps={{
+            autoCorrect: false,
+            onChangeText: (text: string) => {
+              if (text.length === 0) {
+                dismissAll();
+              } else {
+                recommendedBottomSheetRef.current?.snapToIndex(0);
+              }
+            },
+          }}
         />
         <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
