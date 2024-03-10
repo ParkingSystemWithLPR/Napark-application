@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
-import { SafeAreaView, View, Image } from "react-native";
+import { SafeAreaView, View, Image, StyleSheet } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
@@ -24,7 +24,7 @@ type Attribute = {
 const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
   const renderAttribute = useCallback(({ attribute, value }: Attribute) => {
     return (
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={styles.attribute}>
         <BodyText text={attribute} />
         <BodyText text={value} />
       </View>
@@ -32,8 +32,8 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingHorizontal: 20 }}>
-      <View style={{ flex: 1, justifyContent: "center", gap: 10 }}>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.outerContainer}>
         <Image
           source={require("../../assets/images/icon.png")}
           style={{ alignSelf: "center" }}
@@ -42,7 +42,7 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
           text={"Parking success"}
           containerStyle={{ alignSelf: "center" }}
         />
-        <View style={{ gap: 5 }}>
+        <View style={styles.attributeContainer}>
           {renderAttribute({
             attribute: "ParkingDate",
             value: "8 March 2024",
@@ -57,9 +57,7 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
             value: "11:00",
           })}
         </View>
-        <View
-          style={{ flexDirection: "row", justifyContent: "center", gap: 10 }}
-        >
+        <View style={styles.buttonsContainer}>
           <PrimaryButton
             title={"Yes, That was me"}
             onPress={function (): void {}}
@@ -75,3 +73,11 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
 };
 
 export default ParkingConfirmation;
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, paddingHorizontal: 20 },
+  outerContainer: { flex: 1, justifyContent: "center", gap: 10 },
+  attributeContainer: { gap: 5 },
+  attribute: { flexDirection: "row", justifyContent: "space-between" },
+  buttonsContainer: { flexDirection: "row", justifyContent: "center", gap: 10 },
+});
