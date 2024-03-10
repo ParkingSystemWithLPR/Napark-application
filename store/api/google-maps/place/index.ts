@@ -1,0 +1,1 @@
+export const GG_PLACE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_PLACE_API_KEY;
