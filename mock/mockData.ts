@@ -92,11 +92,13 @@ export const MOCKED_BANK_ACCOUNT = [
     bankAccountNumber: "142-4-62745-1",
     bankName: "Kasikorn",
     bankBranch: "Central Lardphrao",
+    id: "1",
   },
   {
     bankAccountNumber: "142-4-62745-1",
     bankName: "Kasikorn",
     bankBranch: "Central Lardphrao",
+    id: "2",
   },
 ];
 
