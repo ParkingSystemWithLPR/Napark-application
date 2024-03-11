@@ -6,7 +6,7 @@ import SubHeaderText from "../text/SubHeaderText";
 import Colors from "@/constants/color";
 
 type BankAccountDetailProps = {
-  accountNo: number;
+  accountNo: string;
   bankAccountNumber: string;
   bankName: string;
   bankBranch: string;

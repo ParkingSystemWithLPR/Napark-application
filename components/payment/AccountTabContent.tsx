@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, FlatList } from "react-native";
 
 import BankAccountDetail from "./BankAccountDetail";
 import PrimaryButton from "../button/PrimaryButton";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
-import { MOCKED_BANK_ACCOUNT } from "@/mock/mockData";
+import { MOCKED_BANK_ACCOUNT, mockedBankAccount } from "@/mock/mockData";
 
 type AccountTabProps = {
   name?: string;
@@ -31,7 +31,7 @@ const AccountTabContent: React.FC<AccountTabProps> = () => {
           textStyle={{ color: Colors.blue[500] }}
         />
       </View>
-      {MOCKED_BANK_ACCOUNT.map((account) => {
+      {/* {MOCKED_BANK_ACCOUNT.map((account) => {
         return (
           <BankAccountDetail
             accountNo={1}
@@ -40,7 +40,22 @@ const AccountTabContent: React.FC<AccountTabProps> = () => {
             bankBranch={account.bankBranch}
           />
         );
-      })}
+      })} */}
+      <View>
+        <FlatList
+          data={MOCKED_BANK_ACCOUNT}
+          keyExtractor={(item: mockedBankAccount) => item.id}
+          renderItem={({ item }) => (
+            <BankAccountDetail
+              accountNo={item.id}
+              bankAccountNumber={item.bankAccountNumber}
+              bankName={item.bankName}
+              bankBranch={item.bankBranch}
+            />
+          )}
+          overScrollMode="never"
+        />
+      </View>
       <PrimaryButton
         title="Add Account"
         onPress={() => {}}

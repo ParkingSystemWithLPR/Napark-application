@@ -1,12 +1,17 @@
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
-
 export interface mockedSessionsProps {
   licensePlate: string;
   space: string;
   dateAndTime: string;
   price: string;
   id: string;
-}
+};
+
+export type mockedBankAccount = {
+  bankAccountNumber: string;
+  bankName: string;
+  bankBranch: string;
+  id: string;
+};
 
 export const MOCKED_SESSIONS = [
   {
@@ -64,9 +69,24 @@ export const mockParkingLot : ParkingLot = {
     zip_code: "10160",
   },
   coord: {
-    latitude: 13.734836872447342,
-    longitude: 100.53327154257514,
-    latitudeDelta: 13.734836872447342,
-    longitudeDelta: 100.53327154257514,
-  }
+    latitude: 1,
+    longitude: 1,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  },
+  businessHours: "08:00 - 23:59",
+  availability: 100,
 };
+
+export const MOCKED_BANK_ACCOUNT = [
+  {
+    bankAccountNumber: "142-4-62745-1",
+    bankName: "Kasikorn",
+    bankBranch: "Central Lardphrao",
+  },
+  {
+    bankAccountNumber: "142-4-62745-1",
+    bankName: "Kasikorn",
+    bankBranch: "Central Lardphrao",
+  },
+];
