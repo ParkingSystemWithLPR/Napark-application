@@ -32,6 +32,7 @@ export type MainPageBottomTabParamList = {
   Payment: undefined;
   Account: undefined;
   Other: undefined;
+  ScanQR: undefined;
 };
 
 export type OtherStackParamList = {
