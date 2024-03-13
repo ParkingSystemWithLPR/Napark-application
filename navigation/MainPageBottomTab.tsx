@@ -7,6 +7,7 @@ import MyBooking from "@/screens/booking/MyBooking";
 import Landing from "@/screens/landing/Landing";
 import Other from "@/screens/other/Other";
 import Payment from "@/screens/payment/Payment";
+import { ScanQR } from "@/screens/payment/ScanQR";
 import { MainPageBottomTabParamList } from "@/types";
 
 const BottomTab = createBottomTabNavigator<MainPageBottomTabParamList>();
@@ -60,8 +61,8 @@ const MainPageBottomTab = () => {
         }}
       />
       <BottomTab.Screen
-        name="Payment"
-        component={Payment}
+        name="ScanQR"
+        component={ScanQR}
         options={{
           tabBarLabel: "Payment",
           tabBarIcon: ({ focused, color, size }) => (
@@ -71,6 +72,7 @@ const MainPageBottomTab = () => {
               color={color}
             />
           ),
+          headerShown: true,
         }}
       />
       <BottomTab.Screen
