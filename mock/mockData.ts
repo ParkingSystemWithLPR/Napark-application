@@ -1,4 +1,6 @@
-export interface mockedSessionsProps {
+import { CardType } from "@/enum/CardType";
+
+export type mockedSessionsProps = {
   licensePlate: string;
   space: string;
   dateAndTime: string;
@@ -11,6 +13,13 @@ export type mockedBankAccount = {
   bankName: string;
   bankBranch: string;
   id: string;
+};
+
+export type mockedCreditCard = {
+  name: string;
+  privilegeName: string;
+  cardNumber: string;
+  cardType: CardType;
 };
 
 export const MOCKED_SESSIONS = [
@@ -88,5 +97,20 @@ export const MOCKED_BANK_ACCOUNT = [
     bankAccountNumber: "142-4-62745-1",
     bankName: "Kasikorn",
     bankBranch: "Central Lardphrao",
+  },
+];
+
+export const MOCKED_CREDIT_CARD = [
+  {
+    name: "Worashot Changankarn",
+    privilegeName: "Amazon Platinum",
+    cardNumber: "1234567887654321",
+    cardType: CardType.VISA,
+  },
+  {
+    name: "Worashot Changankarn",
+    privilegeName: "Amazon Platinum",
+    cardNumber: "1234567887654322",
+    cardType: CardType.MASTER_CARD,
   },
 ];

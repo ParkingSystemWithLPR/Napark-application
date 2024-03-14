@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
     marginBottom: 20,
+    marginHorizontal: 20,
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: Colors.black,
-    fontSize: 24,
+    fontSize: 22,
     paddingBottom: 15,
   },
   subHeaderText: {

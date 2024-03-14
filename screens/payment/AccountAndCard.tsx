@@ -1,8 +1,8 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Text, View } from "react-native";
 
 import AccountTabContent from "@/components/payment/AccountTabContent";
+import CardTabContent from "@/components/payment/CardTabContent";
 import TabsContainer from "@/components/ui/TabsContainer";
 import { MainPageBottomTabParamList, PaymentStackParamList } from "@/types";
 
@@ -12,11 +12,7 @@ export type AccountAndCardProps = CompositeScreenProps<
 >;
 
 const AccountTab = () => <AccountTabContent />;
-const CardTab = () => (
-  <View>
-    <Text>Card Tab</Text>
-  </View>
-);
+const CardTab = () => <CardTabContent />;
 
 const AccountAndCard: React.FC<AccountAndCardProps> = () => {
   return (
