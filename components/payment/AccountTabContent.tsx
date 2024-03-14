@@ -31,16 +31,6 @@ const AccountTabContent: React.FC<AccountTabProps> = () => {
           textStyle={{ color: Colors.blue[500] }}
         />
       </View>
-      {/* {MOCKED_BANK_ACCOUNT.map((account) => {
-        return (
-          <BankAccountDetail
-            accountNo={1}
-            bankAccountNumber={account.bankAccountNumber}
-            bankName={account.bankName}
-            bankBranch={account.bankBranch}
-          />
-        );
-      })} */}
       <View>
         <FlatList
           data={MOCKED_BANK_ACCOUNT}
@@ -72,7 +62,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     backgroundColor: Colors.gray[50],
-    paddingHorizontal: 20,
   },
   profileContainer: {
     flexDirection: "column",
