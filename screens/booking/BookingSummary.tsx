@@ -14,7 +14,7 @@ import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
-export type BookingAttribute = {
+export type Attribute = {
   attribute: string;
   value: string | null;
 };
@@ -51,21 +51,18 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     }, 0);
   };
 
-  const renderAttribute = useCallback(
-    ({ attribute, value }: BookingAttribute) => {
-      return (
-        <View style={styles.attributeContainer}>
-          <BodyText
-            text={attribute + ":"}
-            containerStyle={styles.attributeField}
-            textStyle={styles.attributeTextColor}
-          />
-          <BodyText text={value ?? ""} containerStyle={styles.valueField} />
-        </View>
-      );
-    },
-    []
-  );
+  const renderAttribute = useCallback(({ attribute, value }: Attribute) => {
+    return (
+      <View style={styles.attributeContainer}>
+        <BodyText
+          text={attribute + ":"}
+          containerStyle={styles.attributeField}
+          textStyle={styles.attributeTextColor}
+        />
+        <BodyText text={value ?? ""} containerStyle={styles.valueField} />
+      </View>
+    );
+  }, []);
 
   return (
     <BodyContainer innerContainerStyle={styles.screen}>

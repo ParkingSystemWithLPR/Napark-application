@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, Platform } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import { BookingAttribute } from "../booking/BookingSummary";
+import { Attribute } from "../booking/BookingSummary";
 import { RegionType } from "../landing/Landing";
 
 import BodyText from "@/components/text/BodyText";
@@ -38,21 +38,18 @@ const Arriving: React.FC<ArrivingProps> = ({ route }) => {
     });
   };
 
-  const renderAttribute = useCallback(
-    ({ attribute, value }: BookingAttribute) => {
-      return (
-        <View style={styles.attributeContainer}>
-          <BodyText
-            text={attribute + ":"}
-            containerStyle={styles.attributeField}
-            textStyle={styles.attributeTextColor}
-          />
-          <BodyText text={value ?? ""} containerStyle={styles.valueField} />
-        </View>
-      );
-    },
-    []
-  );
+  const renderAttribute = useCallback(({ attribute, value }: Attribute) => {
+    return (
+      <View style={styles.attributeContainer}>
+        <BodyText
+          text={attribute + ":"}
+          containerStyle={styles.attributeField}
+          textStyle={styles.attributeTextColor}
+        />
+        <BodyText text={value ?? ""} containerStyle={styles.valueField} />
+      </View>
+    );
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

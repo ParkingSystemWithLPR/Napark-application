@@ -3,6 +3,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
 import { SafeAreaView, View, Image, StyleSheet } from "react-native";
 
+import { Attribute } from "../booking/BookingSummary";
+
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import BodyText from "@/components/text/BodyText";
@@ -20,11 +22,6 @@ export type ParkingConfirmationProps = CompositeScreenProps<
   NativeStackScreenProps<ParkingFlowStackParamList, "ParkingConfirmation">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
-
-type Attribute = {
-  attribute: string;
-  value: string | null;
-};
 
 const ParkingConfirmation: React.FC<ParkingConfirmationProps> = ({ route }) => {
   const { bookingRequest } = route.params;
