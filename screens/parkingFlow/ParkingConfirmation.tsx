@@ -75,9 +75,14 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
 export default ParkingConfirmation;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, paddingHorizontal: 20 },
-  outerContainer: { flex: 1, justifyContent: "center", gap: 10 },
-  attributeContainer: { gap: 5 },
+  screen: { flex: 1 },
+  outerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    gap: 20,
+    paddingHorizontal: 20,
+  },
+  attributeContainer: { gap: 10 },
   attribute: { flexDirection: "row", justifyContent: "space-between" },
   buttonsContainer: { flexDirection: "row", justifyContent: "center", gap: 10 },
 });
