@@ -1,6 +1,5 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import * as Location from "expo-location";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Platform } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -16,36 +15,27 @@ import {
   AuthenticatedStackParamList,
   ParkingFlowStackParamList,
 } from "@/types";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type ArrivingProps = CompositeScreenProps<
   NativeStackScreenProps<ParkingFlowStackParamList, "Arriving">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
-const Arriving: React.FC<ArrivingProps> = () => {
+const Arriving: React.FC<ArrivingProps> = ({ route }) => {
   const [region, setRegion] = useState<RegionType>();
-
+  const { bookingRequest, parkingLot } = route.params;
   useLayoutEffect(() => {
-    getCurrentLocation();
+    getLocation();
   }, []);
 
-  const getCurrentLocation = async () => {
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permission to access location was denied");
-        return;
-      }
-      const location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      setRegion({
-        latitude,
-        longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    } catch (error) {
-      console.error("Error getting current location:", error);
-    }
+  const getLocation = async () => {
+    const { lat, lng } = parkingLot.coord;
+    setRegion({
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
   };
 
   const renderAttribute = useCallback(
@@ -57,7 +47,7 @@ const Arriving: React.FC<ArrivingProps> = () => {
             containerStyle={styles.attributeField}
             textStyle={styles.attributeTextColor}
           />
-          <BodyText text={value} containerStyle={styles.valueField} />
+          <BodyText text={value ?? ""} containerStyle={styles.valueField} />
         </View>
       );
     },
@@ -83,7 +73,7 @@ const Arriving: React.FC<ArrivingProps> = () => {
               >
                 <View style={styles.locationContainer}>
                   <BodyText
-                    text={"Engineer building 3, Chulalongkorn"}
+                    text={parkingLot.name}
                     ellipsizeMode="tail"
                     numberOfLines={1}
                     containerStyle={styles.locationTextContainer}
@@ -114,23 +104,31 @@ const Arriving: React.FC<ArrivingProps> = () => {
               />
               {renderAttribute({
                 attribute: "Space",
-                value: "6a",
+                value: bookingRequest.slot,
               })}
               {renderAttribute({
                 attribute: "Check-in Date",
-                value: "2024-03-04",
+                value:
+                  bookingRequest.checkInDate &&
+                  formatHumanReadableDateFromDateString(
+                    bookingRequest.checkInDate
+                  ),
               })}
               {renderAttribute({
                 attribute: "Check-in Time",
-                value: "11:00 am",
+                value: bookingRequest.checkInTime,
               })}
               {renderAttribute({
                 attribute: "Check-out Date (Est)",
-                value: "2024-03-03",
+                value:
+                  bookingRequest.checkOutDate &&
+                  formatHumanReadableDateFromDateString(
+                    bookingRequest.checkOutDate
+                  ),
               })}
               {renderAttribute({
                 attribute: "Check-out Time (Est)",
-                value: "11:00 am",
+                value: bookingRequest.checkOutTime,
               })}
             </View>
           </View>

@@ -59,8 +59,8 @@ export type PaymentStackParamList = {
   PayTheBill: undefined;
 };
 export type ParkingFlowStackParamList = {
-  Arriving: undefined; //{ bookingRequest: BookingRequest; parkingLot: ParkingLot }; expect but not sure
-  ParkingConfirmation: undefined;
+  Arriving: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
+  ParkingConfirmation: { bookingRequest: BookingRequest };
 };
 
 export type AuthenticatedStackParamListProps =

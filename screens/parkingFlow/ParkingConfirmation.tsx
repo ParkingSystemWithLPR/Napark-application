@@ -11,6 +11,10 @@ import {
   AuthenticatedStackParamList,
   ParkingFlowStackParamList,
 } from "@/types";
+import {
+  formatHumanReadableDateFromDateString,
+  formatTime,
+} from "@/utils/date";
 
 export type ParkingConfirmationProps = CompositeScreenProps<
   NativeStackScreenProps<ParkingFlowStackParamList, "ParkingConfirmation">,
@@ -19,14 +23,17 @@ export type ParkingConfirmationProps = CompositeScreenProps<
 
 type Attribute = {
   attribute: string;
-  value: string;
+  value: string | null;
 };
-const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
+
+const ParkingConfirmation: React.FC<ParkingConfirmationProps> = ({ route }) => {
+  const { bookingRequest } = route.params;
+  const checkInDate = new Date();
   const renderAttribute = useCallback(({ attribute, value }: Attribute) => {
     return (
       <View style={styles.attribute}>
         <BodyText text={attribute} />
-        <BodyText text={value} />
+        <BodyText text={value ?? ""} />
       </View>
     );
   }, []);
@@ -45,16 +52,25 @@ const ParkingConfirmation: React.FC<ParkingConfirmationProps> = () => {
         <View style={styles.attributeContainer}>
           {renderAttribute({
             attribute: "ParkingDate",
-            value: "8 March 2024",
+            value: formatHumanReadableDateFromDateString(
+              checkInDate.toString()
+            ),
           })}
-          {renderAttribute({ attribute: "ParkingTime", value: "11:00" })}
+          {renderAttribute({
+            attribute: "ParkingTime",
+            value: formatTime(checkInDate),
+          })}
           {renderAttribute({
             attribute: "CheckOutDate",
-            value: "9 March 2024",
+            value:
+              bookingRequest.checkOutDate &&
+              formatHumanReadableDateFromDateString(
+                bookingRequest.checkOutDate
+              ),
           })}
           {renderAttribute({
             attribute: "CheckOutTime",
-            value: "11:00",
+            value: bookingRequest.checkOutTime,
           })}
         </View>
         <View style={styles.buttonsContainer}>
