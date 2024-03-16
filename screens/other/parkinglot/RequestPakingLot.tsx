@@ -1,10 +1,14 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { FieldValues, useForm } from "react-hook-form";
+import { Alert, StyleSheet } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
-import TextInput, { InputValueType } from "@/components/input/TextInput";
+import ConfigInfo from "@/components/parking-lot/ConfigInfo";
+import ConfigPlan from "@/components/parking-lot/ConfigPlan";
+import ConfigPricing from "@/components/parking-lot/ConfigPricing";
+import Stepper from "@/components/stepper/Stepper";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
@@ -13,98 +17,38 @@ export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-export type RequestParkingLotInputType = {
-  name: InputValueType;
-  address: InputValueType;
-  subDistict: InputValueType;
-  distict: InputValueType;
-  province: InputValueType;
-  tel: InputValueType;
-  zipCode: InputValueType;
-};
-
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
-  const [inputValue, setInputValue] = useState<RequestParkingLotInputType>({
-    name: { value: "" },
-    address: { value: "" },
-    subDistict: { value: "" },
-    distict: { value: "" },
-    province: { value: "" },
-    tel: { value: "" },
-    zipCode: { value: "" },
-  });
+  const { control, handleSubmit } = useForm();
+  const [step, setStep] = useState<number>(1);
 
-  const handleRequestParkingSpacePress = () => {
-    navigation.goBack();
-  };
-
-  const handleOnChangeText = (identifierKey: string, enteredValue: string) => {
-    setInputValue((curInputValue: RequestParkingLotInputType) => {
-      return {
-        ...curInputValue,
-        [identifierKey]: { value: enteredValue },
-      };
-    });
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      // await mutateAsync(data);
+      console.log("data", data);
+    } catch (error) {
+      Alert.alert(
+        "Create request error",
+        "Please try again!!: " + (error as Error).message
+      );
+    }
   };
 
   return (
-    <BodyContainer>
-      <TextInput
-        title="Parking Space Name"
-        placeholder="Enter your parking space name"
-        value={inputValue.name.value}
-        onChangeText={handleOnChangeText.bind(this, "name")}
-        isRequired
-      />
-      <TextInput
-        title="Address"
-        placeholder="Enter your address"
-        value={inputValue.address.value}
-        onChangeText={handleOnChangeText.bind(this, "address")}
-        isRequired
-      />
-      <TextInput
-        title="Sub distict"
-        placeholder="Enter your sub distict"
-        value={inputValue.subDistict.value}
-        onChangeText={handleOnChangeText.bind(this, "subDistict")}
-        isRequired
-      />
-      <TextInput
-        title="Distict"
-        placeholder="Enter your distict"
-        value={inputValue.distict.value}
-        onChangeText={handleOnChangeText.bind(this, "distict")}
-        isRequired
-      />
-      <TextInput
-        title="Province"
-        placeholder="Enter your province"
-        value={inputValue.province.value}
-        onChangeText={handleOnChangeText.bind(this, "province")}
-        isRequired
-      />
-      <View style={styles.sameLineInputContainer}>
-        <TextInput
-          title="Zipcode"
-          placeholder="Enter your zip-code"
-          value={inputValue.zipCode.value}
-          onChangeText={handleOnChangeText.bind(this, "zipCode")}
-          containerStyle={styles.container}
-          isRequired
+    <BodyContainer innerContainerStyle={styles.container}>
+      <Stepper step={step} setStep={setStep} />
+      {step == 1 && <ConfigInfo control={control} />}
+      {step == 2 && <ConfigPlan control={control} />}
+      {step == 3 && <ConfigPricing control={control} />}
+      {step != 3 ? (
+        <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
+      ) : (
+        <PrimaryButton
+          title="Send request to admin"
+          onPress={handleSubmit(onSubmit)}
         />
-        <TextInput
-          title="Tel"
-          placeholder="Enter your tel. no"
-          value={inputValue.tel.value}
-          onChangeText={handleOnChangeText.bind(this, "tel")}
-          containerStyle={styles.container}
-          isRequired
-        />
-      </View>
-      <PrimaryButton title="Back" onPress={handleRequestParkingSpacePress} />
+      )}
     </BodyContainer>
   );
 };
@@ -113,10 +57,15 @@ export default RequestParkingLot;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    justifyContent: "space-between",
+    gap: 10,
+    paddingBottom: 70,
   },
+  formContainer: {},
   sameLineInputContainer: {
     gap: 10,
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

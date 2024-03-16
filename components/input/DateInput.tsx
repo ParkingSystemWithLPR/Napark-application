@@ -1,109 +1,147 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 
+import CheckboxInput from "./CheckBoxInput";
+import TimeInput from "./TimeInput";
 import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
+import { DayInAWeek } from "@/types/common";
+import { BusinessDay } from "@/types/parking-lot/ParkingLot";
 
 export type DateInputProps = {
   title: string;
-  // date: string | null;
-  // placeholder?: string;
-  // onChange: (date: string) => void;
-  // setMinimumDate?: boolean;
-  editable?: boolean;
-};
-
-type dayPickerInput = {
-  [day: string]: boolean;
+  businessDays: BusinessDay;
+  onChange: (businessDays: BusinessDay) => void;
 };
 
 const DateInput: React.FC<DateInputProps> = ({
   title,
+  businessDays,
+  onChange,
 }) => {
-  const [isChecked, setChecked] = useState<dayPickerInput>({
-    Mo: false,
-    Tu: false,
-    We: false,
-    Th: false,
-    Fr: false,
-    Sa: false,
-    Su: false,
+  const { control, getValues } = useForm();
+
+  const selectableDay = [
+    DayInAWeek.SUNDAY,
+    DayInAWeek.MONDAY,
+    DayInAWeek.TUESDAY,
+    DayInAWeek.WEDNESDAY,
+    DayInAWeek.THURSDAY,
+    DayInAWeek.FRIDAY,
+    DayInAWeek.SATURDAY,
+  ];
+
+  const [ businessDay, setBusinessDay ] = useState<BusinessDay>(businessDays ?? {
+    [DayInAWeek.MONDAY]: {isOpen: false},
+    [DayInAWeek.TUESDAY]: {isOpen: false},
+    [DayInAWeek.WEDNESDAY]: {isOpen: false},
+    [DayInAWeek.THURSDAY]: {isOpen: false},
+    [DayInAWeek.FRIDAY]: {isOpen: false},
+    [DayInAWeek.SATURDAY]: {isOpen: false},
+    [DayInAWeek.SUNDAY]: {isOpen: false},
   });
+
+  const [isApplyAll, setApplyAll] = useState<boolean>(true);
+  useEffect(() => {
+    onChange(businessDay);
+  }, [businessDay])
+
+  const onSelectDayHandler = (day: DayInAWeek) => {
+    if (businessDay[day].isOpen) {
+      setBusinessDay({...businessDay, [day]: { isOpen: false }});
+    } else {
+      if (isApplyAll) {
+        const { openTime, closeTime } = getValues();
+        setBusinessDay({...businessDay, [day]: { isOpen: true, openTime, closeTime }})
+      }
+    }
+  };
+
+  const onTimeChange = () => {
+    if (isApplyAll) {
+      const { openTime, closeTime } = getValues();
+      const newBusinessDay = businessDay;
+      Object.keys(businessDay).forEach((day) => {
+        if (businessDay[day as DayInAWeek].isOpen) {
+          newBusinessDay[day as DayInAWeek] = {
+            isOpen: true,
+            openTime,
+            closeTime,
+          };
+        }
+      });
+      setBusinessDay(newBusinessDay);
+    }
+  };
+
+  const renderDaySelector = (day: DayInAWeek) => {
+    return (
+      <Pressable
+        key={day}
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [
+          businessDay[day].isOpen ? styles.selected : styles.idle,
+          pressed ? styles.buttonPressed : null,
+        ]}
+        onPress={() => onSelectDayHandler(day)}
+      >
+        <BodyText
+          text={day.slice(0, 2)}
+          textStyle={businessDay[day].isOpen ? styles.textSelected : {}}
+        />
+      </Pressable>
+    );
+  };
 
   return (
     <View style={styles.outerContainer}>
       <SubHeaderText text={title} />
       <View style={styles.container}>
-      <Pressable
-        android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [
-          isChecked["Su"] ? styles.selected : styles.idle,
-          pressed ? styles.buttonPressed : null,
-        ]}
-        onPress={() => setChecked({ ...isChecked, Su: !isChecked["Su"] })}
-      >
-          <BodyText
-            text={"Su"}
-            textStyle={isChecked["Su"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, Mo: !isChecked["Mo"] })}
-          style={isChecked["Mo"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"Mo"}
-            textStyle={isChecked["Mo"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, Tu: !isChecked["Tu"] })}
-          style={isChecked["Tu"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"Tu"}
-            textStyle={isChecked["Tu"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, We: !isChecked["We"] })}
-          style={isChecked["We"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"We"}
-            textStyle={isChecked["We"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, Th: !isChecked["Th"] })}
-          style={isChecked["Th"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"Th"}
-            textStyle={isChecked["Th"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, Fr: !isChecked["Fr"] })}
-          style={isChecked["Fr"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"Fr"}
-            textStyle={isChecked["Fr"] ? styles.textSelected : {}}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setChecked({ ...isChecked, Sa: !isChecked["Sa"] })}
-          style={isChecked["Sa"] ? styles.selected : styles.idle}
-        >
-          <BodyText
-            text={"Sa"}
-            textStyle={isChecked["Sa"] ? styles.textSelected : {}}
-          />
-        </Pressable>
+        {selectableDay.map((day) => renderDaySelector(day))}
       </View>
+      <View style={styles.sameLineInputContainer}>
+        <Controller
+          name={"openTime"}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TimeInput
+              title={"Open time"}
+              value={value}
+              onTimeChange={(value) => {
+                onChange(value);
+                onTimeChange();
+              }}
+              outerContainerStyle={{ flex: 1 }}
+              editable
+            />
+          )}
+        />
+        <BodyText text={"to"} textStyle={{ color: Colors.gray[700] }} />
+        <Controller
+          name={"closeTime"}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <TimeInput
+              title={"Close time"}
+              value={value}
+              onTimeChange={(value) => {
+                onChange(value);
+                onTimeChange();
+              }}
+              outerContainerStyle={{ flex: 1 }}
+              editable
+            />
+          )}
+        />
+      </View>
+      <CheckboxInput
+        text={"Apply all"}
+        onPress={() => setApplyAll(!isApplyAll)}
+        isChecked={isApplyAll}
+      />
     </View>
   );
 };
@@ -153,6 +191,12 @@ const styles = StyleSheet.create({
   },
   textSelected: {
     color: Colors.white,
+  },
+  sameLineInputContainer: {
+    gap: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   button: {},
   buttonPressed: {

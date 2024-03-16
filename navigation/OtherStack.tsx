@@ -78,7 +78,6 @@ const OtherStack = () => {
         component={RequestParkingLot}
         options={{
           title: "Create parking space",
-          headerLeft: backToOtherPage,
         }}
       />
       <Stack.Screen

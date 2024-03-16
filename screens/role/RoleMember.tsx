@@ -15,10 +15,10 @@ import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { RootParamList } from "@/types";
+import { OtherStackParamList } from "@/types";
 
 export type RoleMemberProps = NativeStackScreenProps<
-  RootParamList,
+  OtherStackParamList,
   "RoleMember"
 >;
 

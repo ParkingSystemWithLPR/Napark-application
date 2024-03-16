@@ -24,6 +24,7 @@ export type DropdownInputProps = {
   withSearch?: boolean;
   renderItem?: (item: DropdownItem) => JSX.Element;
   onSpecialSelect?: (item: DropdownItem) => void;
+  containerStyle?: object;
 };
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -37,6 +38,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   withSearch = false,
   renderItem,
   onSpecialSelect,
+  containerStyle,
 }) => {
   const handleChange = (item: DropdownItem) => {
     if (onSpecialSelect) {
@@ -46,7 +48,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
     }
   };
   return (
-    <View>
+    <View style={containerStyle}>
       {withTitle && title && (
         <View style={styles.titleContainer}>
           <SubHeaderText text={title} />

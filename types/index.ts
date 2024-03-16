@@ -41,6 +41,8 @@ export type OtherStackParamList = {
   ParkingLotsList: undefined;
   ParkingLotDetail: { parkingLotId: string };
   RequestParkingLot: undefined;
+  ConfigPricing: undefined;
+  ConfigPlan: undefined;
   RoleList: undefined;
   RoleMember: undefined;
   ConfigRole: { mode: ActionMode; roleId?: string };

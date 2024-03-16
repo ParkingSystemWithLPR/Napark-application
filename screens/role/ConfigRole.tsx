@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, Switch, View } from "react-native";
 
 import ChangeScreenTab from "@/components/button/ChangeScreenTab";
@@ -26,9 +26,10 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
     useState<boolean>(false);
   const [isEnableAssignRole, setEnableAssignRole] = useState<boolean>(false);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
+      console.log('data', data);
     } catch (error) {
       Alert.alert(
         "Create request error",
