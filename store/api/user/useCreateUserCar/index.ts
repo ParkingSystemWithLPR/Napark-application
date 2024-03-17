@@ -11,7 +11,7 @@ import { Car, Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 interface CreateUserCarInput {
-  body: { user_car: Car };
+  body: Car;
   auth: {
     accessToken: string;
     authenticate: (accessToken: string, refreshToken: string) => void;
