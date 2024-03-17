@@ -37,11 +37,9 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
         await createUserCar(
           {
             body: {
-              user_car: {
-                license_plate: licensePlate,
-                province_of_reg: province,
-                is_default: isDefault,
-              },
+              license_plate: licensePlate,
+              province_of_reg: province,
+              is_default: isDefault,
             },
             auth: {
               accessToken,
