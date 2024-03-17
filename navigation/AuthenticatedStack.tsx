@@ -34,7 +34,6 @@ const AuthenticatedStack = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="BookingStack"
       screenOptions={{
         headerShown: false,
       }}
