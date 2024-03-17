@@ -7,11 +7,12 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import CheckboxInput from "@/components/input/CheckBoxInput";
 import DropdownInput from "@/components/input/DropdownInput";
-import TextInput from "@/components/input/TextInput";
+import TextInput, { InputValueType } from "@/components/input/TextInput";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { THAI_PROVINCE } from "@/constants/province";
 import { ActionMode } from "@/enum/ActionMode";
 import { useCreateUserCar } from "@/store/api/user/useCreateUserCar";
+import { useEditUserCar } from "@/store/api/user/useEditUserCar";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
@@ -25,36 +26,89 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   const { mode, carInfo } = route.params;
   const { accessToken, authenticate } = useAuth();
   const { setProfile } = useProfile();
-  const [licensePlate, setLicensePlate] = useState<string>("");
-  const [province, setProvince] = useState<string>("");
+  const [licensePlate, setLicensePlate] = useState<InputValueType>({
+    value: "",
+  });
+  const [province, setProvince] = useState<InputValueType>({
+    value: "",
+  });
   const [isDefault, setDefault] = useState<boolean>(false);
 
   const { mutateAsync: createUserCar } = useCreateUserCar();
+  const { mutateAsync: editUserCar } = useEditUserCar();
 
   const onPressAction = async () => {
+    const licensePlateRegex = /^[0-9]?[ก-๙]+\s[0-9]{1,4}$/;
+    let isLicensePlateValid = false;
+    let isProvinceSelected = false;
+    let isValid;
     switch (mode) {
       case ActionMode.CREATE:
-        await createUserCar(
-          {
-            body: {
-              license_plate: licensePlate,
-              province_of_reg: province,
-              is_default: isDefault,
+        isLicensePlateValid = licensePlateRegex.test(licensePlate.value);
+        isProvinceSelected = province.value.length > 0;
+        isValid = isLicensePlateValid && isProvinceSelected;
+        if (isValid) {
+          await createUserCar(
+            {
+              body: {
+                license_plate: licensePlate.value,
+                province_of_reg: province.value,
+                is_default: isDefault,
+              },
+              auth: {
+                accessToken,
+                authenticate,
+              },
             },
-            auth: {
-              accessToken,
-              authenticate,
-            },
-          },
-          {
-            onSuccess(data) {
-              setProfile(data);
-              navigation.goBack();
-            },
-          }
-        );
+            {
+              onSuccess(data) {
+                setProfile(data);
+                navigation.goBack();
+              },
+            }
+          );
+        } else {
+          setLicensePlate((curLicensePlate: InputValueType) => {
+            return {
+              ...curLicensePlate,
+              errorText: isLicensePlateValid
+                ? undefined
+                : "Invalid license plate",
+            };
+          });
+          setProvince((curProvince: InputValueType) => {
+            return {
+              ...curProvince,
+              errorText: isProvinceSelected
+                ? undefined
+                : "Please select the province before submitting",
+            };
+          });
+        }
         break;
       case ActionMode.EDIT:
+        if (isDefault === carInfo?.is_default) navigation.goBack();
+        else {
+          await editUserCar(
+            {
+              body: {
+                license_plate: licensePlate.value,
+                province_of_reg: province.value,
+                is_default: isDefault,
+              },
+              auth: {
+                accessToken,
+                authenticate,
+              },
+            },
+            {
+              onSuccess(data) {
+                setProfile(data);
+                navigation.goBack();
+              },
+            }
+          );
+        }
         break;
     }
   };
@@ -62,8 +116,8 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   useLayoutEffect(() => {
     if (mode === ActionMode.EDIT) {
       if (carInfo) {
-        setLicensePlate(carInfo.license_plate);
-        setProvince(carInfo.province_of_reg);
+        setLicensePlate({ value: carInfo.license_plate });
+        setProvince({ value: carInfo.province_of_reg });
         setDefault(carInfo.is_default);
       } else {
         Alert.alert("Something wrong!");
@@ -72,23 +126,34 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
     }
   }, [carInfo]);
 
+  const handleOnChange = (
+    setState: (input: InputValueType) => void,
+    enteredValue: string
+  ) => {
+    setState({ value: enteredValue });
+  };
+
   return (
     <BodyContainer innerContainerStyle={styles.container}>
       <TextInput
         title="License Plate Number"
         placeholder="Enter your license plate"
-        value={licensePlate}
-        onChangeText={setLicensePlate}
-        isRequired={mode === ActionMode.EDIT}
+        value={licensePlate.value}
+        onChangeText={handleOnChange.bind(this, setLicensePlate)}
+        isRequired={mode === ActionMode.CREATE}
+        errorText={licensePlate.errorText}
+        editable={mode === ActionMode.CREATE}
       />
       <DropdownInput
         title="Province of registration"
         placeholder="Choose province of registration"
-        selectedValue={province}
-        onSelect={setProvince}
+        selectedValue={province.value}
+        onSelect={handleOnChange.bind(this, setProvince)}
         items={THAI_PROVINCE}
         withSearch
-        isRequired={mode === ActionMode.EDIT}
+        isRequired={mode === ActionMode.CREATE}
+        editable={mode === ActionMode.CREATE}
+        errorText={province.errorText}
       />
       <CheckboxInput
         text="Set as default"
