@@ -1,6 +1,9 @@
-import { Platform, Pressable, StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
+import { Swipeable } from "react-native-gesture-handler";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import IconButton from "../button/IconButton";
 import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
 
@@ -10,33 +13,63 @@ export type CarInfoCardProps = {
   licensePlate: string;
   province: string;
   onPress: () => void;
+  onDelete?: () => void;
 };
 
 const CarInfoCard: React.FC<CarInfoCardProps> = ({
   licensePlate,
   province,
   onPress,
+  onDelete = () => {},
 }) => {
+  const [isSwiping, setSwiping] = useState<boolean>(false);
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation<number>,
+    dragAnimatedValue: Animated.AnimatedInterpolation<number>
+  ) => {
+    const opacity = dragAnimatedValue.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [1, 0],
+      extrapolate: "clamp",
+    });
+    return (
+      <Animated.View style={[styles.deleteButton, { opacity }]}>
+        <IconButton
+          icon="trash-can-outline"
+          size={25}
+          color={Colors.white}
+          onPress={onDelete}
+        />
+      </Animated.View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Pressable
-        android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [pressed && styles.pressed]}
-        onPress={onPress}
-      >
-        <View style={styles.innerContainer}>
-          <View style={styles.infoContainer}>
-            <HeaderText text={licensePlate} textStyle={styles.licenseText} />
-            <SubHeaderText text={province} />
+    <Swipeable
+      renderRightActions={renderRightActions}
+      onSwipeableWillOpen={() => setSwiping(true)}
+      onSwipeableClose={() => setSwiping(false)}
+    >
+      <View style={styles.container}>
+        <Pressable
+          android_ripple={{ color: Colors.gray[600] }}
+          style={({ pressed }) => [pressed && styles.pressed]}
+          onPress={() => !isSwiping && onPress()}
+        >
+          <View style={styles.innerContainer}>
+            <View style={styles.infoContainer}>
+              <HeaderText text={licensePlate} textStyle={styles.licenseText} />
+              <SubHeaderText text={province} />
+            </View>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={20}
+              color={Colors.gray[800]}
+            />
           </View>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={20}
-            color={Colors.gray[800]}
-          />
-        </View>
-      </Pressable>
-    </View>
+        </Pressable>
+      </View>
+    </Swipeable>
   );
 };
 
@@ -70,5 +103,12 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.5,
+  },
+  deleteButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.red[400],
+    height: "100%",
+    width: 100,
   },
 });
