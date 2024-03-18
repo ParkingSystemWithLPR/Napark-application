@@ -10,6 +10,8 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
+import { useDeleteUserCar } from "@/store/api/user/useDeleteUserCar";
+import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import { Car } from "@/types/user";
@@ -20,7 +22,9 @@ export type CarInfoProps = CompositeScreenProps<
 >;
 
 const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
-  const { profile } = useProfile();
+  const { profile, setProfile } = useProfile();
+  const { accessToken, authenticate } = useAuth();
+  const { mutateAsync: deleteUserCar } = useDeleteUserCar();
   const [cars, setCars] = useState<Car[]>([]);
 
   useLayoutEffect(() => {
@@ -52,6 +56,26 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
                 carInfo: car[0],
               });
             }}
+            onDelete={async () => {
+              await deleteUserCar(
+                {
+                  body: {
+                    license_plate: car[0].license_plate,
+                    province_of_reg: car[0].province_of_reg,
+                    is_default: car[0].is_default,
+                  },
+                  auth: {
+                    accessToken,
+                    authenticate,
+                  },
+                },
+                {
+                  onSuccess(data) {
+                    setProfile(data);
+                  },
+                }
+              );
+            }}
           />
         ) : (
           emptyCar()
@@ -77,6 +101,26 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
                     mode: ActionMode.EDIT,
                     carInfo: item,
                   });
+                }}
+                onDelete={async () => {
+                  await deleteUserCar(
+                    {
+                      body: {
+                        license_plate: item.license_plate,
+                        province_of_reg: item.province_of_reg,
+                        is_default: item.is_default,
+                      },
+                      auth: {
+                        accessToken,
+                        authenticate,
+                      },
+                    },
+                    {
+                      onSuccess(data) {
+                        setProfile(data);
+                      },
+                    }
+                  );
                 }}
               />
             )}

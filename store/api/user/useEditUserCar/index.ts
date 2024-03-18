@@ -10,7 +10,7 @@ import { USER_URL } from "..";
 import { Car, Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-interface CreateUserCarInput {
+interface EditUserCarInput {
   body: Car;
   auth: {
     accessToken: string;
@@ -18,11 +18,11 @@ interface CreateUserCarInput {
   };
 }
 
-type CreateUserCarService = (input: CreateUserCarInput) => Promise<Profile>;
+type EditUserCarService = (input: EditUserCarInput) => Promise<Profile>;
 
-export const createUserCar: CreateUserCarService = async ({ body, auth }) => {
+export const editUserCar: EditUserCarService = async ({ body, auth }) => {
   const profile = await apiRequest<Profile>(
-    USER_URL + "/user/add-car",
+    USER_URL + "/user/edit-default-car",
     HTTPMethod.POST,
     auth.accessToken,
     auth.authenticate,
@@ -31,11 +31,11 @@ export const createUserCar: CreateUserCarService = async ({ body, auth }) => {
   return profile;
 };
 
-export const useCreateUserCar = (
-  options?: MutationOptions<Profile, AxiosError, CreateUserCarInput>
-): UseMutationResult<Profile, AxiosError, CreateUserCarInput> =>
+export const useEditUserCar = (
+  options?: MutationOptions<Profile, AxiosError, EditUserCarInput>
+): UseMutationResult<Profile, AxiosError, EditUserCarInput> =>
   useMutation({
-    mutationFn: createUserCar,
+    mutationFn: editUserCar,
     retry: 0,
     ...options,
   });
