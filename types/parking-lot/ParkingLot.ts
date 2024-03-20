@@ -1,6 +1,6 @@
 import { Region } from "react-native-maps";
 
-import { DayInAWeek } from "../common";
+import { DayInAWeek } from "@/enum/DayInAWeek";
 
 export type ParkingLot = {
   _id: string,

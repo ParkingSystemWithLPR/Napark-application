@@ -42,6 +42,7 @@ export type OtherStackParamList = {
   ParkingLotsList: undefined;
   ParkingLotDetail: { parkingLotId: string };
   RequestParkingLot: undefined;
+  EditParkingInfo: undefined;
   ConfigPricing: undefined;
   ConfigPlan: undefined;
   RoleList: undefined;

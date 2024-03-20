@@ -1,6 +1,9 @@
 import { format, parseISO } from "date-fns";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
+import { DayInAWeek } from "@/enum/DayInAWeek";
+import { BusinessDay } from "@/types/parking-lot/ParkingLot";
+
 export const MINIMUM_DATE = new Date(1900, 1, 1);
 
 export const formatDate = (date: Date) => {
@@ -35,3 +38,8 @@ export const formatISODate = (date?: string) => {
 export const joinDateAndTime = (date: string, time: string) => {
   return date + " " + time;
 };
+
+export const getBusinessHours = (businessDays: BusinessDay) => {
+  const today = format(new Date(), "eeee");
+  return `${businessDays[`${today}` as DayInAWeek].openTime} - ${businessDays[`${today}` as DayInAWeek].closeTime}`
+}

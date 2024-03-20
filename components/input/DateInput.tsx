@@ -8,7 +8,7 @@ import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
-import { DayInAWeek } from "@/types/common";
+import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay } from "@/types/parking-lot/ParkingLot";
 
 export type DateInputProps = {

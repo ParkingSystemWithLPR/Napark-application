@@ -15,6 +15,7 @@ import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { getBusinessHours } from "@/utils/date";
 
 export type ParkingLotsListProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,
@@ -26,7 +27,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { profile } = useProfile();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
-  console.log('profile', profile);
+
   const getParkingLots = useGetParkingLotsByUserId({
     queryParams: { userId: profile._id },
     auth: { accessToken, authenticate },
@@ -72,7 +73,11 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
             renderItem={({ item }) => (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
-                businessHours={"08:00 - 23:59"}
+                businessHours={
+                  item.businessDays
+                    ? getBusinessHours(item.businessDays)
+                    : "Not available"
+                }
                 availabilty={0}
                 onPress={() => navigation.navigate("ParkingLotDetail", { parkingLotId: item._id })}
               />

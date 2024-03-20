@@ -4,11 +4,10 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import IconButton from "@/components/button/IconButton";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import CheckboxInput from "@/components/input/CheckBoxInput";
 import TextInput from "@/components/input/TextInput";
@@ -44,14 +43,13 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
 
   const searchIcon = useCallback(
     () => (
-      <TouchableOpacity onPress={() => handleTextInputChange("")}>
-        <MaterialCommunityIcons
-          name={isSearch ? "backspace" : "account-search"}
-          size={20}
-          color={Colors.gray[800]}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
+      <IconButton
+        icon={isSearch ? "backspace" : "account-search"}
+        onPress={() => handleTextInputChange("")}
+        size={20}
+        color={Colors.gray[800]}
+        buttonStyle={styles.buttonIcon}
+      />
     ),
     [isSearch]
   );
@@ -136,8 +134,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 5,
   },
-  icon: {
-    marginLeft: 5,
+  buttonIcon: {
+    margin: 0,
+    marginLeft: 8,
   },
   memberListTextContainer: {
     flexDirection: "row",

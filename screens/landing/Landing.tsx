@@ -42,6 +42,7 @@ import {
   MainPageBottomTabParamList,
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { getBusinessHours } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
@@ -202,7 +203,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           renderItem={({ item }) => (
             <ParkingSpaceCard
               parkingSpaceName={item.name}
-              businessHours={item.businessDays ?? "Not available"}
+              businessHours={
+                item.businessDays
+                  ? getBusinessHours(item.businessDays)
+                  : "Not available"
+              }
               availabilty={item.availability ?? 0}
               onPress={() => handleChooseParkingSpace(item)}
             />
@@ -295,8 +300,8 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
                 <Marker
                   key={parkingSpace._id}
                   coordinate={{
-                    latitude: parkingSpace.coord.lat,
-                    longitude: parkingSpace.coord.lng,
+                    latitude: parkingSpace.coord.latitude,
+                    longitude: parkingSpace.coord.longitude,
                   }}
                   title={parkingSpace.name}
                   onPress={() => handleChooseParkingSpace(parkingSpace)}

@@ -44,7 +44,7 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ control }) => {
               selectedValue={value}
               title="Unit"
               placeholder={"Select fee unit"}
-              onSelect={() => onChange(value)}
+              onSelect={(value) => onChange(value)}
               items={[{ value: "thb/hr", label: "bath / hr" }]}
               containerStyle={{ flex: 1 }}
             />
