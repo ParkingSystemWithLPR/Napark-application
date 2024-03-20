@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import BodyText from "@/components/text/BodyText";
@@ -22,24 +22,12 @@ const PayTheBill: React.FC<PayTheBillProps> = ({ navigation }) => {
   const pressLicensePlateHandler = () => {
     navigation.navigate("PaymentSummary");
   };
+
   const renderLicensePlateList = useCallback(
     (item: mockedPaymentLicensePlateProps) => {
       return (
         <TouchableOpacity onPress={pressLicensePlateHandler}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingHorizontal: 10,
-              paddingVertical: 15,
-              backgroundColor: Colors.white,
-              borderWidth: 1,
-              margin: 10,
-              borderRadius: 10,
-              alignItems: "center",
-              borderColor: Colors.gray[800],
-            }}
-          >
+          <View style={styles.licensePlate}>
             <BodyText text={item.licensePlate} />
             <MaterialIcons name="chevron-right" size={20}></MaterialIcons>
           </View>
@@ -48,6 +36,7 @@ const PayTheBill: React.FC<PayTheBillProps> = ({ navigation }) => {
     },
     []
   );
+
   return (
     <BodyContainer>
       <FlatList
@@ -62,3 +51,18 @@ const PayTheBill: React.FC<PayTheBillProps> = ({ navigation }) => {
   );
 };
 export default PayTheBill;
+
+const styles = StyleSheet.create({
+  licensePlate: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    borderColor: Colors.gray[800],
+  },
+});

@@ -32,7 +32,7 @@ const PaymentSuccessful: React.FC<PaymentSuccessfulProps> = ({
           width={IMAGE_WIDTH}
           style={{ alignSelf: "center" }}
         />
-        <View style={{ alignItems: "center", gap: 20 }}>
+        <View style={styles.textBox}>
           <SubHeaderText
             text={"Transaction successfully!"}
             textStyle={styles.blueText}
@@ -42,7 +42,7 @@ const PaymentSuccessful: React.FC<PaymentSuccessfulProps> = ({
         <PrimaryButton
           title={"Confirm"}
           onPress={handleConfirm}
-          outerContainerStyle={{ paddingHorizontal: 40 }}
+          outerContainerStyle={styles.buttonContainer}
         />
       </View>
     </SafeAreaView>
@@ -62,4 +62,6 @@ const styles = StyleSheet.create({
   blueText: {
     color: Colors.blue[600],
   },
+  textBox: { alignItems: "center", gap: 20 },
+  buttonContainer: { paddingHorizontal: 40 },
 });

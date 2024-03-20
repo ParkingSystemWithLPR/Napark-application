@@ -87,20 +87,8 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
     <BodyContainer>
       <View style={{ gap: 20 }}>
         <SubHeaderText text={"All the Bills"}></SubHeaderText>
-        <View
-          style={{
-            gap: 20,
-            backgroundColor: Colors.white,
-            borderRadius: 8,
-            shadowColor: "black",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
-            shadowRadius: 2,
-            elevation: 4,
-            padding: 10,
-          }}
-        >
-          <View style={{ gap: Platform.OS == "ios" ? 15 : 10 }}>
+        <View style={styles.content}>
+          <View style={styles.attribute}>
             {renderAttribute({
               attribute: "Name",
               value: "Jackson Maine",
@@ -167,6 +155,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  content: {
+    gap: 20,
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
+    padding: 10,
+  },
+  attribute: { gap: Platform.OS == "ios" ? 15 : 10 },
   text: { alignSelf: "flex-end", textAlign: "right" },
   bigText: { fontSize: 16 },
   blueText: { color: Colors.blue[600] },
