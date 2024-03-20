@@ -115,3 +115,26 @@ export const mockParkingLot: ParkingLot = {
     longitudeDelta: 100.53327154257514,
   },
 };
+export interface mockedPaymentLicensePlateProps {
+  licensePlate: string;
+  id: string;
+}
+
+export const MOCKED_PAYMENTLICENSEPLATE = [
+  {
+    id: "1",
+    licensePlate: "ผบ 5982",
+  },
+  {
+    id: "2",
+    licensePlate: "ฬห 8705",
+  },
+  {
+    id: "3",
+    licensePlate: "รวย 9999",
+  },
+  {
+    id: "4",
+    licensePlate: "เฮง 888",
+  },
+];

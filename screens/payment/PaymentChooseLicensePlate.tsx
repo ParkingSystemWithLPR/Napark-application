@@ -1,0 +1,66 @@
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useCallback } from "react";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+
+import BodyText from "@/components/text/BodyText";
+import BodyContainer from "@/components/ui/BodyContainer";
+import Colors from "@/constants/color";
+import {
+  MOCKED_PAYMENTLICENSEPLATE,
+  mockedPaymentLicensePlateProps,
+} from "@/mock/mockData";
+import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+
+export type PaymentChooseLicensePlateProps = CompositeScreenProps<
+  NativeStackScreenProps<PaymentStackParamList, "PaymentChooseLicensePlate">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
+
+const PaymentChooseLicensePlate: React.FC<PaymentChooseLicensePlateProps> = ({
+  navigation,
+}) => {
+  const pressLicensePlateHandler = () => {
+    navigation.navigate("PaymentSummary");
+  };
+  const renderLicensePlateList = useCallback(
+    (item: mockedPaymentLicensePlateProps) => {
+      return (
+        <TouchableOpacity onPress={pressLicensePlateHandler}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 10,
+              paddingVertical: 15,
+              backgroundColor: Colors.white,
+              borderWidth: 1,
+              margin: 10,
+              borderRadius: 10,
+              alignItems: "center",
+              borderColor: Colors.gray[800],
+            }}
+          >
+            <BodyText text={item.licensePlate} />
+            <MaterialIcons name="chevron-right" size={20}></MaterialIcons>
+          </View>
+        </TouchableOpacity>
+      );
+    },
+    []
+  );
+  return (
+    <BodyContainer>
+      <FlatList
+        data={MOCKED_PAYMENTLICENSEPLATE}
+        renderItem={({ item }) => {
+          return renderLicensePlateList(item);
+        }}
+        keyExtractor={(item) => item.id}
+        overScrollMode="never"
+      />
+    </BodyContainer>
+  );
+};
+export default PaymentChooseLicensePlate;

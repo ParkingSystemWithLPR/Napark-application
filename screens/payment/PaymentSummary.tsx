@@ -1,5 +1,7 @@
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
@@ -10,10 +12,24 @@ import AttributeText, {
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
 
-const PaymentSummary: React.FC = () => {
+export type PaymentSummaryProps = CompositeScreenProps<
+  NativeStackScreenProps<PaymentStackParamList, "PaymentSummary">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
+
+const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isButtonEnable, setIsButtonEnable] = useState(false);
+
+  const handlePayment = () => {
+    navigation.navigate("PaymentSuccessful");
+  };
+
+  const handleNotFillInfo = () => {
+    alert("Please choose payment method");
+  };
 
   useLayoutEffect(() => {
     setIsButtonEnable(paymentMethod != "");
@@ -84,7 +100,7 @@ const PaymentSummary: React.FC = () => {
             padding: 10,
           }}
         >
-          <View style={{ gap: 5 }}>
+          <View style={{ gap: Platform.OS == "ios" ? 15 : 10 }}>
             {renderAttribute({
               attribute: "Name",
               value: "Jackson Maine",
@@ -107,7 +123,7 @@ const PaymentSummary: React.FC = () => {
             })}
             {renderAttribute({
               attribute: "To",
-              value: "01/1/2019",
+              value: "01/11/2019",
             })}
           </View>
           {renderPrice({
@@ -135,15 +151,9 @@ const PaymentSummary: React.FC = () => {
           ]}
         />
         {isButtonEnable ? (
-          <PrimaryButton
-            title={"Pay the bill"}
-            onPress={function (): void {}}
-          />
+          <PrimaryButton title={"Pay the bill"} onPress={handlePayment} />
         ) : (
-          <SecondaryButton
-            title={"Pay the bill"}
-            onPress={function (): void {}}
-          />
+          <SecondaryButton title={"Pay the bill"} onPress={handleNotFillInfo} />
         )}
       </View>
     </BodyContainer>
