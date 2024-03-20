@@ -16,7 +16,7 @@ const IMAGE_SIZE = 100;
 
 const AccountTabContent: React.FC<AccountTabProps> = () => {
   return (
-    <View style={styles.contentContainer}>
+    <>
       <View style={styles.profileContainer}>
         <Image
           style={styles.profileImage}
@@ -52,17 +52,13 @@ const AccountTabContent: React.FC<AccountTabProps> = () => {
         buttonStyle={styles.button}
         textStyle={styles.textButton}
       />
-    </View>
+    </>
   );
 };
 
 export default AccountTabContent;
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-    backgroundColor: Colors.gray[50],
-  },
   profileContainer: {
     flexDirection: "column",
     alignItems: "center",

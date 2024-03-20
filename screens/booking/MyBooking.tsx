@@ -15,8 +15,8 @@ export type MyBookingProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ActiveSessions = () => <SessionsList type={BookingType.ACTIVE} />;
-const CompletedSessions = () => <SessionsList type={BookingType.COMPLETED} />;
+const ActiveSessions = <SessionsList type={BookingType.ACTIVE} />;
+const CompletedSessions = <SessionsList type={BookingType.COMPLETED} />;
 
 const MyBooking: React.FC<MyBookingProps> = () => {
   return (

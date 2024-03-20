@@ -1,9 +1,8 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native";
 
 import ActiveSession from "./ActiveSession";
 import CompletedSession from "./CompletedSession";
 
-import Colors from "@/constants/color";
 import { BookingType } from "@/enum/BookingType";
 import { MOCKED_SESSIONS, mockedSessionsProps } from "@/mock/mockData";
 import { formatDateAndTime } from "@/utils/date";
@@ -14,7 +13,7 @@ interface sessionsProps {
 
 const SessionsList: React.FC<sessionsProps> = ({ type }) => {
   return (
-    <View style={styles.container}>
+    <>
       <FlatList
         data={MOCKED_SESSIONS}
         keyExtractor={(item: mockedSessionsProps) => item.id}
@@ -44,15 +43,8 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
         }}
         overScrollMode="never"
       />
-    </View>
+    </>
   );
 };
 
 export default SessionsList;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    backgroundColor: Colors.gray[50],
-  },
-});

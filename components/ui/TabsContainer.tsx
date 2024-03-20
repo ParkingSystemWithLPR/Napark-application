@@ -2,7 +2,7 @@ import {
   MaterialTopTabBarProps,
   createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
-import { Platform, TouchableOpacity, StyleSheet } from "react-native";
+import { Platform, TouchableOpacity, StyleSheet, View } from "react-native";
 
 import BodyContainer from "./BodyContainer";
 import BodyText from "../text/BodyText";
@@ -11,9 +11,9 @@ import Colors from "@/constants/color";
 
 type TabsContainerProps = {
   leftTabName: string;
-  leftTabContent: () => React.JSX.Element;
+  leftTabContent: React.JSX.Element;
   rightTabName: string;
-  rightTabContent: () => React.JSX.Element;
+  rightTabContent: React.JSX.Element;
 };
 
 type TabBarProps = MaterialTopTabBarProps & {
@@ -92,12 +92,18 @@ const TabsContainer: React.FC<TabsContainerProps> = ({
   rightTabName,
   rightTabContent,
 }) => {
+  const LeftContent = () => (
+    <View style={styles.tabContent}>{leftTabContent}</View>
+  );
+  const RightContent = () => (
+    <View style={styles.tabContent}>{rightTabContent}</View>
+  );
   return (
     <Tab.Navigator
       tabBar={(props) => <TabBar {...props} leftTabName={leftTabName} />}
     >
-      <Tab.Screen name={leftTabName} component={leftTabContent} />
-      <Tab.Screen name={rightTabName} component={rightTabContent} />
+      <Tab.Screen name={leftTabName} component={LeftContent} />
+      <Tab.Screen name={rightTabName} component={RightContent} />
     </Tab.Navigator>
   );
 };
@@ -142,5 +148,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     paddingVertical: 10,
+  },
+  tabContent: {
+    flex: 1,
+    backgroundColor: Colors.gray[50],
   },
 });

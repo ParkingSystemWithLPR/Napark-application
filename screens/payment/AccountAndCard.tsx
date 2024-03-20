@@ -11,8 +11,8 @@ export type AccountAndCardProps = CompositeScreenProps<
   NativeStackScreenProps<PaymentStackParamList>
 >;
 
-const AccountTab = () => <AccountTabContent />;
-const CardTab = () => <CardTabContent />;
+const AccountTab = <AccountTabContent />;
+const CardTab = <CardTabContent />;
 
 const AccountAndCard: React.FC<AccountAndCardProps> = () => {
   return (

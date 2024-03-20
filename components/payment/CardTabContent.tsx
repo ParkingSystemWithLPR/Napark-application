@@ -25,7 +25,7 @@ const DisplayCardNumber = (cardNumber: string) => {
 
 const CardTabContent: React.FC<CardTabContentProps> = () => {
   return (
-    <View style={styles.container}>
+    <>
       <FlatList
         data={MOCKED_CREDIT_CARD}
         keyExtractor={(item: mockedCreditCard) => item.cardNumber}
@@ -60,17 +60,13 @@ const CardTabContent: React.FC<CardTabContentProps> = () => {
           );
         }}
       />
-    </View>
+    </>
   );
 };
 
 export default CardTabContent;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.gray[50],
-  },
   cardContainer: {
     flex: 1,
     alignItems: "center",
