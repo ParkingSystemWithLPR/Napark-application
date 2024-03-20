@@ -61,6 +61,20 @@ const PaymentStack = () => {
           headerLeft: backToOtherPage,
         }}
       />
+      <Stack.Screen
+        name="PaymentSummary"
+        component={PaymentSummary}
+        options={{
+          title: "Pay the bill",
+        }}
+      />
+      <Stack.Screen
+        name="PaymentSuccessful"
+        component={PaymentSuccessful}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
