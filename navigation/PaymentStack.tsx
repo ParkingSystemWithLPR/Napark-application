@@ -66,6 +66,7 @@ const PaymentStack = () => {
         component={PaymentSummary}
         options={{
           title: "Pay the bill",
+          headerBackTitle: "Back",
         }}
       />
       <Stack.Screen
