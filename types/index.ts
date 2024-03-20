@@ -64,6 +64,7 @@ export type ButtonProps = {
   outerContainerStyle?: object;
   buttonStyle?: object;
   textStyle?: object;
+  disabled?: boolean;
 };
 
 export type TextProps = {

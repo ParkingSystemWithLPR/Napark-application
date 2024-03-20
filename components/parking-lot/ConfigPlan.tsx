@@ -1,5 +1,5 @@
 import { Control, Controller, FieldValues } from "react-hook-form";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
 import ImageUploader from "@/components/input/ImageUploader";
 import BodyText from "@/components/text/BodyText";
