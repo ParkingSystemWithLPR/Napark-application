@@ -12,6 +12,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   outerContainerStyle,
   buttonStyle,
   textStyle,
+  disabled,
 }) => {
   return (
     <View style={outerContainerStyle}>
@@ -21,6 +22,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
           styles.button,
           pressed ? styles.buttonPressed : null,
         ]}
+        disabled={disabled}
         onPress={onPress}
       >
         <View style={[styles.buttonContainer, buttonStyle]}>

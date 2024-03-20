@@ -26,6 +26,7 @@ export type DropdownInputProps = {
   onSpecialSelect?: (item: DropdownItem) => void;
   errorText?: string;
   editable?: boolean;
+  containerStyle?: object;
 };
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -41,6 +42,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   onSpecialSelect,
   errorText,
   editable = true,
+  containerStyle,
 }) => {
   const handleChange = (item: DropdownItem) => {
     if (onSpecialSelect) {
@@ -50,7 +52,7 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
     }
   };
   return (
-    <View>
+    <View style={containerStyle}>
       {withTitle && title && (
         <View style={styles.titleContainer}>
           <SubHeaderText text={title} />

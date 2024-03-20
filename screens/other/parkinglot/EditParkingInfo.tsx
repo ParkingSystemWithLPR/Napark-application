@@ -7,32 +7,28 @@ import { Alert, StyleSheet, View } from "react-native";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import ConfigInfo from "@/components/parking-lot/ConfigInfo";
-import ConfigPlan from "@/components/parking-lot/ConfigPlan";
-import ConfigPricing from "@/components/parking-lot/ConfigPricing";
-import Stepper from "@/components/stepper/Stepper";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
-export type RequestParkingLotProps = CompositeScreenProps<
-  NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
+export type EditParkingInfoProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "EditParkingInfo">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
+const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
   navigation,
 }) => {
   const { control, handleSubmit, formState: { isSubmitting } } = useForm();
-  const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
       console.log("data", data);
-      navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
+      navigation.goBack();
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -43,18 +39,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <Stepper step={step} setStep={setStep} />
-      {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigPlan control={control} />}
-      {step == 3 && <ConfigPricing control={control} />}
-      {step != 3 ? (
-        <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
-      ) : (
-        <PrimaryButton
-          title="Send request to admin"
-          onPress={() => setOpenConfirmModal(true)}
-        />
-      )}
+      <ConfigInfo control={control}/>
       <ModalOverlay
         visible={isOpenConfirmModal}
         closeModal={() => setOpenConfirmModal(false)}
@@ -80,7 +65,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   );
 };
 
-export default RequestParkingLot;
+export default EditParkingInfo;
 
 const styles = StyleSheet.create({
   container: {

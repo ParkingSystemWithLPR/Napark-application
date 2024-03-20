@@ -17,13 +17,7 @@ const ParkingBasicInfo: React.FC<ParkingBasicInfoProps> = ({ parkingLot }) => {
       <SectionAppForm title={"Location"} icon={"google-maps"}>
         <DetailText
           textStyle={styles.text}
-          text={formatAddress({
-            address: parkingLot.address,
-            sub_distict: parkingLot.sub_distict,
-            distict: parkingLot.distict,
-            province: parkingLot.province,
-            zip_code: parkingLot.zip_code,
-          })}
+          text={formatAddress(parkingLot.address)}
         />
       </SectionAppForm>
       <SectionAppForm title={"Traffic"} icon={"car"}>

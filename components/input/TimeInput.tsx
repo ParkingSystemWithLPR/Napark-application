@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Platform, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -77,10 +77,11 @@ const TimeInput: React.FC<TimeInputProps> = ({
 export default TimeInput;
 
 const styles = StyleSheet.create({
-  outerContainer: {},
+  outerContainer: {
+    marginBottom: 10,
+  },
   container: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     gap: 5,
     borderRadius: 8,

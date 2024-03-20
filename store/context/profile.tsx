@@ -9,6 +9,7 @@ interface IProfileContext {
 
 export const ProfileContext = createContext<IProfileContext>({
   profile: {
+    _id: "",
     firstname: "",
     lastname: "",
     email: "",
@@ -29,6 +30,7 @@ export const useProfile = () => {
 
 const ProfileContextProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<Profile>({
+    _id: "",
     firstname: "",
     lastname: "",
     email: "",

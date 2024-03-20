@@ -12,10 +12,10 @@ import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import SectionAppForm from "@/components/ui/SectionAppForm";
 import Colors from "@/constants/color";
+import { mockParkingLot } from "@/mock/mockData";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { mockParkingLot } from "@/types/parking-lot/mock";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
@@ -23,13 +23,17 @@ export type ParkingLotDetailProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
+const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
+  navigation,
+  route,
+}) => {
+  const parkingLotId = route.params.parkingLotId;
   const [parkingLot, setParkingLot] = useState<ParkingLot>(mockParkingLot);
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
   const getParkingLot = useGetParkingLot({
-    queryParams: { parkingLotId: "65e1ecbfb8911ba3860666e5" },
+    queryParams: { parkingLotId },
     auth: { accessToken, authenticate },
   });
 
@@ -54,8 +58,8 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: parkingLot.coord.lat,
-              longitude: parkingLot.coord.lng,
+              latitude: parkingLot.coord.latitude,
+              longitude: parkingLot.coord.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
@@ -64,8 +68,8 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
           >
             <Marker
               coordinate={{
-                latitude: parkingLot.coord.lat,
-                longitude: parkingLot.coord.lng,
+                latitude: parkingLot.coord.latitude,
+                longitude: parkingLot.coord.longitude,
               }}
               title="Your Parking Space Location"
             />
@@ -94,9 +98,11 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation }) => {
               }}
             />
           </View>
-          <SectionAppForm title={"Photos"} icon={"camera"}>
-            <ImageContainer imageUrls={["image1", "image2"]} />
-          </SectionAppForm>
+          {parkingLot.images && (
+            <SectionAppForm title={"Photos"} icon={"camera"}>
+              <ImageContainer imageUrls={parkingLot.images} />
+            </SectionAppForm>
+          )}
           <ParkingBasicInfo parkingLot={parkingLot} />
         </View>
       </ScrollView>
@@ -112,6 +118,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
     gap: 15,
+    paddingLeft: -10,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

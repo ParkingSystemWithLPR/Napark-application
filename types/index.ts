@@ -40,15 +40,21 @@ export type OtherStackParamList = {
   CarInfoSetup: { mode: ActionMode; carInfo?: Car };
   ConfigParkingLot: undefined;
   ParkingLotsList: undefined;
-  ParkingLotDetail: undefined;
+  ParkingLotDetail: { parkingLotId: string };
   RequestParkingLot: undefined;
+  EditParkingInfo: undefined;
+  ConfigPricing: undefined;
+  ConfigPlan: undefined;
   RoleList: undefined;
+  RoleMember: undefined;
+  ConfigRole: { mode: ActionMode; roleId?: string };
   ChangePassword: undefined;
 };
 
 export type BookingStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
   BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
+  RoleMember: undefined;
 };
 
 export type PaymentStackParamList = {
@@ -68,6 +74,7 @@ export type ButtonProps = {
   buttonStyle?: object;
   textStyle?: object;
   containerStyle?: object;
+  disabled?: boolean;
 };
 
 export type TextProps = {
