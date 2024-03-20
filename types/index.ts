@@ -59,8 +59,7 @@ export type BookingStackParamList = {
 
 export type PaymentStackParamList = {
   Payment: undefined;
-  AccountAndCard: undefined;
-  ScanQR: undefined;
+  TopUp: undefined;
   PayTheBill: undefined;
 }
 
