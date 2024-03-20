@@ -50,23 +50,3 @@ export const MOCKED_SESSIONS = [
     id: "6",
   },
 ];
-
-export const MOCKED_PARKING_SPACE = {
-  _id: "1",
-  name: "PolSci's Parking building | Chulalongkorn university",
-  address: {
-    address: "1234",
-    sub_distict: "A",
-    distict: "B",
-    province: "Bangkok",
-    zip_code: "10140",
-  },
-  coord: {
-    latitude: 1,
-    longitude: 1,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  },
-  businessHours: "08:00 - 23:59",
-  availability: 100,
-};

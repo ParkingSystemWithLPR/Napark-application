@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 100,
   },
-  formContainer: {},
   sameLineInputContainer: {
     flexDirection: "row",
     gap: 10,
