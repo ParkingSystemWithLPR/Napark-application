@@ -56,7 +56,8 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation, route }
           <MapView
             style={styles.map}
             initialRegion={{
-              ...parkingLot.coord,
+              latitude: parkingLot.coord.lat,
+              longitude: parkingLot.coord.lng,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
@@ -65,8 +66,8 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({ navigation, route }
           >
             <Marker
               coordinate={{
-                latitude: parkingLot.coord.latitude,
-                longitude: parkingLot.coord.longitude,
+                latitude: parkingLot.coord.lat,
+                longitude: parkingLot.coord.lng,
               }}
               title="Your Parking Space Location"
             />

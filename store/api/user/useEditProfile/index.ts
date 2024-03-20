@@ -10,7 +10,7 @@ import { USER_URL } from "..";
 import { Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-interface EditProfileInput {
+export interface EditProfileInput {
   body: {
     firstname: string;
     lastname: string;

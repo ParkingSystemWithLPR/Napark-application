@@ -24,6 +24,7 @@ export type AuthenticatedStackParamList = {
   MainScreen: NavigatorScreenParams<MainPageBottomTabParamList>;
   OtherStack: NavigatorScreenParams<OtherStackParamList>;
   BookingStack: NavigatorScreenParams<BookingStackParamList>;
+  PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
 };
 
 export type MainPageBottomTabParamList = {
@@ -55,6 +56,13 @@ export type BookingStackParamList = {
   RoleMember: undefined;
 };
 
+export type PaymentStackParamList = {
+  Payment: undefined;
+  AccountAndCard: undefined;
+  ScanQR: undefined;
+  PayTheBill: undefined;
+}
+
 export type AuthenticatedStackParamListProps =
   NavigationProp<AuthenticatedStackParamList>;
 
@@ -64,6 +72,7 @@ export type ButtonProps = {
   outerContainerStyle?: object;
   buttonStyle?: object;
   textStyle?: object;
+  containerStyle?: object;
   disabled?: boolean;
 };
 

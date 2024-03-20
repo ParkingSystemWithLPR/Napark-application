@@ -203,7 +203,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             <ParkingSpaceCard
               parkingSpaceName={item.name}
               businessHours={item.businessDays ?? "Not available"}
-              availabilty={item.availability}
+              availabilty={item.availability ?? 0}
               onPress={() => handleChooseParkingSpace(item)}
             />
           )}

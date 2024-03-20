@@ -24,6 +24,8 @@ export type DropdownInputProps = {
   withSearch?: boolean;
   renderItem?: (item: DropdownItem) => JSX.Element;
   onSpecialSelect?: (item: DropdownItem) => void;
+  errorText?: string;
+  editable?: boolean;
   containerStyle?: object;
 };
 
@@ -38,6 +40,8 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   withSearch = false,
   renderItem,
   onSpecialSelect,
+  errorText,
+  editable = true,
   containerStyle,
 }) => {
   const handleChange = (item: DropdownItem) => {
@@ -67,13 +71,22 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         onChange={handleChange}
         search={withSearch}
         searchPlaceholder="Search..."
-        style={styles.dropdown}
+        style={[
+          styles.dropdown,
+          editable ? null : styles.uneditable,
+          errorText ? styles.errorInputContainer : null,
+        ]}
         selectedTextStyle={styles.text}
         activeColor={Colors.red[400].toString()}
         autoScroll={false}
         renderItem={renderItem}
         placeholderStyle={styles.placeholderText}
+        disable={!editable}
+        iconStyle={{
+          tintColor: editable ? Colors.gray[800] : Colors.gray[600],
+        }}
       />
+      {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
     </View>
   );
 };
@@ -108,5 +121,16 @@ const styles = StyleSheet.create({
   },
   placeholderText: {
     color: Colors.gray[600],
+  },
+  uneditable: {
+    borderColor: Colors.gray[400],
+    backgroundColor: Colors.gray[200],
+  },
+  errorInputContainer: {
+    borderColor: Colors.red[600],
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
 });
