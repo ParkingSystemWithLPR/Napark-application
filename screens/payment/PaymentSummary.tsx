@@ -136,6 +136,10 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
               label: "My credits ( 100$ availiable )",
               value: "My credits ( 100$ availiable )",
             },
+            {
+              label: "QR",
+              value: "QR",
+            },
           ]}
         />
         {isButtonEnable ? (
