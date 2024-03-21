@@ -40,8 +40,8 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
-          icon="receipt"
-          iconColor={Colors.red[400]}
+          icon="cash"
+          iconColor={Colors.green[700]}
           iconSize={40}
         />
         <IconButtonWithTitle
@@ -52,7 +52,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
           icon="receipt"
-          iconColor={Colors.red[400]}
+          iconColor={Colors.lightBlue[300]}
           iconSize={40}
         />
       </View>
