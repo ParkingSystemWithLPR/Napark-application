@@ -34,25 +34,14 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
       </View>
       <View style={styles.buttonWrapper}>
         <IconButtonWithTitle
-          title="Account and Card"
+          title="Top up"
           onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "AccountAndCard" });
+            navigation.navigate("PaymentStack", { screen: "TopUp" });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
-          icon="wallet"
-          iconColor={Colors.blue[500]}
-          iconSize={40}
-        />
-        <IconButtonWithTitle
-          title="Scan QR"
-          onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "ScanQR" });
-          }}
-          containerStyle={styles.buttonContainer}
-          textStyle={[styles.textContainer]}
-          icon="qrcode"
-          iconColor={Colors.black}
+          icon="receipt"
+          iconColor={Colors.red[400]}
           iconSize={40}
         />
         <IconButtonWithTitle
