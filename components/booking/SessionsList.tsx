@@ -13,37 +13,33 @@ interface sessionsProps {
 
 const SessionsList: React.FC<sessionsProps> = ({ type }) => {
   return (
-    <>
-      <FlatList
-        data={MOCKED_SESSIONS}
-        keyExtractor={(item: mockedSessionsProps) => item.id}
-        renderItem={({ item }) => {
-          if (type === BookingType.ACTIVE) {
-            return (
-              <ActiveSession
-                licensePlate={item.licensePlate}
-                space={item.space}
-                timeRemaining="01hr:30min"
-              />
-            );
-          } else {
-            const { date, time } = formatDateAndTime(
-              new Date(item.dateAndTime)
-            );
-            return (
-              <CompletedSession
-                licensePlate={item.licensePlate}
-                space={item.space}
-                date={date}
-                time={time}
-                price={item.price}
-              />
-            );
-          }
-        }}
-        overScrollMode="never"
-      />
-    </>
+    <FlatList
+      data={MOCKED_SESSIONS}
+      keyExtractor={(item: mockedSessionsProps) => item.id}
+      renderItem={({ item }) => {
+        if (type === BookingType.ACTIVE) {
+          return (
+            <ActiveSession
+              licensePlate={item.licensePlate}
+              space={item.space}
+              timeRemaining="01hr:30min"
+            />
+          );
+        } else {
+          const { date, time } = formatDateAndTime(new Date(item.dateAndTime));
+          return (
+            <CompletedSession
+              licensePlate={item.licensePlate}
+              space={item.space}
+              date={date}
+              time={time}
+              price={item.price}
+            />
+          );
+        }
+      }}
+      overScrollMode="never"
+    />
   );
 };
 

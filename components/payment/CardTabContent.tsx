@@ -25,42 +25,40 @@ const DisplayCardNumber = (cardNumber: string) => {
 
 const CardTabContent: React.FC<CardTabContentProps> = () => {
   return (
-    <>
-      <FlatList
-        data={MOCKED_CREDIT_CARD}
-        keyExtractor={(item: mockedCreditCard) => item.cardNumber}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.cardContainer}>
-              <View style={styles.textWrapper}>
-                <HeaderText
-                  text={DisplayName(item.name)}
-                  textStyle={styles.headerText}
-                />
-                <View>
-                  <SubHeaderText
-                    text={item.privilegeName}
-                    textStyle={styles.subHeaderText}
-                  />
-                  <SubHeaderText
-                    text={DisplayCardNumber(item.cardNumber)}
-                    textStyle={styles.subHeaderText}
-                  />
-                </View>
-              </View>
-              <Image
-                style={{ width: 340, height: 215 }}
-                source={
-                  item.cardType === CardType.VISA
-                    ? require("@/assets/images/visa.jpg")
-                    : require("@/assets/images/masterCard.jpg")
-                }
+    <FlatList
+      data={MOCKED_CREDIT_CARD}
+      keyExtractor={(item: mockedCreditCard) => item.cardNumber}
+      renderItem={({ item }) => {
+        return (
+          <View style={styles.cardContainer}>
+            <View style={styles.textWrapper}>
+              <HeaderText
+                text={DisplayName(item.name)}
+                textStyle={styles.headerText}
               />
+              <View>
+                <SubHeaderText
+                  text={item.privilegeName}
+                  textStyle={styles.subHeaderText}
+                />
+                <SubHeaderText
+                  text={DisplayCardNumber(item.cardNumber)}
+                  textStyle={styles.subHeaderText}
+                />
+              </View>
             </View>
-          );
-        }}
-      />
-    </>
+            <Image
+              style={{ width: 340, height: 215 }}
+              source={
+                item.cardType === CardType.VISA
+                  ? require("@/assets/images/visa.jpg")
+                  : require("@/assets/images/masterCard.jpg")
+              }
+            />
+          </View>
+        );
+      }}
+    />
   );
 };
 
