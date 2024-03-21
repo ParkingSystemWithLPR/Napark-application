@@ -7,14 +7,14 @@ export type ParkingLot = {
   name: string,
   address: Address;
   coord: Region,
-  businessDays?: BusinessDay,
+  businessDays?: BusinessDay[],
   images?: string[],
   availability?: number,
 };
 
 export type ParkingLotRequest = {
   name: string,
-  businessDays: BusinessDay,
+  businessDays: BusinessDay[],
   images? : string[],
 }
 
@@ -27,5 +27,12 @@ export type Address = {
 };
 
 export type BusinessDay = {
-  [day in DayInAWeek]: { isOpen: boolean, openTime?: string; closeTime?: string; };
+  days?: DayInAWeek[],
+  businessHours?: BusinessHour,
 };
+
+export type BusinessHour = {
+  openTime: string,
+  closeTime: string,
+}
+
