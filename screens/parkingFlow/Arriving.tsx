@@ -26,9 +26,9 @@ const Arriving: React.FC<ArrivingProps> = ({ route }) => {
   const { bookingRequest, parkingLot } = route.params;
   useLayoutEffect(() => {
     getLocation();
-  }, []);
+  }, [parkingLot]);
 
-  const getLocation = async () => {
+  const getLocation = () => {
     const { lat, lng } = parkingLot.coord;
     setRegion({
       latitude: lat,
