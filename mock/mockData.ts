@@ -115,6 +115,15 @@ export const mockParkingLot: ParkingLot = {
     latitudeDelta: 13.734836872447342,
     longitudeDelta: 100.53327154257514,
   },
+  businessDays: {
+    Monday: { isOpen: true },
+    Tuesday: { isOpen: true, openTime: "08:00", closeTime: "22:00" },
+    Wednesday: { isOpen: false },
+    Thursday: { isOpen: false },
+    Friday: { isOpen: true, openTime: "11:00", closeTime: "17:00" },
+    Saturday: { isOpen: true, openTime: "12:00", closeTime: "23:00" },
+    Sunday: { isOpen: false },
+  },
 };
 export interface mockedPaymentLicensePlateProps {
   licensePlate: string;

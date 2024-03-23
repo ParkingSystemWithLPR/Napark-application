@@ -28,6 +28,7 @@ export type BookingDetailComponentProps = {
   specification: string | undefined;
   setSpecification: (value: string | undefined) => void;
   closeSetting: () => void;
+  disableDate: (date: Date) => boolean;
   licensePlateList?: string[];
 };
 
@@ -45,6 +46,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   specification,
   setSpecification,
   closeSetting,
+  disableDate,
   licensePlateList,
 }) => {
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
@@ -130,6 +132,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           outerContainerStyle={styles.dateContainer}
           editable={true}
           isRequired={true}
+          disableDate={disableDate}
         />
         <TimeInput
           title={""}
@@ -154,6 +157,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           editable={isCheckOutDateEditable}
           minDateValue={checkInDate}
           isRequired={true}
+          disableDate={disableDate}
         />
         <TimeInput
           title={""}
