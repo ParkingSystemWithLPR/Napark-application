@@ -62,7 +62,7 @@ export type BookingStackParamList = {
 };
 
 export type PaymentStackParamList = {
-  TopUp: undefined;
+  TopUp: { balance: number };
   PaymentOptions: { amount: number };
   PayTheBill: undefined;
 };

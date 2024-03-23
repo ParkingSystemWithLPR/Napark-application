@@ -36,7 +36,10 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
         <IconButtonWithTitle
           title="Top up"
           onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "TopUp" });
+            navigation.navigate("PaymentStack", {
+              screen: "TopUp",
+              params: { balance: mockBalance },
+            });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}

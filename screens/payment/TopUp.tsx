@@ -57,7 +57,7 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
   );
 };
 
-const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
+const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
   const [amount, setAmount] = useState<number>(0);
   const [isManualChooseAmount, setIsManualChooseAmount] =
     useState<boolean>(false);
@@ -73,7 +73,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
     <BodyContainer>
       <SubHeaderText text="Current Balance" />
       <View style={styles.currentBalance}>
-        <HeaderText text="฿ 555.99" />
+        <HeaderText text={`฿ ${route.params.balance}`} />
       </View>
       {isManualChooseAmount && (
         <TextInput
