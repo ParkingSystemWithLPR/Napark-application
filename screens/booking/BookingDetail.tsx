@@ -1,5 +1,6 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { format } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -19,6 +20,7 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { DayInAWeek } from "@/enum/DayInAWeek";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 
@@ -66,6 +68,14 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     price: 0,
     unit: "",
   });
+
+  const disableDate = (date: Date) => {
+    if (parkingLot.businessDays) {
+      const day = format(date, "eeee");
+      return !parkingLot.businessDays[`${day}` as DayInAWeek].isOpen;
+    }
+    return false;
+  };
 
   const handleOnChange = function <T>(
     identifierKey: string,
@@ -196,6 +206,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 handleOnChange("checkOutDate", value)
               }
               licensePlateList={licensePlateList}
+              disableDate={disableDate}
             />
           </View>
         ) : (
@@ -230,7 +241,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 })}
               </View>
               <SubHeaderText
-                text={"View All Slot"}
+                text={"View All Available Slot"}
                 containerStyle={{ marginVertical: 10 }}
               />
               <ParkingPlan

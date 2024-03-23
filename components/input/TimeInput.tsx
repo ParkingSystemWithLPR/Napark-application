@@ -10,7 +10,7 @@ import Colors from "@/constants/color";
 import { formatTime } from "@/utils/date";
 
 export type TimeInputProps = {
-  title: string;
+  title?: string;
   value: string | null;
   onTimeChange: (date: string) => void;
   placeholder?: string;
@@ -43,7 +43,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
 
   return (
     <View style={[styles.outerContainer, outerContainerStyle]}>
-      <SubHeaderText text={title} />
+      {title && <SubHeaderText text={title} />}
       <Pressable onPress={openTimePicker}>
         <View
           style={[
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 5,
     borderRadius: 8,
     padding: 16,

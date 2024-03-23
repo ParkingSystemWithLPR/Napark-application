@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import DatePicker from "react-native-modern-datepicker";
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import CalendarPicker from "react-native-calendar-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
@@ -8,7 +14,7 @@ import SubHeaderText from "../text/SubHeaderText";
 import ModalOverlay from "../ui/ModalOverlay";
 
 import Colors from "@/constants/color";
-import { MINIMUM_DATE, formatDate, formatStringDate } from "@/utils/date";
+import { MINIMUM_DATE, formatDate } from "@/utils/date";
 
 export type DayInputProps = {
   title: string;
@@ -19,6 +25,7 @@ export type DayInputProps = {
   isRequired?: boolean;
   setMinimumDate?: boolean;
   minDateValue?: string | null;
+  disableDate?: (date: Date) => boolean;
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
@@ -33,12 +40,13 @@ const DayInput: React.FC<DayInputProps> = ({
   placeholder = "YYYY-MM-DD",
   setMinimumDate = false,
   minDateValue = null,
+  disableDate,
   editable = false,
   outerContainerStyle,
   containerStyle,
 }) => {
-  const minimumDate = formatDate(MINIMUM_DATE);
-  const startDate = formatDate(new Date());
+  const minimumDate = MINIMUM_DATE;
+  const startDate = new Date();
   const [isOpenDayPicker, setOpenDayPicker] = useState<boolean>(false);
 
   const openDayPicker = () => {
@@ -49,8 +57,8 @@ const DayInput: React.FC<DayInputProps> = ({
     setOpenDayPicker(false);
   };
 
-  const handleOnSelectedChange = (selected: string) => {
-    onChange(formatStringDate(selected));
+  const handleOnSelectedChange = (selected: Date) => {
+    onChange(formatDate(selected));
     closeDayPicker();
   };
 
@@ -88,20 +96,21 @@ const DayInput: React.FC<DayInputProps> = ({
       </Pressable>
       <ModalOverlay visible={isOpenDayPicker} closeModal={closeDayPicker}>
         <View style={styles.centeredContent}>
-          <View style={styles.dateTimePickerContainer}>
-            <DatePicker
-              mode="calendar"
-              minimumDate={
-                setMinimumDate
-                  ? minDateValue
+          <TouchableWithoutFeedback>
+            <View style={styles.dateTimePickerContainer}>
+              <CalendarPicker
+                onDateChange={handleOnSelectedChange}
+                minDate={
+                  setMinimumDate
                     ? minDateValue
-                    : startDate
-                  : minimumDate
-              }
-              selected={date ?? startDate}
-              onDateChange={handleOnSelectedChange}
-            />
-          </View>
+                      ? minDateValue
+                      : startDate
+                    : minimumDate
+                }
+                disabledDates={disableDate}
+              />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </ModalOverlay>
     </View>
@@ -155,13 +164,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   dateTimePickerContainer: {
     backgroundColor: "white",
     margin: 20,
     borderRadius: 10,
     padding: 20,
-    width: "90%",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: Colors.black,
