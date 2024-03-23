@@ -58,14 +58,14 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
 };
 
 const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<number>(0);
   const [isManualChooseAmount, setIsManualChooseAmount] =
     useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<number>();
 
   const onPressButton = (amount: number) => {
     setActiveButton(amount);
-    setAmount(amount.toString().replace(/^0+/, ""));
+    setAmount(amount);
     setIsManualChooseAmount(amount === 0 ? true : false);
   };
 
@@ -82,8 +82,8 @@ const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
             Number(amount) < 50 ? "Please top up at least 50 baht." : ""
           }
           placeholder="0"
-          value={amount}
-          onChangeText={(amount) => setAmount(amount)}
+          value={amount.toString()}
+          onChangeText={(amount) => setAmount(Number(amount))}
           inputMode={InputType.Numeric}
         />
       )}
@@ -109,7 +109,10 @@ const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
         title="Next"
         onPress={() => {
           if (Number(amount) >= 50) {
-            navigation.navigate("PaymentStack", { screen: "PaymentChoice" });
+            navigation.navigate("PaymentStack", {
+              screen: "PaymentChoice",
+              params: { amount: amount },
+            });
           }
         }}
       />

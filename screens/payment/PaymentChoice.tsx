@@ -1,9 +1,13 @@
 import { View } from "react-native";
 
+import BodyContainer from "@/components/ui/BodyContainer";
+
 interface PaymentChoiceProps {}
 
 const PaymentChoice: React.FC<PaymentChoiceProps> = () => {
-  return <View></View>;
+  return <BodyContainer>
+    <View></View>
+  </BodyContainer>
 };
 
 export default PaymentChoice;
