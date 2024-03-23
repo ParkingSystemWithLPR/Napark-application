@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
-import PaymentChoice from "@/screens/payment/PaymentChoice";
+import PaymentOptions from "@/screens/payment/PaymentOptions";
 import PayTheBill from "@/screens/payment/PayTheBill";
 import TopUp from "@/screens/payment/TopUp";
 import { PaymentStackParamList } from "@/types";
@@ -47,10 +47,10 @@ const PaymentStack = () => {
         }}
       />
       <Stack.Screen
-        name="PaymentChoice"
-        component={PaymentChoice}
+        name="PaymentOptions"
+        component={PaymentOptions}
         options={{
-          title: "",
+          title: "Payment Options",
         }}
       />
       <Stack.Screen

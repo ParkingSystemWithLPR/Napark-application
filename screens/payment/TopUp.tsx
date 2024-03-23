@@ -110,7 +110,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
         onPress={() => {
           if (Number(amount) >= 50) {
             navigation.navigate("PaymentStack", {
-              screen: "PaymentChoice",
+              screen: "PaymentOptions",
               params: { amount: amount },
             });
           }
