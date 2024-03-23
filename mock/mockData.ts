@@ -126,21 +126,21 @@ export const MOCKED_PAYMENTLICENSEPLATE = [
   {
     id: "1",
     licensePlate: "ผบ 5982",
-    province: THAI_PROVINCE[0].label,
+    province: THAI_PROVINCE[0].value,
   },
   {
     id: "2",
     licensePlate: "ฬห 8705",
-    province: THAI_PROVINCE[0].label,
+    province: THAI_PROVINCE[0].value,
   },
   {
     id: "3",
     licensePlate: "รวย 9999",
-    province: THAI_PROVINCE[0].label,
+    province: THAI_PROVINCE[0].value,
   },
   {
     id: "4",
     licensePlate: "เฮง 888",
-    province: THAI_PROVINCE[0].label,
+    province: THAI_PROVINCE[0].value,
   },
 ];
