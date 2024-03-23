@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 import ChangeScreenTab from "@/components/button/ChangeScreenTab";
 import SubHeaderText from "@/components/text/SubHeaderText";
