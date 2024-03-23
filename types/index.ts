@@ -63,6 +63,7 @@ export type BookingStackParamList = {
 
 export type PaymentStackParamList = {
   TopUp: undefined;
+  PaymentChoice: undefined;
   PayTheBill: undefined;
 };
 export type ParkingFlowStackParamList = {

@@ -1,3 +1,5 @@
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 
@@ -9,14 +11,19 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
+import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
 
-interface TopUpProps {}
 type DoubleButtonProps = {
   leftAmount: number;
   rightAmount: number;
   onButtonClicked: (amount: number) => void;
   activeButton: number | undefined;
 };
+
+export type TopUpProps = CompositeScreenProps<
+  NativeStackScreenProps<PaymentStackParamList, "TopUp">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 const DoubleButton: React.FC<DoubleButtonProps> = ({
   leftAmount,
@@ -50,7 +57,7 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
   );
 };
 
-const TopUp: React.FC<TopUpProps> = () => {
+const TopUp: React.FC<TopUpProps> = ({ navigation }) => {
   const [amount, setAmount] = useState<string>("");
   const [isManualChooseAmount, setIsManualChooseAmount] =
     useState<boolean>(false);
@@ -70,7 +77,10 @@ const TopUp: React.FC<TopUpProps> = () => {
       </View>
       {isManualChooseAmount && (
         <TextInput
-          title="Please enter amount (baht)"
+          title="Please enter amount (50 baht minimum)"
+          errorText={
+            Number(amount) < 50 ? "Please top up at least 50 baht." : ""
+          }
           placeholder="0"
           value={amount}
           onChangeText={(amount) => setAmount(amount)}
@@ -95,7 +105,14 @@ const TopUp: React.FC<TopUpProps> = () => {
         onButtonClicked={onPressButton}
         activeButton={activeButton}
       />
-      <PrimaryButton title="Next" onPress={() => {}} />
+      <PrimaryButton
+        title="Next"
+        onPress={() => {
+          if (Number(amount) >= 50) {
+            navigation.navigate("PaymentStack", { screen: "PaymentChoice" });
+          }
+        }}
+      />
     </BodyContainer>
   );
 };
