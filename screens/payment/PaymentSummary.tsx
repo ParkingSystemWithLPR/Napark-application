@@ -12,6 +12,7 @@ import AttributeText, {
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { PaymentMethod } from "@/enum/PaymentMethod";
 import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
 
 export type PaymentSummaryProps = CompositeScreenProps<
@@ -23,8 +24,20 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isButtonEnable, setIsButtonEnable] = useState(false);
 
+  const creditPaymentHandler = () => {}; // if credit is not enough navigate to top up else deduct credit
+
+  const QRPaymentHandler = () => {}; // navigate to QR page
+
   const handlePayment = () => {
-    navigation.navigate("PaymentSuccessful");
+    switch (paymentMethod) {
+      case PaymentMethod.CREDIT:
+        creditPaymentHandler();
+        break;
+      case PaymentMethod.QR:
+        QRPaymentHandler();
+        break;
+    }
+    navigation.navigate("PaymentSuccessful"); //this is just mock
   };
 
   const handleNotFillInfo = () => {
@@ -133,12 +146,12 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
           onSelect={setPaymentMethod}
           items={[
             {
-              label: "My credits ( 100$ availiable )",
-              value: "My credits ( 100$ availiable )",
+              label: PaymentMethod.CREDIT,
+              value: PaymentMethod.CREDIT,
             },
             {
-              label: "QR",
-              value: "QR",
+              label: PaymentMethod.QR,
+              value: PaymentMethod.QR,
             },
           ]}
         />
