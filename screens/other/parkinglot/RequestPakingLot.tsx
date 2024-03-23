@@ -31,7 +31,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
-      console.log("data", data);
+      console.log("data", JSON.stringify(data));
       navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
     } catch (error) {
       Alert.alert(

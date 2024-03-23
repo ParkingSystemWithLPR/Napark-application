@@ -13,16 +13,15 @@ import { BusinessDay } from "@/types/parking-lot/ParkingLot";
 
 export type DateInputProps = {
   title: string;
-  businessDays: BusinessDay[];
-  onChange: (businessDays: BusinessDay[]) => void;
+  businessDays: BusinessDay;
+  onChange: (businessDays: BusinessDay) => void;
 };
 
 const DateInput: React.FC<DateInputProps> = ({
   title,
-  businessDays,
   onChange,
 }) => {
-  const { control, getValues } = useForm({ defaultValues: businessDays });
+  const { control, getValues } = useForm();
 
   const selectableDay = [
     DayInAWeek.SUNDAY,
@@ -34,49 +33,75 @@ const DateInput: React.FC<DateInputProps> = ({
     DayInAWeek.SATURDAY,
   ];
 
-  const [businessDay, setBusinessDay] = useState<BusinessDay[]>(
-    businessDays ?? [{}]
-  );
+  const [formSet, setFormSet] = useState<number[]>([0]);
+  const [selectedDay, setSelectedDay] = useState<{
+    [day in DayInAWeek]: { set?: number; isSelected: boolean };
+  }>({
+    [DayInAWeek.SUNDAY]: { isSelected: false },
+    [DayInAWeek.MONDAY]: { isSelected: false },
+    [DayInAWeek.TUESDAY]: { isSelected: false },
+    [DayInAWeek.WEDNESDAY]: { isSelected: false },
+    [DayInAWeek.THURSDAY]: { isSelected: false },
+    [DayInAWeek.FRIDAY]: { isSelected: false },
+    [DayInAWeek.SATURDAY]: { isSelected: false },
+  });
 
   const onInputChange = () => {
-    const businessDays = getValues();
-    const newBusinessDays: BusinessDay[] = []; 
-    Object.values(businessDays).forEach((businessDay : BusinessDay) => {
-      newBusinessDays.push(businessDay);
-    })
+    const formData = getValues();
+    const newBusinessDays: BusinessDay = {};
+    Object.entries(selectedDay).forEach(([day, value]) => {
+      if (value.isSelected) {
+        const { openTime, closeTime } = formData[value.set ?? -2].businessHours;
+        newBusinessDays[day as DayInAWeek] = { openTime, closeTime };
+      }
+    });
+
     onChange(newBusinessDays);
-  }
+  };
+
+  const onRemoveFormSet = () => {
+    setFormSet([...formSet.slice(0, -1)]);
+    const newSelectedDay = selectedDay;
+    Object.entries(selectedDay).forEach(([day, { set }]) => {
+      if (set === formSet.length - 1) {
+        newSelectedDay[day as DayInAWeek] = { isSelected: false};
+      }
+    });
+    setSelectedDay(newSelectedDay);
+    onInputChange();
+  };
 
   const renderDaySelector = (day: DayInAWeek, index: number) => {
     return (
-      <Controller
-        name={`${index}.days`}
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Pressable
-            android_ripple={{ color: Colors.gray[600] }}
-            style={({ pressed }) => [
-              value && value.includes(day) ? styles.selected : styles.idle,
-              pressed ? styles.buttonPressed : null,
-            ]}
-            onPress={() => {
-              value
-                ? value.includes(day)
-                  ? onChange(value.filter((d: DayInAWeek) => d !== day))
-                  : onChange([...value, day])
-                : onChange([day]);
-              onInputChange();
-            }}
-          >
-            <BodyText
-              text={day.slice(0, 2)}
-              textStyle={
-                value && value.includes(day) ? styles.textSelected : {}
-              }
-            />
-          </Pressable>
-        )}
-      />
+      <Pressable
+        disabled={selectedDay[day].isSelected && selectedDay[day].set !== index}
+        android_ripple={{ color: Colors.gray[600] }}
+        style={({ pressed }) => [
+          selectedDay[day].isSelected && selectedDay[day].set === index
+            ? styles.selected
+            : styles.idle,
+          pressed ? styles.buttonPressed : null,
+        ]}
+        onPress={() => {
+          setSelectedDay({
+            ...selectedDay,
+            [day]: {
+              set: index,
+              isSelected: !selectedDay[day].isSelected,
+            },
+          });
+          onInputChange();
+        }}
+      >
+        <BodyText
+          text={day.slice(0, 2)}
+          textStyle={
+            selectedDay[day].isSelected && selectedDay[day].set === index
+              ? styles.textSelected
+              : {}
+          }
+        />
+      </Pressable>
     );
   };
 
@@ -85,17 +110,6 @@ const DateInput: React.FC<DateInputProps> = ({
       <View style={styles.outerContainer} key={index}>
         <View style={styles.title}>
           <SubHeaderText text={title} />
-          {index !== 0 &&
-            <IconButton
-              icon={"minus"}
-              size={10}
-              color={Colors.gray[900]}
-              buttonStyle={styles.closeButton}
-              onPress={() => {
-                setBusinessDay([...businessDay.slice(0, index), ...businessDay.slice(index+1)]);
-              }}
-            />
-          }
         </View>
         <View style={styles.container}>
           {selectableDay.map((day) => renderDaySelector(day, index))}
@@ -141,16 +155,32 @@ const DateInput: React.FC<DateInputProps> = ({
 
   return (
     <View style={styles.outerContainer}>
-      {businessDay.map((_, index) => renderDayWithTimeSelector(index))}
-      <IconButton
-        icon={"plus"}
-        size={20}
-        color={Colors.gray[900]}
-        buttonStyle={styles.addButton}
-        onPress={() => {
-          setBusinessDay([...businessDay, {}]);
-        }}
-      />
+      {formSet.map((_, index) => renderDayWithTimeSelector(index))}
+      <View style={styles.buttonContainer}>
+        <IconButton
+          icon={"plus"}
+          size={20}
+          color={Colors.gray[900]}
+          buttonStyle={styles.adjustFormSetButton}
+          onPress={() => {
+            setFormSet([...formSet, 0]);
+          }}
+        />
+        <IconButton
+          icon={"minus"}
+          size={20}
+          color={Colors.gray[900]}
+          buttonStyle={
+            formSet.length === 1
+              ? styles.diabledButton
+              : styles.adjustFormSetButton
+          }
+          onPress={() => {
+            onRemoveFormSet();
+          }}
+          disabled={formSet.length === 1}
+        />
+      </View>
     </View>
   );
 };
@@ -216,7 +246,13 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.5,
   },
-  addButton: {
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: -10,
+  },
+  adjustFormSetButton: {
     alignItems: "center",
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
@@ -228,10 +264,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 4,
   },
-  closeButton: {
-    width: 33,
-    alignItems: "center",
-    backgroundColor: Colors.white,
+  diabledButton: {
+    backgroundColor: Colors.gray[200],
     shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
@@ -240,5 +274,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 4,
-  }
+  },
 });
