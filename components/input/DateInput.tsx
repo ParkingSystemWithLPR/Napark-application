@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -9,7 +9,7 @@ import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
-import { BusinessDay } from "@/types/parking-lot/ParkingLot";
+import { BusinessDay, BusinessHour } from "@/types/parking-lot/ParkingLot";
 
 export type DateInputProps = {
   title: string;
@@ -19,9 +19,10 @@ export type DateInputProps = {
 
 const DateInput: React.FC<DateInputProps> = ({
   title,
+  businessDays,
   onChange,
 }) => {
-  const { control, getValues } = useForm();
+  const { control, getValues, setValue } = useForm();
 
   const selectableDay = [
     DayInAWeek.SUNDAY,
@@ -46,12 +47,38 @@ const DateInput: React.FC<DateInputProps> = ({
     [DayInAWeek.SATURDAY]: { isSelected: false },
   });
 
+  const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
+    return a.openTime === b.openTime && a.closeTime === b.closeTime;
+  };
+
+  useEffect(() => {
+    if (businessDays) {
+      let index = 0;
+      const newSelectedDay = selectedDay;
+      const businessHoursSet: BusinessHour[] = [];
+      const newFormSet: number[] = [];
+      Object.entries(businessDays).forEach(([day, value]) => {
+        if (!businessHoursSet.some((e) => isEqualBusinessHour(e, value))) {
+          businessHoursSet.push(value);
+          newFormSet.push(0);
+        }
+        index = businessHoursSet.findIndex((e) =>
+          isEqualBusinessHour(e, value)
+        );
+        newSelectedDay[day as DayInAWeek] = { set: index, isSelected: true };
+        setValue(`${index}`, value);
+      });
+      setSelectedDay(newSelectedDay);
+      setFormSet(newFormSet);
+    }
+  }, []);
+
   const onInputChange = () => {
     const formData = getValues();
     const newBusinessDays: BusinessDay = {};
     Object.entries(selectedDay).forEach(([day, value]) => {
       if (value.isSelected) {
-        const { openTime, closeTime } = formData[value.set ?? -2].businessHours;
+        const { openTime, closeTime } = formData[value.set ?? -2];
         newBusinessDays[day as DayInAWeek] = { openTime, closeTime };
       }
     });
@@ -64,7 +91,7 @@ const DateInput: React.FC<DateInputProps> = ({
     const newSelectedDay = selectedDay;
     Object.entries(selectedDay).forEach(([day, { set }]) => {
       if (set === formSet.length - 1) {
-        newSelectedDay[day as DayInAWeek] = { isSelected: false};
+        newSelectedDay[day as DayInAWeek] = { isSelected: false };
       }
     });
     setSelectedDay(newSelectedDay);
@@ -74,7 +101,7 @@ const DateInput: React.FC<DateInputProps> = ({
   const renderDaySelector = (day: DayInAWeek, index: number) => {
     return (
       <Pressable
-        disabled={selectedDay[day].isSelected && selectedDay[day].set !== index}
+        key={`${day}${index}`}
         android_ripple={{ color: Colors.gray[600] }}
         style={({ pressed }) => [
           selectedDay[day].isSelected && selectedDay[day].set === index
@@ -87,7 +114,9 @@ const DateInput: React.FC<DateInputProps> = ({
             ...selectedDay,
             [day]: {
               set: index,
-              isSelected: !selectedDay[day].isSelected,
+              isSelected: selectedDay[day].isSelected
+                ? !(selectedDay[day].set === index)
+                : true,
             },
           });
           onInputChange();
@@ -116,7 +145,7 @@ const DateInput: React.FC<DateInputProps> = ({
         </View>
         <View style={styles.sameLineInputContainer}>
           <Controller
-            name={`${index}.businessHours.openTime`}
+            name={`${index}.openTime`}
             control={control}
             render={({ field: { onChange, value } }) => (
               <TimeInput
@@ -133,7 +162,7 @@ const DateInput: React.FC<DateInputProps> = ({
           />
           <BodyText text={"to"} textStyle={{ color: Colors.gray[700] }} />
           <Controller
-            name={`${index}.businessHours.closeTime`}
+            name={`${index}.closeTime`}
             control={control}
             render={({ field: { onChange, value } }) => (
               <TimeInput
