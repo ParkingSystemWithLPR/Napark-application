@@ -1,18 +1,31 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import * as ImagePicker from "expo-image-picker";
 import { useLayoutEffect, useState } from "react";
-import { Alert, Dimensions, Image, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import IconButton from "@/components/button/IconButton";
+import IconButtonWithTitle from "@/components/button/IconButtonWithTitle";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import DayInput from "@/components/input/DayInput";
 import TextInput, { InputValueType } from "@/components/input/TextInput";
+import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
 import { useEditProfile } from "@/store/api/user/useEditProfile";
+import { useUploadImage } from "@/store/api/user/useUploadImage";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import {
@@ -41,6 +54,7 @@ const Account: React.FC<AccountProps> = () => {
   const { profile: defaultProfile, setProfile: setDefaultProfile } =
     useProfile();
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [isUploading, setUploading] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileInput>({
     firstname: { value: "" },
     lastname: { value: "" },
@@ -49,7 +63,9 @@ const Account: React.FC<AccountProps> = () => {
     mobileNo: { value: "" },
   });
   const [isEditing, setEditing] = useState<boolean>(false);
+  const [showEditImageOption, setEditImageOption] = useState<boolean>(false);
   const { mutateAsync: editProfileAsync } = useEditProfile();
+  const { mutateAsync: saveImageAsync } = useUploadImage();
 
   useLayoutEffect(() => {
     if (defaultProfile) {
@@ -142,20 +158,96 @@ const Account: React.FC<AccountProps> = () => {
       }
     }
   };
+
+  const saveImage = async (image: ImagePicker.ImagePickerSuccessResult) => {
+    const formData = new FormData();
+    formData.append(
+      "file",
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        uri: image.assets[0].uri,
+        type: image.assets[0].mimeType ?? "image/jpeg",
+        name: `${defaultProfile.email}-${image.assets[0].fileName}.jpg`,
+      },
+      `${defaultProfile.email}-profile-img.jpg`
+    );
+    setUploading(true);
+    await saveImageAsync(
+      {
+        body: formData,
+        auth: { accessToken, authenticate },
+      },
+      {
+        onSuccess(data) {
+          setDefaultProfile(data);
+          setEditImageOption(false);
+        },
+      }
+    );
+    setUploading(false);
+  };
+
+  const uploadImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access camera was denied");
+        return;
+      }
+      const image = await ImagePicker.launchCameraAsync();
+      if (!image.canceled) {
+        await saveImage(image);
+      }
+    } catch (error) {
+      console.error("Error uploading image via camera:", error);
+    }
+  };
+
+  const uploadImageFromGallery = async () => {
+    try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access photos gallery was denied");
+        return;
+      }
+      const image = await ImagePicker.launchImageLibraryAsync();
+      if (!image.canceled) {
+        await saveImage(image);
+      }
+    } catch (error) {
+      console.error("Error uploading image via camaera:", error);
+    }
+  };
+
   if (isLoading) return <LoadingOverlay />;
 
   return (
     <BodyContainer>
       {!isEditing && (
         <View style={styles.headerContainer}>
-          <Image
-            style={styles.profileImage}
-            source={{
-              uri: "https://fastly.picsum.photos/id/157/200/300.jpg?hmac=-OZWQAIRoAdYWp7-qnHO1wl5t0TO3BMoAgW3tmR7wgE",
-            }}
-            height={IMAGE_SIZE}
-            width={IMAGE_SIZE}
-          />
+          <TouchableOpacity>
+            <Image
+              style={styles.profileImage}
+              source={
+                defaultProfile.profile_image
+                  ? {
+                      uri: defaultProfile.profile_image,
+                    }
+                  : require("../../assets/images/profile-image-placeholder.jpg")
+              }
+              height={IMAGE_SIZE}
+              width={IMAGE_SIZE}
+            />
+            <IconButton
+              icon="camera-outline"
+              size={20}
+              color={Colors.gray[800]}
+              onPress={() => setEditImageOption(true)}
+              buttonStyle={styles.editImageButton}
+            />
+          </TouchableOpacity>
           <IconButton
             icon="cog-outline"
             size={24}
@@ -227,6 +319,42 @@ const Account: React.FC<AccountProps> = () => {
           />
         </View>
       )}
+      <View style={{ position: "absolute", width: "100%" }}>
+        <SafeAreaView>
+          <ModalOverlay
+            visible={showEditImageOption}
+            closeModal={() => setEditImageOption(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.outerContainer}>
+                {isUploading ? (
+                  <LoadingOverlay />
+                ) : (
+                  <>
+                    <SubHeaderText text="Edit profile photo" />
+                    <View style={styles.imageOptionContainer}>
+                      <IconButtonWithTitle
+                        title={"Camera"}
+                        onPress={uploadImage}
+                        icon={"camera-outline"}
+                        iconColor={Colors.gray[800]}
+                        textStyle={{ fontSize: 12 }}
+                      />
+                      <IconButtonWithTitle
+                        title={"Gallery"}
+                        onPress={uploadImageFromGallery}
+                        icon={"image-outline"}
+                        iconColor={Colors.gray[800]}
+                        textStyle={{ fontSize: 12 }}
+                      />
+                    </View>
+                  </>
+                )}
+              </View>
+            </View>
+          </ModalOverlay>
+        </SafeAreaView>
+      </View>
     </BodyContainer>
   );
 };
@@ -246,6 +374,8 @@ const styles = StyleSheet.create({
   profileImage: {
     borderRadius: 50,
     marginHorizontal: 10,
+    height: 100,
+    width: 100,
   },
   rowContainer: {
     flexDirection: "row",
@@ -263,5 +393,38 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  editImageButton: {
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.gray[400],
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+  },
+  modalContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  outerContainer: {
+    height: "20%",
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    padding: 20,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 2,
+    gap: 20,
+    alignItems: "center",
+  },
+  imageOptionContainer: {
+    flexDirection: "row",
+    gap: 20,
   },
 });
