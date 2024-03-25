@@ -29,10 +29,10 @@ const Arriving: React.FC<ArrivingProps> = ({ route }) => {
   }, [parkingLot]);
 
   const getLocation = () => {
-    const { lat, lng } = parkingLot.coord;
+    const { latitude, longitude } = parkingLot.coord;
     setRegion({
-      latitude: lat,
-      longitude: lng,
+      latitude: latitude,
+      longitude: longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
