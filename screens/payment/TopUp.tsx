@@ -41,7 +41,7 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
         outerContainerStyle={styles.doubleButton}
         buttonStyle={{
           backgroundColor:
-            activeButton === leftAmount ? Colors.red[400] : Colors.gray[700],
+            activeButton === leftAmount ? Colors.red[400] : Colors.gray[800],
         }}
       />
       <SecondaryButton
@@ -50,7 +50,7 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
         outerContainerStyle={styles.doubleButton}
         buttonStyle={{
           backgroundColor:
-            activeButton === rightAmount ? Colors.red[400] : Colors.gray[700],
+            activeButton === rightAmount ? Colors.red[400] : Colors.gray[800],
         }}
       />
     </View>
@@ -79,11 +79,11 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
         <TextInput
           title="Please enter amount (50 baht minimum)"
           errorText={
-            Number(amount) < 50 ? "Please top up at least 50 baht." : ""
+            +amount < 50 ? "Please top up at least 50 baht." : ""
           }
           placeholder="0"
           value={amount.toString()}
-          onChangeText={(amount) => setAmount(Number(amount))}
+          onChangeText={(amount) => setAmount(+amount)}
           inputMode={InputType.Numeric}
         />
       )}
@@ -108,7 +108,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
       <PrimaryButton
         title="Next"
         onPress={() => {
-          if (Number(amount) >= 50) {
+          if (+amount >= 50) {
             navigation.navigate("PaymentStack", {
               screen: "PaymentOptions",
               params: { amount: amount },
@@ -135,9 +135,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
     marginTop: 4,
     marginBottom: 20,
   },
