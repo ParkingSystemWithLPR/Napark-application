@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import PaymentOptions from "@/screens/payment/PaymentOptions";
+import PaymentSuccessful from "@/screens/payment/PaymentSuccessful";
+import PaymentSummary from "@/screens/payment/PaymentSummary";
 import PayTheBill from "@/screens/payment/PayTheBill";
 import TopUp from "@/screens/payment/TopUp";
 import { PaymentStackParamList } from "@/types";
@@ -59,6 +61,21 @@ const PaymentStack = () => {
         options={{
           title: "Pay the bill",
           headerLeft: backToOtherPage,
+        }}
+      />
+      <Stack.Screen
+        name="PaymentSummary"
+        component={PaymentSummary}
+        options={{
+          title: "Pay the bill",
+          headerBackTitle: "Back",
+        }}
+      />
+      <Stack.Screen
+        name="PaymentSuccessful"
+        component={PaymentSuccessful}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

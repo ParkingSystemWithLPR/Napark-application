@@ -65,7 +65,11 @@ export type PaymentStackParamList = {
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
   PayTheBill: undefined;
+  PaymentSummary: undefined;
+  PaymentSuccessful: undefined;
+  PaymentChooseLicensePlate: undefined;
 };
+
 export type ParkingFlowStackParamList = {
   Arriving: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
   ParkingConfirmation: { bookingRequest: BookingRequest };

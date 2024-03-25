@@ -1,3 +1,4 @@
+import { THAI_PROVINCE } from "@/constants/province";
 import { CardType } from "@/enum/CardType";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 
@@ -115,3 +116,31 @@ export const mockParkingLot: ParkingLot = {
     longitudeDelta: 100.53327154257514,
   },
 };
+export interface mockedPaymentLicensePlateProps {
+  licensePlate: string;
+  id: string;
+  province: string;
+}
+
+export const MOCKED_PAYMENTLICENSEPLATE = [
+  {
+    id: "1",
+    licensePlate: "ผบ 5982",
+    province: THAI_PROVINCE[0].value,
+  },
+  {
+    id: "2",
+    licensePlate: "ฬห 8705",
+    province: THAI_PROVINCE[0].value,
+  },
+  {
+    id: "3",
+    licensePlate: "รวย 9999",
+    province: THAI_PROVINCE[0].value,
+  },
+  {
+    id: "4",
+    licensePlate: "เฮง 888",
+    province: THAI_PROVINCE[0].value,
+  },
+];
