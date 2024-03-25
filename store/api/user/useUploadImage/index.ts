@@ -21,7 +21,6 @@ export interface UploadImageInput {
 type UploadImageService = (input: UploadImageInput) => Promise<Profile>;
 
 export const uploadImage: UploadImageService = async ({ body, auth }) => {
-  console.log(body);
   const data = await apiRequest<Profile>(
     USER_URL + "/user/upload-image",
     HTTPMethod.POST,
