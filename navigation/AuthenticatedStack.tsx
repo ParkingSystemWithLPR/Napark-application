@@ -6,6 +6,7 @@ import { Alert } from "react-native";
 import BookingStack from "./BookingStack";
 import MainPageBottomTab from "./MainPageBottomTab";
 import OtherStack from "./OtherStack";
+import ParkingFlowStack from "./ParkingFlowStack";
 import PaymentStack from "./PaymentStack";
 
 import ResetPassword from "@/screens/authentication/ResetPassword";
@@ -43,6 +44,7 @@ const AuthenticatedStack = () => {
       <Stack.Screen name="OtherStack" component={OtherStack} />
       <Stack.Screen name="BookingStack" component={BookingStack} />
       <Stack.Screen name="PaymentStack" component={PaymentStack} />
+      <Stack.Screen name="ParkingFlowStack" component={ParkingFlowStack} />
     </Stack.Navigator>
   );
 };
