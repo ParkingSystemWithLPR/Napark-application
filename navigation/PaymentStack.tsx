@@ -3,10 +3,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
-import AccountAndCard from "@/screens/payment/AccountAndCard";
-import Payment from "@/screens/payment/Payment";
+import PaymentOptions from "@/screens/payment/PaymentOptions";
 import PayTheBill from "@/screens/payment/PayTheBill";
-import ScanQR from "@/screens/payment/ScanQR";
+import TopUp from "@/screens/payment/TopUp";
 import { PaymentStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<PaymentStackParamList>();
@@ -40,27 +39,18 @@ const PaymentStack = () => {
       }}
     >
       <Stack.Screen
-        name="Payment"
-        component={Payment}
+        name="TopUp"
+        component={TopUp}
         options={{
-          title: "Payment",
+          title: "Top up",
           headerLeft: backToOtherPage,
         }}
       />
       <Stack.Screen
-        name="AccountAndCard"
-        component={AccountAndCard}
+        name="PaymentOptions"
+        component={PaymentOptions}
         options={{
-          title: "Account and Card",
-          headerLeft: backToOtherPage,
-        }}
-      />
-      <Stack.Screen
-        name="ScanQR"
-        component={ScanQR}
-        options={{
-          title: "Scan QR",
-          headerLeft: backToOtherPage,
+          title: "Payment Options",
         }}
       />
       <Stack.Screen

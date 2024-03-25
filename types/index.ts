@@ -62,9 +62,8 @@ export type BookingStackParamList = {
 };
 
 export type PaymentStackParamList = {
-  Payment: undefined;
-  AccountAndCard: undefined;
-  ScanQR: undefined;
+  TopUp: { balance: number };
+  PaymentOptions: { amount: number };
   PayTheBill: undefined;
 };
 export type ParkingFlowStackParamList = {

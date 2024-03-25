@@ -34,25 +34,17 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
       </View>
       <View style={styles.buttonWrapper}>
         <IconButtonWithTitle
-          title="Account and Card"
+          title="Top up"
           onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "AccountAndCard" });
+            navigation.navigate("PaymentStack", {
+              screen: "TopUp",
+              params: { balance: mockBalance },
+            });
           }}
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
-          icon="wallet"
-          iconColor={Colors.blue[500]}
-          iconSize={40}
-        />
-        <IconButtonWithTitle
-          title="Scan QR"
-          onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "ScanQR" });
-          }}
-          containerStyle={styles.buttonContainer}
-          textStyle={[styles.textContainer]}
-          icon="qrcode"
-          iconColor={Colors.black}
+          icon="cash"
+          iconColor={Colors.green[700]}
           iconSize={40}
         />
         <IconButtonWithTitle
@@ -63,7 +55,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
           containerStyle={styles.buttonContainer}
           textStyle={styles.textContainer}
           icon="receipt"
-          iconColor={Colors.red[400]}
+          iconColor={Colors.lightBlue[300]}
           iconSize={40}
         />
       </View>
