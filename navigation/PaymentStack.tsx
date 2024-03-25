@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import PaymentOptions from "@/screens/payment/PaymentOptions";
+import PaymentSuccessful from "@/screens/payment/PaymentSuccessful";
+import PaymentSummary from "@/screens/payment/PaymentSummary";
 import PayTheBill from "@/screens/payment/PayTheBill";
 import TopUp from "@/screens/payment/TopUp";
 import { PaymentStackParamList } from "@/types";
