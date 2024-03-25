@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Platform } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
     flex: 1,
   },
   locationTextContainer: { flex: 1, marginHorizontal: 5 },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   headerStyle: {
     flex: 1,

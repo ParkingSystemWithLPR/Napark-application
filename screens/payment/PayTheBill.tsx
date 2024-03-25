@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
-import { FlatList, View, StyleSheet, Pressable, Platform } from "react-native";
+import { FlatList, View, StyleSheet, Pressable } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HeaderText from "@/components/text/HeaderText";
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
     marginVertical: 5,
     marginHorizontal: 10,
   },
