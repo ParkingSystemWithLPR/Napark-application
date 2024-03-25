@@ -12,4 +12,5 @@ export interface Profile {
   tel?: string;
   date_of_birth?: string;
   user_car?: Car[];
+  profile_image?: string;
 }

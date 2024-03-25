@@ -16,6 +16,7 @@ export const ProfileContext = createContext<IProfileContext>({
     tel: "",
     date_of_birth: "",
     user_car: [],
+    profile_image: "",
   },
   setProfile: () => {},
 });
@@ -37,6 +38,7 @@ const ProfileContextProvider = ({ children }: { children: ReactNode }) => {
     tel: "",
     date_of_birth: "",
     user_car: [],
+    profile_image: "",
   });
 
   const value: IProfileContext = {

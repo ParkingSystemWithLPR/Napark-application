@@ -14,17 +14,17 @@ const apiRequest = async <T>(
   method: HTTPMethod,
   accessToken: string,
   authenticate: (accessToken: string, refreshToken: string) => void,
-  body?: object
+  body?: object,
+  headers?: object
 ): Promise<T> => {
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-    "Content-Type": "application/json",
-  };
-
   const config: AxiosRequestConfig = {
     url,
     method,
-    headers,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      ...headers,
+    },
     data: body,
   };
 
@@ -54,7 +54,14 @@ const apiRequest = async <T>(
 
       authenticate(access_token, refresh_token);
       // Retry the request with the new access token
-      return apiRequest<T>(url, method, access_token, authenticate, body);
+      return apiRequest<T>(
+        url,
+        method,
+        access_token,
+        authenticate,
+        body,
+        headers
+      );
     }
     throw error;
   }

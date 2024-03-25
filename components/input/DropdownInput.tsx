@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 import BodyText from "../text/BodyText";
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
   },
   text: {
     fontSize: 14,

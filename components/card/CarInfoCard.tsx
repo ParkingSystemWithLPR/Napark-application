@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Animated, Platform, Pressable, StyleSheet, View } from "react-native";
+import { Animated, Pressable, StyleSheet, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: Platform.OS === "android" ? 4 : 2,
+    elevation: 4,
     marginVertical: 5,
     marginHorizontal: 10,
   },
