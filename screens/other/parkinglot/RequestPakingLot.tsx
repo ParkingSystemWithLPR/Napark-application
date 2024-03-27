@@ -30,12 +30,16 @@ export type RequestParkingLotProps = CompositeScreenProps<
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
+<<<<<<< HEAD
   const { accessToken, authenticate } = useAuth();
   const form = useForm<ParkingLotRequest>();
   const {
     handleSubmit,
     formState: { isSubmitting },
   } = form;
+=======
+  const { control, handleSubmit, setValue, getValues, formState: { isSubmitting } } = useForm();
+>>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
   const [isSubmitSuccessful, setSubmitSuccessful] = useState<boolean>(false);
@@ -66,6 +70,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
+<<<<<<< HEAD
       <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
       {step == 1 && <ConfigInfo form={form} />}
       {step == 2 && <ConfigAddress form={form} />}
@@ -73,6 +78,14 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       {step == 4 && <ConfigPricing form={form} />}
       {step != 4 ? (
         <PrimaryButton title="Next" onPress={handleSubmit(onGoNextStep)} />
+=======
+      <Stepper step={step} setStep={setStep} />
+      {step == 1 && <ConfigInfo control={control} />}
+      {step == 2 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
+      {step == 3 && <ConfigPricing control={control} />}
+      {step != 3 ? (
+        <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
+>>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
       ) : (
         <PrimaryButton
           title="Send request to admin"
