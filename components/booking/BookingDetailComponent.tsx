@@ -131,10 +131,10 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     if (value) {
       const { openTime, closeTime } = value;
       const openTimeObject = openTime
-        ? parseISO(date + " " + openTime)
+        ? parseISO(`${date} ${openTime}`)
         : undefined;
       const closeTimeObject = closeTime
-        ? parseISO(date + " " + closeTime)
+        ? parseISO(`${date} ${closeTime}`)
         : undefined;
       setMinTime(openTimeObject);
       setMaxTime(closeTimeObject);
