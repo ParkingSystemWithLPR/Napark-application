@@ -84,6 +84,7 @@ const MainPageBottomTab: React.FC<MainPageProps> = ({ navigation }) => {
         component={MyBooking}
         options={{
           tabBarLabel: "My booking",
+          title: "My booking",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="calendar-cursor"

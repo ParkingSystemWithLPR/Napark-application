@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect } from "react";
 
 import IconButton from "@/components/button/IconButton";
+import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList } from "@/types";
 
@@ -25,7 +26,11 @@ const Notification: React.FC<NotificationProps> = ({ navigation }) => {
     });
   }, [navigation]);
 
-  return <></>;
+  return (
+    <BodyContainer>
+      <></>
+    </BodyContainer>
+  );
 };
 
 export default Notification;
