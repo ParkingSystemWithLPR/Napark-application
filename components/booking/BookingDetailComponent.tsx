@@ -170,7 +170,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   }, [checkOutDate, checkInTime]);
 
   const duration = (minTime: Date, maxTime: Date): string => {
-    return "open " + formatTime(minTime) + " - " + formatTime(maxTime);
+    return `open ${formatTime(minTime)} - ${formatTime(maxTime)}`;
   };
   return (
     <View style={styles.outerContainer}>
@@ -183,10 +183,6 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           {
             label: "Not found your license plate",
             value: "Not found your license plate",
-          },
-          {
-            label: "test",
-            value: "test",
           },
         ]}
         title="License Plate"
