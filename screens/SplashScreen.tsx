@@ -18,7 +18,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
   });
   const spinValue = useRef(new Animated.Value(0)).current;
-  const { authenticate } = useAuth();
+  const { isAuthenticated, authenticate } = useAuth();
 
   useEffect(() => {
     Animated.loop(
@@ -45,7 +45,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
     };
 
     if (fontsLoaded || fontError) fetchToken();
-  }, [fontsLoaded, fontError, spinValue, navigation]);
+  }, [fontsLoaded, fontError, spinValue, navigation, isAuthenticated]);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {

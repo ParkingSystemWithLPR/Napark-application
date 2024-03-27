@@ -1,13 +1,24 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 
 import Colors from "@/constants/color";
 import Arriving from "@/screens/parkingFlow/Arriving";
 import ParkingConfirmation from "@/screens/parkingFlow/ParkingConfirmation";
-import { ParkingFlowStackParamList } from "@/types";
+import {
+  AuthenticatedStackParamList,
+  ParkingFlowStackParamList,
+} from "@/types";
 
 const Stack = createNativeStackNavigator<ParkingFlowStackParamList>();
 
-const ParkingFlowStack = () => {
+export type ParkingFlowProps = NativeStackScreenProps<
+  AuthenticatedStackParamList,
+  "ParkingFlowStack"
+>;
+
+const ParkingFlowStack: React.FC<ParkingFlowProps> = () => {
   return (
     <Stack.Navigator
       screenOptions={{

@@ -20,12 +20,13 @@ export type AuthStackParamList = {
 };
 
 export type AuthenticatedStackParamList = {
-  ResetPassword: undefined;
   MainScreen: NavigatorScreenParams<MainPageBottomTabParamList>;
   OtherStack: NavigatorScreenParams<OtherStackParamList>;
   BookingStack: NavigatorScreenParams<BookingStackParamList>;
   PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
   ParkingFlowStack: NavigatorScreenParams<ParkingFlowStackParamList>;
+  ResetPassword: undefined;
+  Notification: undefined;
 };
 
 export type MainPageBottomTabParamList = {
