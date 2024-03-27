@@ -1,17 +1,29 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import { Badge } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import Account from "@/screens/account/Account";
 import MyBooking from "@/screens/booking/MyBooking";
 import Landing from "@/screens/landing/Landing";
 import Other from "@/screens/other/Other";
 import Payment from "@/screens/payment/Payment";
-import { MainPageBottomTabParamList } from "@/types";
+import {
+  AuthenticatedStackParamList,
+  MainPageBottomTabParamList,
+} from "@/types";
 
 const BottomTab = createBottomTabNavigator<MainPageBottomTabParamList>();
 
-const MainPageBottomTab = () => {
+export type MainPageProps = NativeStackScreenProps<
+  AuthenticatedStackParamList,
+  "MainScreen"
+>;
+
+const MainPageBottomTab: React.FC<MainPageProps> = ({ navigation }) => {
   return (
     <BottomTab.Navigator
       initialRouteName="Landing"
@@ -28,6 +40,29 @@ const MainPageBottomTab = () => {
           shadowOpacity: 0,
         },
         headerTitleAlign: "center",
+        headerRight: () => {
+          return (
+            <View style={{ marginHorizontal: 10 }}>
+              <IconButton
+                icon={"bell-ring-outline"}
+                size={24}
+                color={Colors.white}
+                buttonStyle={{ padding: 0, paddingHorizontal: 10 }}
+                onPress={() => navigation.navigate("Notification")}
+              />
+              <Badge
+                style={{
+                  position: "absolute",
+                  top: -3,
+                  right: 5,
+                  backgroundColor: Colors.blue[600],
+                }}
+              >
+                3
+              </Badge>
+            </View>
+          );
+        },
       }}
     >
       <BottomTab.Screen
