@@ -17,7 +17,10 @@ import {
   Image,
 } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import {
+  GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef,
+} from "react-native-google-places-autocomplete";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -59,6 +62,7 @@ export type RegionType = {
 const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const recommendedBottomSheetRef = useRef<BottomSheetModal>(null);
   const parkingSpaceDetailBottomSheetRef = useRef<BottomSheetModal>(null);
+  const searchInputRef = useRef<GooglePlacesAutocompleteRef>(null);
   const { accessToken, authenticate } = useAuth();
 
   const { dismissAll } = useBottomSheetModal();
@@ -119,6 +123,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     return (
       <View style={styles.headerContainer}>
         <GooglePlacesAutocomplete
+          ref={searchInputRef}
           placeholder="Search"
           GooglePlacesDetailsQuery={{ fields: "address_components,geometry" }}
           query={{
@@ -230,6 +235,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           <PrimaryButton
             title="Book"
             onPress={() => {
+              searchInputRef.current?.setAddressText("");
               dismissAll();
               navigation.navigate("BookingStack", {
                 screen: "BookingDetail",

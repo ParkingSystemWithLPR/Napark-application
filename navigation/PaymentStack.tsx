@@ -1,19 +1,24 @@
-import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
 import PaymentOptions from "@/screens/payment/PaymentOptions";
 import PayTheBill from "@/screens/payment/PayTheBill";
 import TopUp from "@/screens/payment/TopUp";
-import { PaymentStackParamList } from "@/types";
+import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<PaymentStackParamList>();
 
-const PaymentStack = () => {
-  const navigation = useNavigation();
+export type PaymentProps = NativeStackScreenProps<
+  AuthenticatedStackParamList,
+  "PaymentStack"
+>;
 
-  const backToOtherPage = () => {
+const PaymentStack: React.FC<PaymentProps> = ({ navigation }) => {
+  const backToPreviousPage = () => {
     return (
       <IconButton
         icon={"chevron-left"}
@@ -43,7 +48,7 @@ const PaymentStack = () => {
         component={TopUp}
         options={{
           title: "Top up",
-          headerLeft: backToOtherPage,
+          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
@@ -58,7 +63,7 @@ const PaymentStack = () => {
         component={PayTheBill}
         options={{
           title: "Pay the bill",
-          headerLeft: backToOtherPage,
+          headerLeft: backToPreviousPage,
         }}
       />
     </Stack.Navigator>

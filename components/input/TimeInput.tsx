@@ -77,9 +77,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
 export default TimeInput;
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    marginBottom: 10,
-  },
+  outerContainer: {},
   container: {
     flexDirection: "row",
     alignItems: "center",

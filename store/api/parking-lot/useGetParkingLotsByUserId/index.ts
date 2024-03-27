@@ -41,5 +41,6 @@ export const useGetParkingLotsByUserId = (
     queryFn: async () => getParkingLotByUserId(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
+    enabled: !!input.queryParams.userId,
   });
 };

@@ -1,5 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
@@ -12,14 +14,17 @@ import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
 import ConfigRole from "@/screens/role/ConfigRole";
 import RoleList from "@/screens/role/RoleList";
 import RoleMember from "@/screens/role/RoleMember";
-import { OtherStackParamList } from "@/types";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
-const OtherStack = () => {
-  const navigation = useNavigation();
+export type OtherProps = NativeStackScreenProps<
+  AuthenticatedStackParamList,
+  "OtherStack"
+>;
 
-  const backToOtherPage = () => {
+const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
+  const backToPreviousPage = () => {
     return (
       <IconButton
         icon={"chevron-left"}
@@ -49,7 +54,7 @@ const OtherStack = () => {
         component={CarInfo}
         options={{
           title: "My car",
-          headerLeft: backToOtherPage,
+          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
@@ -62,7 +67,7 @@ const OtherStack = () => {
         component={ChangePassword}
         options={{
           title: "Change password",
-          headerLeft: backToOtherPage,
+          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
@@ -70,7 +75,7 @@ const OtherStack = () => {
         component={ParkingLotsList}
         options={{
           title: "My parking sapce",
-          headerLeft: backToOtherPage,
+          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
