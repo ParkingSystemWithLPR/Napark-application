@@ -6,10 +6,11 @@ export type ParkingLot = {
   _id: string;
   name: string;
   address: Address;
-  coord: Region;
-  businessDays?: BusinessDay;
-  images?: string[];
-  availability?: number;
+  coord: Region,
+  businessDays?: BusinessDay,
+  images?: string[],
+  plan: Plan[],
+  availability?: number,
 };
 
 export type ParkingLotRequest = {
@@ -34,3 +35,8 @@ export type BusinessHour = {
   openTime: string;
   closeTime: string;
 };
+
+export type Plan = {
+  image: string;
+  floor: number;
+}
