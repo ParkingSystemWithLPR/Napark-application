@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
@@ -17,6 +17,8 @@ export type TimeInputProps = {
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
+  minTime?: Date;
+  maxTime?: Date;
 };
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -27,6 +29,8 @@ const TimeInput: React.FC<TimeInputProps> = ({
   editable = false,
   outerContainerStyle,
   containerStyle,
+  minTime,
+  maxTime,
 }) => {
   const [isOpenTimePicker, setOpenTimePicker] = useState<boolean>(false);
   const openTimePicker = () => {
@@ -64,11 +68,13 @@ const TimeInput: React.FC<TimeInputProps> = ({
           <MaterialCommunityIcons name="clock-outline" />
         </View>
       </Pressable>
-      <DateTimePickerModal
+      <DateTimePicker
         isVisible={isOpenTimePicker}
         mode="time"
         onConfirm={timechangeHandler}
         onCancel={closeTimePicker}
+        minimumDate={minTime}
+        maximumDate={maxTime}
       />
     </View>
   );

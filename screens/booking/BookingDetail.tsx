@@ -1,6 +1,6 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -75,6 +75,17 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
       return !parkingLot.businessDays[`${day}` as DayInAWeek].isOpen;
     }
     return false;
+  };
+
+  const getOpenCloseTime = (dateString: string) => {
+    if (parkingLot.businessDays) {
+      const dateObject = parseISO(dateString);
+      const day = format(dateObject, "eeee");
+      return {
+        openTime: parkingLot.businessDays[`${day}` as DayInAWeek].openTime,
+        closeTime: parkingLot.businessDays[`${day}` as DayInAWeek].closeTime,
+      };
+    }
   };
 
   const handleOnChange = function <T>(
@@ -207,6 +218,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               }
               licensePlateList={licensePlateList}
               disableDate={disableDate}
+              getOpenCloseTime={getOpenCloseTime}
             />
           </View>
         ) : (
