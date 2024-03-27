@@ -46,7 +46,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
   };
 
   return (
-    <View style={[styles.outerContainer, outerContainerStyle]}>
+    <View style={[outerContainerStyle]}>
       {title && <SubHeaderText text={title} />}
       <Pressable onPress={openTimePicker}>
         <View
@@ -84,7 +84,6 @@ const TimeInput: React.FC<TimeInputProps> = ({
 export default TimeInput;
 
 const styles = StyleSheet.create({
-  outerContainer: {},
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
