@@ -53,7 +53,6 @@ const DateInput: React.FC<DateInputProps> = ({
 
   useEffect(() => {
     if (businessDays) {
-      let index = 0;
       const newSelectedDay = selectedDay;
       const businessHoursSet: BusinessHour[] = [];
       const newFormSet: number[] = [];
@@ -62,7 +61,7 @@ const DateInput: React.FC<DateInputProps> = ({
           businessHoursSet.push(value);
           newFormSet.push(0);
         }
-        index = businessHoursSet.findIndex((e) =>
+        const index = businessHoursSet.findIndex((e) =>
           isEqualBusinessHour(e, value)
         );
         newSelectedDay[day as DayInAWeek] = { set: index, isSelected: true };
