@@ -12,6 +12,7 @@ import OtherStack from "./OtherStack";
 import ParkingFlowStack from "./ParkingFlowStack";
 import PaymentStack from "./PaymentStack";
 
+import Colors from "@/constants/color";
 import ResetPassword from "@/screens/authentication/ResetPassword";
 import Notification from "@/screens/Notification";
 import { useGetProfile } from "@/store/api/user/useGetProfile";
@@ -54,7 +55,18 @@ const AuthenticatedStack: React.FC<AuthenticatedProps> = () => {
       <Stack.Screen name="PaymentStack" component={PaymentStack} />
       <Stack.Screen name="ParkingFlowStack" component={ParkingFlowStack} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: Colors.red[400].toString(),
+          },
+          headerTitleStyle: { color: Colors.white.toString() },
+          headerTitleAlign: "center",
+        }}
+      />
     </Stack.Navigator>
   );
 };
