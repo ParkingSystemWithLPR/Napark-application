@@ -73,6 +73,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
         mode="time"
         onConfirm={timechangeHandler}
         onCancel={closeTimePicker}
+        date={minTime ?? new Date()}
         minimumDate={minTime}
         maximumDate={maxTime}
       />
