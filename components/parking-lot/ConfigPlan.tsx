@@ -43,9 +43,12 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ plan, control, setValue }) => {
     if (!result.canceled) {
       const newImages: string[] = [];
       result.assets.forEach((img, index) => {
-        if (img.base64) {
+        if(img.base64) {
           newImages.push(img.base64);
-          setValue(`plan.${images.length + index}.image`, img.base64);
+          setValue(
+            `plan.${images.length + index}.image`,
+            img.base64
+          );
         }
       });
       setImages(images.concat(newImages));
@@ -57,59 +60,25 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ plan, control, setValue }) => {
       <View>
         <Image
           source={{
-            uri: "data:image/jpeg;base64," + image,
+            uri: 'data:image/jpeg;base64,' + image,
           }}
           height={IMAGE_SIZE.height}
           width={IMAGE_SIZE.width}
           style={styles.image}
         />
-        <View style={styles.sameLineInputContainer}>
-          <Controller
-            name={`plan.${index}.floor`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Floor"
-                placeholder={"Floor"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-          <Controller
-            name={`plan.${index}.zone`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Zone"
-                placeholder={"Zone"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-          <Controller
-            name={`plan.${index}.capacity`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Capacity"
-                placeholder={"Capacity"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-        </View>
+        <Controller
+          name={`plan.${index}.floor`}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <MyTextInput
+              placeholder={"Floor"}
+              value={value}
+              onChangeText={onChange}
+              inputMode={InputType.Numeric}
+              editable
+            />
+          )}
+        />
       </View>
     );
   };
@@ -170,12 +139,5 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 12,
     marginRight: 10,
-  },
-  sameLineInputContainer: {
-    paddingTop: 10,
-    flexDirection: "row",
-    gap: 10,
-    justifyContent: "space-between",
-    alignItems: "center",
   },
 });

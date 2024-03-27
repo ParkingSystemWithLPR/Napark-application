@@ -7,7 +7,7 @@ export type IconButtonProps = {
   color: number | ColorValue;
   onPress: () => void;
   buttonStyle?: object;
-  disabled? : boolean;
+  disabled?: boolean;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
