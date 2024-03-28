@@ -1,16 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback } from "react";
-import { View, StyleSheet, Pressable, Platform } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
-import {
-  formatHumanReadableDateFromDateString,
-  joinDateAndTime,
-} from "@/utils/date";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type BookingCardSummaryProps = {
   checkInDate: string;
@@ -59,10 +56,9 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
       <View style={styles.propertyContainer}>
         {renderDetail({
           topic: "Check-in:",
-          value: joinDateAndTime(
-            formatHumanReadableDateFromDateString(checkInDate),
-            checkInTime
-          ),
+          value: `${formatHumanReadableDateFromDateString(
+            checkInDate
+          )} ${checkInTime}`,
         })}
         {renderDetail({
           topic: "Specifications:",

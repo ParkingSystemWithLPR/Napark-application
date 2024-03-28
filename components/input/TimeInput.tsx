@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BodyText from "../text/BodyText";
@@ -10,13 +10,15 @@ import Colors from "@/constants/color";
 import { formatTime } from "@/utils/date";
 
 export type TimeInputProps = {
-  title: string;
+  title?: string;
   value: string | null;
   onTimeChange: (date: string) => void;
   placeholder?: string;
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
+  minTime?: Date;
+  maxTime?: Date;
 };
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -27,6 +29,8 @@ const TimeInput: React.FC<TimeInputProps> = ({
   editable = false,
   outerContainerStyle,
   containerStyle,
+  minTime,
+  maxTime,
 }) => {
   const [isOpenTimePicker, setOpenTimePicker] = useState<boolean>(false);
   const openTimePicker = () => {
@@ -42,8 +46,8 @@ const TimeInput: React.FC<TimeInputProps> = ({
   };
 
   return (
-    <View style={[styles.outerContainer, outerContainerStyle]}>
-      <SubHeaderText text={title} />
+    <View style={[outerContainerStyle]}>
+      {title && <SubHeaderText text={title} />}
       <Pressable onPress={openTimePicker}>
         <View
           style={[
@@ -64,11 +68,14 @@ const TimeInput: React.FC<TimeInputProps> = ({
           <MaterialCommunityIcons name="clock-outline" />
         </View>
       </Pressable>
-      <DateTimePickerModal
+      <DateTimePicker
         isVisible={isOpenTimePicker}
         mode="time"
         onConfirm={timechangeHandler}
         onCancel={closeTimePicker}
+        date={minTime ?? new Date()}
+        minimumDate={minTime}
+        maximumDate={maxTime}
       />
     </View>
   );
@@ -77,11 +84,11 @@ const TimeInput: React.FC<TimeInputProps> = ({
 export default TimeInput;
 
 const styles = StyleSheet.create({
-  outerContainer: {},
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 5,
     borderRadius: 8,
     padding: 16,

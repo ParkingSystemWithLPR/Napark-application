@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { parseISO } from "date-fns";
 import { useLayoutEffect, useState } from "react";
 import { Alert, Platform, StyleSheet, View } from "react-native";
 
@@ -11,7 +12,11 @@ import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { AuthenticatedStackParamListProps } from "@/types";
-import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import {
+  formatHumanReadableDateFromDateString,
+  formatTime,
+} from "@/utils/date";
+import { formatDropdownFromLicensePlates } from "@/utils/dropdown";
 
 export type BookingDetailComponentProps = {
   checkOutTime: string | null;
@@ -27,6 +32,14 @@ export type BookingDetailComponentProps = {
   specification: string | undefined;
   setSpecification: (value: string | undefined) => void;
   closeSetting: () => void;
+  disableDate: (date: Date) => boolean;
+  getOpenCloseTime: (dateString: string) =>
+    | {
+        openTime: string | undefined;
+        closeTime: string | undefined;
+      }
+    | undefined;
+  licensePlateList?: string[];
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
@@ -43,21 +56,54 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   specification,
   setSpecification,
   closeSetting,
+  disableDate,
+  getOpenCloseTime,
+  licensePlateList,
 }) => {
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
-  const isCheckOutDateEditable = checkInTime != null && checkInDate != null;
-  const isCheckOutTimeEditable = checkOutDate != null;
+  const [minCheckInTime, setMinCheckInTime] = useState<Date>();
+  const [maxCheckInTime, setMaxCheckInTime] = useState<Date>();
+  const [minCheckOutTime, setMinCheckOutTime] = useState<Date>();
+  const [maxCheckOutTime, setMaxCheckOutTime] = useState<Date>();
+  const isCheckInDateNotNull = checkInDate != null;
+  const isCheckOutTimeEditable = checkOutDate != null && checkInTime != null;
+  const licensePlateDropdown =
+    (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
+    [];
 
+  const checkInTimeHandler = (checkInTime: string | null) => {
+    if (checkInTime) {
+      if (minCheckInTime && maxCheckInTime) {
+        if (
+          checkInTime < formatTime(minCheckInTime) ||
+          checkInTime > formatTime(maxCheckInTime)
+        ) {
+          Alert.alert("Not in open Time");
+          return;
+        }
+      }
+    }
+    setCheckInTime(checkInTime);
+  };
   const checkOutTimeHandler = (checkOutTime: string | null) => {
     if (checkOutTime && checkInTime && checkInDate && checkOutDate) {
+      if (minCheckOutTime && maxCheckOutTime) {
+        if (
+          checkOutTime < formatTime(minCheckOutTime) ||
+          checkOutTime > formatTime(maxCheckOutTime)
+        ) {
+          Alert.alert("Not in open Time");
+          return;
+        }
+      }
       if (
         checkInDate < checkOutDate ||
         (checkInDate == checkOutDate && checkInTime < checkOutTime)
       ) {
         setCheckOutTime(checkOutTime);
       } else {
-        Alert.alert("Please select later time");
+        Alert.alert("Please select time after check in");
       }
     }
   };
@@ -76,25 +122,56 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     }
   };
 
+  const setTimeConstraint = (
+    date: string,
+    setMinTime: (dateObj: Date | undefined) => void,
+    setMaxTime: (dateObj: Date | undefined) => void
+  ) => {
+    const value = getOpenCloseTime(date);
+    if (value) {
+      const { openTime, closeTime } = value;
+      const openTimeObject = openTime
+        ? parseISO(`${date} ${openTime}`)
+        : undefined;
+      const closeTimeObject = closeTime
+        ? parseISO(`${date} ${closeTime}`)
+        : undefined;
+      setMinTime(openTimeObject);
+      setMaxTime(closeTimeObject);
+    }
+  };
+
   useLayoutEffect(() => {
-    if (!isFirstUpdate && checkInDate != null && checkInDate != null) {
+    if (checkInDate)
+      setTimeConstraint(checkInDate, setMinCheckInTime, setMaxCheckInTime);
+  }, [checkInDate]);
+
+  useLayoutEffect(() => {
+    if (checkOutDate)
+      setTimeConstraint(checkOutDate, setMinCheckOutTime, setMaxCheckOutTime);
+  }, [checkOutDate]);
+
+  useLayoutEffect(() => {
+    if (!isFirstUpdate && checkInDate) {
       setCheckOutTime(null);
       setCheckOutDate(null);
+      setCheckInTime(null);
     } else {
       setIsFirstUpdate(false);
     }
-  }, [checkInTime, checkInDate]);
+  }, [checkInDate]);
 
   useLayoutEffect(() => {
     if (
-      !isFirstUpdate &&
-      checkOutDate &&
-      checkInDate &&
-      checkOutDate == checkInDate
+      (!isFirstUpdate && checkOutDate) ||
+      (checkInTime && checkOutTime && checkInTime > checkOutTime)
     )
       setCheckOutTime(null);
-  }, [checkOutDate]);
+  }, [checkOutDate, checkInTime]);
 
+  const duration = (minTime: Date, maxTime: Date): string => {
+    return `open ${formatTime(minTime)} - ${formatTime(maxTime)}`;
+  };
   return (
     <View style={styles.outerContainer}>
       <DropdownInput
@@ -102,7 +179,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         placeholder={"ex.  กข1234"}
         onSelect={setLicensePlateHandler}
         items={[
-          { label: "กข1234", value: "กข1234" },
+          ...licensePlateDropdown,
           {
             label: "Not found your license plate",
             value: "Not found your license plate",
@@ -125,13 +202,22 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           outerContainerStyle={styles.dateContainer}
           editable={true}
           isRequired={true}
+          disableDate={disableDate}
         />
         <TimeInput
-          title={""}
+          title={
+            isCheckInDateNotNull
+              ? minCheckInTime && maxCheckInTime
+                ? duration(minCheckInTime, maxCheckInTime)
+                : "open 24 hours"
+              : ""
+          }
           value={checkInTime}
-          onTimeChange={setCheckInTime}
+          onTimeChange={checkInTimeHandler}
           outerContainerStyle={styles.timeContainer}
-          editable={true}
+          editable={isCheckInDateNotNull}
+          minTime={minCheckInTime}
+          maxTime={maxCheckInTime}
         />
       </View>
       <View style={styles.dateTimeContainer}>
@@ -146,16 +232,25 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           }}
           setMinimumDate={true}
           outerContainerStyle={styles.dateContainer}
-          editable={isCheckOutDateEditable}
+          editable={isCheckInDateNotNull}
           minDateValue={checkInDate}
           isRequired={true}
+          disableDate={disableDate}
         />
         <TimeInput
-          title={""}
+          title={
+            isCheckOutTimeEditable
+              ? minCheckOutTime && maxCheckOutTime
+                ? duration(minCheckOutTime, maxCheckOutTime)
+                : "open 24 hours"
+              : ""
+          }
           value={checkOutTime}
           onTimeChange={checkOutTimeHandler}
           outerContainerStyle={styles.timeContainer}
           editable={isCheckOutTimeEditable}
+          minTime={minCheckOutTime}
+          maxTime={maxCheckOutTime}
         />
       </View>
       <Specification
@@ -191,10 +286,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   dateContainer: {
-    flex: 3,
+    flex: 1,
   },
   timeContainer: {
-    flex: 2,
+    flex: 1,
   },
   buttonContainer: {
     alignItems: "center",

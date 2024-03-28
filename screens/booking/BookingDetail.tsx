@@ -1,5 +1,6 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { format, parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -19,6 +20,8 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { DayInAWeek } from "@/enum/DayInAWeek";
+import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 
 export type BookingDetailProps = CompositeScreenProps<
@@ -48,8 +51,13 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
   const isFocused = useIsFocused();
+  const { profile } = useProfile();
+  const licensePlateList = profile.user_car?.map((car) => car.license_plate);
+  const defaultLicensePlate = profile.user_car
+    ?.filter((car) => car.is_default)
+    .map((defaultcar) => defaultcar.license_plate)[0];
   const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
-    licensePlate: "",
+    licensePlate: defaultLicensePlate ?? "",
     checkInDate: null,
     checkInTime: null,
     checkOutDate: null,
@@ -60,6 +68,25 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     price: 0,
     unit: "",
   });
+
+  const disableDate = (date: Date) => {
+    if (parkingLot.businessDays) {
+      const day = format(date, "eeee");
+      return !parkingLot.businessDays[`${day}` as DayInAWeek].isOpen;
+    }
+    return false;
+  };
+
+  const getOpenCloseTime = (dateString: string) => {
+    if (parkingLot.businessDays) {
+      const dateObject = parseISO(dateString);
+      const day = format(dateObject, "eeee");
+      return {
+        openTime: parkingLot.businessDays[`${day}` as DayInAWeek].openTime,
+        closeTime: parkingLot.businessDays[`${day}` as DayInAWeek].closeTime,
+      };
+    }
+  };
 
   const handleOnChange = function <T>(
     identifierKey: string,
@@ -138,11 +165,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                   gap: 5,
                 }}
               >
-                <BodyText text={"Slot: " + slotName}></BodyText>
+                <BodyText text={`Slot: ${slotName}`}></BodyText>
                 <BodyText text={recommendType}></BodyText>
               </View>
             </View>
-            <BodyText text={price.toString() + " " + unit}></BodyText>
+            <BodyText text={`${price.toString()} ${unit}`}></BodyText>
           </View>
         </Pressable>
       );
@@ -189,6 +216,9 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               setCheckOutDate={(value: string | null) =>
                 handleOnChange("checkOutDate", value)
               }
+              licensePlateList={licensePlateList}
+              disableDate={disableDate}
+              getOpenCloseTime={getOpenCloseTime}
             />
           </View>
         ) : (
@@ -223,7 +253,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 })}
               </View>
               <SubHeaderText
-                text={"View All Slot"}
+                text={"View All Available Slot"}
                 containerStyle={{ marginVertical: 10 }}
               />
               <ParkingPlan
@@ -280,7 +310,7 @@ const styles = StyleSheet.create({
   recommendSlotContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     backgroundColor: Colors.white,
     padding: 10,
     shadowColor: Colors.black,

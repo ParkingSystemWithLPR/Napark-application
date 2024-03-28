@@ -42,7 +42,7 @@ const Arriving: React.FC<ArrivingProps> = ({ route }) => {
     return (
       <View style={styles.attributeContainer}>
         <BodyText
-          text={attribute + ":"}
+          text={`${attribute}:`}
           containerStyle={styles.attributeField}
           textStyle={styles.attributeTextColor}
         />
