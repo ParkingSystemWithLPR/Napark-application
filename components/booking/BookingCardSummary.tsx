@@ -7,10 +7,7 @@ import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
-import {
-  formatHumanReadableDateFromDateString,
-  joinDateAndTime,
-} from "@/utils/date";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type BookingCardSummaryProps = {
   checkInDate: string;
@@ -59,10 +56,9 @@ const BookingCardSummary: React.FC<BookingCardSummaryProps> = ({
       <View style={styles.propertyContainer}>
         {renderDetail({
           topic: "Check-in:",
-          value: joinDateAndTime(
-            formatHumanReadableDateFromDateString(checkInDate),
-            checkInTime
-          ),
+          value: `${formatHumanReadableDateFromDateString(
+            checkInDate
+          )} ${checkInTime}`,
         })}
         {renderDetail({
           topic: "Specifications:",

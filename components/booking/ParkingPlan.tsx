@@ -48,9 +48,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
       <View style={styles.item}>
         <BodyText text={item.value} />
         <BodyText
-          text={
-            (item.price ? item.price.toString() : "") + " " + item.unit ?? ""
-          }
+          text={`${item.price && item.price.toString()} ${item.unit}`}
         />
       </View>
     );

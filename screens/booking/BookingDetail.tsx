@@ -165,11 +165,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                   gap: 5,
                 }}
               >
-                <BodyText text={"Slot: " + slotName}></BodyText>
+                <BodyText text={`Slot: ${slotName}`}></BodyText>
                 <BodyText text={recommendType}></BodyText>
               </View>
             </View>
-            <BodyText text={price.toString() + " " + unit}></BodyText>
+            <BodyText text={`${price.toString()} ${unit}`}></BodyText>
           </View>
         </Pressable>
       );

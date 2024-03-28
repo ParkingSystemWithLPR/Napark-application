@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Platform,
   Pressable,
   StyleSheet,
   TouchableWithoutFeedback,

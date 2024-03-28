@@ -55,7 +55,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     return (
       <View style={styles.attributeContainer}>
         <BodyText
-          text={attribute + ":"}
+          text={`${attribute}:`}
           containerStyle={styles.attributeField}
           textStyle={styles.attributeTextColor}
         />
@@ -112,7 +112,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           })}
           {renderAttribute({
             attribute: "Cost per Unit",
-            value: bookingRequest.price + " " + bookingRequest.unit,
+            value: `${bookingRequest.price}  ${bookingRequest.unit}`,
           })}
         </View>
         <View style={styles.routeContainer}>
