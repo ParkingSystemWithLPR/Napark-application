@@ -24,14 +24,14 @@ export type RequestParkingLotProps = CompositeScreenProps<
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm();
+  const { control, handleSubmit, setValue, getValues, formState: { isSubmitting } } = useForm();
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
-      console.log("data", data);
+      console.log("data", JSON.stringify(data));
       navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
     } catch (error) {
       Alert.alert(
@@ -45,7 +45,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
     <BodyContainer innerContainerStyle={styles.container}>
       <Stepper step={step} setStep={setStep} />
       {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigPlan control={control} />}
+      {step == 2 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
       {step == 3 && <ConfigPricing control={control} />}
       {step != 3 ? (
         <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />

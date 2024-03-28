@@ -9,6 +9,7 @@ export type ParkingLot = {
   coord: Region,
   businessDays?: BusinessDay,
   images?: string[],
+  plan: Plan[],
   availability?: number,
 };
 
@@ -29,3 +30,8 @@ export type Address = {
 export type BusinessDay = {
   [day in DayInAWeek]: { isOpen: boolean, openTime?: string; closeTime?: string; };
 };
+
+export type Plan = {
+  image: string;
+  floor: number;
+}
