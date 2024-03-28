@@ -15,15 +15,24 @@ export type MyBookingProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
+const capitalizeFirstLetter = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+const capitalizedActiveBookingType = capitalizeFirstLetter(BookingType.ACTIVE);
+const capitalizedCompletedBookingType = capitalizeFirstLetter(
+  BookingType.COMPLETED
+);
+
 const ActiveSessions = <SessionsList type={BookingType.ACTIVE} />;
 const CompletedSessions = <SessionsList type={BookingType.COMPLETED} />;
 
 const MyBooking: React.FC<MyBookingProps> = () => {
   return (
     <TabsContainer
-      leftTabName={BookingType.ACTIVE}
+      leftTabName={capitalizedActiveBookingType}
       leftTabContent={ActiveSessions}
-      rightTabName={BookingType.COMPLETED}
+      rightTabName={capitalizedCompletedBookingType}
       rightTabContent={CompletedSessions}
     />
   );
