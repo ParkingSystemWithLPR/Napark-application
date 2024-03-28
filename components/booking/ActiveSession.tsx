@@ -25,10 +25,10 @@ const ActiveSession: React.FC<activeSessionProps> = ({
       </View>
       <View style={styles.bottomContainer}>
         <SubHeaderText
-          text="Time Remaining"
+          text="Time remaining"
           textStyle={{ color: Colors.gray[800] }}
         />
-        <SubHeaderText
+        <BodyText
           text={timeRemaining}
           textStyle={{ color: Colors.gray[800] }}
         />
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginHorizontal: 10,
     marginBottom: 20,
-    height: "auto",
     backgroundColor: Colors.white,
     borderRadius: 8,
     shadowColor: Colors.black,
