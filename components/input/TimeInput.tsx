@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   outerContainer: {},
   container: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
     gap: 5,
     borderRadius: 8,
