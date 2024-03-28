@@ -62,6 +62,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
   const [isManualChooseAmount, setIsManualChooseAmount] =
     useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<number>();
+  const isAmountLessThanMinimum = +amount !== 0 && +amount < 50;
 
   const onPressButton = (amount: number) => {
     setActiveButton(amount);
@@ -79,7 +80,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
         <TextInput
           title="Please enter amount (50 baht minimum)"
           errorText={
-            +amount < 50 ? "Please top up at least 50 baht." : ""
+            isAmountLessThanMinimum ? "Please top up at least 50 baht." : ""
           }
           placeholder="0"
           value={amount.toString()}
@@ -115,6 +116,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
             });
           }
         }}
+        disabled={+amount >= 50 ? false : true}
       />
     </BodyContainer>
   );
