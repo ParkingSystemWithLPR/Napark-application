@@ -22,7 +22,7 @@ const SessionsList: React.FC<sessionsProps> = ({ type }) => {
             <ActiveSession
               licensePlate={item.licensePlate}
               space={item.space}
-              timeRemaining="01hr:30min"
+              timeRemaining="01:30"
             />
           );
         } else {

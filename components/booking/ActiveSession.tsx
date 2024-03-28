@@ -28,9 +28,9 @@ const ActiveSession: React.FC<activeSessionProps> = ({
           text="Time remaining"
           textStyle={{ color: Colors.gray[800] }}
         />
-        <BodyText
-          text={timeRemaining}
-          textStyle={{ color: Colors.gray[800] }}
+        <SubHeaderText
+          text={`${timeRemaining} hr`}
+          textStyle={{ color: Colors.red[400] }}
         />
       </View>
     </View>
