@@ -195,7 +195,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         </View>
       </ModalOverlay>
     );
-  }, []);
+  }, [showFilterOption]);
 
   const renderRecommendedParkingSpaces = useCallback(() => {
     return (
