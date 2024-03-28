@@ -94,6 +94,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     }
   }, [getParkingSpaces.data]);
 
+  useEffect(() => {
+    if (selectedParkingSpace)
+      parkingSpaceDetailBottomSheetRef.current?.present();
+  }, [selectedParkingSpace]);
+
   const getCurrentLocation = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -114,12 +119,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     }
   };
 
-  const handleChooseParkingSpace = useCallback((parkingSpace: ParkingLot) => {
-    parkingSpaceDetailBottomSheetRef.current?.present();
+  const handleChooseParkingSpace = (parkingSpace: ParkingLot) => {
     setSelectedParkingSpace(parkingSpace);
-  }, []);
+  };
 
-  const renderHeader = () => {
+  const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
         <GooglePlacesAutocomplete
@@ -170,7 +174,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     );
-  };
+  }, []);
 
   const renderfilterOptionsModal = useCallback(() => {
     return (
@@ -202,6 +206,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       <CustomBottomSheetModal
         ref={recommendedBottomSheetRef}
         title="Recommended place"
+        startIndex={0}
       >
         <FlatList
           data={parkingSpaces}
@@ -231,6 +236,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           ref={parkingSpaceDetailBottomSheetRef}
           title={selectedParkingSpace.name}
           modalContainerStyle={styles.parkingDetailContainer}
+          onDismiss={() => setSelectedParkingSpace(undefined)}
         >
           <PrimaryButton
             title="Book"

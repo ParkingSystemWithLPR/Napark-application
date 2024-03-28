@@ -8,16 +8,26 @@ export type Ref = BottomSheetModal;
 export type BottomSheetModalProps = {
   children: ReactNode;
   title: string;
+  startIndex?: number;
   modalContainerStyle?: object;
+  onDismiss?: () => void;
 };
 
 const CustomBottomSheetModal: React.ForwardRefRenderFunction<
   Ref,
   BottomSheetModalProps
-> = ({ children, title, modalContainerStyle }, ref) => {
+> = (
+  { children, title, startIndex = 1, modalContainerStyle, onDismiss },
+  ref
+) => {
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
   return (
-    <BottomSheetModal ref={ref} index={1} snapPoints={snapPoints}>
+    <BottomSheetModal
+      ref={ref}
+      index={startIndex}
+      snapPoints={snapPoints}
+      onDismiss={onDismiss}
+    >
       <View style={(styles.container, modalContainerStyle)}>
         <SubHeaderText containerStyle={styles.headerContainer} text={title} />
         {children}
