@@ -156,6 +156,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             autoCorrect: false,
             onChangeText: (text: string) => {
               if (text.length === 0) {
+                searchInputRef.current?.blur();
                 dismissAll();
               } else {
                 recommendedBottomSheetRef.current?.snapToIndex(0);
