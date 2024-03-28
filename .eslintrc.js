@@ -12,7 +12,7 @@ module.exports = {
     },
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["react", "@typescript-eslint", "import"],
+  plugins: ["react", "@typescript-eslint", "import", "node", "react-native"],
   rules: {
     "import/no-unused-modules": "error",
     "import/order": [

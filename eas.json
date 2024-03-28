@@ -3,6 +3,16 @@
     "version": ">= 7.3.0"
   },
   "build": {
+    "test": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
+        "withoutCredentials": true
+      },
+      "ios": {
+        "simulator": true
+      },
+      "buildArtifactPaths": ["artifacts/**/*.png"]
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
