@@ -15,7 +15,6 @@ const BaseNavigation = () => {
   const { isAuthenticated } = useAuth();
 
   const getAppStack = useCallback(() => {
-    console.log(isAuthenticated);
     return isAuthenticated ? (
       <Stack.Screen name="Authenticated" component={AuthenticatedStack} />
     ) : (
