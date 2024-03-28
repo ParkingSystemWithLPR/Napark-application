@@ -7,6 +7,7 @@ export type IconButtonProps = {
   color: number | ColorValue;
   onPress: () => void;
   buttonStyle?: object;
+  disabled? : boolean;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -15,9 +16,10 @@ const IconButton: React.FC<IconButtonProps> = ({
   color,
   onPress,
   buttonStyle,
+  disabled,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
       <View style={[styles.buttonContainer, buttonStyle]}>
         <MaterialCommunityIcons name={icon} size={size} color={color} />
       </View>
