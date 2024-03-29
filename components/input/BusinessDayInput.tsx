@@ -34,7 +34,7 @@ const DateInput: React.FC<DateInputProps> = ({
     DayInAWeek.SATURDAY,
   ];
 
-  const [formSet, setFormSet] = useState<number[]>([0]);
+  const [formList, setFormList] = useState<number[]>([0]);
   const [selectedDay, setSelectedDay] = useState<{
     [day in DayInAWeek]: { set?: number; isSelected: boolean };
   }>({
@@ -55,11 +55,11 @@ const DateInput: React.FC<DateInputProps> = ({
     if (businessDays) {
       const newSelectedDay = selectedDay;
       const businessHoursSet: BusinessHour[] = [];
-      const newFormSet: number[] = [];
+      const newFormList: number[] = [];
       Object.entries(businessDays).forEach(([day, value]) => {
         if (!businessHoursSet.some((e) => isEqualBusinessHour(e, value))) {
           businessHoursSet.push(value);
-          newFormSet.push(0);
+          newFormList.push(0);
         }
         const index = businessHoursSet.findIndex((e) =>
           isEqualBusinessHour(e, value)
@@ -68,7 +68,7 @@ const DateInput: React.FC<DateInputProps> = ({
         setValue(`${index}`, value);
       });
       setSelectedDay(newSelectedDay);
-      setFormSet(newFormSet);
+      setFormList(newFormList);
     }
   }, []);
 
@@ -85,11 +85,11 @@ const DateInput: React.FC<DateInputProps> = ({
     onChange(newBusinessDays);
   };
 
-  const onRemoveFormSet = () => {
-    setFormSet([...formSet.slice(0, -1)]);
+  const onRemoveFormList = () => {
+    setFormList([...formList.slice(0, -1)]);
     const newSelectedDay = selectedDay;
     Object.entries(selectedDay).forEach(([day, { set }]) => {
-      if (set === formSet.length - 1) {
+      if (set === formList.length - 1) {
         newSelectedDay[day as DayInAWeek] = { isSelected: false };
       }
     });
@@ -183,15 +183,15 @@ const DateInput: React.FC<DateInputProps> = ({
 
   return (
     <View style={styles.outerContainer}>
-      {formSet.map((_, index) => renderDayWithTimeSelector(index))}
+      {formList.map((_, index) => renderDayWithTimeSelector(index))}
       <View style={styles.buttonContainer}>
         <IconButton
           icon={"plus"}
           size={20}
           color={Colors.gray[900]}
-          buttonStyle={styles.adjustFormSetButton}
+          buttonStyle={styles.adjustFormListButton}
           onPress={() => {
-            setFormSet([...formSet, 0]);
+            setFormList([...formList, 0]);
           }}
         />
         <IconButton
@@ -199,14 +199,14 @@ const DateInput: React.FC<DateInputProps> = ({
           size={20}
           color={Colors.gray[900]}
           buttonStyle={
-            formSet.length === 1
+            formList.length === 1
               ? styles.diabledButton
-              : styles.adjustFormSetButton
+              : styles.adjustFormListButton
           }
           onPress={() => {
-            onRemoveFormSet();
+            onRemoveFormList();
           }}
-          disabled={formSet.length === 1}
+          disabled={formList.length === 1}
         />
       </View>
     </View>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: -10,
   },
-  adjustFormSetButton: {
+  adjustFormListButton: {
     alignItems: "center",
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
