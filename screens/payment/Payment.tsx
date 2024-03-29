@@ -70,7 +70,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
 
   return (
     <BodyContainer>
-      <View style={{ flex: 1, gap: 10 }}>
+      <View style={{ flex: 1 }}>
         <View style={styles.card}>
           <View style={{ marginHorizontal: 20 }}>
             <View
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 16,
     backgroundColor: Colors.white,
+    marginBottom: 10,
   },
   creditBalanceText: {
     fontSize: 20,
