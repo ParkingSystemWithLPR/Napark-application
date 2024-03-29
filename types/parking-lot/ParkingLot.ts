@@ -19,9 +19,9 @@ export type ParkingLotRequest = {
 };
 
 export type Address = {
-  address: string;
-  sub_distict: string;
-  distict: string;
+  address1: string;
+  sub_district: string;
+  district: string;
   province: string;
   zip_code: string;
 };
