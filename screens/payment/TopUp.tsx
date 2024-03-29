@@ -131,6 +131,11 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
         title="Next"
         onPress={() => onNextPage()}
         disabled={isNextButtonDisable}
+        buttonStyle={{
+          backgroundColor: isNextButtonDisable
+            ? Colors.gray[700]
+            : Colors.red[400],
+        }}
       />
     </BodyContainer>
   );
