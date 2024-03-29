@@ -1,7 +1,7 @@
 import { Control, Controller, FieldValues } from "react-hook-form";
 import { ScrollView } from "react-native";
 
-import DateInput from "../input/DateInput";
+import BusinessDayInput from "../input/BusinessDayInput";
 import ImageUploader from "../input/ImageUploader";
 import TextInput from "../input/TextInput";
 
@@ -41,7 +41,7 @@ const ConfigInfo: React.FC<ConfigInfoProps> = ({ control }) => {
         name={"businessDays"}
         control={control}
         render={({ field: { onChange, value } }) => (
-          <DateInput
+          <BusinessDayInput
             title={"Business Day"}
             onChange={onChange}
             businessDays={value}

@@ -12,7 +12,6 @@ import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import SectionAppForm from "@/components/ui/SectionAppForm";
 import Colors from "@/constants/color";
-import { mockParkingLot } from "@/mock/mockData";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
@@ -28,7 +27,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   route,
 }) => {
   const parkingLotId = route.params.parkingLotId;
-  const [parkingLot, setParkingLot] = useState<ParkingLot>(mockParkingLot);
+  const [parkingLot, setParkingLot] = useState<ParkingLot>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
