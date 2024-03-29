@@ -70,47 +70,45 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
 
   return (
     <BodyContainer>
-      <View style={{ flex: 1 }}>
-        <View style={styles.card}>
-          <View style={{ marginHorizontal: 20 }}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-              }}
-            >
-              <SubHeaderText text={"Wallet"} />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <HeaderText
-                text={`${mockBalance} ฿`}
-                textStyle={{ color: Colors.black }}
-              />
-              <IconButton
-                icon={"wallet-plus"}
-                size={25}
-                color={Colors.blue[600]}
-                onPress={pressTopUpHandler}
-              />
-            </View>
+      <View style={styles.card}>
+        <View style={{ marginHorizontal: 20 }}>
+          <View
+            style={{
+              borderBottomWidth: 1,
+            }}
+          >
+            <SubHeaderText text={"Wallet"} />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <HeaderText
+              text={`${mockBalance} ฿`}
+              textStyle={{ color: Colors.black }}
+            />
+            <IconButton
+              icon={"wallet-plus"}
+              size={25}
+              color={Colors.blue[600]}
+              onPress={pressTopUpHandler}
+            />
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <SubHeaderText text={"Pay the bill"} textStyle={{ fontSize: 20 }} />
-          <FlatList
-            data={MOCKED_PAYMENTLICENSEPLATE}
-            renderItem={({ item }) => {
-              return renderLicensePlateList(item);
-            }}
-            keyExtractor={(item) => item.id}
-            overScrollMode="never"
-          />
-        </View>
+      </View>
+      <View style={{ flex: 1 }}>
+        <SubHeaderText text={"Pay the bill"} textStyle={{ fontSize: 20 }} />
+        <FlatList
+          data={MOCKED_PAYMENTLICENSEPLATE}
+          renderItem={({ item }) => {
+            return renderLicensePlateList(item);
+          }}
+          keyExtractor={(item) => item.id}
+          overScrollMode="never"
+        />
       </View>
     </BodyContainer>
   );
