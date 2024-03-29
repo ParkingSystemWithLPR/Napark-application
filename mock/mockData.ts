@@ -129,6 +129,8 @@ export interface mockedPaymentLicensePlateProps {
   licensePlate: string;
   id: string;
   province: string;
+  isPaid: boolean; //will use this to filter later
+  total: number;
 }
 
 export const MOCKED_PAYMENTLICENSEPLATE = [
@@ -136,20 +138,28 @@ export const MOCKED_PAYMENTLICENSEPLATE = [
     id: "1",
     licensePlate: "ผบ 5982",
     province: THAI_PROVINCE[0].value,
+    isPaid: false,
+    total: 60,
   },
   {
     id: "2",
     licensePlate: "ฬห 8705",
     province: THAI_PROVINCE[0].value,
+    isPaid: false,
+    total: 100,
   },
   {
     id: "3",
     licensePlate: "รวย 9999",
     province: THAI_PROVINCE[0].value,
+    isPaid: false,
+    total: 80,
   },
   {
     id: "4",
     licensePlate: "เฮง 888",
     province: THAI_PROVINCE[0].value,
+    isPaid: false,
+    total: 40,
   },
 ];

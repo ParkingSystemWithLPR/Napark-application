@@ -1,4 +1,3 @@
-import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
@@ -13,20 +12,32 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { PaymentMethod } from "@/enum/PaymentMethod";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import { PaymentStackParamList } from "@/types";
 
-export type PaymentSummaryProps = CompositeScreenProps<
-  NativeStackScreenProps<PaymentStackParamList, "PaymentSummary">,
-  NativeStackScreenProps<AuthenticatedStackParamList>
+export type PaymentSummaryProps = NativeStackScreenProps<
+  PaymentStackParamList,
+  "PaymentSummary"
 >;
 
-const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
+const PaymentSummary: React.FC<PaymentSummaryProps> = ({
+  navigation,
+  route,
+}) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isButtonEnable, setIsButtonEnable] = useState(false);
+  const { paymentDetail, balance } = route.params;
+  const creditPaymentHandler = () => {
+    if (paymentDetail.total > balance) {
+      navigation.navigate("TopUp", { balance: balance });
+    } else {
+      //endpoint to deduct credit
+      navigation.navigate("PaymentSuccessful");
+    }
+  }; // if credit is not enough navigate to top up else deduct credit
 
-  const creditPaymentHandler = () => {}; // if credit is not enough navigate to top up else deduct credit
-
-  const QRPaymentHandler = () => {}; // navigate to QR page
+  const QRPaymentHandler = () => {
+    navigation.navigate("PaymentSuccessful");
+  }; // navigate to QR page
 
   const handlePayment = () => {
     switch (paymentMethod) {
@@ -37,7 +48,6 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
         QRPaymentHandler();
         break;
     }
-    navigation.navigate("PaymentSuccessful"); //this is just mock
   };
 
   const handleNotFillInfo = () => {
@@ -129,15 +139,15 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
           </View>
           {renderPrice({
             attribute: "Internet fee",
-            value: "$50",
+            value: `mock value`,
           })}
           {renderPrice({
             attribute: "Tax",
-            value: "$10",
+            value: `mock value`,
           })}
           {renderTotal({
             attribute: "TOTAL",
-            value: "$60",
+            value: `${paymentDetail.total} ฿`,
           })}
         </View>
         <DropdownInput

@@ -5,6 +5,7 @@ import { ParkingLot } from "./parking-lot/ParkingLot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
+import { mockedPaymentLicensePlateProps } from "@/mock/mockData";
 import { BookingRequest } from "@/screens/booking/BookingDetail";
 
 export type RootParamList = {
@@ -65,8 +66,10 @@ export type BookingStackParamList = {
 export type PaymentStackParamList = {
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
-  PayTheBill: undefined;
-  PaymentSummary: undefined;
+  PaymentSummary: {
+    balance: number;
+    paymentDetail: mockedPaymentLicensePlateProps;
+  };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;
 };
