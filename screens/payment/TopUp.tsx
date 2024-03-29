@@ -62,12 +62,31 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
   const [isManualChooseAmount, setIsManualChooseAmount] =
     useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<number>();
-  const isAmountLessThanMinimum = +amount !== 0 && +amount < 50;
+  const [isShowErrorText, setIsShowErrorText] = useState<boolean>(false);
+  const [isNextButtonDisable, setIsNextButtonDisable] = useState<boolean>(true);
+  const MINIMUM_AMOUNT = 50;
 
   const onPressButton = (amount: number) => {
     setActiveButton(amount);
     setAmount(amount);
-    setIsManualChooseAmount(amount === 0 ? true : false);
+    setIsNextButtonDisable(false);
+    if (amount === 0) {
+      setIsManualChooseAmount(true);
+      setIsShowErrorText(false);
+    } else {
+      setIsManualChooseAmount(false);
+    }
+  };
+
+  const onNextPage = () => {
+    if (+amount < MINIMUM_AMOUNT) {
+      setIsShowErrorText(true);
+    } else {
+      navigation.navigate("PaymentStack", {
+        screen: "PaymentOptions",
+        params: { amount: amount },
+      });
+    }
   };
 
   return (
@@ -78,9 +97,11 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
       </View>
       {isManualChooseAmount && (
         <TextInput
-          title="Please enter amount (50 baht minimum)"
+          title={`Please enter amount (${MINIMUM_AMOUNT} baht minimum)`}
           errorText={
-            isAmountLessThanMinimum ? "Please top up at least 50 baht." : ""
+            isShowErrorText
+              ? `Please top up at least ${MINIMUM_AMOUNT} baht.`
+              : ""
           }
           placeholder="0"
           value={amount.toString()}
@@ -108,15 +129,8 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
       />
       <PrimaryButton
         title="Next"
-        onPress={() => {
-          if (+amount >= 50) {
-            navigation.navigate("PaymentStack", {
-              screen: "PaymentOptions",
-              params: { amount: amount },
-            });
-          }
-        }}
-        disabled={+amount >= 50 ? false : true}
+        onPress={() => onNextPage()}
+        disabled={isNextButtonDisable}
       />
     </BodyContainer>
   );
