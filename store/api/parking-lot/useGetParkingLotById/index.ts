@@ -33,7 +33,7 @@ export const getParkingLot: GetParkingLotService = async ({
 
 export const useGetParkingLot = (
   input: GetParkingLotInput
-): UseQueryResult<ParkingLot[], AxiosError> => {
+): UseQueryResult<ParkingLot, AxiosError> => {
   return useQuery({
     queryKey: ["parking-lot", input.queryParams],
     queryFn: async () => getParkingLot(input),

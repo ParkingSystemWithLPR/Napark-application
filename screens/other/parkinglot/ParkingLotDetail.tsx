@@ -38,13 +38,14 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
 
   useLayoutEffect(() => {
     if (getParkingLot.data) {
-      if (getParkingLot.data[0]) setParkingLot(getParkingLot.data[0]);
+      setParkingLot(getParkingLot.data);
       setLoading(false);
     }
   }, [getParkingLot.data]);
   if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   if (!parkingLot) return <></>;
+
 
   return (
     <BodyContainer innerContainerStyle={styles.bodyContainer}>
