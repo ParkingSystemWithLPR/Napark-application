@@ -57,7 +57,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
                 <SubHeaderText text={item.province} />
               </View>
               <HeaderText
-                text={`${item.total} ฿`}
+                text={`฿ ${item.total}`}
                 textStyle={[styles.licenseText]}
               />
             </View>
@@ -87,7 +87,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
             }}
           >
             <HeaderText
-              text={`${mockBalance} ฿`}
+              text={`฿ ${mockBalance}`}
               textStyle={{ color: Colors.black }}
             />
             <IconButton

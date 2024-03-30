@@ -147,7 +147,7 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
           })}
           {renderTotal({
             attribute: "TOTAL",
-            value: `${paymentDetail.total} ฿`,
+            value: `฿ ${paymentDetail.total}`,
           })}
         </View>
         <DropdownInput
