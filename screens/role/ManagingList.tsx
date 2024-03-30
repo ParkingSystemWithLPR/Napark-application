@@ -1,5 +1,4 @@
 import ChangeScreenTab from "@/components/button/ChangeScreenTab";
-import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -11,13 +10,13 @@ export type ManagingListProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ManagingList: React.FC<ManagingListProps> = ({}) => {
+const ManagingList: React.FC<ManagingListProps> = ({navigation}) => {
   return (
     <BodyContainer innerContainerStyle={styles.tabContainer}>
       <ChangeScreenTab
         icon="account-supervisor"
         screenName="Roles Configuration"
-        onPress={() => {}}
+        onPress={() => navigation.navigate("RoleList")}
       />
       <ChangeScreenTab
         icon="account-star"
