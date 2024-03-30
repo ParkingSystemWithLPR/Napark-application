@@ -49,16 +49,26 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
             onPress={() => pressLicensePlateHandler(item)}
           >
             <View style={styles.innerContainer}>
-              <View>
-                <HeaderText
+              <View
+                style={{
+                  flexDirection: "row",
+                  flex: 3,
+                  gap: 10,
+                }}
+              >
+                <SubHeaderText
                   text={item.licensePlate}
                   textStyle={styles.licenseText}
                 />
-                <SubHeaderText text={item.province} />
+                <SubHeaderText
+                  text={item.province}
+                  textStyle={styles.licenseText}
+                />
               </View>
-              <HeaderText
+              <SubHeaderText
                 text={`฿ ${item.total}`}
-                textStyle={[styles.licenseText]}
+                textStyle={{ color: Colors.red[400] }}
+                containerStyle={{ flex: 1, alignItems: "flex-end" }}
               />
             </View>
           </Pressable>
@@ -160,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   licenseText: {
-    color: Colors.black,
+    color: Colors.blue[600],
   },
   pressed: {
     opacity: 0.5,
