@@ -72,7 +72,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const disableDate = (date: Date) => {
     if (parkingLot.businessDays) {
       const day = format(date, "eeee");
-      return !parkingLot.businessDays[`${day}` as DayInAWeek].isOpen;
+      return parkingLot.businessDays[`${day}` as DayInAWeek] === undefined;
     }
     return false;
   };
@@ -81,10 +81,13 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     if (parkingLot.businessDays) {
       const dateObject = parseISO(dateString);
       const day = format(dateObject, "eeee");
-      return {
-        openTime: parkingLot.businessDays[`${day}` as DayInAWeek].openTime,
-        closeTime: parkingLot.businessDays[`${day}` as DayInAWeek].closeTime,
-      };
+      const bussinessDay = parkingLot.businessDays[`${day}` as DayInAWeek];
+      if (bussinessDay) {
+        return {
+          openTime: bussinessDay.openTime,
+          closeTime: bussinessDay.closeTime,
+        };
+      }
     }
   };
 
