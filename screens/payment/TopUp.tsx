@@ -1,12 +1,12 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 
-import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
+import PrimaryButton from "@/components/button/PrimaryButton";
 import TextInput from "@/components/input/TextInput";
-import HeaderText from "@/components/text/HeaderText";
+import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
@@ -16,8 +16,8 @@ import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
 type DoubleButtonProps = {
   leftAmount: number;
   rightAmount: number;
-  onButtonClicked: (amount: number) => void;
-  activeButton: number | undefined;
+  onPress: (amount: number) => void;
+  currentAmount: number;
 };
 
 export type TopUpProps = CompositeScreenProps<
@@ -28,29 +28,27 @@ export type TopUpProps = CompositeScreenProps<
 const DoubleButton: React.FC<DoubleButtonProps> = ({
   leftAmount,
   rightAmount,
-  onButtonClicked,
-  activeButton,
+  onPress,
+  currentAmount,
 }) => {
-  const leftText = leftAmount === 0 ? "Custom" : `฿ ${leftAmount}`;
-  const rightText = rightAmount === 0 ? "Custom" : `฿ ${rightAmount}`;
   return (
     <View style={styles.doubleButtonContainer}>
       <SecondaryButton
-        title={leftText}
-        onPress={() => onButtonClicked(leftAmount)}
+        title={`฿ ${leftAmount}`}
+        onPress={() => onPress(leftAmount)}
         outerContainerStyle={styles.doubleButton}
         buttonStyle={{
           backgroundColor:
-            activeButton === leftAmount ? Colors.red[400] : Colors.gray[800],
+            currentAmount === leftAmount ? Colors.red[400] : Colors.gray[700],
         }}
       />
       <SecondaryButton
-        title={rightText}
-        onPress={() => onButtonClicked(rightAmount)}
+        title={`฿ ${rightAmount}`}
+        onPress={() => onPress(rightAmount)}
         outerContainerStyle={styles.doubleButton}
         buttonStyle={{
           backgroundColor:
-            activeButton === rightAmount ? Colors.red[400] : Colors.gray[800],
+            currentAmount === rightAmount ? Colors.red[400] : Colors.gray[700],
         }}
       />
     </View>
@@ -58,24 +56,17 @@ const DoubleButton: React.FC<DoubleButtonProps> = ({
 };
 
 const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
-  const [amount, setAmount] = useState<number>(0);
-  const [isManualChooseAmount, setIsManualChooseAmount] =
-    useState<boolean>(false);
-  const [activeButton, setActiveButton] = useState<number>();
+  const { balance } = route.params;
+  const [amount, setAmount] = useState<number>(100);
   const [isShowErrorText, setIsShowErrorText] = useState<boolean>(false);
-  const [isNextButtonDisable, setIsNextButtonDisable] = useState<boolean>(true);
   const MINIMUM_AMOUNT = 50;
 
+  useEffect(() => {
+    if (isShowErrorText) setIsShowErrorText(false);
+  }, [amount]);
+
   const onPressButton = (amount: number) => {
-    setActiveButton(amount);
     setAmount(amount);
-    setIsNextButtonDisable(false);
-    if (amount === 0) {
-      setIsManualChooseAmount(true);
-      setIsShowErrorText(false);
-    } else {
-      setIsManualChooseAmount(false);
-    }
   };
 
   const onNextPage = () => {
@@ -91,51 +82,49 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
 
   return (
     <BodyContainer>
-      <SubHeaderText text="Current Balance" />
       <View style={styles.currentBalance}>
-        <HeaderText text={`฿ ${route.params.balance}`} />
+        <SubHeaderText text="Current Balance:" />
+        <SubHeaderText text={`฿ ${balance}`} />
       </View>
-      {isManualChooseAmount && (
-        <TextInput
-          title={`Please enter amount (${MINIMUM_AMOUNT} baht minimum)`}
-          errorText={
-            isShowErrorText
-              ? `Please top up at least ${MINIMUM_AMOUNT} baht.`
-              : ""
-          }
-          placeholder="0"
-          value={amount.toString()}
-          onChangeText={(amount) => setAmount(+amount)}
-          inputMode={InputType.Numeric}
-        />
-      )}
+      <TextInput
+        title={`Amount`}
+        errorText={
+          isShowErrorText
+            ? `Please top up at least ${MINIMUM_AMOUNT} baht.`
+            : ""
+        }
+        placeholder="0"
+        value={amount.toString()}
+        onChangeText={(amount) => setAmount(+amount)}
+        inputMode={InputType.Numeric}
+        prefix="฿"
+      />
+      <BodyText
+        text={`Minimum amount: ฿ ${MINIMUM_AMOUNT}`}
+        textStyle={{ color: Colors.gray[700] }}
+      />
       <DoubleButton
-        leftAmount={100}
+        leftAmount={50}
+        rightAmount={100}
+        onPress={onPressButton}
+        currentAmount={amount}
+      />
+      <DoubleButton
+        leftAmount={200}
         rightAmount={250}
-        onButtonClicked={onPressButton}
-        activeButton={activeButton}
+        onPress={onPressButton}
+        currentAmount={amount}
       />
       <DoubleButton
         leftAmount={500}
-        rightAmount={750}
-        onButtonClicked={onPressButton}
-        activeButton={activeButton}
-      />
-      <DoubleButton
-        leftAmount={1000}
-        rightAmount={0}
-        onButtonClicked={onPressButton}
-        activeButton={activeButton}
+        rightAmount={1000}
+        onPress={onPressButton}
+        currentAmount={amount}
       />
       <PrimaryButton
         title="Next"
         onPress={() => onNextPage()}
-        disabled={isNextButtonDisable}
-        buttonStyle={{
-          backgroundColor: isNextButtonDisable
-            ? Colors.gray[700]
-            : Colors.red[400],
-        }}
+        buttonStyle={{ marginTop: 10 }}
       />
     </BodyContainer>
   );
@@ -149,25 +138,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.white,
     borderRadius: 8,
-    padding: 8,
-    paddingVertical: Platform.OS === "android" ? 13 : 16,
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    gap: 10,
     marginTop: 4,
     marginBottom: 20,
   },
   doubleButtonContainer: {
     flexDirection: "row",
-    gap: 30,
-    marginBottom: 20,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 30,
+    gap: 20,
+    marginVertical: 10,
   },
   doubleButton: {
     flex: 1,

@@ -37,10 +37,19 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: Colors.gray[700],
     borderRadius: 8,
+    borderColor: Colors.gray[400],
     paddingVertical: 10,
     paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: Colors.gray[200],
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
   },
   button: {},
   buttonPressed: {
