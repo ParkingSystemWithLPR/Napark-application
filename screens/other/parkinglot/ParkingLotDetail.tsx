@@ -94,7 +94,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               title={"Role"}
               icon={"head-cog-outline"}
               onPress={() => {
-                navigation.navigate("OtherStack", { screen: "RoleList" });
+                navigation.navigate("OtherStack", { screen: "ManagingList" });
               }}
             />
           </View>

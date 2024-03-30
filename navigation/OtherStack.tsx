@@ -15,6 +15,7 @@ import ConfigRole from "@/screens/role/ConfigRole";
 import RoleList from "@/screens/role/RoleList";
 import RoleMember from "@/screens/role/RoleMember";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import ManagingList from "@/screens/role/ManagingList";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -111,6 +112,13 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         component={RoleMember}
         options={{
           title: "Assign member",
+        }}
+      />
+      <Stack.Screen
+        name="ManagingList"
+        component={ManagingList}
+        options={{
+          title: "Managing List"
         }}
       />
     </Stack.Navigator>
