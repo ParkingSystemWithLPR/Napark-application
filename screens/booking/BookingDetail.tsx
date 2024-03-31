@@ -94,27 +94,32 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
 
   const closeSetting = () => {
     if (
-      bookingRequest.licensePlate == "" ||
-      !bookingRequest.checkInDate ||
-      !bookingRequest.checkInTime ||
-      !bookingRequest.checkOutTime ||
-      !bookingRequest.checkOutDate ||
-      isCheckInTimeout(
-        getDateFromDateAndTime(
-          bookingRequest.checkInDate,
-          bookingRequest.checkInTime
-        )
-      ) ||
-      isCheckOutTimeout(
-        getDateFromDateAndTime(
-          bookingRequest.checkOutDate,
-          bookingRequest.checkOutTime
-        )
-      )
+      bookingRequest.licensePlate != "" &&
+      bookingRequest.checkInDate &&
+      bookingRequest.checkInTime &&
+      bookingRequest.checkOutTime &&
+      bookingRequest.checkOutDate
     ) {
-      Alert.alert("Please fill all required fill");
-    } else {
+      if (
+        isCheckInTimeout(
+          getDateFromDateAndTime(
+            bookingRequest.checkInDate,
+            bookingRequest.checkInTime
+          )
+        ) ||
+        isCheckOutTimeout(
+          getDateFromDateAndTime(
+            bookingRequest.checkOutDate,
+            bookingRequest.checkOutTime
+          )
+        )
+      ) {
+        Alert.alert("CheckIn or CheckOut timeout");
+        return;
+      }
       setIsSetting(false);
+    } else {
+      Alert.alert("Please fill all required fill");
     }
   };
 
