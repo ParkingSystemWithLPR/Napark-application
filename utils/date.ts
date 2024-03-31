@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { differenceInMinutes, format, isBefore, parseISO } from "date-fns";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
@@ -37,5 +37,43 @@ export const formatISODate = (date?: string) => {
 
 export const getBusinessHours = (businessDays: BusinessDay) => {
   const today = format(new Date(), "eeee");
-  return `${businessDays[`${today}` as DayInAWeek].openTime} - ${businessDays[`${today}` as DayInAWeek].closeTime}`
-}
+  return `${businessDays[`${today}` as DayInAWeek].openTime} - ${
+    businessDays[`${today}` as DayInAWeek].closeTime
+  }`;
+};
+
+export const isCheckInTimeout = (date: Date) => {
+  return differenceInMinutes(new Date(), date) > 15;
+};
+
+export const isCheckOutTimeout = (date: Date) => {
+  return isBefore(date, new Date());
+};
+
+export const getOpenCloseTime = (
+  dateString: string,
+  businessDays: BusinessDay
+) => {
+  const dateObject = parseISO(dateString);
+  const day = format(dateObject, "eeee");
+  const bussinessDay = businessDays[`${day}` as DayInAWeek];
+  if (bussinessDay) {
+    return {
+      openTime: bussinessDay.openTime,
+      closeTime: bussinessDay.closeTime,
+    };
+  }
+};
+
+export const disableDate = (businessDays: BusinessDay, date: Date) => {
+  const day = format(date, "eeee");
+  return businessDays[`${day}` as DayInAWeek] === undefined;
+};
+
+export const duration = (minTime: Date, maxTime: Date): string => {
+  return `open ${formatTime(minTime)} - ${formatTime(maxTime)}`;
+};
+
+export const getDateFromDateAndTime = (date: string, time?: string) => {
+  return parseISO(`${date} ${time}`.trimEnd());
+};

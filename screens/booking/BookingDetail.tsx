@@ -1,6 +1,5 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { format, parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -20,9 +19,14 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { DayInAWeek } from "@/enum/DayInAWeek";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
+import {
+  formatHumanReadableDateFromDateString,
+  getDateFromDateAndTime,
+  isCheckInTimeout,
+  isCheckOutTimeout,
+} from "@/utils/date";
 
 export type BookingDetailProps = CompositeScreenProps<
   NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
@@ -48,15 +52,16 @@ export type BookingRequest = {
 };
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const parkingLot = route.params.parkingLot;
+  const { profile } = useProfile();
+  const isFocused = useIsFocused();
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
-  const isFocused = useIsFocused();
-  const { profile } = useProfile();
-  const licensePlateList = profile.user_car?.map((car) => car.license_plate);
+
   const defaultLicensePlate = profile.user_car
     ?.filter((car) => car.is_default)
     .map((defaultcar) => defaultcar.license_plate)[0];
-  const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
+
+  const defaultValue = {
     licensePlate: defaultLicensePlate ?? "",
     checkInDate: null,
     checkInTime: null,
@@ -67,29 +72,9 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     slot: "",
     price: 0,
     unit: "",
-  });
-
-  const disableDate = (date: Date) => {
-    if (parkingLot.businessDays) {
-      const day = format(date, "eeee");
-      return parkingLot.businessDays[`${day}` as DayInAWeek] === undefined;
-    }
-    return false;
   };
-
-  const getOpenCloseTime = (dateString: string) => {
-    if (parkingLot.businessDays) {
-      const dateObject = parseISO(dateString);
-      const day = format(dateObject, "eeee");
-      const bussinessDay = parkingLot.businessDays[`${day}` as DayInAWeek];
-      if (bussinessDay) {
-        return {
-          openTime: bussinessDay.openTime,
-          closeTime: bussinessDay.closeTime,
-        };
-      }
-    }
-  };
+  const [bookingRequest, setBookingRequest] =
+    useState<BookingRequest>(defaultValue);
 
   const handleOnChange = function <T>(
     identifierKey: string,
@@ -113,12 +98,35 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
       !bookingRequest.checkInDate ||
       !bookingRequest.checkInTime ||
       !bookingRequest.checkOutTime ||
-      !bookingRequest.checkOutDate
+      !bookingRequest.checkOutDate ||
+      isCheckInTimeout(
+        getDateFromDateAndTime(
+          bookingRequest.checkInDate,
+          bookingRequest.checkInTime
+        )
+      ) ||
+      isCheckOutTimeout(
+        getDateFromDateAndTime(
+          bookingRequest.checkOutDate,
+          bookingRequest.checkOutTime
+        )
+      )
     ) {
       Alert.alert("Please fill all required fill");
     } else {
       setIsSetting(false);
     }
+  };
+
+  const handleNavigation = () => {
+    setGoToNextPage(true);
+  };
+
+  const handleClickRecommend = (slot: RecommendedSlotType) => {
+    handleOnChange("slot", slot.slotName);
+    handleOnChange("price", slot.price);
+    handleOnChange("unit", slot.unit);
+    handleNavigation();
   };
 
   useLayoutEffect(() => {
@@ -134,47 +142,39 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     isFocused && setBookingRequest(bookingRequest); //refresh screen
   }, [isFocused]);
 
-  const handleNavigation = () => {
-    setGoToNextPage(true);
-  };
-
-  const handleClickRecommend = (slot: RecommendedSlotType) => {
-    handleOnChange("slot", slot.slotName);
-    handleOnChange("price", slot.price);
-    handleOnChange("unit", slot.unit);
-    handleNavigation();
-  };
-
   const renderRecommendedSlot = useCallback(
     ({ slotName, recommendType, price, unit }: RecommendedSlotType) => {
       return (
-        <Pressable
-          onPress={handleClickRecommend.bind(this, {
-            slotName,
-            recommendType,
-            price,
-            unit,
-          })}
-        >
-          <View style={styles.recommendSlotContainer}>
-            <View style={styles.rowContainer}>
-              <MaterialCommunityIcons
-                name="alpha-p-circle-outline"
-                style={styles.iconParking}
-                size={20}
-              />
-              <View
-                style={{
-                  gap: 5,
-                }}
-              >
-                <BodyText text={`Slot: ${slotName}`}></BodyText>
-                <BodyText text={recommendType}></BodyText>
+        <View style={styles.recommendSlotContainer}>
+          <Pressable
+            onPress={handleClickRecommend.bind(this, {
+              slotName,
+              recommendType,
+              price,
+              unit,
+            })}
+            style={({ pressed }) => [pressed && styles.pressed]}
+          >
+            <View style={styles.recommendSlot}>
+              <View style={styles.rowContainer}>
+                <MaterialCommunityIcons
+                  name="alpha-p-circle-outline"
+                  style={styles.iconParking}
+                  size={20}
+                />
+                <View
+                  style={{
+                    gap: 5,
+                  }}
+                >
+                  <BodyText text={`Slot: ${slotName}`}></BodyText>
+                  <BodyText text={recommendType}></BodyText>
+                </View>
               </View>
+              <BodyText text={`${price.toString()} ${unit}`}></BodyText>
             </View>
-            <BodyText text={`${price.toString()} ${unit}`}></BodyText>
-          </View>
-        </Pressable>
+          </Pressable>
+        </View>
       );
     },
     []
@@ -219,15 +219,18 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               setCheckOutDate={(value: string | null) =>
                 handleOnChange("checkOutDate", value)
               }
-              licensePlateList={licensePlateList}
-              disableDate={disableDate}
-              getOpenCloseTime={getOpenCloseTime}
+              bussinessDays={parkingLot.businessDays}
             />
           </View>
         ) : (
           <BookingCardSummary
-            checkInDate={bookingRequest.checkInDate ?? ""}
-            checkInTime={bookingRequest.checkInTime ?? ""}
+            checkIn={
+              bookingRequest.checkInDate && bookingRequest.checkInTime
+                ? `${formatHumanReadableDateFromDateString(
+                    bookingRequest.checkInDate
+                  )} ${bookingRequest.checkInTime}`
+                : ""
+            }
             specification={bookingRequest.specification}
             openSetting={openSetting}
           />
@@ -282,6 +285,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 20,
   },
+  pressed: { opacity: 0.5 },
   bookingDetailContainer: { flex: 2 },
   locationContainer: {
     flexDirection: "row",
@@ -310,9 +314,11 @@ const styles = StyleSheet.create({
     gap: Platform.OS == "ios" ? 25 : 20,
     marginBottom: 10,
   },
-  recommendSlotContainer: {
+  recommendSlot: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  recommendSlotContainer: {
     marginHorizontal: 5,
     backgroundColor: Colors.white,
     padding: 10,
