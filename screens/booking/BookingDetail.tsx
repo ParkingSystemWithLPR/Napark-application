@@ -27,17 +27,13 @@ import {
   isCheckInTimeout,
   isCheckOutTimeout,
 } from "@/utils/date";
+import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
 
 export type BookingDetailProps = CompositeScreenProps<
   NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
-type RecommendedSlotType = {
-  slotName: string;
-  recommendType: string;
-  price: number;
-  unit: string;
-};
+
 export type BookingRequest = {
   licensePlate: string;
   checkInDate: string | null;
@@ -61,8 +57,8 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     ?.filter((car) => car.is_default)
     .map((defaultcar) => defaultcar.license_plate)[0];
 
-  const defaultValue = {
-    licensePlate: defaultLicensePlate ?? "",
+  const defaultBookingRequest = {
+    licensePlate: "",
     checkInDate: null,
     checkInTime: null,
     checkOutDate: null,
@@ -70,11 +66,13 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     specification: "None",
     floor: "",
     slot: "",
-    price: 0,
+    price: -1,
     unit: "",
   };
-  const [bookingRequest, setBookingRequest] =
-    useState<BookingRequest>(defaultValue);
+  const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
+    ...defaultBookingRequest,
+    licensePlate: defaultLicensePlate ?? "",
+  });
 
   const handleOnChange = function <T>(
     identifierKey: string,
@@ -115,8 +113,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
         )
       ) {
         Alert.alert("CheckIn or CheckOut timeout");
+        setBookingRequest(defaultBookingRequest);
+        setIsSetting(true);
         return;
       }
+      console.log(bookingRequest);
       setIsSetting(false);
     } else {
       Alert.alert("Please fill all required fill");
@@ -124,13 +125,43 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   };
 
   const handleNavigation = () => {
-    setGoToNextPage(true);
+    if (
+      bookingRequest.checkInDate &&
+      bookingRequest.checkInTime &&
+      bookingRequest.checkOutTime &&
+      bookingRequest.checkOutDate
+    ) {
+      if (
+        isCheckInTimeout(
+          getDateFromDateAndTime(
+            bookingRequest.checkInDate,
+            bookingRequest.checkInTime
+          )
+        ) ||
+        isCheckOutTimeout(
+          getDateFromDateAndTime(
+            bookingRequest.checkOutDate,
+            bookingRequest.checkOutTime
+          )
+        )
+      ) {
+        Alert.alert("CheckIn or CheckOut timeout");
+        setIsSetting(true);
+        setBookingRequest(defaultBookingRequest);
+        return;
+      }
+      setGoToNextPage(true);
+    }
   };
 
-  const handleClickRecommend = (slot: RecommendedSlotType) => {
-    handleOnChange("slot", slot.slotName);
-    handleOnChange("price", slot.price);
-    handleOnChange("unit", slot.unit);
+  const handleClickRecommend = (
+    slotName: string,
+    price: number,
+    unit: string
+  ) => {
+    handleOnChange("slot", slotName);
+    handleOnChange("price", price);
+    handleOnChange("unit", unit);
     handleNavigation();
   };
 
@@ -147,43 +178,6 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     isFocused && setBookingRequest(bookingRequest); //refresh screen
   }, [isFocused]);
 
-  const renderRecommendedSlot = useCallback(
-    ({ slotName, recommendType, price, unit }: RecommendedSlotType) => {
-      return (
-        <View style={styles.recommendSlotContainer}>
-          <Pressable
-            onPress={handleClickRecommend.bind(this, {
-              slotName,
-              recommendType,
-              price,
-              unit,
-            })}
-            style={({ pressed }) => [pressed && styles.pressed]}
-          >
-            <View style={styles.recommendSlot}>
-              <View style={styles.rowContainer}>
-                <MaterialCommunityIcons
-                  name="alpha-p-circle-outline"
-                  style={styles.iconParking}
-                  size={20}
-                />
-                <View
-                  style={{
-                    gap: 5,
-                  }}
-                >
-                  <BodyText text={`Slot: ${slotName}`}></BodyText>
-                  <BodyText text={recommendType}></BodyText>
-                </View>
-              </View>
-              <BodyText text={`${price.toString()} ${unit}`}></BodyText>
-            </View>
-          </Pressable>
-        </View>
-      );
-    },
-    []
-  );
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.bookingDetailContainer}>
@@ -250,18 +244,20 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 containerStyle={styles.header}
               />
               <View style={styles.recommendSlotOuterContainer}>
-                {renderRecommendedSlot({
-                  slotName: "6A",
-                  recommendType: "Cheapest slot",
-                  price: 20,
-                  unit: "Baht/hr",
-                })}
-                {renderRecommendedSlot({
-                  slotName: "8B",
-                  recommendType: "Nearest to the entrance",
-                  price: 30,
-                  unit: "Baht/hr",
-                })}
+                <RecommendedSlotCard
+                  slotName={"6A"}
+                  recommendType={"Cheapest slot"}
+                  price={20}
+                  unit={"Baht/hr"}
+                  handleClickRecommend={handleClickRecommend}
+                />
+                <RecommendedSlotCard
+                  slotName={"8B"}
+                  recommendType={"Nearest to the entrance"}
+                  price={30}
+                  unit={"Baht/hr"}
+                  handleClickRecommend={handleClickRecommend}
+                />
               </View>
               <SubHeaderText
                 text={"View All Available Slot"}
@@ -290,7 +286,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 20,
   },
-  pressed: { opacity: 0.5 },
   bookingDetailContainer: { flex: 2 },
   locationContainer: {
     flexDirection: "row",
@@ -319,31 +314,5 @@ const styles = StyleSheet.create({
     gap: Platform.OS == "ios" ? 25 : 20,
     marginBottom: 10,
   },
-  recommendSlot: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  recommendSlotContainer: {
-    marginHorizontal: 5,
-    backgroundColor: Colors.white,
-    padding: 10,
-    shadowColor: Colors.black,
-    borderRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 4,
-  },
-  parkingOutline: {
-    borderRadius: 100,
-    borderWidth: 1,
-    alignSelf: "baseline",
-    marginRight: 10,
-  },
-  iconParking: { marginRight: 10 },
-  rowContainer: { flexDirection: "row" },
   scrollViewContent: { marginBottom: 100 },
 });
