@@ -21,13 +21,15 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
-import {
-  formatHumanReadableDateFromDateString,
-  getDateFromDateAndTime,
-  isCheckInTimeout,
-  isCheckOutTimeout,
-} from "@/utils/date";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
+import {
+  defaultBookingRequest,
+  validateAfterClosingSetting,
+  validateLicensePlate,
+  validateTimeInputs,
+} from "@/utils/bookingRequest";
+import { ValidateStatus } from "@/enum/BookingValidateStatus";
 
 export type BookingDetailProps = CompositeScreenProps<
   NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
@@ -57,18 +59,6 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     ?.filter((car) => car.is_default)
     .map((defaultcar) => defaultcar.license_plate)[0];
 
-  const defaultBookingRequest = {
-    licensePlate: "",
-    checkInDate: null,
-    checkInTime: null,
-    checkOutDate: null,
-    checkOutTime: null,
-    specification: "None",
-    floor: "",
-    slot: "",
-    price: -1,
-    unit: "",
-  };
   const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
     ...defaultBookingRequest,
     licensePlate: defaultLicensePlate ?? "",
@@ -89,69 +79,48 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const openSetting = () => {
     setIsSetting(true);
   };
-
-  const closeSetting = () => {
-    if (
-      bookingRequest.licensePlate != "" &&
-      bookingRequest.checkInDate &&
-      bookingRequest.checkInTime &&
-      bookingRequest.checkOutTime &&
-      bookingRequest.checkOutDate
-    ) {
-      if (
-        isCheckInTimeout(
-          getDateFromDateAndTime(
-            bookingRequest.checkInDate,
-            bookingRequest.checkInTime
-          )
-        ) ||
-        isCheckOutTimeout(
-          getDateFromDateAndTime(
-            bookingRequest.checkOutDate,
-            bookingRequest.checkOutTime
-          )
-        )
-      ) {
+  const timeValidator = () => {
+    const status = validateTimeInputs(bookingRequest);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.MISSING:
+        Alert.alert("Please fill all required fill");
+        return false;
+      case ValidateStatus.TIMEOUT:
         Alert.alert("CheckIn or CheckOut timeout");
         setBookingRequest(defaultBookingRequest);
         setIsSetting(true);
-        return;
-      }
-      console.log(bookingRequest);
+        return false;
+    }
+  };
+
+  const licensePlateValidator = () => {
+    const status = validateLicensePlate(bookingRequest);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.MISSING:
+        Alert.alert("Please fill all required fill");
+        return false;
+    }
+  };
+
+  const closeSetting = () => {
+    const isTimesValid = timeValidator();
+    const isLicensePlateValid = licensePlateValidator();
+    if (isTimesValid && isLicensePlateValid) {
       setIsSetting(false);
-    } else {
-      Alert.alert("Please fill all required fill");
     }
   };
 
   const handleNavigation = () => {
-    if (
-      bookingRequest.checkInDate &&
-      bookingRequest.checkInTime &&
-      bookingRequest.checkOutTime &&
-      bookingRequest.checkOutDate
-    ) {
-      if (
-        isCheckInTimeout(
-          getDateFromDateAndTime(
-            bookingRequest.checkInDate,
-            bookingRequest.checkInTime
-          )
-        ) ||
-        isCheckOutTimeout(
-          getDateFromDateAndTime(
-            bookingRequest.checkOutDate,
-            bookingRequest.checkOutTime
-          )
-        )
-      ) {
-        Alert.alert("CheckIn or CheckOut timeout");
-        setIsSetting(true);
-        setBookingRequest(defaultBookingRequest);
-        return;
-      }
+    const isTimeValid = timeValidator();
+    const isLicensePlateValid = licensePlateValidator();
+    const isOtherValid =
+      validateAfterClosingSetting(bookingRequest) == ValidateStatus.SUCCESS;
+    if (isTimeValid && isLicensePlateValid && isOtherValid)
       setGoToNextPage(true);
-    }
   };
 
   const handleClickRecommend = (

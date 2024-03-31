@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import ProcessingModalContent from "@/components/booking/ProcessingModalContent";
@@ -13,6 +13,8 @@ import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import { validateTimeInputs } from "@/utils/bookingRequest";
+import { ValidateStatus } from "@/enum/BookingValidateStatus";
 
 export type Attribute = {
   attribute: string;
@@ -32,6 +34,20 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
 
+  const timeValidator = () => {
+    const status = validateTimeInputs(bookingRequest);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.TIMEOUT:
+        Alert.alert("CheckIn or CheckOut timeout");
+        navigation.navigate("MainScreen", { screen: "Landing" });
+        return false;
+      default:
+        return false;
+    }
+  };
+
   const sendCreateRequest = () => {
     setIsSendingRequest(true);
     setTimeout(() => {
@@ -41,7 +57,8 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
 
   const openModal = () => {
     setIsOpenModal(true);
-    sendCreateRequest();
+    const isTimeValid = timeValidator();
+    if (isTimeValid) sendCreateRequest();
   };
 
   const closeModal = () => {
