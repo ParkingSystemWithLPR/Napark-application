@@ -221,10 +221,6 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
             label: "Not found your license plate",
             value: "Not found your license plate",
           },
-          {
-            label: "test",
-            value: "test",
-          },
         ]}
         title="License Plate"
         isRequired={true}
