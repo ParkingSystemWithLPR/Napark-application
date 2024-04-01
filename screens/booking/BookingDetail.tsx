@@ -115,12 +115,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   };
 
   const handleNavigation = () => {
-    const isTimeValid = timeValidator();
-    const isLicensePlateValid = licensePlateValidator();
-    const isOtherValid =
-      validateAfterClosingSetting(bookingRequest) == ValidateStatus.SUCCESS;
-    if (isTimeValid && isLicensePlateValid && isOtherValid)
-      setGoToNextPage(true);
+    setGoToNextPage(true);
   };
 
   const handleClickRecommend = (
@@ -135,11 +130,18 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   };
 
   useLayoutEffect(() => {
-    goToNextPage &&
-      navigation.navigate("BookingSummary", {
-        bookingRequest: bookingRequest,
-        parkingLot: parkingLot,
-      });
+    if (goToNextPage) {
+      const isTimeValid = timeValidator();
+      const isLicensePlateValid = licensePlateValidator();
+      const isOtherValid =
+        validateAfterClosingSetting(bookingRequest) == ValidateStatus.SUCCESS;
+      if (isTimeValid && isLicensePlateValid && isOtherValid) {
+        navigation.navigate("BookingSummary", {
+          bookingRequest: bookingRequest,
+          parkingLot: parkingLot,
+        });
+      }
+    }
     setGoToNextPage(false);
   }, [goToNextPage]);
 
