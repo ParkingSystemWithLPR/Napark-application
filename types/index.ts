@@ -5,7 +5,7 @@ import { ParkingLot } from "./parking-lot/ParkingLot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingRequest } from "@/screens/booking/BookingDetail";
+import { BookingDetailState } from "@/screens/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;
@@ -58,7 +58,10 @@ export type OtherStackParamList = {
 
 export type BookingStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
-  BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
+  BookingSummary: {
+    bookingDetailState: BookingDetailState;
+    parkingLot: ParkingLot;
+  };
   RoleMember: undefined;
 };
 
@@ -72,8 +75,8 @@ export type PaymentStackParamList = {
 };
 
 export type ParkingFlowStackParamList = {
-  Arriving: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
-  ParkingConfirmation: { bookingRequest: BookingRequest };
+  Arriving: { bookingRequest: BookingDetailState; parkingLot: ParkingLot };
+  ParkingConfirmation: { bookingRequest: BookingDetailState };
 };
 
 export type AuthenticatedStackParamListProps =

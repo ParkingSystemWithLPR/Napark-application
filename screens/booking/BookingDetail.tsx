@@ -1,15 +1,7 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  Pressable,
-  Platform,
-} from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { View, StyleSheet, ScrollView, Alert, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import BookingCardSummary from "@/components/booking/BookingCardSummary";
@@ -24,7 +16,7 @@ import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
 import {
-  defaultBookingRequest,
+  defaultBookingDetailState,
   validateAfterClosingSetting,
   validateLicensePlate,
   validateTimeInputs,
@@ -36,15 +28,17 @@ export type BookingDetailProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-export type BookingRequest = {
+export type BookingDetailState = {
+  carId: string;
   licensePlate: string;
   checkInDate: string | null;
   checkInTime: string | null;
   checkOutDate: string | null;
   checkOutTime: string | null;
   specification: string;
-  floor: string;
-  slot: string;
+  floor: number;
+  slotId: string;
+  slotName: string;
   price: number;
   unit: string;
 };
@@ -59,16 +53,17 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     ?.filter((car) => car.is_default)
     .map((defaultcar) => defaultcar.license_plate)[0];
 
-  const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
-    ...defaultBookingRequest,
-    licensePlate: defaultLicensePlate ?? "",
-  });
+  const [bookingDetailState, setBookingDetailState] =
+    useState<BookingDetailState>({
+      ...defaultBookingDetailState,
+      licensePlate: defaultLicensePlate ?? "",
+    });
 
   const handleOnChange = function <T>(
     identifierKey: string,
     enteredValue: T
   ): void {
-    setBookingRequest((curInputValue: BookingRequest) => {
+    setBookingDetailState((curInputValue: BookingDetailState) => {
       return {
         ...curInputValue,
         [identifierKey]: enteredValue,
@@ -80,7 +75,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     setIsSetting(true);
   };
   const timeValidator = () => {
-    const status = validateTimeInputs(bookingRequest);
+    const status = validateTimeInputs(bookingDetailState);
     switch (status) {
       case ValidateStatus.SUCCESS:
         return true;
@@ -89,14 +84,14 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
         return false;
       case ValidateStatus.TIMEOUT:
         Alert.alert("CheckIn or CheckOut timeout");
-        setBookingRequest(defaultBookingRequest);
+        setBookingDetailState(defaultBookingDetailState);
         setIsSetting(true);
         return false;
     }
   };
 
   const licensePlateValidator = () => {
-    const status = validateLicensePlate(bookingRequest);
+    const status = validateLicensePlate(bookingDetailState);
     switch (status) {
       case ValidateStatus.SUCCESS:
         return true;
@@ -134,10 +129,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
       const isTimeValid = timeValidator();
       const isLicensePlateValid = licensePlateValidator();
       const isOtherValid =
-        validateAfterClosingSetting(bookingRequest) == ValidateStatus.SUCCESS;
+        validateAfterClosingSetting(bookingDetailState) ==
+        ValidateStatus.SUCCESS;
       if (isTimeValid && isLicensePlateValid && isOtherValid) {
         navigation.navigate("BookingSummary", {
-          bookingRequest: bookingRequest,
+          bookingDetailState: bookingDetailState,
           parkingLot: parkingLot,
         });
       }
@@ -146,7 +142,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   }, [goToNextPage]);
 
   useLayoutEffect(() => {
-    isFocused && setBookingRequest(bookingRequest); //refresh screen
+    isFocused && setBookingDetailState(bookingDetailState); //refresh screen
   }, [isFocused]);
 
   return (
@@ -164,44 +160,22 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
         {isSetting ? (
           <View style={styles.bookingDetailComponentContainer}>
             <BookingDetailComponent
-              licensePlate={bookingRequest.licensePlate}
-              setLicensePlate={(value: string) => {
-                handleOnChange("licensePlate", value);
-              }}
-              checkInDate={bookingRequest.checkInDate}
-              setCheckInDate={(value: string | null) =>
-                handleOnChange("checkInDate", value)
-              }
-              checkInTime={bookingRequest.checkInTime}
-              setCheckInTime={(value: string | null) =>
-                handleOnChange("checkInTime", value)
-              }
-              specification={bookingRequest.specification}
-              setSpecification={(value: string | undefined) =>
-                handleOnChange("specification", value)
-              }
+              bookingDetailState={bookingDetailState}
+              onChange={handleOnChange}
               closeSetting={closeSetting}
-              checkOutTime={bookingRequest.checkOutTime}
-              setCheckOutTime={(value: string | null) =>
-                handleOnChange("checkOutTime", value)
-              }
-              checkOutDate={bookingRequest.checkOutDate}
-              setCheckOutDate={(value: string | null) =>
-                handleOnChange("checkOutDate", value)
-              }
               bussinessDays={parkingLot.businessDays}
             />
           </View>
         ) : (
           <BookingCardSummary
             checkIn={
-              bookingRequest.checkInDate && bookingRequest.checkInTime
+              bookingDetailState.checkInDate && bookingDetailState.checkInTime
                 ? `${formatHumanReadableDateFromDateString(
-                    bookingRequest.checkInDate
-                  )} ${bookingRequest.checkInTime}`
+                    bookingDetailState.checkInDate
+                  )} ${bookingDetailState.checkInTime}`
                 : ""
             }
-            specification={bookingRequest.specification}
+            specification={bookingDetailState.specification}
             openSetting={openSetting}
           />
         )}
@@ -235,13 +209,9 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                 containerStyle={{ marginVertical: 10 }}
               />
               <ParkingPlan
-                floor={bookingRequest.floor}
-                setFloor={(value: string) => handleOnChange("floor", value)}
-                slot={bookingRequest.slot}
-                setSlot={(value: string) => handleOnChange("slot", value)}
+                bookingDetailState={bookingDetailState}
+                onChange={handleOnChange}
                 handleConfirm={handleNavigation}
-                setPrice={(value: number) => handleOnChange("price", value)}
-                setUnit={(value: string) => handleOnChange("unit", value)}
               />
             </View>
           </ScrollView>

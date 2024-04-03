@@ -29,7 +29,17 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   navigation,
   route,
 }) => {
-  const bookingRequest = route.params.bookingRequest;
+  const bookingRequest = route.params.bookingDetailState;
+  const {
+    slotName,
+    checkInDate,
+    checkInTime,
+    checkOutDate,
+    checkOutTime,
+    specification,
+    price,
+    unit,
+  } = bookingRequest;
   const parkingLot = route.params.parkingLot;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
@@ -100,36 +110,36 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
             text="Booking Details"
             containerStyle={styles.headerStyle}
           />
-          {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
+          {renderAttribute({
+            attribute: "Space",
+            value: slotName,
+          })}
           {renderAttribute({
             attribute: "Check-in Date",
             value:
-              bookingRequest.checkInDate &&
-              formatHumanReadableDateFromDateString(bookingRequest.checkInDate),
+              checkInDate && formatHumanReadableDateFromDateString(checkInDate),
           })}
           {renderAttribute({
             attribute: "Check-in Time",
-            value: bookingRequest.checkInTime ?? "",
+            value: checkInTime ?? "",
           })}
           {renderAttribute({
             attribute: "Check-out Date (Est)",
             value:
-              bookingRequest.checkOutDate &&
-              formatHumanReadableDateFromDateString(
-                bookingRequest.checkOutDate
-              ),
+              checkOutDate &&
+              formatHumanReadableDateFromDateString(checkOutDate),
           })}
           {renderAttribute({
             attribute: "Check-out Time (Est)",
-            value: bookingRequest.checkOutTime ?? "",
+            value: checkOutTime ?? "",
           })}
           {renderAttribute({
             attribute: "Specifications",
-            value: bookingRequest.specification,
+            value: specification,
           })}
           {renderAttribute({
             attribute: "Cost per Unit",
-            value: `${bookingRequest.price}  ${bookingRequest.unit}`,
+            value: `${price}  ${unit}`,
           })}
         </View>
         <View style={styles.routeContainer}>

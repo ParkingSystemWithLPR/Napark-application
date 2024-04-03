@@ -7,7 +7,7 @@ import Specification from "./Specification";
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
-import DropdownInput from "../input/DropdownInput";
+import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
@@ -22,43 +22,35 @@ import {
   isCheckInTimeout,
   isCheckOutTimeout,
 } from "@/utils/date";
-import { formatDropdownFromLicensePlates } from "@/utils/dropdown";
+import {
+  formatDropdownFromLicensePlates,
+  initDropdownValue,
+} from "@/utils/dropdown";
 import { BusinessDay } from "@/types/parking-lot/ParkingLot";
 import { useProfile } from "@/store/context/profile";
+import { BookingDetailState } from "@/screens/booking/BookingDetail";
 
 export type BookingDetailComponentProps = {
-  checkOutTime: string | null;
-  setCheckOutTime: (value: string | null) => void;
-  checkOutDate: string | null;
-  setCheckOutDate: (value: string | null) => void;
-  licensePlate: string;
-  setLicensePlate: (value: string) => void;
-  checkInDate: string | null;
-  setCheckInDate: (value: string | null) => void;
-  checkInTime: string | null;
-  setCheckInTime: (value: string | null) => void;
-  specification: string | undefined;
-  setSpecification: (value: string | undefined) => void;
+  bookingDetailState: BookingDetailState;
+  onChange: <T>(identifierKey: string, enteredValue: T) => void;
   closeSetting: () => void;
   bussinessDays?: BusinessDay;
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
-  checkOutTime,
-  setCheckOutTime,
-  checkOutDate,
-  setCheckOutDate,
-  licensePlate,
-  setLicensePlate,
-  checkInDate,
-  setCheckInDate,
-  checkInTime,
-  setCheckInTime,
-  specification,
-  setSpecification,
+  bookingDetailState,
+  onChange,
   closeSetting,
   bussinessDays,
 }) => {
+  const {
+    checkOutTime,
+    checkOutDate,
+    licensePlate,
+    checkInDate,
+    checkInTime,
+    specification,
+  } = bookingDetailState;
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const { profile } = useProfile();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
@@ -68,6 +60,30 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   const [maxCheckOutTime, setMaxCheckOutTime] = useState<Date>();
   const [displayCheckInTime, setDisplayCheckInTime] = useState<string>();
   const [displayCheckOutTime, setDisplayCheckOutTime] = useState<string>();
+
+  const setCheckOutTime = (value: string | null) => {
+    onChange("checkOutTime", value);
+  };
+
+  const setCheckOutDate = (value: string | null) => {
+    onChange("checkOutDate", value);
+  };
+
+  const setLicensePlate = (value: string) => {
+    onChange("licensePlate", value);
+  };
+
+  const setCheckInDate = (value: string | null) => {
+    onChange("checkInDate", value);
+  };
+
+  const setCheckInTime = (value: string | null) => {
+    onChange("checkInTime", value);
+  };
+
+  const setSpecification = (value?: string) => {
+    onChange("checkInTime", value);
+  };
 
   const isCheckInDateNotNull = checkInDate != null;
 
@@ -84,7 +100,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       !maxCheckOutTime ||
       !isEqual(minCheckOutTime, maxCheckOutTime));
 
-  const licensePlateList = profile.user_car?.map((car) => car.license_plate);
+  const licensePlateList = profile.user_car;
   const licensePlateDropdown =
     (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
     [];
@@ -220,6 +236,10 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           {
             label: "Not found your license plate",
             value: "Not found your license plate",
+          },
+          {
+            label: "Test",
+            value: "Test",
           },
         ]}
         title="License Plate"
