@@ -10,7 +10,7 @@ export type ManagingListProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ManagingList: React.FC<ManagingListProps> = ({navigation}) => {
+const ManagingList: React.FC<ManagingListProps> = ({ navigation }) => {
   return (
     <BodyContainer innerContainerStyle={styles.tabContainer}>
       <ChangeScreenTab
@@ -21,7 +21,7 @@ const ManagingList: React.FC<ManagingListProps> = ({navigation}) => {
       <ChangeScreenTab
         icon="account-star"
         screenName="Privilege Configuration"
-        onPress={() => {}}
+        onPress={() => navigation.navigate("PrivilegeList")}
       />
     </BodyContainer>
   );

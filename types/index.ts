@@ -53,6 +53,7 @@ export type OtherStackParamList = {
   ScanQR: undefined;
   PayTheBill: undefined;
   ManagingList: undefined;
+  PrivilegeList: undefined;
 };
 
 export type BookingsStackParamList = {
