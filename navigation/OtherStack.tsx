@@ -12,11 +12,10 @@ import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
 import ConfigRole from "@/screens/role/ConfigRole";
-import RoleList from "@/screens/role/RoleList";
 import RoleMember from "@/screens/role/RoleMember";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import ManagingCategory from "@/screens/role/ManagingCategory";
-import PrivilegeList from "@/screens/role/PrivilegeList";
+import ManagingList from "@/screens/role/ManagingList";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -95,13 +94,6 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         }}
       />
       <Stack.Screen
-        name="RoleList"
-        component={RoleList}
-        options={{
-          title: "Role",
-        }}
-      />
-      <Stack.Screen
         name="ConfigRole"
         component={ConfigRole}
         options={{
@@ -119,14 +111,14 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         name="ManagingCategory"
         component={ManagingCategory}
         options={{
-          title: "Managing List",
+          title: "Managing Category",
         }}
       />
       <Stack.Screen
-        name="PrivilegeList"
-        component={PrivilegeList}
+        name="ManagingList"
+        component={ManagingList}
         options={{
-          title: "Privilege List",
+          title: `Managing List`,
         }}
       />
     </Stack.Navigator>

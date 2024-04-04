@@ -46,7 +46,6 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
 
   if (!parkingLot) return <></>;
 
-
   return (
     <BodyContainer innerContainerStyle={styles.bodyContainer}>
       <ScrollView overScrollMode="never">
@@ -94,7 +93,9 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               title={"Role"}
               icon={"head-cog-outline"}
               onPress={() => {
-                navigation.navigate("OtherStack", { screen: "ManagingList" });
+                navigation.navigate("OtherStack", {
+                  screen: "ManagingCategory",
+                });
               }}
             />
           </View>
