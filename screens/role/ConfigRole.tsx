@@ -81,7 +81,9 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableManageParkingSpace((previousState) => !previousState);
+                  setEnableManageParkingSpace(
+                    (previousState) => !previousState
+                  );
                 }}
                 value={isEnableManageParkingSpace}
               />
