@@ -54,6 +54,7 @@ export type OtherStackParamList = {
   PayTheBill: undefined;
   ManagingCategory: undefined;
   ManagingList: { category: ManagingCategory };
+  ConfigPrivilege: { mode: ActionMode; roleId?: string };
 };
 
 export type BookingsStackParamList = {
