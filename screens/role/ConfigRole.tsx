@@ -67,7 +67,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           />
         )}
       />
-      <SubHeaderText text="Permisions" />
+      <SubHeaderText text="Permission" />
       <View style={styles.permissionSetting}>
         <Controller
           name={"manageParkingSpace"}
@@ -81,7 +81,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableManageParkingSpace((previosState) => !previosState);
+                  setEnableManageParkingSpace((previousState) => !previousState);
                 }}
                 value={isEnableManageParkingSpace}
               />
@@ -97,7 +97,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableEditRole((previosState) => !previosState);
+                  setEnableEditRole((previousState) => !previousState);
                 }}
                 value={isEnableEditRole}
               />
@@ -116,7 +116,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableAssignRole((previosState) => !previosState);
+                  setEnableAssignRole((previousState) => !previousState);
                 }}
                 value={isEnableAssignRole}
               />
@@ -135,7 +135,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableEditPrivilege((previosState) => !previosState);
+                  setEnableEditPrivilege((previousState) => !previousState);
                 }}
                 value={isEnableEditPrivilege}
               />
@@ -154,7 +154,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableAssignPrivilege((previosState) => !previosState);
+                  setEnableAssignPrivilege((previousState) => !previousState);
                 }}
                 value={isEnableAssignPrivilege}
               />
