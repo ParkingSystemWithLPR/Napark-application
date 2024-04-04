@@ -5,12 +5,12 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 
-export type ManagingListProps = CompositeScreenProps<
-  NativeStackScreenProps<OtherStackParamList, "ManagingList">,
+export type ManagingCategoryProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ManagingCategory">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ManagingList: React.FC<ManagingListProps> = ({ navigation }) => {
+const ManagingCategory: React.FC<ManagingCategoryProps> = ({ navigation }) => {
   return (
     <BodyContainer innerContainerStyle={styles.tabContainer}>
       <ChangeScreenTab
@@ -27,7 +27,7 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation }) => {
   );
 };
 
-export default ManagingList;
+export default ManagingCategory;
 
 const styles = StyleSheet.create({
   tabContainer: {

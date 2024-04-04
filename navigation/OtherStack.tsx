@@ -15,7 +15,7 @@ import ConfigRole from "@/screens/role/ConfigRole";
 import RoleList from "@/screens/role/RoleList";
 import RoleMember from "@/screens/role/RoleMember";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
-import ManagingList from "@/screens/role/ManagingList";
+import ManagingCategory from "@/screens/role/ManagingCategory";
 import PrivilegeList from "@/screens/role/PrivilegeList";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
@@ -116,8 +116,8 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         }}
       />
       <Stack.Screen
-        name="ManagingList"
-        component={ManagingList}
+        name="ManagingCategory"
+        component={ManagingCategory}
         options={{
           title: "Managing List",
         }}
