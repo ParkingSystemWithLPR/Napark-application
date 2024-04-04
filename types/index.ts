@@ -8,6 +8,7 @@ import { Car } from "./user";
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { ManagingCategory } from "@/enum/ManagingCategory";
 
 export type RootParamList = {
   Splash: undefined;
@@ -47,7 +48,6 @@ export type OtherStackParamList = {
   EditParkingInfo: undefined;
   ConfigPricing: undefined;
   ConfigPlan: undefined;
-  RoleList: undefined;
   RoleMember: undefined;
   ConfigRole: { mode: ActionMode; roleId?: string };
   ChangePassword: undefined;
