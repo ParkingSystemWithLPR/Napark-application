@@ -15,6 +15,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
+import ConfigAddress from "@/components/parking-lot/ConfigAddress";
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -43,11 +44,12 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <Stepper step={step} setStep={setStep} />
+      <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
       {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
-      {step == 3 && <ConfigPricing control={control} />}
-      {step != 3 ? (
+      {step == 2 && <ConfigAddress control={control} />}
+      {step == 3 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
+      {step == 4 && <ConfigPricing control={control} />}
+      {step != 4 ? (
         <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
       ) : (
         <PrimaryButton
