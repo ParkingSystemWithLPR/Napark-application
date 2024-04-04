@@ -11,11 +11,12 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { OtherStackParamList } from "@/types";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import { CompositeScreenProps } from "@react-navigation/native";
 
-export type ConfigRoleProps = NativeStackScreenProps<
-  OtherStackParamList,
-  "ConfigRole"
+export type ConfigRoleProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ConfigRole">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
