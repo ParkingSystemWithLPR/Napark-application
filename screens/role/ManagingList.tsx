@@ -26,10 +26,15 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
             roleName="Everybody"
             member="All"
             onPress={() =>
-              navigation.navigate("ConfigRole", {
-                mode: ActionMode.EDIT,
-                roleId: "all",
-              })
+              navigation.navigate(
+                category === ManagingCategory.ROLE
+                  ? "ConfigRole"
+                  : "ConfigPrivilege",
+                {
+                  mode: ActionMode.EDIT,
+                  roleId: "all",
+                }
+              )
             }
           />
         </View>
