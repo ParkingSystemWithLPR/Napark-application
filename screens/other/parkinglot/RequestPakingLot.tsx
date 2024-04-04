@@ -20,7 +20,11 @@ import Colors from "@/constants/color";
 import { useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
 import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
+<<<<<<< HEAD
 import { ParkingLotRequest } from "@/types/parking-lot";
+=======
+import ConfigAddress from "@/components/parking-lot/ConfigAddress";
+>>>>>>> 1047393 ([NP-140] feat: add address input)
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -71,6 +75,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   return (
     <BodyContainer innerContainerStyle={styles.container}>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
       {step == 1 && <ConfigInfo form={form} />}
       {step == 2 && <ConfigAddress form={form} />}
@@ -80,10 +85,14 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
         <PrimaryButton title="Next" onPress={handleSubmit(onGoNextStep)} />
 =======
       <Stepper step={step} setStep={setStep} />
+=======
+      <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
+>>>>>>> 1047393 ([NP-140] feat: add address input)
       {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
-      {step == 3 && <ConfigPricing control={control} />}
-      {step != 3 ? (
+      {step == 2 && <ConfigAddress control={control} />}
+      {step == 3 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
+      {step == 4 && <ConfigPricing control={control} />}
+      {step != 4 ? (
         <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
 >>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
       ) : (
