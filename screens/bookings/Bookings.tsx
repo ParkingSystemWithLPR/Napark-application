@@ -37,19 +37,11 @@ const capitalizedCompletedBookingType = capitalizeFirstLetter(
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   const renderActiveBookings = useCallback(() => {
-    return (
-      <View style={styles.tabContent}>
-        <SessionsList type={BookingType.ACTIVE} />
-      </View>
-    );
+    return <SessionsList type={BookingType.ACTIVE} />;
   }, []);
 
   const renderCompletedBookings = useCallback(() => {
-    return (
-      <View style={styles.tabContent}>
-        <SessionsList type={BookingType.COMPLETED} />
-      </View>
-    );
+    return <SessionsList type={BookingType.COMPLETED} />;
   }, []);
 
   return (
@@ -79,7 +71,12 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
           />
         </View>
       </View>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarIndicatorStyle: { backgroundColor: Colors.red[400].toString() },
+        }}
+        sceneContainerStyle={styles.tabContent}
+      >
         <Tab.Screen
           name={capitalizedActiveBookingType}
           component={renderActiveBookings}
@@ -98,7 +95,7 @@ export default Bookings;
 const styles = StyleSheet.create({
   container: {
     gap: 10,
-    paddingHorizontal:0,
+    paddingHorizontal: 0,
   },
   wallet: {
     alignItems: "center",
@@ -140,6 +137,7 @@ const styles = StyleSheet.create({
   },
   tabContent: {
     flex: 1,
+    marginTop: 5,
     backgroundColor: Colors.gray[50],
   },
 });
