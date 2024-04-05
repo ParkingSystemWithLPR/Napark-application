@@ -8,11 +8,11 @@ import Colors from "@/constants/color";
 import BookingDetail from "@/screens/bookings/booking/BookingDetail";
 import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import TopUp from "@/screens/bookings/TopUp";
-import PaymentOptions from "@/screens/bookings/PaymentOptions";
-import PayTheBill from "@/screens/bookings/PayTheBill";
-import PaymentSummary from "@/screens/bookings/PaymentSummary";
-import PaymentSuccessful from "@/screens/bookings/PaymentSuccessful";
+import TopUp from "@/screens/bookings/payment/TopUp";
+import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
+import PayTheBill from "@/screens/bookings/payment/PayTheBill";
+import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
+import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
 
 const Stack = createNativeStackNavigator<BookingsStackParamList>();
 
