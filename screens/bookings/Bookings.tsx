@@ -12,14 +12,14 @@ import {
   AuthenticatedStackParamList,
 } from "@/types";
 
-export type PaymentProps = CompositeScreenProps<
-  NativeStackScreenProps<MainPageBottomTabParamList, "Payment">,
+export type BookingsProps = CompositeScreenProps<
+  NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const mockBalance = 555.99;
 
-const Payment: React.FC<PaymentProps> = ({ navigation }) => {
+const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   return (
     <BodyContainer>
       <View style={styles.card}>
@@ -36,7 +36,7 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
         <IconButtonWithTitle
           title="Top up"
           onPress={() => {
-            navigation.navigate("PaymentStack", {
+            navigation.navigate("BookingsStack", {
               screen: "TopUp",
               params: { balance: mockBalance },
             });
@@ -47,23 +47,12 @@ const Payment: React.FC<PaymentProps> = ({ navigation }) => {
           iconColor={Colors.green[700]}
           iconSize={40}
         />
-        <IconButtonWithTitle
-          title="Pay the bill"
-          onPress={() => {
-            navigation.navigate("PaymentStack", { screen: "PayTheBill" });
-          }}
-          containerStyle={styles.buttonContainer}
-          textStyle={styles.textContainer}
-          icon="receipt"
-          iconColor={Colors.lightBlue[300]}
-          iconSize={40}
-        />
       </View>
     </BodyContainer>
   );
 };
 
-export default Payment;
+export default Bookings;
 
 const styles = StyleSheet.create({
   buttonWrapper: {

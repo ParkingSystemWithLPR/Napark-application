@@ -6,15 +6,12 @@ import { HttpStatusCode } from "axios";
 import { useLayoutEffect } from "react";
 import { Alert } from "react-native";
 
-import BookingStack from "./BookingStack";
+import BookingsStack from "./BookingsStack";
 import MainPageBottomTab from "./MainPageBottomTab";
 import OtherStack from "./OtherStack";
 import ParkingFlowStack from "./ParkingFlowStack";
-import PaymentStack from "./PaymentStack";
 
-import Colors from "@/constants/color";
 import ResetPassword from "@/screens/authentication/ResetPassword";
-import Notification from "@/screens/Notification";
 import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
@@ -51,22 +48,9 @@ const AuthenticatedStack: React.FC<AuthenticatedProps> = () => {
     >
       <Stack.Screen name="MainScreen" component={MainPageBottomTab} />
       <Stack.Screen name="OtherStack" component={OtherStack} />
-      <Stack.Screen name="BookingStack" component={BookingStack} />
-      <Stack.Screen name="PaymentStack" component={PaymentStack} />
+      <Stack.Screen name="BookingsStack" component={BookingsStack} />
       <Stack.Screen name="ParkingFlowStack" component={ParkingFlowStack} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen
-        name="Notification"
-        component={Notification}
-        options={{
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: Colors.red[400].toString(),
-          },
-          headerTitleStyle: { color: Colors.white.toString() },
-          headerTitleAlign: "center",
-        }}
-      />
     </Stack.Navigator>
   );
 };

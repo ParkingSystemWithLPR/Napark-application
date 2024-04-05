@@ -1,16 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View } from "react-native";
-import { Badge } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
+import Bookings from "@/screens/bookings/Bookings";
 import Account from "@/screens/account/Account";
-import MyBooking from "@/screens/booking/MyBooking";
 import Landing from "@/screens/landing/Landing";
 import Other from "@/screens/other/Other";
-import Payment from "@/screens/payment/Payment";
+import Notification from "@/screens/Notification";
 import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,
@@ -40,29 +37,6 @@ const MainPageBottomTab: React.FC<MainPageProps> = ({ navigation }) => {
           shadowOpacity: 0,
         },
         headerTitleAlign: "center",
-        headerRight: () => {
-          return (
-            <View style={{ marginHorizontal: 10 }}>
-              <IconButton
-                icon={"bell-ring-outline"}
-                size={24}
-                color={Colors.white}
-                buttonStyle={{ padding: 0, paddingHorizontal: 10 }}
-                onPress={() => navigation.navigate("Notification")}
-              />
-              <Badge
-                style={{
-                  position: "absolute",
-                  top: -3,
-                  right: 5,
-                  backgroundColor: Colors.blue[600],
-                }}
-              >
-                3
-              </Badge>
-            </View>
-          );
-        },
       }}
     >
       <BottomTab.Screen
@@ -80,27 +54,12 @@ const MainPageBottomTab: React.FC<MainPageProps> = ({ navigation }) => {
         }}
       />
       <BottomTab.Screen
-        name="MyBooking"
-        component={MyBooking}
-        options={{
-          tabBarLabel: "My booking",
-          title: "My booking",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="calendar-cursor"
-              size={size}
-              color={color}
-            />
-          ),
-          headerShown: true,
-        }}
-      />
-      <BottomTab.Screen
-        name="Payment"
-        component={Payment}
+        name="Bookings"
+        component={Bookings}
         options={{
           headerShown: true,
-          tabBarLabel: "Payment",
+          title: "Bookings",
+          tabBarLabel: "Bookings",
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "credit-card" : "credit-card-outline"}
@@ -120,6 +79,21 @@ const MainPageBottomTab: React.FC<MainPageProps> = ({ navigation }) => {
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "account-circle" : "account-circle-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Notification"
+        component={Notification}
+        options={{
+          headerShown: true,
+          tabBarLabel: "Notification",
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? "bell-ring" : "bell-ring-outline"}
               size={size}
               color={color}
             />

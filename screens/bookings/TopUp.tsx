@@ -11,7 +11,7 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 
 type DoubleButtonProps = {
   leftAmount: number;
@@ -21,7 +21,7 @@ type DoubleButtonProps = {
 };
 
 export type TopUpProps = CompositeScreenProps<
-  NativeStackScreenProps<PaymentStackParamList, "TopUp">,
+  NativeStackScreenProps<BookingsStackParamList, "TopUp">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 

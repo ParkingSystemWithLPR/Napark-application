@@ -1,31 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect } from "react";
 
-import IconButton from "@/components/button/IconButton";
 import BodyContainer from "@/components/ui/BodyContainer";
-import Colors from "@/constants/color";
-import { AuthenticatedStackParamList } from "@/types";
+import { MainPageBottomTabParamList } from "@/types";
 
 export type NotificationProps = NativeStackScreenProps<
-  AuthenticatedStackParamList,
+  MainPageBottomTabParamList,
   "Notification"
 >;
 
-const Notification: React.FC<NotificationProps> = ({ navigation }) => {
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <IconButton
-          icon={"chevron-left"}
-          size={28}
-          color={Colors.white}
-          buttonStyle={{ padding: 0 }}
-          onPress={() => navigation.goBack()}
-        />
-      ),
-    });
-  }, [navigation]);
-
+const Notification: React.FC<NotificationProps> = () => {
   return (
     <BodyContainer>
       <></>

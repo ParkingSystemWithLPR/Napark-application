@@ -6,10 +6,10 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import Colors from "@/constants/color";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 
 export type PaymentSuccessfulProps = CompositeScreenProps<
-  NativeStackScreenProps<PaymentStackParamList, "PaymentSuccessful">,
+  NativeStackScreenProps<BookingsStackParamList, "PaymentSuccessful">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 const IMAGE_HEIGHT = 200;
