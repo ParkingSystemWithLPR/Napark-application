@@ -17,11 +17,6 @@ import SessionsList from "@/components/booking/SessionsList";
 import { BookingType } from "@/enum/BookingType";
 import { useCallback } from "react";
 
-export type BookingsProps = CompositeScreenProps<
-  NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
-  NativeStackScreenProps<AuthenticatedStackParamList>
->;
-
 const Tab = createMaterialTopTabNavigator();
 
 const mockBalance = 555.99;
@@ -34,6 +29,11 @@ const capitalizedActiveBookingType = capitalizeFirstLetter(BookingType.ACTIVE);
 const capitalizedCompletedBookingType = capitalizeFirstLetter(
   BookingType.COMPLETED
 );
+
+export type BookingsProps = CompositeScreenProps<
+  NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   const renderActiveBookings = useCallback(() => {
