@@ -19,7 +19,7 @@ const PaymentSuccessful: React.FC<PaymentSuccessfulProps> = ({
   navigation,
 }) => {
   const handleConfirm = () => {
-    navigation.navigate("MainScreen", { screen: "Payment" });
+    navigation.navigate("MainScreen", { screen: "Bookings" });
   };
   return (
     <SafeAreaView style={styles.screen}>

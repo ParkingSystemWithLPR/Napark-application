@@ -73,7 +73,7 @@ const TopUp: React.FC<TopUpProps> = ({ navigation, route }) => {
     if (+amount < MINIMUM_AMOUNT) {
       setIsShowErrorText(true);
     } else {
-      navigation.navigate("PaymentStack", {
+      navigation.navigate("BookingsStack", {
         screen: "PaymentOptions",
         params: { amount: amount },
       });

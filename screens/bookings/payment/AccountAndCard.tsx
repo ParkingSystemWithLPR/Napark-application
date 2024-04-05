@@ -7,7 +7,7 @@ import TabsContainer from "@/components/ui/TabsContainer";
 import { MainPageBottomTabParamList, BookingsStackParamList } from "@/types";
 
 export type AccountAndCardProps = CompositeScreenProps<
-  NativeStackScreenProps<MainPageBottomTabParamList, "Payment">,
+  NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
   NativeStackScreenProps<BookingsStackParamList>
 >;
 

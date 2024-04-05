@@ -5,7 +5,7 @@ import { ParkingLot } from "./parking-lot/ParkingLot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingRequest } from "@/screens/booking/BookingDetail";
+import { BookingRequest } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;

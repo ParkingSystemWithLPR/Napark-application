@@ -5,8 +5,8 @@ import {
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
-import BookingDetail from "@/screens/booking/BookingDetail";
-import BookingSummary from "@/screens/booking/BookingSummary";
+import BookingDetail from "@/screens/bookings/booking/BookingDetail";
+import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import TopUp from "@/screens/bookings/TopUp";
 import PaymentOptions from "@/screens/bookings/PaymentOptions";
