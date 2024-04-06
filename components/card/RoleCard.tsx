@@ -10,14 +10,16 @@ import { ManagingCategory } from "@/enum/ManagingCategory";
 export type RoleCardProps = {
   category: ManagingCategory;
   roleName: string;
-  member: string;
+  description?: string;
+  member?: string;
   onPress: () => void;
 };
 
 const RoleCard: React.FC<RoleCardProps> = ({
   category,
   roleName,
-  member,
+  description,
+  member = 0,
   onPress,
 }) => {
   return (
@@ -47,11 +49,15 @@ const RoleCard: React.FC<RoleCardProps> = ({
                 textStyle={{ color: Colors.gray[900] }}
               />
               <BodyText
-                text={`${member} ${
-                  category === ManagingCategory.PRIVILEGE
-                    ? "Role(s)"
-                    : "Member(s)"
-                }`}
+                text={
+                  !!description
+                    ? description
+                    : `${member} ${
+                        category === ManagingCategory.PRIVILEGE
+                          ? "Role(s)"
+                          : "Member(s)"
+                      }`
+                }
                 textStyle={{ color: Colors.gray[700] }}
               />
             </View>
