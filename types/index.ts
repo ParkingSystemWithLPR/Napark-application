@@ -5,7 +5,7 @@ import { ParkingLot } from "./parking-lot/ParkingLot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingRequest } from "@/screens/booking/BookingDetail";
+import { BookingRequest } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;
@@ -22,18 +22,16 @@ export type AuthStackParamList = {
 export type AuthenticatedStackParamList = {
   MainScreen: NavigatorScreenParams<MainPageBottomTabParamList>;
   OtherStack: NavigatorScreenParams<OtherStackParamList>;
-  BookingStack: NavigatorScreenParams<BookingStackParamList>;
-  PaymentStack: NavigatorScreenParams<PaymentStackParamList>;
+  BookingsStack: NavigatorScreenParams<BookingsStackParamList>;
   ParkingFlowStack: NavigatorScreenParams<ParkingFlowStackParamList>;
   ResetPassword: undefined;
-  Notification: undefined;
 };
 
 export type MainPageBottomTabParamList = {
   Landing: undefined;
-  MyBooking: undefined;
-  Payment: undefined;
+  Bookings: undefined;
   Account: undefined;
+  Notification: undefined;
   Other: undefined;
 };
 
@@ -56,13 +54,10 @@ export type OtherStackParamList = {
   PayTheBill: undefined;
 };
 
-export type BookingStackParamList = {
+export type BookingsStackParamList = {
   BookingDetail: { parkingLot: ParkingLot };
   BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
   RoleMember: undefined;
-};
-
-export type PaymentStackParamList = {
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
   PayTheBill: undefined;

@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback } from "react";
 import { SafeAreaView, View, Image, StyleSheet } from "react-native";
 
-import { Attribute } from "../booking/BookingSummary";
+import { Attribute } from "../bookings/booking/BookingSummary";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";

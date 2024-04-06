@@ -22,18 +22,16 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { useProfile } from "@/store/context/profile";
-import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 
-export type BookingDetailProps = CompositeScreenProps<
-  NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
-  NativeStackScreenProps<AuthenticatedStackParamList>
->;
+
 type RecommendedSlotType = {
   slotName: string;
   recommendType: string;
   price: number;
   unit: string;
 };
+
 export type BookingRequest = {
   licensePlate: string;
   checkInDate: string | null;
@@ -46,6 +44,12 @@ export type BookingRequest = {
   price: number;
   unit: string;
 };
+
+export type BookingDetailProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingsStackParamList, "BookingDetail">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
+
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const parkingLot = route.params.parkingLot;
   const [goToNextPage, setGoToNextPage] = useState(false);
