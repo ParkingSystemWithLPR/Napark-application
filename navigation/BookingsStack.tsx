@@ -1,25 +1,27 @@
 import {
-  createNativeStackNavigator,
   NativeStackScreenProps,
+  createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
-import PaymentOptions from "@/screens/payment/PaymentOptions";
-import PaymentSuccessful from "@/screens/payment/PaymentSuccessful";
-import PaymentSummary from "@/screens/payment/PaymentSummary";
-import PayTheBill from "@/screens/payment/PayTheBill";
-import TopUp from "@/screens/payment/TopUp";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import BookingDetail from "@/screens/bookings/booking/BookingDetail";
+import BookingSummary from "@/screens/bookings/booking/BookingSummary";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import TopUp from "@/screens/bookings/payment/TopUp";
+import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
+import PayTheBill from "@/screens/bookings/payment/PayTheBill";
+import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
+import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
 
-const Stack = createNativeStackNavigator<PaymentStackParamList>();
+const Stack = createNativeStackNavigator<BookingsStackParamList>();
 
-export type PaymentProps = NativeStackScreenProps<
+export type BookingsProps = NativeStackScreenProps<
   AuthenticatedStackParamList,
-  "PaymentStack"
+  "BookingsStack"
 >;
 
-const PaymentStack: React.FC<PaymentProps> = ({ navigation }) => {
+const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
   const backToPreviousPage = () => {
     return (
       <IconButton
@@ -46,6 +48,21 @@ const PaymentStack: React.FC<PaymentProps> = ({ navigation }) => {
       }}
     >
       <Stack.Screen
+        name="BookingDetail"
+        component={BookingDetail}
+        options={{
+          title: "Booking detail",
+          headerLeft: backToPreviousPage,
+        }}
+      />
+      <Stack.Screen
+        name="BookingSummary"
+        component={BookingSummary}
+        options={{
+          title: "Booking summary",
+        }}
+      />
+       <Stack.Screen
         name="TopUp"
         component={TopUp}
         options={{
@@ -87,4 +104,4 @@ const PaymentStack: React.FC<PaymentProps> = ({ navigation }) => {
   );
 };
 
-export default PaymentStack;
+export default BookingsStack;
