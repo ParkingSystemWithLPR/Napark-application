@@ -16,8 +16,6 @@ export type ConfigPrivilegeProps = CompositeScreenProps<
 
 const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
-  const [isEnableEditPrivilege, setEnableEditPrivilege] =
-    useState<boolean>(false);
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>

@@ -23,6 +23,7 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
         <SubHeaderText text="EveryBody" />
         <View style={styles.roleCardContainer}>
           <RoleCard
+            category={category}
             roleName="Everybody"
             member="All"
             onPress={() =>
@@ -45,8 +46,18 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
           }`}
         />
         <View style={styles.roleCardContainer}>
-          <RoleCard roleName="VVIP" member="2" onPress={() => {}} />
-          <RoleCard roleName="C-level" member="10" onPress={() => {}} />
+          <RoleCard
+            category={category}
+            roleName="VVIP"
+            member="2"
+            onPress={() => {}}
+          />
+          <RoleCard
+            category={category}
+            roleName="C-level"
+            member="10"
+            onPress={() => {}}
+          />
         </View>
       </View>
       <PrimaryButton
