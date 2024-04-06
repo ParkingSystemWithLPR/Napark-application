@@ -65,3 +65,9 @@ export const formatEnumtoDropdownItem = (
     return { label: value, value: value };
   });
 };
+
+export const formatEnumtoDropdownItem = (enums: object): DropdownItem[] => {
+  return Object.values(enums).map((value) => {
+    return { label: value, value: value };
+  })
+};

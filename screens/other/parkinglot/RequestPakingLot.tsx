@@ -35,6 +35,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { accessToken, authenticate } = useAuth();
   const form = useForm<ParkingLotRequest>();
   const {
@@ -44,6 +45,10 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 =======
   const { control, handleSubmit, setValue, getValues, formState: { isSubmitting } } = useForm();
 >>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
+=======
+  const form = useForm();
+  const { handleSubmit, formState: { isSubmitting } } = form;
+>>>>>>> d9639db ([NP-140] feat: complete request form && change schema)
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
   const [isSubmitSuccessful, setSubmitSuccessful] = useState<boolean>(false);
@@ -65,12 +70,18 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   };
 
   const onGoNextStep = () => {
+<<<<<<< HEAD
     setStep(step + 1);
   };
 
   const onOpenConfirmModal = () => {
     setOpenConfirmModal(true);
   };
+=======
+  
+    setStep(step + 1)
+  }
+>>>>>>> d9639db ([NP-140] feat: complete request form && change schema)
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -81,6 +92,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       {step == 2 && <ConfigAddress form={form} />}
       {step == 3 && <ConfigPlan form={form} />}
       {step == 4 && <ConfigPricing form={form} />}
+<<<<<<< HEAD
       {step != 4 ? (
         <PrimaryButton title="Next" onPress={handleSubmit(onGoNextStep)} />
 =======
@@ -95,6 +107,10 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       {step != 4 ? (
         <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
 >>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
+=======
+      {step != 4 ? (
+        <PrimaryButton title="Next" onPress={() => onGoNextStep()} />
+>>>>>>> d9639db ([NP-140] feat: complete request form && change schema)
       ) : (
         <PrimaryButton
           title="Send request to admin"
