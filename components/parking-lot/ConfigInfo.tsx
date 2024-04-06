@@ -1,4 +1,4 @@
-import { Control, Controller, FieldValues } from "react-hook-form";
+import { Control, Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { ScrollView } from "react-native";
 
 import BusinessDayInput from "../input/BusinessDayInput";
@@ -6,11 +6,11 @@ import ImageUploader from "../input/ImageUploader";
 import TextInput from "../input/TextInput";
 
 export type ConfigInfoProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<FieldValues, any>;
+  form: UseFormReturn<FieldValues, any, undefined>;
 };
 
-const ConfigInfo: React.FC<ConfigInfoProps> = ({ control }) => {
+const ConfigInfo: React.FC<ConfigInfoProps> = ({ form }) => {
+  const { control } = form;
   return (
     <ScrollView>
       <Controller

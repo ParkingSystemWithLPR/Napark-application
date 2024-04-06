@@ -13,8 +13,8 @@ import { BusinessDay, BusinessHour } from "@/types/parking-lot";
 
 export type DateInputProps = {
   title: string;
-  businessDays: BusinessDay;
-  onChange: (businessDays: BusinessDay) => void;
+  businessDays: BusinessDay[];
+  onChange: (businessDays: BusinessDay[]) => void;
 };
 
 const DateInput: React.FC<DateInputProps> = ({
@@ -56,16 +56,21 @@ const DateInput: React.FC<DateInputProps> = ({
       const newSelectedDay = selectedDay;
       const businessHoursSet: BusinessHour[] = [];
       const newFormList: number[] = [];
-      Object.entries(businessDays).forEach(([day, value]) => {
-        if (!businessHoursSet.some((e) => isEqualBusinessHour(e, value))) {
-          businessHoursSet.push(value);
+      businessDays.forEach((businessDay) => {
+        const { day, closeTime, openTime } = businessDay;
+        if (
+          !businessHoursSet.some((e) =>
+            isEqualBusinessHour(e, { closeTime, openTime })
+          )
+        ) {
+          businessHoursSet.push({ closeTime, openTime });
           newFormList.push(0);
         }
         const index = businessHoursSet.findIndex((e) =>
-          isEqualBusinessHour(e, value)
+          isEqualBusinessHour(e, { closeTime, openTime })
         );
         newSelectedDay[day as DayInAWeek] = { set: index, isSelected: true };
-        setValue(`${index}`, value);
+        setValue(`${index}`, { closeTime, openTime });
       });
       setSelectedDay(newSelectedDay);
       setFormList(newFormList);
@@ -74,11 +79,12 @@ const DateInput: React.FC<DateInputProps> = ({
 
   const onInputChange = () => {
     const formData = getValues();
-    const newBusinessDays: BusinessDay = {};
+    const newBusinessDays: BusinessDay[] = [];
     Object.entries(selectedDay).forEach(([day, value]) => {
       if (value.isSelected) {
         const { openTime, closeTime } = formData[value.set ?? -2];
-        newBusinessDays[day as DayInAWeek] = { openTime, closeTime };
+        const newDay = day as DayInAWeek;
+        newBusinessDays.push({ day: newDay, openTime, closeTime });
       }
     });
 

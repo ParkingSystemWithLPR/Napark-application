@@ -53,3 +53,9 @@ export const formatDropdownFromSlotList = (
     };
   });
 };
+
+export const formatEnumtoDropdownItem = (enums: object): DropdownItem[] => {
+  return Object.values(enums).map((value) => {
+    return { label: value, value: value };
+  })
+};
