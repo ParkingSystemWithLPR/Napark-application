@@ -4,10 +4,16 @@ import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
+import { Controller, FieldValues, useForm } from "react-hook-form";
+import { Alert, StyleSheet, View } from "react-native";
 import TextInput from "@/components/input/TextInput";
 import SubHeaderText from "@/components/text/SubHeaderText";
+import ConfigPricing from "@/components/parking-lot/ConfigPricing";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import ChangeScreenTab from "@/components/button/ChangeScreenTab";
+import RoleCard from "@/components/card/RoleCard";
+import { ManagingCategory } from "@/enum/ManagingCategory";
+import SecondaryButton from "@/components/button/SecondaryButton";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
@@ -15,7 +21,19 @@ export type ConfigPrivilegeProps = CompositeScreenProps<
 >;
 
 const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
+  const category = ManagingCategory.PRIVILEGE;
   const { control, handleSubmit } = useForm();
+
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      console.log("data", data);
+    } catch (error) {
+      Alert.alert(
+        "Create request error",
+        "Please try again!!: " + (error as Error).message
+      );
+    }
+  };
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -44,6 +62,36 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
         )}
       />
       <SubHeaderText text="Privilege" />
+      <View style={styles.roleCardContainer}>
+        <RoleCard
+          category={category}
+          roleName="A1"
+          description="60 baht/hr"
+          onPress={() => {}}
+        />
+        <RoleCard
+          category={category}
+          roleName="B4"
+          description="step pricing"
+          onPress={() => {}}
+        />
+      </View>
+      <PrimaryButton title="+ Add new zone" onPress={() => {}} />
+      <SubHeaderText text="Assign to" />
+      <ChangeScreenTab
+        icon={"account-supervisor"}
+        screenName={"Privilege"}
+        onPress={() => {}}
+      />
+      <View style={styles.buttonContainer}>
+        <SecondaryButton
+          title="Cancle"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <PrimaryButton title={"Save"} onPress={handleSubmit(onSubmit)} />
+      </View>
     </BodyContainer>
   );
 };
@@ -54,25 +102,9 @@ const styles = StyleSheet.create({
   container: {
     gap: 10,
   },
-  permissionSetting: {
-    paddingLeft: 10,
-    paddingVertical: 10,
-    gap: 10,
-  },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "80%",
-  },
-  permissionText: {
-    color: Colors.gray[900],
-  },
-  sameLineInputContainer: {
-    gap: 15,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  roleCardContainer: {
+    paddingTop: 10,
+    gap: 5,
   },
   buttonContainer: {
     flexDirection: "row",

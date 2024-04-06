@@ -65,9 +65,14 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
           category === ManagingCategory.ROLE ? "role" : "privilege"
         }`}
         onPress={() => {
-          navigation.navigate("ConfigRole", {
-            mode: ActionMode.CREATE,
-          });
+          navigation.navigate(
+            category === ManagingCategory.ROLE
+              ? "ConfigRole"
+              : "ConfigPrivilege",
+            {
+              mode: ActionMode.CREATE,
+            }
+          );
         }}
       />
     </BodyContainer>
