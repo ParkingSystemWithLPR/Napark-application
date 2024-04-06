@@ -7,3 +7,9 @@ export const formatDropdownFromLicensePlates = (
     return { label: licensePlate, value: licensePlate };
   });
 };
+
+export const formatEnumtoDropdownItem = (enums: object): DropdownItem[] => {
+  return Object.values(enums).map((value) => {
+    return { label: value, value: value };
+  })
+};

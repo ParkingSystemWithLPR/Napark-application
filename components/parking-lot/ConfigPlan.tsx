@@ -1,11 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  UseFormSetValue,
-} from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { ScrollView, View, StyleSheet, Pressable, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -15,21 +10,28 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
+import SecondaryButton from "../button/SecondaryButton";
 import { Plan } from "@/types/parking-lot/ParkingLot";
+import ParkingZoneInput from "../input/ParkingZoneInput";
 
 export type ConfigPlanProps = {
-  plan: Plan[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<FieldValues, any>;
-  setValue: UseFormSetValue<FieldValues>;
+  form: UseFormReturn<FieldValues, any, undefined>;
 };
 
 const IMAGE_SIZE = { width: 350, height: 200 };
 
-const ConfigPlan: React.FC<ConfigPlanProps> = ({ plan, control, setValue }) => {
+const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
+  const { control, setValue, getValues } = form;
+  const [plan, setPlan] = useState<Plan[]>();
+  
+  useEffect(() => {
+    setPlan(getValues().plan);
+  }, [form]);
+
   const [images, setImages] = useState<string[]>(
     plan ? plan.map((item) => item.image) : []
   );
+
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -45,7 +47,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ plan, control, setValue }) => {
       result.assets.forEach((img, index) => {
         if (img.base64) {
           newImages.push(img.base64);
-          setValue(`plan.${images.length + index}.image`, img.base64);
+          setValue(`plan.${images.length + index}.image`, img.base64.slice(0,10));
         }
       });
       setImages(images.concat(newImages));
@@ -63,53 +65,31 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ plan, control, setValue }) => {
           width={IMAGE_SIZE.width}
           style={styles.image}
         />
-        <View style={styles.sameLineInputContainer}>
-          <Controller
-            name={`plan.${index}.floor`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Floor"
-                placeholder={"Floor"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-          <Controller
-            name={`plan.${index}.zone`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Zone"
-                placeholder={"Zone"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-          <Controller
-            name={`plan.${index}.capacity`}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <MyTextInput
-                title="Capacity"
-                placeholder={"Capacity"}
-                value={value}
-                onChangeText={onChange}
-                containerStyle={{ flex: 1 }}
-                inputMode={InputType.Numeric}
-                editable
-              />
-            )}
-          />
-        </View>
+        <Controller
+          name={`plan.${index}.floor`}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <MyTextInput
+              title="Floor"
+              placeholder={"Floor"}
+              value={value}
+              onChangeText={onChange}
+              containerStyle={{ flex: 1 }}
+              inputMode={InputType.Numeric}
+              editable
+            />
+          )}
+        />
+        <Controller
+          name={`plan.${index}.zone`}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <ParkingZoneInput
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
       </View>
     );
   };
@@ -177,5 +157,18 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  adjustFormListButton: {
+    alignItems: "center",
+    flex: 1,
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 4,
   },
 });

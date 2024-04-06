@@ -1,6 +1,7 @@
 import { Region } from "react-native-maps";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
+import { ZoneType } from "@/enum/ParkingLot";
 
 export type ParkingLot = {
   _id: string;
@@ -15,8 +16,11 @@ export type ParkingLot = {
 
 export type ParkingLotRequest = {
   name: string;
-  businessDays: BusinessDay;
   images?: string[];
+  businessDays: BusinessDay[];
+  coord: Region,
+  address: Address;
+  plan: Plan[],
 };
 
 export type Address = {
@@ -28,7 +32,9 @@ export type Address = {
 };
 
 export type BusinessDay = {
-  [day in DayInAWeek]?: BusinessHour;
+  openTime: string;
+  closeTime: string;
+  day: DayInAWeek;
 };
 
 export type BusinessHour = {
@@ -37,6 +43,15 @@ export type BusinessHour = {
 };
 
 export type Plan = {
-  image: string;
   floor: number;
-}
+  image: string;
+  zone: Zone[];
+};
+
+export type Zone = {
+  name: string;
+  capacity?: number;
+  type: ZoneType;
+  price?: number;
+  unit?: string;
+};

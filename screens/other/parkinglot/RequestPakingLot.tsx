@@ -25,7 +25,8 @@ export type RequestParkingLotProps = CompositeScreenProps<
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
-  const { control, handleSubmit, setValue, getValues, formState: { isSubmitting } } = useForm();
+  const form = useForm();
+  const { handleSubmit, formState: { isSubmitting } } = form;
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
@@ -42,15 +43,20 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
     }
   };
 
+  const onGoNextStep = () => {
+  
+    setStep(step + 1)
+  }
+
   return (
     <BodyContainer innerContainerStyle={styles.container}>
       <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
-      {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigAddress control={control} />}
-      {step == 3 && <ConfigPlan plan={getValues().plan} control={control} setValue={setValue}/>}
-      {step == 4 && <ConfigPricing control={control} />}
+      {step == 1 && <ConfigInfo form={form} />}
+      {step == 2 && <ConfigAddress form={form} />}
+      {step == 3 && <ConfigPlan form={form} />}
+      {step == 4 && <ConfigPricing form={form} />}
       {step != 4 ? (
-        <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
+        <PrimaryButton title="Next" onPress={() => onGoNextStep()} />
       ) : (
         <PrimaryButton
           title="Send request to admin"
