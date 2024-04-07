@@ -58,7 +58,6 @@ export type OtherStackParamList = {
   ManagingList: { category: ManagingCategory };
   ConfigPrivilege: { mode: ActionMode; roleId?: string };
   ConfigZone: { form: UseFormReturn<FieldValues, any, undefined> };
-  PrivilegeMember: undefined;
 };
 
 export type BookingsStackParamList = {
