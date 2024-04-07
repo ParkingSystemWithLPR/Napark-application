@@ -90,8 +90,8 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               onPress={() => {}}
             />
             <IconButtonWithTitle
-              title={"Role"}
-              icon={"head-cog-outline"}
+              title={"Config"}
+              icon={"account-settings"}
               onPress={() => {
                 navigation.navigate("OtherStack", {
                   screen: "ManagingCategory",
