@@ -18,7 +18,6 @@ import ManagingCategory from "@/screens/role/ManagingCategory";
 import ManagingList from "@/screens/role/ManagingList";
 import ConfigPrivilege from "@/screens/role/ConfigPrivilege";
 import ConfigZone from "@/screens/role/ConfigZone";
-import PrivilegeMember from "@/screens/role/PrivilegeMember";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -134,13 +133,6 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
       <Stack.Screen
         name="ConfigZone"
         component={ConfigZone}
-        options={{
-          title: "Zone",
-        }}
-      />
-      <Stack.Screen
-        name="PrivilegeMember"
-        component={PrivilegeMember}
         options={{
           title: "Zone",
         }}
