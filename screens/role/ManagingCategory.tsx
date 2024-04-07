@@ -16,7 +16,7 @@ const ManagingCategory: React.FC<ManagingCategoryProps> = ({ navigation }) => {
     <BodyContainer innerContainerStyle={styles.tabContainer}>
       <ChangeScreenTab
         icon="account-supervisor"
-        screenName="Roles Configuration"
+        screenName="Managing Roles"
         onPress={() =>
           navigation.navigate("ManagingList", {
             category: Category.ROLE,
@@ -25,7 +25,7 @@ const ManagingCategory: React.FC<ManagingCategoryProps> = ({ navigation }) => {
       />
       <ChangeScreenTab
         icon="account-star"
-        screenName="Privilege Configuration"
+        screenName="Parking Privilege"
         onPress={() =>
           navigation.navigate("ManagingList", {
             category: Category.PRIVILEGE,

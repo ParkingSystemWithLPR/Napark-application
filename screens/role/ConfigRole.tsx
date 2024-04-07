@@ -96,7 +96,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           control={control}
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
-              <BodyText text="Edit role" textStyle={styles.permissionText} />
+              <BodyText text="Edit managing role" textStyle={styles.permissionText} />
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
@@ -132,7 +132,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
               <BodyText
-                text="Edit privilege"
+                text="Edit parking privilege"
                 textStyle={styles.permissionText}
               />
               <Switch
@@ -151,7 +151,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
               <BodyText
-                text="Assign privilege"
+                text="Assign parking privilege"
                 textStyle={styles.permissionText}
               />
               <Switch

@@ -88,7 +88,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
       <SubHeaderText text="Assign to" />
       <ChangeScreenTab
         icon={"account-supervisor"}
-        screenName={"Privilege"}
+        screenName={"Role"}
         onPress={() => {}}
       />
       <View style={styles.buttonContainer}>
