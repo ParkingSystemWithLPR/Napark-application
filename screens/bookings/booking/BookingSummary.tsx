@@ -11,7 +11,7 @@ import HyperLinkText from "@/components/text/HyperlinkText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
-import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 import {
   formatCreateBookingRequest,
@@ -29,7 +29,7 @@ export type Attribute = {
   value: string | null;
 };
 export type BookingSummaryProps = CompositeScreenProps<
-  NativeStackScreenProps<BookingStackParamList, "BookingSummary">,
+  NativeStackScreenProps<BookingsStackParamList, "BookingSummary">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
@@ -100,7 +100,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   const closeModal = () => {
     setIsOpenModal(false);
     setTimeout(() => {
-      navigation.replace("MainScreen", { screen: "MyBooking" });
+      navigation.replace("MainScreen", { screen: "Bookings" });
     }, 0);
   };
 

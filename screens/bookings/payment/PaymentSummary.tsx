@@ -13,10 +13,10 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { PaymentMethod } from "@/enum/PaymentMethod";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 
 export type PaymentSummaryProps = CompositeScreenProps<
-  NativeStackScreenProps<PaymentStackParamList, "PaymentSummary">,
+  NativeStackScreenProps<BookingsStackParamList, "PaymentSummary">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 

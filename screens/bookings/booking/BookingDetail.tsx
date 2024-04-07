@@ -12,28 +12,23 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { useProfile } from "@/store/context/profile";
-import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
-import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
-import {
-  defaultBookingDetailState,
-  getQueryParamFromBookingDetailState,
-  validateAfterClosingSetting,
-  validateLicensePlate,
-  validateTimeInputs,
-} from "@/utils/bookingRequest";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
-import { AvailableSlotResponse, Slot } from "@/types/booking/Booking";
-import { useAuth } from "@/store/context/auth";
 import {
   GetAvailableSlotsQueryParam,
   useGetAvailableSlot,
 } from "@/store/api/booking/useGetAvailableSlot";
-
-export type BookingDetailProps = CompositeScreenProps<
-  NativeStackScreenProps<BookingStackParamList, "BookingDetail">,
-  NativeStackScreenProps<AuthenticatedStackParamList>
->;
+import { useAuth } from "@/store/context/auth";
+import { AvailableSlotResponse, Slot } from "@/types/booking/Booking";
+import {
+  defaultBookingDetailState,
+  getQueryParamFromBookingDetailState,
+  validateTimeInputs,
+  validateLicensePlate,
+  validateAfterClosingSetting,
+} from "@/utils/bookingRequest";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type BookingDetailState = {
   licensePlate: string;
@@ -48,6 +43,12 @@ export type BookingDetailState = {
   price: number;
   unit: string;
 };
+
+export type BookingDetailProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingsStackParamList, "BookingDetail">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
+>;
+
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const parkingLot = route.params.parkingLot;
   const { accessToken, authenticate } = useAuth();

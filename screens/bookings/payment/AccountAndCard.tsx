@@ -4,11 +4,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import AccountTabContent from "@/components/payment/AccountTabContent";
 import CardTabContent from "@/components/payment/CardTabContent";
 import TabsContainer from "@/components/ui/TabsContainer";
-import { MainPageBottomTabParamList, PaymentStackParamList } from "@/types";
+import { MainPageBottomTabParamList, BookingsStackParamList } from "@/types";
 
 export type AccountAndCardProps = CompositeScreenProps<
-  NativeStackScreenProps<MainPageBottomTabParamList, "Payment">,
-  NativeStackScreenProps<PaymentStackParamList>
+  NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
+  NativeStackScreenProps<BookingsStackParamList>
 >;
 
 const AccountTab = <AccountTabContent />;

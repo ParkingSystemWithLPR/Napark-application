@@ -12,10 +12,10 @@ import {
   MOCKED_PAYMENTLICENSEPLATE,
   mockedPaymentLicensePlateProps,
 } from "@/mock/mockData";
-import { AuthenticatedStackParamList, PaymentStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 
 export type PayTheBillProps = CompositeScreenProps<
-  NativeStackScreenProps<PaymentStackParamList, "PayTheBill">,
+  NativeStackScreenProps<BookingsStackParamList, "PayTheBill">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 

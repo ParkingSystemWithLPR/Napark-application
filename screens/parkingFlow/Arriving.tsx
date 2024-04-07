@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import { Attribute } from "../booking/BookingSummary";
+import { Attribute } from "../bookings/booking/BookingSummary";
 import { RegionType } from "../landing/Landing";
 
 import BodyText from "@/components/text/BodyText";
