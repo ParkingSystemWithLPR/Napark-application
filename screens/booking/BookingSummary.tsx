@@ -17,7 +17,10 @@ import {
   formatCreateBookingRequest,
   validateTimeInputs,
 } from "@/utils/bookingRequest";
-import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import {
+  CreatingBookingStatus,
+  ValidateStatus,
+} from "@/enum/BookingValidateStatus";
 import { useCreateBooking } from "@/store/api/booking/useCreateBooking";
 import { useAuth } from "@/store/context/auth";
 
@@ -48,7 +51,9 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   } = bookingDetailState;
   const { mutateAsync: createBooking } = useCreateBooking();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isSendingRequest, setIsSendingRequest] = useState(false);
+  const [status, setStatus] = useState<CreatingBookingStatus>(
+    CreatingBookingStatus.PENDING
+  );
   const createBookingRequest = formatCreateBookingRequest(
     bookingDetailState,
     parkingLot
@@ -76,10 +81,10 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
       },
       {
         onSuccess() {
-          setIsSendingRequest(false);
+          setStatus(CreatingBookingStatus.SUCCESS);
         },
         onError() {
-          setIsSendingRequest(false);
+          setStatus(CreatingBookingStatus.FAIL);
         },
       }
     );
@@ -87,7 +92,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
 
   const openModal = async () => {
     setIsOpenModal(true);
-    setIsSendingRequest(true);
+    setStatus(CreatingBookingStatus.PENDING);
     const isTimeValid = timeValidator();
     if (isTimeValid) await sendCreateRequest();
   };
@@ -178,7 +183,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
       <ModalOverlay visible={isOpenModal} closeModal={closeModal}>
         <View style={styles.modalBackground}>
           <ProcessingModalContent
-            isCreatingBooking={isSendingRequest}
+            status={status}
             handlecloseModal={closeModal}
           />
         </View>
