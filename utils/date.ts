@@ -82,3 +82,36 @@ export const duration = (minTime: Date, maxTime: Date): string => {
 export const getDateFromDateAndTime = (date: string, time?: string) => {
   return parseISO(`${date} ${time}`.trimEnd());
 };
+
+type TmpNewBusinessDay = {
+  weekday: string;
+  open_time: string;
+  close_time: string;
+};
+
+type NewBussinessDays = TmpNewBusinessDay[];
+
+export const newDisableDate = (bussinessDays: NewBussinessDays, date: Date) => {
+  const day = format(date, "eeee").toLowerCase();
+  return (
+    bussinessDays.filter((bussinessDay) => bussinessDay.weekday == day)
+      .length == 0
+  );
+};
+
+export const newGetOpenCloseTime = (
+  dateString: string,
+  businessDays: NewBussinessDays
+) => {
+  const dateObject = parseISO(dateString);
+  const day = format(dateObject, "eeee").toLowerCase();
+  const bussinessDay = businessDays.filter(
+    (businessDay) => businessDay.weekday == day
+  );
+  if (bussinessDay.length != 0) {
+    return {
+      openTime: bussinessDay[0].open_time,
+      closeTime: bussinessDay[0].close_time,
+    };
+  }
+};
