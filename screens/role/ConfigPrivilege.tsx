@@ -4,7 +4,12 @@ import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 import TextInput from "@/components/input/TextInput";
 import SubHeaderText from "@/components/text/SubHeaderText";
@@ -22,7 +27,8 @@ export type ConfigPrivilegeProps = CompositeScreenProps<
 
 const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
   const category = ManagingCategory.PRIVILEGE;
-  const { control, handleSubmit } = useForm();
+  const form = useForm();
+  const { control, handleSubmit } = form;
 
   const onSubmit = async (data: FieldValues) => {
     try {
@@ -67,7 +73,9 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
           category={category}
           roleName="A1"
           description="60 baht/hr"
-          onPress={() => {}}
+          onPress={() =>
+            navigation.navigate("ConfigZone", { form: form })
+          }
         />
         <RoleCard
           category={category}

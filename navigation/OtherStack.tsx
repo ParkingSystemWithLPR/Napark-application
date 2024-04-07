@@ -17,6 +17,7 @@ import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import ManagingCategory from "@/screens/role/ManagingCategory";
 import ManagingList from "@/screens/role/ManagingList";
 import ConfigPrivilege from "@/screens/role/ConfigPrivilege";
+import ConfigZone from "@/screens/role/ConfigZone";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -119,14 +120,21 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         name="ManagingList"
         component={ManagingList}
         options={{
-          title: `Managing List`,
+          title: "Managing List",
         }}
       />
       <Stack.Screen
         name="ConfigPrivilege"
         component={ConfigPrivilege}
         options={{
-          title: `Privilege`,
+          title: "Privilege",
+        }}
+      />
+      <Stack.Screen
+        name="ConfigZone"
+        component={ConfigZone}
+        options={{
+          title: "Zone",
         }}
       />
     </Stack.Navigator>

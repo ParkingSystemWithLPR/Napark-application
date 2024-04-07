@@ -1,3 +1,4 @@
+import { DropdownItem } from "@/components/input/DropdownInput";
 import { THAI_PROVINCE } from "@/constants/province";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { CardType } from "@/enum/CardType";
@@ -194,3 +195,16 @@ export const MOCKED_PAYMENTLICENSEPLATE = [
     province: THAI_PROVINCE[0].value,
   },
 ];
+
+export const MOCKED_ZONE = [
+  {
+    name: "A1",
+    description: "60 baht/hr",
+  },
+  {
+    name: "B2",
+    description: "step pricing",
+  },
+];
+
+export const MOCKED_ZONE_DROPDOWN = ["A", "B", "C"];

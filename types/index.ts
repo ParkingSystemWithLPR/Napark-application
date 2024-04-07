@@ -7,6 +7,8 @@ import { Car } from "./user";
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { ManagingCategory } from "@/enum/ManagingCategory";
+import { BookingRequest } from "@/screens/bookings/booking/BookingDetail";
+import { Control, FieldValues, UseFormReturn } from "react-hook-form";
 
 export type RootParamList = {
   Splash: undefined;
@@ -55,6 +57,7 @@ export type OtherStackParamList = {
   ManagingCategory: undefined;
   ManagingList: { category: ManagingCategory };
   ConfigPrivilege: { mode: ActionMode; roleId?: string };
+  ConfigZone: { form: UseFormReturn<FieldValues, any, undefined> };
 };
 
 export type BookingsStackParamList = {
@@ -105,4 +108,4 @@ export type HyperlinkTextProps = TextProps & {
 export type ImageProps = {
   content: string;
   filename: string;
-}
+};
