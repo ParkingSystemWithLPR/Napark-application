@@ -28,7 +28,7 @@ import {
 } from "@/utils/dropdown";
 import { BusinessDay } from "@/types/parking-lot/ParkingLot";
 import { useProfile } from "@/store/context/profile";
-import { BookingDetailState } from "@/screens/booking/BookingDetail";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;

@@ -10,12 +10,12 @@ import {
   formatDropdownFromSlotList,
   initDropdownValue,
 } from "@/utils/dropdown";
-import { BookingDetailState } from "@/screens/booking/BookingDetail";
 import {
   defaultBookingDetailState,
   getTotalFloor,
 } from "@/utils/bookingRequest";
 import { Slot } from "@/types/booking/Booking";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
@@ -113,9 +113,9 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   const unableToConfirmHandler = () => {
     Alert.alert("Please select a slot");
   };
-  useLayoutEffect(() => {
-    console.log(slotInFloor);
-  }, [slotInFloor]);
+  // useLayoutEffect(() => {
+  //   console.log(slotInFloor);
+  // }, [slotInFloor]);
   return (
     <View style={styles.container}>
       <DropdownInput

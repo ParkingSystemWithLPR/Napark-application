@@ -1,4 +1,3 @@
-import { BookingDetailState } from "@/screens/booking/BookingDetail";
 import {
   formatTimeWithSecond,
   getDateFromDateAndTime,
@@ -9,6 +8,7 @@ import { ValidateStatus } from "@/enum/BookingValidateStatus";
 import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
 import { CreateBookingRequest, Slot } from "@/types/booking/Booking";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export const defaultBookingDetailState: BookingDetailState = {
   licensePlate: "",

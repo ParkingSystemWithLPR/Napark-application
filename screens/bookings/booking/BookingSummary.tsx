@@ -58,7 +58,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     bookingDetailState,
     parkingLot
   );
-  console.log("createBookingRequest", createBookingRequest);
+  // console.log("createBookingRequest", createBookingRequest);
   const timeValidator = () => {
     const status = validateTimeInputs(bookingDetailState);
     switch (status) {
