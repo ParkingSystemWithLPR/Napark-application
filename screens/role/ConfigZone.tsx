@@ -1,14 +1,22 @@
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import DropdownInput from "@/components/input/DropdownInput";
-import ConfigPricing from "@/components/parking-lot/ConfigPricing";
+import TextInput from "@/components/input/TextInput";
+import StepPricing from "@/components/pricingRule/StepPricing";
 import BodyContainer from "@/components/ui/BodyContainer";
+import { PriceRateUnit } from "@/enum/ParkingLot";
 import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, LogBox, StyleSheet, View } from "react-native";
+
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 export type ConfigZoneProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigZone">,
@@ -18,6 +26,8 @@ export type ConfigZoneProps = CompositeScreenProps<
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
   const form = route.params.form;
   const { control, handleSubmit } = form;
+
+  const [pricingRule, setPricingRule] = useState<string>("all");
 
   const onSubmit = async (data: FieldValues) => {
     try {
@@ -65,6 +75,48 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
           )}
         />
       </View>
+      <DropdownInput
+        selectedValue={pricingRule}
+        title="Pricing rule"
+        placeholder={""}
+        onSelect={(value) => setPricingRule(value)}
+        items={[
+          { value: "all", label: "Apply same price to all slot" },
+          { value: "step", label: "Apply pricing step" },
+        ]}
+      />
+      {pricingRule === "step" && <StepPricing control={control} />}
+      {pricingRule === "all" && (
+        <View style={styles.sameLineInputContainer}>
+          <Controller
+            name="pricing.price"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                title="Price"
+                placeholder="Enter parking fee"
+                value={value}
+                onChangeText={(value) => onChange(value)}
+                containerStyle={{ flex: 1 }}
+              />
+            )}
+          />
+          <Controller
+            name="pricing.unit"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <DropdownInput
+                selectedValue={value}
+                title="Unit"
+                placeholder={"Select fee unit"}
+                onSelect={(value) => onChange(value)}
+                items={formatEnumtoDropdownItem(PriceRateUnit)}
+                containerStyle={{ flex: 1 }}
+              />
+            )}
+          />
+        </View>
+      )}
       <View style={styles.buttonContainer}>
         <SecondaryButton
           title="Cancle"
@@ -83,7 +135,6 @@ export default ConfigZone;
 const styles = StyleSheet.create({
   container: {
     gap: 10,
-    justifyContent: "space-between",
   },
   dropdownContainer: {
     gap: 10,
@@ -96,5 +147,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     paddingTop: 20,
+  },
+  sameLineInputContainer: {
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "space-between",
   },
 });
