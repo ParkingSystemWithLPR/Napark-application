@@ -10,9 +10,9 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import SecondaryButton from "../button/SecondaryButton";
 import { Plan } from "@/types/parking-lot/ParkingLot";
 import ParkingZoneInput from "../input/ParkingZoneInput";
+import { ImageProps } from "@/types";
 
 export type ConfigPlanProps = {
   form: UseFormReturn<FieldValues, any, undefined>;
@@ -23,15 +23,14 @@ const IMAGE_SIZE = { width: 350, height: 200 };
 const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
   const { control, setValue, getValues } = form;
   const [plan, setPlan] = useState<Plan[]>();
-  
+
   useEffect(() => {
     setPlan(getValues().plan);
   }, [form]);
 
-  const [images, setImages] = useState<string[]>(
+  const [images, setImages] = useState<ImageProps[]>(
     plan ? plan.map((item) => item.image) : []
   );
-
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -43,23 +42,29 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
     });
 
     if (!result.canceled) {
-      const newImages: string[] = [];
+      const newImages: ImageProps[] = [];
       result.assets.forEach((img, index) => {
-        if (img.base64) {
-          newImages.push(img.base64);
-          setValue(`plan.${images.length + index}.image`, img.base64.slice(0,10));
+        if (img.base64 && img.fileName) {
+          newImages.push({
+            content: img.base64,
+            filename: img.fileName,
+          });
+          setValue(`plan.${images.length + index}.image`, {
+            content: img.base64.slice(0,10),
+            filename: img.fileName,
+          });
         }
       });
       setImages(images.concat(newImages));
     }
   };
 
-  const renderPlanSetting = (image: string, index: number) => {
+  const renderPlanSetting = (image: ImageProps, index: number) => {
     return (
       <View>
         <Image
           source={{
-            uri: "data:image/jpeg;base64," + image,
+            uri: "data:image/jpeg;base64," + image.content,
           }}
           height={IMAGE_SIZE.height}
           width={IMAGE_SIZE.width}
@@ -73,7 +78,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
               title="Floor"
               placeholder={"Floor"}
               value={value}
-              onChangeText={onChange}
+              onChangeText={() => onChange(parseInt(value))}
               containerStyle={{ flex: 1 }}
               inputMode={InputType.Numeric}
               editable
@@ -81,13 +86,10 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
           )}
         />
         <Controller
-          name={`plan.${index}.zone`}
+          name={`plan.${index}.zones`}
           control={control}
           render={({ field: { onChange, value } }) => (
-            <ParkingZoneInput
-              value={value}
-              onChange={onChange}
-            />
+            <ParkingZoneInput value={value} onChange={onChange} />
           )}
         />
       </View>

@@ -13,8 +13,9 @@ import StepPricing from "../pricingRule/StepPricing";
 import DropdownInput from "@/components/input/DropdownInput";
 import TextInput from "@/components/input/TextInput";
 import { Plan, Zone } from "@/types/parking-lot/ParkingLot";
-import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
+import { formatEnumtoDropdownItem } from "@/utils/dropdown";
+import { PriceRateUnit } from "@/enum/ParkingLot";
 
 export type ConfigPricingProps = {
   form: UseFormReturn<FieldValues, any, undefined>;
@@ -28,8 +29,8 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
   return (
     <ScrollView style={styles.container}>
       {plan.map((value: Plan, index: number) => {
-        return value.zone.map((zone: Zone, zIndex: number) => (
-          <>
+        return value.zones.map((zone: Zone, zIndex: number) => (
+          <View key={`${index}${zIndex}`}>
             <SubHeaderText text={"floor " + value.floor + " zone " + zone.name}/>
             <DropdownInput
               selectedValue={pricingRule}
@@ -45,7 +46,7 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
             {pricingRule === "all" && (
               <View style={styles.sameLineInputContainer}>
                 <Controller
-                  name={`plan.${index}.zone.${zIndex}.price`}
+                  name={`plan.${index}.zones.${zIndex}.price`}
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <TextInput
@@ -58,7 +59,7 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
                   )}
                 />
                 <Controller
-                  name={`plan.${index}.zone.${zIndex}.price_unit`}
+                  name={`plan.${index}.zones.${zIndex}.price_unit`}
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <DropdownInput
@@ -66,14 +67,14 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
                       title="Unit"
                       placeholder={"Select fee unit"}
                       onSelect={(value) => onChange(value)}
-                      items={[{ value: "thb/hr", label: "bath / hr" }]}
+                      items={formatEnumtoDropdownItem(PriceRateUnit)}
                       containerStyle={{ flex: 1 }}
                     />
                   )}
                 />
               </View>
             )}
-          </>
+          </View>
         ));
       })}
     </ScrollView>
