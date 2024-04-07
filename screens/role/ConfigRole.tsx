@@ -113,7 +113,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
               <BodyText
-                text="Assign role member"
+                text="Assign managing role member"
                 textStyle={styles.permissionText}
               />
               <Switch
