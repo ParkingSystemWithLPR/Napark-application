@@ -206,12 +206,6 @@ const styles = StyleSheet.create({
   permissionText: {
     color: Colors.gray[900],
   },
-  sameLineInputContainer: {
-    gap: 15,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
