@@ -208,3 +208,5 @@ export const MOCKED_ZONE = [
 ];
 
 export const MOCKED_ZONE_DROPDOWN = ["A", "B", "C"];
+
+export const MOCKED_MANAGING_ROLE = ["CEO", "CEP", "CEQ"];

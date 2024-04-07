@@ -73,9 +73,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
           category={category}
           roleName="A1"
           description="60 baht/hr"
-          onPress={() =>
-            navigation.navigate("ConfigZone", { form: form })
-          }
+          onPress={() => navigation.navigate("ConfigZone", { form: form })}
         />
         <RoleCard
           category={category}
@@ -89,7 +87,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
       <ChangeScreenTab
         icon={"account-supervisor"}
         screenName={"Role"}
-        onPress={() => {}}
+        onPress={() => navigation.navigate("PrivilegeMember")}
       />
       <View style={styles.buttonContainer}>
         <SecondaryButton
