@@ -244,7 +244,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             onPress={() => {
               searchInputRef.current?.setAddressText("");
               dismissAll();
-              navigation.navigate("BookingStack", {
+              navigation.navigate("BookingsStack", {
                 screen: "BookingDetail",
                 params: { parkingLot: selectedParkingSpace },
               });
