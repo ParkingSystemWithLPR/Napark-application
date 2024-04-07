@@ -3,11 +3,12 @@ import { StyleSheet, FlatList, Image, View } from "react-native";
 import IconButton from "../button/IconButton";
 
 import Colors from "@/constants/color";
+import { ImageProps } from "@/types";
 
 export type ImageContainerProps = {
   images: string[];
   editable?: boolean;
-  onDelete?: (imageUrl: string) => void;
+  onDelete?: (imageUrl: ImageProps) => void;
   containerStyle?: object;
 };
 
@@ -27,7 +28,7 @@ const ImageContainer: React.FC<ImageContainerProps> = ({
           <View>
             <Image
               source={{
-                uri: item,
+                uri: "data:image/jpeg;base64," + item.content,
               }}
               height={IMAGE_SIZE}
               width={IMAGE_SIZE}

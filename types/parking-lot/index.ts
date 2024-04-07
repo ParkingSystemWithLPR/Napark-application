@@ -5,6 +5,7 @@ import { SlotPriceProfile, SlotProfile } from "../booking";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { ZoneType } from "@/enum/ParkingLot";
+import { ImageProps } from "..";
 
 export type ParkingLot = {
   _id: string;

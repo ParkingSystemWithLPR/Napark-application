@@ -24,7 +24,13 @@ import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLotRequest } from "@/types/parking-lot";
 =======
 import ConfigAddress from "@/components/parking-lot/ConfigAddress";
+<<<<<<< HEAD
 >>>>>>> 1047393 ([NP-140] feat: add address input)
+=======
+import { CreateParkingLotRequestInput, useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
+import { useAuth } from "@/store/context/auth";
+import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
+>>>>>>> 3557a3b ([NO-140] fix: image type)
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -34,6 +40,7 @@ export type RequestParkingLotProps = CompositeScreenProps<
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   const { accessToken, authenticate } = useAuth();
@@ -46,21 +53,34 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   const { control, handleSubmit, setValue, getValues, formState: { isSubmitting } } = useForm();
 >>>>>>> fecd2d1 ([NP-140] feat: improve plan upload and pricing config)
 =======
+=======
+  const { accessToken, authenticate } = useAuth();
+>>>>>>> 3557a3b ([NO-140] fix: image type)
   const form = useForm();
   const { handleSubmit, formState: { isSubmitting } } = form;
 >>>>>>> d9639db ([NP-140] feat: complete request form && change schema)
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
+<<<<<<< HEAD
   const [isSubmitSuccessful, setSubmitSuccessful] = useState<boolean>(false);
+=======
+>>>>>>> 3557a3b ([NO-140] fix: image type)
   const { mutateAsync: createRequestAsync } = useCreateParkingLotRequest();
 
   const onSubmit = async (data: ParkingLotRequest) => {
     try {
+<<<<<<< HEAD
       await createRequestAsync({ data, auth: { accessToken, authenticate } });
       setTimeout(() => {
         setSubmitSuccessful(true);
       }, 2000);
       navigation.navigate("OtherStack", { screen: "ParkingLotsList" });
+=======
+      const parkingLotRequest = data as ParkingLotRequest;
+      console.log("data", JSON.stringify(data));
+      await createRequestAsync({data: parkingLotRequest, auth: {accessToken, authenticate}});
+      navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
+>>>>>>> 3557a3b ([NO-140] fix: image type)
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -71,6 +91,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 
   const onGoNextStep = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     setStep(step + 1);
   };
 
@@ -79,6 +100,8 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   };
 =======
   
+=======
+>>>>>>> 3557a3b ([NO-140] fix: image type)
     setStep(step + 1)
   }
 >>>>>>> d9639db ([NP-140] feat: complete request form && change schema)
