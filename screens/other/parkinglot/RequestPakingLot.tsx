@@ -88,13 +88,6 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingBottom: 70,
   },
-  formContainer: {},
-  sameLineInputContainer: {
-    gap: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   centeredContent: {
     justifyContent: "center",
     alignItems: "center",
