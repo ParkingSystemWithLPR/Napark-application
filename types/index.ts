@@ -101,3 +101,8 @@ export type TextProps = {
 export type HyperlinkTextProps = TextProps & {
   url: string;
 };
+
+export type ImageProps = {
+  content: string;
+  filename: string;
+}

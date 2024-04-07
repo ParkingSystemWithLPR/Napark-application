@@ -66,7 +66,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
                   title="Capacity"
                   placeholder={"Capacity"}
                   value={value}
-                  onChangeText={onChange}
+                  onChangeText={() => onChange(parseInt(value))}
                   containerStyle={{ flex: 1 }}
                   inputMode={InputType.Numeric}
                   editable
