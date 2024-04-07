@@ -1,4 +1,5 @@
 export interface Car {
+  _id?: string;
   license_plate: string;
   province_of_reg: string;
   is_default: boolean;
@@ -11,6 +12,6 @@ export interface Profile {
   email: string;
   tel?: string;
   date_of_birth?: string;
-  user_car?: Car[];
+  user_cars?: Car[];
   profile_image?: string;
 }

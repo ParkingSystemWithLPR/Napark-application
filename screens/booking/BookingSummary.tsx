@@ -13,8 +13,13 @@ import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
-import { validateTimeInputs } from "@/utils/bookingRequest";
+import {
+  formatCreateBookingRequest,
+  validateTimeInputs,
+} from "@/utils/bookingRequest";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import { useCreateBooking } from "@/store/api/booking/useCreateBooking";
+import { useAuth } from "@/store/context/auth";
 
 export type Attribute = {
   attribute: string;
@@ -29,7 +34,8 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   navigation,
   route,
 }) => {
-  const bookingRequest = route.params.bookingDetailState;
+  const { bookingDetailState, parkingLot } = route.params;
+  const { accessToken, authenticate } = useAuth();
   const {
     slotName,
     checkInDate,
@@ -39,13 +45,17 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     specification,
     price,
     unit,
-  } = bookingRequest;
-  const parkingLot = route.params.parkingLot;
+  } = bookingDetailState;
+  const { mutateAsync: createBooking } = useCreateBooking();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isSendingRequest, setIsSendingRequest] = useState(false);
-
+  const createBookingRequest = formatCreateBookingRequest(
+    bookingDetailState,
+    parkingLot
+  );
+  console.log("createBookingRequest", createBookingRequest);
   const timeValidator = () => {
-    const status = validateTimeInputs(bookingRequest);
+    const status = validateTimeInputs(bookingDetailState);
     switch (status) {
       case ValidateStatus.SUCCESS:
         return true;
@@ -58,17 +68,28 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     }
   };
 
-  const sendCreateRequest = () => {
-    setIsSendingRequest(true);
-    setTimeout(() => {
-      setIsSendingRequest(false);
-    }, 2000);
+  const sendCreateRequest = async () => {
+    await createBooking(
+      {
+        auth: { accessToken, authenticate },
+        body: createBookingRequest,
+      },
+      {
+        onSuccess() {
+          setIsSendingRequest(false);
+        },
+        onError() {
+          setIsSendingRequest(false);
+        },
+      }
+    );
   };
 
-  const openModal = () => {
+  const openModal = async () => {
     setIsOpenModal(true);
+    setIsSendingRequest(true);
     const isTimeValid = timeValidator();
-    if (isTimeValid) sendCreateRequest();
+    if (isTimeValid) await sendCreateRequest();
   };
 
   const closeModal = () => {

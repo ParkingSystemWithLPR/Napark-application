@@ -5,16 +5,25 @@ import PrimaryButton from "../button/PrimaryButton";
 import SecondaryButton from "../button/SecondaryButton";
 import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
-import { initDropdownValue } from "@/utils/dropdown";
+import {
+  formatDropdownFromFloorList,
+  formatDropdownFromSlotList,
+  initDropdownValue,
+} from "@/utils/dropdown";
 import { BookingDetailState } from "@/screens/booking/BookingDetail";
-import { defaultBookingDetailState } from "@/utils/bookingRequest";
+import {
+  defaultBookingDetailState,
+  getTotalFloor,
+} from "@/utils/bookingRequest";
+import { Slot } from "@/types/booking/Booking";
 
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
+  availableSlot: Slot[];
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   handleConfirm: () => void;
 };
-type ParkingValue = {
+export type ParkingValue = {
   slotId: string;
   slotName: string;
   price: number;
@@ -22,12 +31,17 @@ type ParkingValue = {
 };
 const ParkingPlan: React.FC<ParkingPlanProps> = ({
   bookingDetailState,
+  availableSlot,
   onChange,
   handleConfirm,
 }) => {
   const { floor, slotId, slotName, price, unit } = bookingDetailState;
-  const [isFirstUpdate, setIsFirstUpdate] = useState(true);
   const [canClickConfirm, setCanClickConfirm] = useState(false);
+  const floorDropDown = formatDropdownFromFloorList(
+    getTotalFloor(availableSlot)
+  );
+  const [slotInFloor, setSlotInFloor] =
+    useState<DropdownItem<ParkingValue>[]>();
   const [parkingValue, SetParkingValue] = useState<DropdownItem<ParkingValue>>(
     initDropdownValue<ParkingValue>(slotName, {
       slotId: slotId,
@@ -36,9 +50,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
       unit: unit,
     })
   );
-  const [dropDownFloor, SetDropDownFloor] = useState<DropdownItem<number>>(
-    initDropdownValue<number>(`floor${floor}`, floor)
-  );
+  const [dropDownFloor, SetDropDownFloor] = useState<DropdownItem<number>>();
   const setFloor = (value: number) => {
     onChange("floor", value);
   };
@@ -55,7 +67,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
     onChange("unit", value);
   };
   useLayoutEffect(() => {
-    if (!isFirstUpdate && floor != -1) {
+    if (floor != -1) {
       const { slotId, slotName, price, unit } = defaultBookingDetailState;
       setSlotId(slotId);
       setSlotName(slotName);
@@ -69,8 +81,8 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
           unit: unit,
         })
       );
-    } else {
-      setIsFirstUpdate(false);
+      const filteredSlot = availableSlot.filter((slot) => slot.floor == floor);
+      setSlotInFloor(formatDropdownFromSlotList(filteredSlot));
     }
   }, [floor]);
 
@@ -101,13 +113,13 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   const unableToConfirmHandler = () => {
     Alert.alert("Please select a slot");
   };
+  useLayoutEffect(() => {
+    console.log(slotInFloor);
+  }, [slotInFloor]);
   return (
     <View style={styles.container}>
       <DropdownInput
-        items={[
-          { label: "floor1", value: 1 },
-          { label: "floor2", value: 2 },
-        ]}
+        items={floorDropDown}
         selectedValue={dropDownFloor}
         onSpecialSelect={(item) => {
           setFloor(item.value);
@@ -122,26 +134,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
             style={styles.centerContainer}
           />
           <DropdownInput
-            items={[
-              {
-                label: "a1",
-                value: {
-                  slotId: "1",
-                  slotName: "a1",
-                  price: 25,
-                  unit: "baht/hr",
-                },
-              },
-              {
-                label: "a2",
-                value: {
-                  slotId: "2",
-                  slotName: "a2",
-                  price: 25,
-                  unit: "baht/hr",
-                },
-              },
-            ]}
+            items={slotInFloor ?? []}
             selectedValue={parkingValue}
             onSpecialSelect={(item) => {
               onSelect(item.value);

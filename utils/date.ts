@@ -23,6 +23,11 @@ export const formatDateAndTime = (date: Date) => {
 export const formatTime = (date: Date) => {
   return getFormatedDate(date, "HH:mm");
 };
+
+export const formatTimeWithSecond = (timeString: string) => {
+  return `${timeString}:00`;
+};
+
 export const formatStringDate = (date: string) => {
   return date.replaceAll("/", "-");
 };

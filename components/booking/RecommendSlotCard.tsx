@@ -2,26 +2,29 @@ import { View, Pressable, StyleSheet, Platform } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BodyText from "../text/BodyText";
 import Colors from "@/constants/color";
+import { Slot } from "@/types/booking/Booking";
 
 export type RecommendedSlotType = {
-  slotName: string;
+  slot: Slot;
   recommendType: string;
-  price: number;
-  unit: string;
-  handleClickRecommend: (slotName: string, price: number, unit: string) => void;
+  handleClickRecommend: (slot: Slot) => void;
 };
 
 const RecommendedSlotCard: React.FC<RecommendedSlotType> = ({
-  slotName,
+  slot,
   recommendType,
-  price,
-  unit,
   handleClickRecommend,
 }) => {
+  const price = slot.is_privilege_available
+    ? slot.privilege_price_rate
+    : slot.default_price_rate;
+  const unit = slot.is_privilege_available
+    ? slot.privilege_price_unit
+    : slot.default_price_rate_unit;
   return (
     <View style={styles.recommendSlotContainer}>
       <Pressable
-        onPress={handleClickRecommend.bind(this, slotName, price, unit)}
+        onPress={handleClickRecommend.bind(this, slot)}
         style={({ pressed }) => [pressed && styles.pressed]}
       >
         <View style={styles.recommendSlot}>
@@ -36,7 +39,7 @@ const RecommendedSlotCard: React.FC<RecommendedSlotType> = ({
                 gap: 5,
               }}
             >
-              <BodyText text={`Slot: ${slotName}`}></BodyText>
+              <BodyText text={`Slot: ${slot.name}`}></BodyText>
               <BodyText text={recommendType}></BodyText>
             </View>
           </View>

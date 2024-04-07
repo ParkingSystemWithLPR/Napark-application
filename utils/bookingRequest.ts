@@ -1,13 +1,16 @@
 import { BookingDetailState } from "@/screens/booking/BookingDetail";
 import {
+  formatTimeWithSecond,
   getDateFromDateAndTime,
   isCheckInTimeout,
   isCheckOutTimeout,
 } from "./date";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
+import { CreateBookingRequest, Slot } from "@/types/booking/Booking";
 
 export const defaultBookingDetailState: BookingDetailState = {
-  carId: "",
   licensePlate: "",
   checkInDate: null,
   checkInTime: null,
@@ -51,4 +54,60 @@ export const validateAfterClosingSetting = (
     return ValidateStatus.MISSING;
   }
   return ValidateStatus.SUCCESS;
+};
+
+export const getQueryParamFromBookingDetailState = (
+  bookingDetailState: BookingDetailState,
+  parkingLot: ParkingLot
+): GetAvailableSlotsQueryParam => {
+  const isValidTime =
+    validateTimeInputs(bookingDetailState) == ValidateStatus.SUCCESS;
+  const isValidLicensePlate =
+    validateLicensePlate(bookingDetailState) == ValidateStatus.SUCCESS;
+  // console.log("bookingDetailState", bookingDetailState);
+  if (isValidTime && isValidLicensePlate) {
+    return {
+      parkinglot_id: parkingLot._id,
+      start_date: bookingDetailState.checkInDate ?? "",
+      start_time: bookingDetailState.checkInTime
+        ? formatTimeWithSecond(bookingDetailState.checkInTime)
+        : "",
+      end_date: bookingDetailState.checkOutDate ?? "",
+      end_time: bookingDetailState.checkOutTime
+        ? formatTimeWithSecond(bookingDetailState.checkOutTime)
+        : "",
+      is_for_disabled: bookingDetailState.specification != "None",
+    };
+  }
+  return {
+    parkinglot_id: parkingLot._id,
+    start_date: null,
+    start_time: null,
+    end_date: null,
+    end_time: null,
+    is_for_disabled: false,
+  };
+};
+
+export const getTotalFloor = (slots: Slot[]) => {
+  return [...new Set(slots.map((item) => item.floor))];
+};
+
+export const formatCreateBookingRequest = (
+  bookingDetailState: BookingDetailState,
+  parkingLot: ParkingLot
+): CreateBookingRequest => {
+  return {
+    car_id: bookingDetailState.licensePlate,
+    end_date: bookingDetailState.checkOutDate ?? "",
+    end_time: bookingDetailState.checkOutTime
+      ? formatTimeWithSecond(bookingDetailState.checkOutTime)
+      : "",
+    start_date: bookingDetailState.checkInDate ?? "",
+    start_time: bookingDetailState.checkInTime
+      ? formatTimeWithSecond(bookingDetailState.checkInTime)
+      : "",
+    parkinglot_id: parkingLot._id,
+    slot_id: bookingDetailState.slotId,
+  };
 };

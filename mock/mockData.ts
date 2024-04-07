@@ -100,7 +100,7 @@ export const MOCKED_CREDIT_CARD = [
 ];
 
 export const mockParkingLot: ParkingLot = {
-  _id: "mockId",
+  _id: "660ecca7e55e2ede401ec843",
   name: "mockName",
   address: {
     address1: "mockAddress",

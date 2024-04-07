@@ -75,6 +75,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
 
   const setCheckInDate = (value: string | null) => {
     onChange("checkInDate", value);
+    onChange("checkOutDate", value); //for this version where only booking in same day
   };
 
   const setCheckInTime = (value: string | null) => {
@@ -82,7 +83,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   };
 
   const setSpecification = (value?: string) => {
-    onChange("checkInTime", value);
+    onChange("specification", value);
   };
 
   const isCheckInDateNotNull = checkInDate != null;
@@ -100,7 +101,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       !maxCheckOutTime ||
       !isEqual(minCheckOutTime, maxCheckOutTime));
 
-  const licensePlateList = profile.user_car;
+  const licensePlateList = profile.user_cars;
   const licensePlateDropdown =
     (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
     [];
@@ -210,7 +211,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   useLayoutEffect(() => {
     if (!isFirstUpdate && checkInDate) {
       setCheckOutTime(null);
-      setCheckOutDate(null);
+      // setCheckOutDate(null);
       setCheckInTime(null);
     } else {
       setIsFirstUpdate(false);
@@ -279,7 +280,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           }}
           setMinimumDate={true}
           outerContainerStyle={styles.dateContainer}
-          editable={isCheckInTimeEditable}
+          editable={false} //{isCheckInTimeEditable} for first version that only booking in same day
           minDateValue={checkInDate}
           isRequired={true}
           disableDate={disableDateHandler}
