@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Control,
   Controller,
   FieldValues,
   UseFormReturn,
@@ -53,7 +52,7 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
                       title="Price"
                       placeholder="Enter parking fee"
                       value={value}
-                      onChangeText={(value) => onChange(value)}
+                      onChangeText={(value) => onChange(parseInt(value))}
                       containerStyle={{ flex: 1 }}
                     />
                   )}

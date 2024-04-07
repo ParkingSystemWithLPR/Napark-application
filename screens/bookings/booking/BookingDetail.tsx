@@ -86,8 +86,8 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
       const dateObject = parseISO(dateString);
       const day = format(dateObject, "eeee");
       return {
-        openTime: parkingLot.businessDays[`${day}` as DayInAWeek].openTime,
-        closeTime: parkingLot.businessDays[`${day}` as DayInAWeek].closeTime,
+        open_time: parkingLot.businessDays[`${day}` as DayInAWeek].open_time,
+        close_time: parkingLot.businessDays[`${day}` as DayInAWeek].close_time,
       };
     }
   };

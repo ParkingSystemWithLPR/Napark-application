@@ -29,7 +29,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       base64: true,
       aspect: [4, 3],
-      quality: 1,
       allowsMultipleSelection: true,
     });
 
@@ -38,7 +37,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       result.assets.forEach((img) => {
         if (img.base64 && img.fileName) {
           newImages.push({
-            content: img.base64.slice(0,10),
+            content: img.base64,
             filename: img.fileName,
           });
         }

@@ -38,7 +38,7 @@ const ConfigInfo: React.FC<ConfigInfoProps> = ({ form }) => {
         )}
       />
       <Controller
-        name={"businessDays"}
+        name={"business_days"}
         control={control}
         render={({ field: { onChange, value } }) => (
           <BusinessDayInput

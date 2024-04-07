@@ -48,7 +48,7 @@ const DateInput: React.FC<DateInputProps> = ({
   });
 
   const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
-    return a.openTime === b.openTime && a.closeTime === b.closeTime;
+    return a.open_time === b.open_time && a.close_time === b.close_time;
   };
 
   useEffect(() => {
@@ -57,20 +57,23 @@ const DateInput: React.FC<DateInputProps> = ({
       const businessHoursSet: BusinessHour[] = [];
       const newFormList: number[] = [];
       businessDays.forEach((businessDay) => {
-        const { day, closeTime, openTime } = businessDay;
+        const { weekday, close_time, open_time } = businessDay;
         if (
           !businessHoursSet.some((e) =>
-            isEqualBusinessHour(e, { closeTime, openTime })
+            isEqualBusinessHour(e, { close_time, open_time })
           )
         ) {
-          businessHoursSet.push({ closeTime, openTime });
+          businessHoursSet.push({ close_time, open_time });
           newFormList.push(0);
         }
         const index = businessHoursSet.findIndex((e) =>
-          isEqualBusinessHour(e, { closeTime, openTime })
+          isEqualBusinessHour(e, { close_time, open_time })
         );
-        newSelectedDay[day as DayInAWeek] = { set: index, isSelected: true };
-        setValue(`${index}`, { closeTime, openTime });
+        newSelectedDay[weekday as DayInAWeek] = {
+          set: index,
+          isSelected: true,
+        };
+        setValue(`${index}`, { close_time, open_time });
       });
       setSelectedDay(newSelectedDay);
       setFormList(newFormList);
@@ -82,9 +85,13 @@ const DateInput: React.FC<DateInputProps> = ({
     const newBusinessDays: BusinessDay[] = [];
     Object.entries(selectedDay).forEach(([day, value]) => {
       if (value.isSelected) {
-        const { openTime, closeTime } = formData[value.set ?? -2];
+        const { open_time, close_time } = formData[value.set ?? -2];
         const newDay = day as DayInAWeek;
-        newBusinessDays.push({ day: newDay, openTime, closeTime });
+        newBusinessDays.push({
+          weekday: newDay,
+          open_time: open_time + ":00",
+          close_time: close_time + ":00",
+        });
       }
     });
 
@@ -150,7 +157,7 @@ const DateInput: React.FC<DateInputProps> = ({
         </View>
         <View style={styles.sameLineInputContainer}>
           <Controller
-            name={`${index}.openTime`}
+            name={`${index}.open_time`}
             control={control}
             render={({ field: { onChange, value } }) => (
               <TimeInput
@@ -167,7 +174,7 @@ const DateInput: React.FC<DateInputProps> = ({
           />
           <BodyText text={"to"} textStyle={{ color: Colors.gray[700] }} />
           <Controller
-            name={`${index}.closeTime`}
+            name={`${index}.close_time`}
             control={control}
             render={({ field: { onChange, value } }) => (
               <TimeInput

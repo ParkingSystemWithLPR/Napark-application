@@ -35,8 +35,8 @@ export type BookingDetailComponentProps = {
   disableDate: (date: Date) => boolean;
   getOpenCloseTime: (dateString: string) =>
     | {
-        openTime: string | undefined;
-        closeTime: string | undefined;
+        open_time: string | undefined;
+        close_time: string | undefined;
       }
     | undefined;
   licensePlateList?: string[];
@@ -129,12 +129,12 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   ) => {
     const value = getOpenCloseTime(date);
     if (value) {
-      const { openTime, closeTime } = value;
-      const openTimeObject = openTime
-        ? parseISO(`${date} ${openTime}`)
+      const { open_time, close_time } = value;
+      const openTimeObject = open_time
+        ? parseISO(`${date} ${open_time}`)
         : undefined;
-      const closeTimeObject = closeTime
-        ? parseISO(`${date} ${closeTime}`)
+      const closeTimeObject = close_time
+        ? parseISO(`${date} ${close_time}`)
         : undefined;
       setMinTime(openTimeObject);
       setMaxTime(closeTimeObject);

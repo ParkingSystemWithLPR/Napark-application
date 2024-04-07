@@ -37,7 +37,6 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       base64: true,
       aspect: [4, 3],
-      quality: 1,
       allowsMultipleSelection: true,
     });
 
@@ -50,7 +49,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
             filename: img.fileName,
           });
           setValue(`plan.${images.length + index}.image`, {
-            content: img.base64.slice(0,10),
+            content: img.base64,
             filename: img.fileName,
           });
         }
@@ -78,7 +77,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
               title="Floor"
               placeholder={"Floor"}
               value={value}
-              onChangeText={() => onChange(parseInt(value))}
+              onChangeText={(value) => onChange(parseInt(value))}
               containerStyle={{ flex: 1 }}
               inputMode={InputType.Numeric}
               editable

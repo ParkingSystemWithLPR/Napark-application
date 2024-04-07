@@ -117,11 +117,11 @@ export const mockParkingLot: ParkingLot = {
   },
   businessDays: {
     Monday: { isOpen: true },
-    Tuesday: { isOpen: true, openTime: "08:00", closeTime: "22:00" },
+    Tuesday: { isOpen: true, open_time: "08:00", close_time: "22:00" },
     Wednesday: { isOpen: false },
     Thursday: { isOpen: false },
-    Friday: { isOpen: true, openTime: "11:00", closeTime: "17:00" },
-    Saturday: { isOpen: true, openTime: "12:00", closeTime: "23:00" },
+    Friday: { isOpen: true, open_time: "11:00", close_time: "17:00" },
+    Saturday: { isOpen: true, open_time: "12:00", close_time: "23:00" },
     Sunday: { isOpen: false },
   },
 };

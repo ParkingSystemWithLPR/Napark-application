@@ -9,7 +9,7 @@ export type ParkingLot = {
   name: string;
   address: Address;
   coord: Region,
-  businessDays?: BusinessDay,
+  business_days?: BusinessDay,
   images?: string[],
   plan: Plan[],
   availability?: number,
@@ -18,7 +18,7 @@ export type ParkingLot = {
 export type ParkingLotRequest = {
   name: string;
   images?: ImageProps[];
-  businessDays: BusinessDay[];
+  business_days: BusinessDay[];
   coord: Region,
   address: Address;
   plan: Plan[],
@@ -33,14 +33,14 @@ export type Address = {
 };
 
 export type BusinessDay = {
-  openTime: string;
-  closeTime: string;
-  day: DayInAWeek;
+  open_time: string;
+  close_time: string;
+  weekday: DayInAWeek;
 };
 
 export type BusinessHour = {
-  openTime: string;
-  closeTime: string;
+  open_time: string;
+  close_time: string;
 };
 
 export type Plan = {
@@ -54,5 +54,5 @@ export type Zone = {
   capacity?: number;
   type: ZoneType;
   price?: number;
-  unit?: string;
+  price_unit?: string;
 };

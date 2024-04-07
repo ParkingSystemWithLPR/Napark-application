@@ -38,7 +38,6 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   const onSubmit = async (data: FieldValues) => {
     try {
       const parkingLotRequest = data as ParkingLotRequest;
-      console.log("data", JSON.stringify(data));
       await createRequestAsync({data: parkingLotRequest, auth: {accessToken, authenticate}});
       navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
     } catch (error) {
