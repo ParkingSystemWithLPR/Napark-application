@@ -101,7 +101,7 @@ const Arriving: React.FC<ArrivingProps> = ({ route }) => {
               />
               {renderAttribute({
                 attribute: "Space",
-                value: bookingRequest.slot,
+                value: bookingRequest.slotName,
               })}
               {renderAttribute({
                 attribute: "Check-in Date",
