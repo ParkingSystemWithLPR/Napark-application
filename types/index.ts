@@ -55,7 +55,7 @@ export type OtherStackParamList = {
 };
 
 export type BookingsStackParamList = {
-  BookingDetail: { parkingLot: ParkingLot };
+  BookingDetail: { parkingLot: ParkingLot; defaultValue?: BookingDetailState };
   BookingSummary: {
     bookingDetailState: BookingDetailState;
     parkingLot: ParkingLot;

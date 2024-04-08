@@ -9,6 +9,7 @@ import { ParkingLot } from "@/types/parking-lot/ParkingLot";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
 import { CreateBookingRequest, Slot } from "@/types/booking/Booking";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { Profile } from "@/types/user";
 
 export const defaultBookingDetailState: BookingDetailState = {
   licensePlate: "",
@@ -22,6 +23,19 @@ export const defaultBookingDetailState: BookingDetailState = {
   slotName: "",
   price: -1,
   unit: "",
+};
+
+export const createDefaultBookingDetailState = (
+  profile: Profile
+): BookingDetailState => {
+  const defaultLicensePlate = profile.user_cars
+    ?.filter((car) => car.is_default)
+    .map((defaultcar) => defaultcar._id)[0];
+  console.log(defaultLicensePlate);
+  return {
+    ...defaultBookingDetailState,
+    licensePlate: defaultLicensePlate ?? "",
+  };
 };
 
 export const validateTimeInputs = (bookingRequest: BookingDetailState) => {

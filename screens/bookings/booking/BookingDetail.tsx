@@ -27,6 +27,7 @@ import {
   validateTimeInputs,
   validateLicensePlate,
   validateAfterClosingSetting,
+  createDefaultBookingDetailState,
 } from "@/utils/bookingRequest";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
@@ -55,14 +56,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const { profile } = useProfile();
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
-  const defaultLicensePlate = profile.user_cars
-    ?.filter((car) => car.is_default)
-    .map((defaultcar) => defaultcar.license_plate)[0];
+  const defaultValue = route.params.defaultValue
+    ? route.params.defaultValue
+    : createDefaultBookingDetailState(profile);
   const [bookingDetailState, setBookingDetailState] =
-    useState<BookingDetailState>({
-      ...defaultBookingDetailState,
-      licensePlate: defaultLicensePlate ?? "",
-    });
+    useState<BookingDetailState>(defaultValue);
 
   const [availableSlotQueryParam, setAvailableSlotQueryParam] =
     useState<GetAvailableSlotsQueryParam>(
