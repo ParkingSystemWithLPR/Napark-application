@@ -58,14 +58,16 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
     bookingDetailState,
     parkingLot
   );
-  // console.log("createBookingRequest", createBookingRequest);
   const timeValidator = () => {
     const status = validateTimeInputs(bookingDetailState);
     switch (status) {
       case ValidateStatus.SUCCESS:
         return true;
       case ValidateStatus.TIMEOUT:
-        Alert.alert("CheckIn or CheckOut timeout");
+        Alert.alert(
+          "Invalid booking time",
+          "CheckIn or CheckOut Time is before current time"
+        );
         navigation.navigate("MainScreen", { screen: "Landing" });
         return false;
       default:

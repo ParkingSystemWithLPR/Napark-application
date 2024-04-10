@@ -113,9 +113,6 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   const unableToConfirmHandler = () => {
     Alert.alert("Please select a slot");
   };
-  // useLayoutEffect(() => {
-  //   console.log(slotInFloor);
-  // }, [slotInFloor]);
   return (
     <View style={styles.container}>
       <DropdownInput

@@ -55,7 +55,6 @@ export const useGetAvailableSlot = (
   input: GetAvailableSlotsInput
 ): UseQueryResult<AvailableSlotResponse, AxiosError> => {
   const { queryParams } = input;
-  // console.log("queryParams", queryParams);
   return useQuery({
     queryKey: ["postal-code-latlng-end_date", queryParams],
     queryFn: async () => getAvailableSlot(input),

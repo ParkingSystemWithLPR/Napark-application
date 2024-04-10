@@ -45,8 +45,8 @@ const DropdownInput = <T,>({
   const handleOnChange = (item: DropdownItem<T>) => {
     if (onSpecialSelect) {
       onSpecialSelect(item);
-    } else {
-      if (onSelect) onSelect(item.value);
+    } else if (onSelect) {
+      onSelect(item.value);
     }
   };
   return (

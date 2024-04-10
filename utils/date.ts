@@ -48,7 +48,7 @@ export const getBusinessHours = (businessDays: BusinessDay) => {
 };
 
 export const isCheckInTimeout = (date: Date) => {
-  return differenceInMinutes(new Date(), date) > 15;
+  return isBefore(date, new Date());
 };
 
 export const isCheckOutTimeout = (date: Date) => {

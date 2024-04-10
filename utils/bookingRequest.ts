@@ -78,7 +78,6 @@ export const getQueryParamFromBookingDetailState = (
     validateTimeInputs(bookingDetailState) == ValidateStatus.SUCCESS;
   const isValidLicensePlate =
     validateLicensePlate(bookingDetailState) == ValidateStatus.SUCCESS;
-  // console.log("bookingDetailState", bookingDetailState);
   if (isValidTime && isValidLicensePlate) {
     return {
       parkinglot_id: parkingLot._id,

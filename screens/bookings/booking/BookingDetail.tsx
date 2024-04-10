@@ -139,7 +139,10 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
         Alert.alert("Please fill all required fill");
         return false;
       case ValidateStatus.TIMEOUT:
-        Alert.alert("CheckIn or CheckOut timeout");
+        Alert.alert(
+          "Invalid booking time",
+          "CheckIn or CheckOut Time is before current time"
+        );
         setBookingDetailState(defaultBookingDetailState);
         setIsSetting(true);
         return false;
