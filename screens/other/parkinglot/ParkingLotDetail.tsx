@@ -95,6 +95,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               onPress={() => {
                 navigation.navigate("OtherStack", {
                   screen: "ManagingCategory",
+                  params: { parkingLotId: parkingLotId },
                 });
               }}
             />

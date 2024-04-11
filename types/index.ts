@@ -54,7 +54,7 @@ export type OtherStackParamList = {
   AccountAndCard: undefined;
   ScanQR: undefined;
   PayTheBill: undefined;
-  ManagingCategory: undefined;
+  ManagingCategory: { parkingLotId: string };
   ManagingList: { category: ManagingCategory };
   ConfigPrivilege: { mode: ActionMode; roleId?: string };
   ConfigZone: { form: UseFormReturn<FieldValues, any, undefined> };
