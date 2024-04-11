@@ -1,26 +1,26 @@
-import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useLayoutEffect, useState } from "react";
+import {  useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import BookingCardSummary from "@/components/booking/BookingCardSummary";
 import BookingDetailComponent from "@/components/booking/BookingDetailComponent";
 import ParkingPlan from "@/components/booking/ParkingPlan";
+import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
 import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { useProfile } from "@/store/context/profile";
-import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
 import {
   GetAvailableSlotsQueryParam,
   useGetAvailableSlot,
 } from "@/store/api/booking/useGetAvailableSlot";
 import { useAuth } from "@/store/context/auth";
-import { AvailableSlotResponse, Slot } from "@/types/booking/Booking";
+import { useProfile } from "@/store/context/profile";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import { AvailableSlotResponse, Slot } from "@/types/booking";
 import {
   defaultBookingDetailState,
   getQueryParamFromBookingDetailState,

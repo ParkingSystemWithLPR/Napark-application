@@ -9,7 +9,7 @@ import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
-import { BusinessDay, BusinessHour } from "@/types/parking-lot/ParkingLot";
+import { BusinessDay, BusinessHour } from "@/types/parking-lot";
 
 export type DateInputProps = {
   title: string;

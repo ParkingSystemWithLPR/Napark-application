@@ -4,11 +4,12 @@ import {
   isCheckInTimeout,
   isCheckOutTimeout,
 } from "./date";
+
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
-import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
-import { CreateBookingRequest, Slot } from "@/types/booking/Booking";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
+import { CreateBookingRequest, Slot } from "@/types/booking";
+import { ParkingLot } from "@/types/parking-lot";
 import { Profile } from "@/types/user";
 
 export const defaultBookingDetailState: BookingDetailState = {

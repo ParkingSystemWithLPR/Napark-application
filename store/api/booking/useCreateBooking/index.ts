@@ -7,8 +7,8 @@ import { AxiosError } from "axios";
 
 import { BOOKING_URL } from "..";
 
+import { Booking, CreateBookingRequest } from "@/types/booking";
 import apiRequest, { HTTPMethod } from "@/utils/http";
-import { Booking, CreateBookingRequest } from "@/types/booking/Booking";
 
 interface CreateBookingInput {
   body: CreateBookingRequest;

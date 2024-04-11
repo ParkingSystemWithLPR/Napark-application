@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -7,7 +8,6 @@ import LoadingOverlay from "../ui/LoadingOverlay";
 
 import Colors from "@/constants/color";
 import { CreatingBookingStatus } from "@/enum/BookingValidateStatus";
-import { useCallback } from "react";
 
 export type ProcessingModalContentProps = {
   status: CreatingBookingStatus;

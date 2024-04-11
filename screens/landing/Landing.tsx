@@ -44,7 +44,7 @@ import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,
 } from "@/types";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<

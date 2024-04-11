@@ -1,8 +1,9 @@
+import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
+
 import { ParkingValue } from "@/components/booking/ParkingPlan";
 import { DropdownItem } from "@/components/input/DropdownInput";
-import { Slot } from "@/types/booking/Booking";
+import { Slot } from "@/types/booking";
 import { Car } from "@/types/user";
-import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
 
 export const initDropdownValue = <T>(
   label: string,

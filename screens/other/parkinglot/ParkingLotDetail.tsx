@@ -15,7 +15,7 @@ import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotDetail">,

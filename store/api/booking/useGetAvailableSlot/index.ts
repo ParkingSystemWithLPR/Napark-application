@@ -3,8 +3,8 @@ import { AxiosError } from "axios";
 
 import { BOOKING_URL } from "..";
 
+import { AvailableSlotResponse } from "@/types/booking";
 import apiRequest, { HTTPMethod } from "@/utils/http";
-import { AvailableSlotResponse } from "@/types/booking/Booking";
 
 export interface GetAvailableSlotsQueryParam {
   parkinglot_id: string;

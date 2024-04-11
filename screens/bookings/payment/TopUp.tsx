@@ -3,8 +3,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import SecondaryButton from "@/components/button/SecondaryButton";
 import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
 import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";

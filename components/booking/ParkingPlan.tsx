@@ -5,17 +5,18 @@ import PrimaryButton from "../button/PrimaryButton";
 import SecondaryButton from "../button/SecondaryButton";
 import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
+
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { Slot } from "@/types/booking";
+import {
+  defaultBookingDetailState,
+  getTotalFloor,
+} from "@/utils/bookingRequest";
 import {
   formatDropdownFromFloorList,
   formatDropdownFromSlotList,
   initDropdownValue,
 } from "@/utils/dropdown";
-import {
-  defaultBookingDetailState,
-  getTotalFloor,
-} from "@/utils/bookingRequest";
-import { Slot } from "@/types/booking/Booking";
-import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
