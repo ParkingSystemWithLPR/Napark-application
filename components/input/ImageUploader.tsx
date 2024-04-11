@@ -14,6 +14,8 @@ type ImageUploaderProps = {
   image: ImageProps[];
   onChange: (images: ImageProps[]) => void;
   containerStyle?: object;
+  isRequired?: boolean;
+  errorText?: string;
 };
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
@@ -21,6 +23,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   image,
   onChange,
   containerStyle,
+  isRequired = false,
+  errorText,
 }) => {
   const [images, setImages] = useState<ImageProps[]>(image ?? []);
 
@@ -55,7 +59,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <View style={styles.container}>
-      {title && <SubHeaderText text={title} />}
+      {title && (
+        <View style={styles.titleContainer}>
+          <SubHeaderText text={title} />
+          {isRequired && (
+            <BodyText text="*" textStyle={styles.requiredIndicator} />
+          )}
+        </View>
+      )}
       <Pressable
         android_ripple={{ color: Colors.gray[600] }}
         style={({ pressed }) => [
@@ -74,6 +85,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           <BodyText text="Supported format: .jpg, .png" />
         </View>
       </Pressable>
+      {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
       <ImageContainer images={images} onDelete={onDelete} editable />
     </View>
   );
@@ -86,6 +98,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     gap: 10,
   },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
+  },
   uploadContainer: {
     borderWidth: 2,
     borderColor: Colors.red[400],
@@ -95,6 +114,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 12,
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
   card: {},
   cardPressed: {

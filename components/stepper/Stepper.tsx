@@ -11,93 +11,40 @@ export type StepperProps = {
 };
 
 const Stepper: React.FC<StepperProps> = ({ nowStep, setStep, stepAmount }) => {
-
   const renderSteps = () => {
     const steps: JSX.Element[] = [];
     for (let step = 1; step <= stepAmount; step++) {
-        steps.push(
-        <>
+      steps.push(
+        <View style={styles.container} key={step}>
           <Pressable
-            key={step}
             android_ripple={{ color: Colors.gray[600] }}
             style={({ pressed }) => [
               nowStep === step ? styles.selected : styles.idle,
               pressed ? styles.buttonPressed : null,
             ]}
-            onPress={() => {setStep(step)}}
+            disabled={step > nowStep}
+            onPress={() => {
+              setStep(step);
+            }}
           >
             <BodyText
               text={`${step}`}
               textStyle={nowStep === step ? styles.textSelected : {}}
             />
           </Pressable>
-          {step !== stepAmount &&(
+          {step !== stepAmount && (
             <BodyText
               text={"-"}
               textStyle={nowStep > step ? styles.linePassed : {}}
             />
           )}
-        </>
+        </View>
       );
     }
     return steps;
   };
 
-  return (
-    <View style={styles.container}>
-      {renderSteps()}
-      {/* <Pressable
-        key={1}
-        android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [
-          step == 1 ? styles.selected : styles.idle,
-          pressed ? styles.buttonPressed : null,
-        ]}
-        onPress={() => {setStep(1)}}
-      >
-        <BodyText
-          text={"1"}
-          textStyle={step == 1 ? styles.textSelected : {}}
-        />
-      </Pressable>
-      <BodyText
-        text={"-"}
-        textStyle={step != 1 ? styles.linePassed : {}}
-      />
-      <Pressable
-        key={2}
-        android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [
-          step == 2 ? styles.selected : styles.idle,
-          pressed ? styles.buttonPressed : null,
-        ]}
-        onPress={() => {setStep(2)}}
-      >
-        <BodyText
-          text={"2"}
-          textStyle={step == 2 ? styles.textSelected : {}}
-        />
-      </Pressable>
-      <BodyText
-        text={"-"}
-        textStyle={step == 3 ? styles.linePassed : {}}
-      />
-      <Pressable
-        key={3}
-        android_ripple={{ color: Colors.gray[600] }}
-        style={({ pressed }) => [
-          step == 3 ? styles.selected : styles.idle,
-          pressed ? styles.buttonPressed : null,
-        ]}
-        onPress={() => {setStep(3)}}
-      >
-        <BodyText
-          text={"3"}
-          textStyle={step == 3 ? styles.textSelected : {}}
-        />
-      </Pressable> */}
-    </View>
-  );
+  return <View style={styles.container}>{renderSteps()}</View>;
 };
 
 export default Stepper;
@@ -149,6 +96,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   linePassed: {
-    color: Colors.gray[800]
+    color: Colors.gray[800],
   },
 });

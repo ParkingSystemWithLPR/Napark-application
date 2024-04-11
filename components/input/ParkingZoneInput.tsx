@@ -3,14 +3,14 @@ import { Controller, useForm } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 
 import MyTextInput from "../input/TextInput";
+import SecondaryButton from "../button/SecondaryButton";
+import IconButton from "../button/IconButton";
+import DropdownInput from "./DropdownInput";
 
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import SecondaryButton from "../button/SecondaryButton";
 import { Zone } from "@/types/parking-lot/ParkingLot";
 import { ZoneType } from "@/enum/ParkingLot";
-import DropdownInput from "./DropdownInput";
-import IconButton from "../button/IconButton";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
 export type ParkingZoneInputProps = {
@@ -22,27 +22,37 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
   value,
   onChange,
 }) => {
-  const { control, getValues } = useForm();
-  const [zones, setZones] = useState<Zone[]>(value ?? [
-    {
-      name: "",
-      type: ZoneType.NORMAL,
-    },
-  ]);
+  const { control, getValues, setValue } = useForm<Zone[]>();
+  const [zones, setZones] = useState<Zone[]>(
+    value ?? [
+      {
+        name: "",
+        type: ZoneType.NORMAL,
+      },
+    ]
+    );
+
+  useEffect(() => {
+    if(value) {
+      value.forEach((item, index) => {
+        setValue(`${index}`,  item);
+      })
+    }
+  }, [])
 
   useEffect(() => {
     const formData = getValues();
     const newZones: Zone[] = [];
-    Object.values(formData).forEach((zone: Zone) => {
-      newZones.push(zone);
+    Object.values(formData).forEach((zone: Zone, index: number) => {
+      if(index < zones.length) newZones.push(zone);
     });
     onChange(newZones);
-  }, []);
+  }, [zones]);
 
   return (
     <View>
-      {zones.map((_, index) => (
-        <View style={styles.settingContainer}>
+      {zones.map((zone, index) => (
+        <View style={styles.settingContainer} key={`zone_${index}`}>
           <View style={styles.sameLineInputContainer}>
             <Controller
               name={`${index}.name`}
@@ -54,6 +64,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
                   value={value}
                   onChangeText={onChange}
                   containerStyle={{ flex: 1 }}
+                  isRequired
                   editable
                 />
               )}
@@ -65,10 +76,11 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
                 <MyTextInput
                   title="Capacity"
                   placeholder={"Capacity"}
-                  value={value}
+                  value={value ? value.toString() : ''}
                   onChangeText={(value) => onChange(parseInt(value))}
                   containerStyle={{ flex: 1 }}
                   inputMode={InputType.Numeric}
+                  isRequired
                   editable
                 />
               )}
@@ -77,6 +89,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
           <Controller
             name={`${index}.type`}
             control={control}
+            defaultValue={zone.type}
             render={({ field: { onChange, value } }) => (
               <DropdownInput
                 title={"Parking zone type"}
@@ -84,6 +97,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
                 placeholder={"Select zone type"}
                 onSelect={onChange}
                 items={formatEnumtoDropdownItem(ZoneType)}
+                isRequired
               />
             )}
           />

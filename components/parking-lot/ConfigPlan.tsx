@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { ScrollView, View, StyleSheet, Pressable, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,26 +10,26 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { Plan } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest, Plan } from "@/types/parking-lot/ParkingLot";
 import ParkingZoneInput from "../input/ParkingZoneInput";
 import { ImageProps } from "@/types";
 
 export type ConfigPlanProps = {
-  form: UseFormReturn<FieldValues, any, undefined>;
+  form: UseFormReturn<ParkingLotRequest, any, undefined>;
 };
 
 const IMAGE_SIZE = { width: 350, height: 200 };
 
 const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
-  const { control, setValue, getValues } = form;
-  const [plan, setPlan] = useState<Plan[]>();
-
-  useEffect(() => {
-    setPlan(getValues().plan);
-  }, [form]);
+  const {
+    control,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = form;
 
   const [images, setImages] = useState<ImageProps[]>(
-    plan ? plan.map((item) => item.image) : []
+    getValues().plan ? getValues().plan.map((item) => item.image) : []
   );
 
   const pickImage = async () => {
@@ -58,28 +58,40 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
     }
   };
 
-  const renderPlanSetting = (image: ImageProps, index: number) => {
+  const renderPlanSetting = (index: number) => {
     return (
-      <View>
-        <Image
-          source={{
-            uri: "data:image/jpeg;base64," + image.content,
-          }}
-          height={IMAGE_SIZE.height}
-          width={IMAGE_SIZE.width}
-          style={styles.image}
+      <View key={`plan_${index}`}>
+        <Controller
+          name={`plan.${index}.image`}
+          control={control}
+          render={({ field: { value } }) => (
+            <Image
+              source={{
+                uri: "data:image/jpeg;base64," + value.content,
+              }}
+              height={IMAGE_SIZE.height}
+              width={IMAGE_SIZE.width}
+              style={styles.image}
+            />
+          )}
         />
         <Controller
           name={`plan.${index}.floor`}
           control={control}
+          rules={{ required: "Please enter floor number for this plan" }}
           render={({ field: { onChange, value } }) => (
             <MyTextInput
               title="Floor"
               placeholder={"Floor"}
-              value={value}
+              value={value ? value.toString() : ''}
               onChangeText={(value) => onChange(parseInt(value))}
               containerStyle={{ flex: 1 }}
               inputMode={InputType.Numeric}
+              errorText={errors.plan && errors.plan[index]
+                ? (errors.plan[index]?.floor?.message as string)
+                : ""
+              }
+              isRequired
               editable
             />
           )}
@@ -98,31 +110,49 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <SubHeaderText text={"Plan upload"} />
-        <Pressable
-          android_ripple={{ color: Colors.gray[600] }}
-          style={({ pressed }) => [
-            styles.card,
-            pressed ? styles.cardPressed : null,
-          ]}
-          onPress={pickImage}
-        >
-          <View style={styles.uploadContainer}>
-            <MaterialCommunityIcons
-              name={"cloud-upload-outline"}
-              size={120}
-              color={Colors.red[400]}
-            />
-            <SubHeaderText text="Press here to upload image" />
-            <BodyText text="Supported format: .jpg, .png" />
-          </View>
-        </Pressable>
-        <BodyText
-          text="Please upload your plan in .jpg format to create your parking slot to config in this application"
-          textStyle={{ color: Colors.gray[800] }}
+        <View style={styles.titleContainer}>
+          <SubHeaderText text={"Plan upload"} />
+          <BodyText text="*" textStyle={styles.requiredIndicator} />
+        </View>
+        <Controller
+          name={"plan"}
+          control={control}
+          rules={{ required: "Please upload at least 1 plan image" }}
+          render={() => (
+            <>
+              <Pressable
+                android_ripple={{ color: Colors.gray[600] }}
+                style={({ pressed }) => [
+                  styles.card,
+                  pressed ? styles.cardPressed : null,
+                ]}
+                onPress={pickImage}
+              >
+                <View style={styles.uploadContainer}>
+                  <MaterialCommunityIcons
+                    name={"cloud-upload-outline"}
+                    size={120}
+                    color={Colors.red[400]}
+                  />
+                  <SubHeaderText text="Press here to upload image" />
+                  <BodyText text="Supported format: .jpg, .png" />
+                </View>
+              </Pressable>
+              <BodyText
+                text="Please upload your plan in .jpg format to create your parking slot to config in this application"
+                textStyle={{ color: Colors.gray[800] }}
+              />
+              {errors.plan && (
+                <BodyText
+                  text={errors.plan.message as string}
+                  textStyle={styles.errorText}
+                />
+              )}
+            </>
+          )}
         />
       </View>
-      {images.map((image, index) => renderPlanSetting(image, index))}
+      {images.map((_, index) => renderPlanSetting(index))}
     </ScrollView>
   );
 };
@@ -171,5 +201,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 4,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
 });

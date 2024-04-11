@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+    fontFamily: "Poppins-Medium",
   },
   placeholderText: {
     color: Colors.gray[600],

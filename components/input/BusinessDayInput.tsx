@@ -10,17 +10,22 @@ import SubHeaderText from "../text/SubHeaderText";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot/ParkingLot";
+import { formatToSentenceCase } from "@/utils/text";
 
 export type DateInputProps = {
   title: string;
   businessDays: BusinessDay[];
   onChange: (businessDays: BusinessDay[]) => void;
+  errorText: string;
+  isRequired: boolean;
 };
 
 const DateInput: React.FC<DateInputProps> = ({
   title,
   businessDays,
   onChange,
+  errorText,
+  isRequired,
 }) => {
   const { control, getValues, setValue } = useForm();
 
@@ -135,7 +140,7 @@ const DateInput: React.FC<DateInputProps> = ({
         }}
       >
         <BodyText
-          text={day.slice(0, 2)}
+          text={formatToSentenceCase(day.slice(0, 2))}
           textStyle={
             selectedDay[day].isSelected && selectedDay[day].set === index
               ? styles.textSelected
@@ -149,16 +154,24 @@ const DateInput: React.FC<DateInputProps> = ({
   const renderDayWithTimeSelector = (index: number) => {
     return (
       <View style={styles.outerContainer} key={index}>
-        <View style={styles.title}>
+        <View style={styles.titleContainer}>
           <SubHeaderText text={title} />
+          {isRequired && (
+            <BodyText text="*" textStyle={styles.requiredIndicator} />
+          )}
         </View>
         <View style={styles.container}>
           {selectableDay.map((day) => renderDaySelector(day, index))}
         </View>
+        {errorText && (
+          <BodyText text={errorText} textStyle={styles.errorText} />
+        )}
         <View style={styles.sameLineInputContainer}>
           <Controller
             name={`${index}.open_time`}
             control={control}
+            rules={{ required: "Please select open time" }}
+            defaultValue={"08:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Open time"}
@@ -176,6 +189,8 @@ const DateInput: React.FC<DateInputProps> = ({
           <Controller
             name={`${index}.close_time`}
             control={control}
+            rules={{ required: "Please select close time" }}
+            defaultValue={"20:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Close time"}
@@ -236,10 +251,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  title: {
+  titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
   idle: {
     borderRadius: 100,

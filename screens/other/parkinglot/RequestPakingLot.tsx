@@ -19,6 +19,7 @@ import ConfigAddress from "@/components/parking-lot/ConfigAddress";
 import { CreateParkingLotRequestInput, useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
 import { useAuth } from "@/store/context/auth";
 import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -29,16 +30,15 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
   const { accessToken, authenticate } = useAuth();
-  const form = useForm();
-  const { handleSubmit, formState: { isSubmitting } } = form;
+  const form = useForm<ParkingLotRequest>();
+  const { handleSubmit, getValues, formState: { isSubmitting, errors } } = form;
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
   const { mutateAsync: createRequestAsync } = useCreateParkingLotRequest();
 
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data: ParkingLotRequest) => {
     try {
-      const parkingLotRequest = data as ParkingLotRequest;
-      await createRequestAsync({data: parkingLotRequest, auth: {accessToken, authenticate}});
+      await createRequestAsync({data, auth: {accessToken, authenticate}});
       navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
     } catch (error) {
       Alert.alert(
@@ -49,7 +49,11 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   };
 
   const onGoNextStep = () => {
-    setStep(step + 1)
+    setStep(step + 1);
+  }
+
+  const onOpenConfirmModal = () => {
+    setOpenConfirmModal(true);
   }
 
   return (
@@ -60,11 +64,11 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       {step == 3 && <ConfigPlan form={form} />}
       {step == 4 && <ConfigPricing form={form} />}
       {step != 4 ? (
-        <PrimaryButton title="Next" onPress={() => onGoNextStep()} />
+        <PrimaryButton title="Next" onPress={handleSubmit(onGoNextStep)} />
       ) : (
         <PrimaryButton
           title="Send request to admin"
-          onPress={() => setOpenConfirmModal(true)}
+          onPress={handleSubmit(onOpenConfirmModal)}
         />
       )}
       <ModalOverlay
@@ -74,6 +78,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
         <View style={styles.centeredContent}>
           <View style={styles.confirmModalContainer}>
             <SubHeaderText text={"Confirm request information"}/>
+            {isSubmitting && <LoadingOverlay/>}
             <View style={styles.buttonContainer}>
               <SecondaryButton
                 title={"Cancle"}
