@@ -8,20 +8,20 @@ export type ParkingLot = {
   _id: string;
   name: string;
   address: Address;
-  coord: Region,
-  businessDays?: BusinessDay,
-  images?: string[],
-  plan: Plan[],
-  availability?: number,
+  coord: Region;
+  businessDays?: BusinessDay;
+  images?: string[];
+  plan: Plan[];
+  availability?: number;
 };
 
 export type ParkingLotRequest = {
   name: string;
   images?: ImageProps[];
   businessDays: BusinessDay[];
-  coord: Region,
+  coord: Region;
   address: Address;
-  plan: Plan[],
+  plan: Plan[];
 };
 
 export type Address = {
@@ -55,4 +55,11 @@ export type Zone = {
   type: ZoneType;
   price?: number;
   unit?: string;
+};
+
+export type ZonePricing = {
+  floor: number;
+  zone: string;
+  price: number;
+  unit: string;
 };
