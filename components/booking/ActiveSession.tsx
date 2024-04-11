@@ -1,13 +1,13 @@
+import { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import DetailText from "../text/DetailText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import DetailText from "../text/DetailText";
 import { BookingStatus } from "@/enum/BookingStatus";
-import { intervalToDuration } from "date-fns";
+
 
 export interface activeSessionProps {
   bookingStatus: BookingStatus;

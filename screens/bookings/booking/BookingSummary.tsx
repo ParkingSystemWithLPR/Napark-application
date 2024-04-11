@@ -11,18 +11,18 @@ import HyperLinkText from "@/components/text/HyperlinkText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
-import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import { formatHumanReadableDateFromDateString } from "@/utils/date";
-import {
-  formatCreateBookingRequest,
-  validateTimeInputs,
-} from "@/utils/bookingRequest";
 import {
   CreatingBookingStatus,
   ValidateStatus,
 } from "@/enum/BookingValidateStatus";
 import { useCreateBooking } from "@/store/api/booking/useCreateBooking";
 import { useAuth } from "@/store/context/auth";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import {
+  formatCreateBookingRequest,
+  validateTimeInputs,
+} from "@/utils/bookingRequest";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type Attribute = {
   attribute: string;

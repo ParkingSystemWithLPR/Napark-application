@@ -11,7 +11,10 @@ import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamListProps } from "@/types";
+import { BusinessDay } from "@/types/parking-lot";
 import {
   disableDate,
   duration,
@@ -26,9 +29,6 @@ import {
   formatDropdownFromLicensePlates,
   initDropdownValue,
 } from "@/utils/dropdown";
-import { BusinessDay } from "@/types/parking-lot";
-import { useProfile } from "@/store/context/profile";
-import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;

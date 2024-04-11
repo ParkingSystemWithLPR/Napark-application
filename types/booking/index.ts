@@ -1,3 +1,5 @@
+import { BookingStatus } from "@/enum/BookingStatus";
+
 export interface AvailableSlotResponse {
   recommended_slots: Slot | null;
   available_slots: Slot[];
@@ -30,7 +32,6 @@ export interface CreateBookingRequest {
 export interface Booking {
   _id: string;
   car_id: string;
-  create_at: string;
   end_time: string;
   estimated_price: number;
   parkinglot_id: string;
@@ -38,6 +39,6 @@ export interface Booking {
   slot_id: string;
   slot_name: string;
   start_time: string;
-  update_at: string;
+  status: BookingStatus;
   user_id: string;
 }

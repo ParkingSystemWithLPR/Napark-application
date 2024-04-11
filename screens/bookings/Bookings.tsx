@@ -1,21 +1,23 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
+import SessionsList from "@/components/booking/SessionsList";
+import SecondaryButton from "@/components/button/SecondaryButton";
+import BodyText from "@/components/text/BodyText";
+import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { BookingType } from "@/enum/BookingType";
+import { useGetMyBookings } from "@/store/api/booking/useGetMyBookings";
+import { useAuth } from "@/store/context/auth";
 import {
   MainPageBottomTabParamList,
   AuthenticatedStackParamList,
 } from "@/types";
-import SecondaryButton from "@/components/button/SecondaryButton";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import BodyText from "@/components/text/BodyText";
-import HeaderText from "@/components/text/HeaderText";
-import SessionsList from "@/components/booking/SessionsList";
-import { BookingType } from "@/enum/BookingType";
-import { useCallback, useLayoutEffect, useState } from "react";
 import { Booking } from "@/types/booking";
 
 const Tab = createMaterialTopTabNavigator();
@@ -28,11 +30,15 @@ export type BookingsProps = CompositeScreenProps<
 >;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
-  const [bookings, setBookings] = useState<Booking[]>();
+  const {accessToken, authenticate} = useAuth();
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const getMyBookings = useGetMyBookings({auth: {accessToken, authenticate}});
 
   useLayoutEffect(()=>{
-    // get all bookings here
-  },[])
+    if(getMyBookings.isSuccess){
+      setBookings(getMyBookings.data);
+    }
+  },[getMyBookings.data])
 
   const renderUpcomingBookings = useCallback(() => {
     return <SessionsList type={BookingType.UPCOMING} />;
