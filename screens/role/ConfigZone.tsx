@@ -1,6 +1,7 @@
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import DropdownInput from "@/components/input/DropdownInput";
+import ParkingZonePrivilegeInput from "@/components/input/ParkingZonePrivilegeInput";
 import TextInput from "@/components/input/TextInput";
 import StepPricing from "@/components/pricingRule/StepPricing";
 import BodyContainer from "@/components/ui/BodyContainer";
@@ -27,8 +28,6 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
   const form = route.params.form;
   const { control, handleSubmit } = form;
 
-  const [pricingRule, setPricingRule] = useState<string>("all");
-
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
@@ -43,80 +42,13 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <View style={styles.dropdownContainer}>
-        <Controller
-          name="floor"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <DropdownInput
-              title="Floor"
-              selectedValue={value}
-              placeholder="Select floor"
-              onSelect={onChange}
-              items={[{ label: "1", value: "1" }]}
-              containerStyle={{ flex: 1 }}
-            />
-          )}
-        />
-        <Controller
-          name="slot"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <DropdownInput
-              title="Zone"
-              selectedValue={value}
-              placeholder="Select zone"
-              onSelect={onChange}
-              items={MOCKED_ZONE_DROPDOWN.map((z) => {
-                return { label: z, value: z };
-              })}
-              containerStyle={{ flex: 1 }}
-            />
-          )}
-        />
-      </View>
-      <DropdownInput
-        selectedValue={pricingRule}
-        title="Pricing rule"
-        placeholder={""}
-        onSelect={(value) => setPricingRule(value)}
-        items={[
-          { value: "all", label: "Apply same price to all slot" },
-          { value: "step", label: "Apply pricing step" },
-        ]}
+      <Controller
+        name="privilege"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <ParkingZonePrivilegeInput value={value} onChange={onChange} control={control} />
+        )}
       />
-      {pricingRule === "step" && <StepPricing control={control} />}
-      {pricingRule === "all" && (
-        <View style={styles.sameLineInputContainer}>
-          <Controller
-            name="pricing.price"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                title="Price"
-                placeholder="Enter parking fee"
-                value={value}
-                onChangeText={(value) => onChange(value)}
-                containerStyle={{ flex: 1 }}
-              />
-            )}
-          />
-          <Controller
-            name="pricing.unit"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <DropdownInput
-                selectedValue={value}
-                title="Unit"
-                placeholder={"Select fee unit"}
-                onSelect={(value) => onChange(value)}
-                items={formatEnumtoDropdownItem(PriceRateUnit)}
-                containerStyle={{ flex: 1 }}
-              />
-            )}
-          />
-        </View>
-      )}
       <View style={styles.buttonContainer}>
         <SecondaryButton
           title="Cancle"
@@ -136,21 +68,11 @@ const styles = StyleSheet.create({
   container: {
     gap: 10,
   },
-  dropdownContainer: {
-    gap: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
     paddingTop: 20,
-  },
-  sameLineInputContainer: {
-    flexDirection: "row",
-    gap: 10,
-    justifyContent: "space-between",
   },
 });
