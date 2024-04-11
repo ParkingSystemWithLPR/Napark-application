@@ -11,6 +11,7 @@ import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingType } from "@/enum/BookingType";
 import { useGetMyBookings } from "@/store/api/booking/useGetMyBookings";
 import { useAuth } from "@/store/context/auth";
@@ -30,27 +31,42 @@ export type BookingsProps = CompositeScreenProps<
 >;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
-  const {accessToken, authenticate} = useAuth();
+  const { accessToken, authenticate } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const getMyBookings = useGetMyBookings({auth: {accessToken, authenticate}});
+  const getMyBookings = useGetMyBookings({
+    auth: { accessToken, authenticate },
+  });
 
-  useLayoutEffect(()=>{
-    if(getMyBookings.isSuccess){
+  useLayoutEffect(() => {
+    if (getMyBookings.isSuccess) {
       setBookings(getMyBookings.data);
     }
-  },[getMyBookings.data])
+  }, [getMyBookings.data]);
 
   const renderUpcomingBookings = useCallback(() => {
-    return <SessionsList type={BookingType.UPCOMING} />;
-  }, []);
+    const upcomingBookings = bookings.filter(
+      (booking) => booking.status === BookingStatus.UPCOMING
+    );
+    return <SessionsList bookings={upcomingBookings} />;
+  }, [bookings]);
 
   const renderActiveBookings = useCallback(() => {
-    return <SessionsList type={BookingType.ACTIVE} />;
-  }, []);
+    const activeBookings = bookings.filter(
+      (booking) =>
+        booking.status === BookingStatus.PAID ||
+        booking.status === BookingStatus.UNPAID
+    );
+    return <SessionsList bookings={activeBookings} />;
+  }, [bookings]);
 
   const renderCompletedBookings = useCallback(() => {
-    return <SessionsList type={BookingType.COMPLETED} />;
-  }, []);
+    const completedBookings = bookings.filter(
+      (booking) =>
+        booking.status === BookingStatus.COMPLETED ||
+        booking.status === BookingStatus.CANCELLED
+    );
+    return <SessionsList bookings={completedBookings} />;
+  }, [bookings]);
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
