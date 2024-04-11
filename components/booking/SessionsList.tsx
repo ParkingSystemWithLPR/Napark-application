@@ -16,10 +16,6 @@ import SubHeaderText from "../text/SubHeaderText";
 import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { Booking } from "@/types/booking";
-import {
-  formatHumanReadableDateFromDateString,
-  formatISODate,
-} from "@/utils/date";
 
 interface SessionCardProps {
   booking: Booking;
