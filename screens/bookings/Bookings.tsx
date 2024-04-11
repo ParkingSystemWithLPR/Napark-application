@@ -13,6 +13,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingType } from "@/enum/BookingType";
+import { mockedBooking } from "@/mock/mockData";
 import { useGetMyBookings } from "@/store/api/booking/useGetMyBookings";
 import { useAuth } from "@/store/context/auth";
 import {
@@ -38,12 +39,14 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   });
 
   useLayoutEffect(() => {
+    setBookings(mockedBooking);
     if (getMyBookings.isSuccess) {
       setBookings(getMyBookings.data);
     }
   }, [getMyBookings.data]);
 
   const renderUpcomingBookings = useCallback(() => {
+    console.log(bookings);
     const upcomingBookings = bookings.filter(
       (booking) => booking.status === BookingStatus.UPCOMING
     );

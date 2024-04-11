@@ -32,6 +32,8 @@ export interface CreateBookingRequest {
 export interface Booking {
   _id: string;
   car_id: string;
+  license_plate: string;
+  province: string;
   end_time: string;
   estimated_price: number;
   parkinglot_id: string;

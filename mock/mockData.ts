@@ -1,14 +1,8 @@
 import { THAI_PROVINCE } from "@/constants/province";
+import { BookingStatus } from "@/enum/BookingStatus";
 import { CardType } from "@/enum/CardType";
+import { Booking } from "@/types/booking";
 import { ParkingLot } from "@/types/parking-lot";
-
-export type mockedSessionsProps = {
-  licensePlate: string;
-  space: string;
-  dateAndTime: string;
-  price: string;
-  id: string;
-};
 
 export type mockedBankAccount = {
   bankAccountNumber: string;
@@ -24,48 +18,96 @@ export type mockedCreditCard = {
   cardType: CardType;
 };
 
-export const MOCKED_SESSIONS = [
+export const mockedBooking: Booking[] = [
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "1",
+    _id: "1",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "1",
+    slot_name: "A1",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.UPCOMING,
+    user_id: "",
   },
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "2",
+    _id: "2",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "2",
+    slot_name: "B12",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.UNPAID,
+    user_id: "",
   },
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "3",
+    _id: "3",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "3",
+    slot_name: "C1",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.PAID,
+    user_id: "",
   },
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "4",
+    _id: "4",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "4",
+    slot_name: "D11",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.COMPLETED,
+    user_id: "",
   },
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "15",
+    _id: "5",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "5",
+    slot_name: "A2",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.CANCELLED,
+    user_id: "",
   },
   {
-    licensePlate: "กข 1334",
-    space: "space 4c",
-    dateAndTime: "2024-02-26T14:55:31.615Z",
-    price: "200",
-    id: "6",
+    _id: "6",
+    car_id: "",
+    license_plate: "กข 1234",
+    province: THAI_PROVINCE[0].value,
+    end_time: "",
+    estimated_price: 0,
+    parkinglot_id: "",
+    parkinglot_name: "Samyan Mitrtown",
+    slot_id: "6",
+    slot_name: "A1",
+    start_time: "2024-02-26T14:55:31.615Z",
+    status: BookingStatus.UPCOMING,
+    user_id: "",
   },
 ];
 
