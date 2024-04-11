@@ -70,9 +70,9 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
       case BookingStatus.PAID:
         return <BodyText text={""} />;
       case BookingStatus.CANCELLED:
-        return <BodyText text={""} />;
+        return <></>;
       case BookingStatus.COMPLETED:
-        return <BodyText text={""} />;
+        return <BodyText text={`฿ ${booking.estimated_price}`} />;
       default:
         return <BodyText text="Unknown" />;
     }
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
+    paddingRight: 10,
   },
   subDetailContainer: {
     flexDirection: "row",
