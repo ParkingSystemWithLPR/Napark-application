@@ -1,16 +1,7 @@
 import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { format, parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  Pressable,
-  Platform,
-} from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { View, StyleSheet, ScrollView, Alert, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import BookingCardSummary from "@/components/booking/BookingCardSummary";
@@ -20,27 +11,36 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { DayInAWeek } from "@/enum/DayInAWeek";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import RecommendedSlotCard from "@/components/booking/RecommendSlotCard";
+import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import {
+  GetAvailableSlotsQueryParam,
+  useGetAvailableSlot,
+} from "@/store/api/booking/useGetAvailableSlot";
+import { useAuth } from "@/store/context/auth";
+import { AvailableSlotResponse, Slot } from "@/types/booking/Booking";
+import {
+  defaultBookingDetailState,
+  getQueryParamFromBookingDetailState,
+  validateTimeInputs,
+  validateLicensePlate,
+  validateAfterClosingSetting,
+  createDefaultBookingDetailState,
+} from "@/utils/bookingRequest";
+import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
-
-type RecommendedSlotType = {
-  slotName: string;
-  recommendType: string;
-  price: number;
-  unit: string;
-};
-
-export type BookingRequest = {
+export type BookingDetailState = {
   licensePlate: string;
   checkInDate: string | null;
   checkInTime: string | null;
   checkOutDate: string | null;
   checkOutTime: string | null;
   specification: string;
-  floor: string;
-  slot: string;
+  floor: number;
+  slotId: string;
+  slotName: string;
   price: number;
   unit: string;
 };
@@ -52,134 +52,147 @@ export type BookingDetailProps = CompositeScreenProps<
 
 const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   const parkingLot = route.params.parkingLot;
+  const { accessToken, authenticate } = useAuth();
+  const { profile } = useProfile();
   const [goToNextPage, setGoToNextPage] = useState(false);
   const [isSetting, setIsSetting] = useState(true);
-  const isFocused = useIsFocused();
-  const { profile } = useProfile();
-  const licensePlateList = profile.user_car?.map((car) => car.license_plate);
-  const defaultLicensePlate = profile.user_car
-    ?.filter((car) => car.is_default)
-    .map((defaultcar) => defaultcar.license_plate)[0];
-  const [bookingRequest, setBookingRequest] = useState<BookingRequest>({
-    licensePlate: defaultLicensePlate ?? "",
-    checkInDate: null,
-    checkInTime: null,
-    checkOutDate: null,
-    checkOutTime: null,
-    specification: "None",
-    floor: "",
-    slot: "",
-    price: 0,
-    unit: "",
+  const defaultValue = route.params.defaultValue
+    ? route.params.defaultValue
+    : createDefaultBookingDetailState(profile);
+  const [bookingDetailState, setBookingDetailState] =
+    useState<BookingDetailState>(defaultValue);
+
+  const [availableSlotQueryParam, setAvailableSlotQueryParam] =
+    useState<GetAvailableSlotsQueryParam>(
+      getQueryParamFromBookingDetailState(bookingDetailState, parkingLot)
+    );
+
+  const getAvailableSlot = useGetAvailableSlot({
+    queryParams: availableSlotQueryParam,
+    auth: { accessToken, authenticate },
   });
 
-  const disableDate = (date: Date) => {
-    if (parkingLot.businessDays) {
-      const day = format(date, "eeee");
-      return !parkingLot.businessDays[`${day}` as DayInAWeek].isOpen;
-    }
-    return false;
-  };
-
-  const getOpenCloseTime = (dateString: string) => {
-    if (parkingLot.businessDays) {
-      const dateObject = parseISO(dateString);
-      const day = format(dateObject, "eeee");
-      return {
-        openTime: parkingLot.businessDays[`${day}` as DayInAWeek].openTime,
-        closeTime: parkingLot.businessDays[`${day}` as DayInAWeek].closeTime,
-      };
-    }
-  };
+  const [availableSlot, setAvailableSlot] = useState<AvailableSlotResponse>({
+    available_slots: [],
+    recommended_slots: null,
+  });
 
   const handleOnChange = function <T>(
     identifierKey: string,
     enteredValue: T
   ): void {
-    setBookingRequest((curInputValue: BookingRequest) => {
+    setBookingDetailState((curInputValue: BookingDetailState) => {
       return {
         ...curInputValue,
         [identifierKey]: enteredValue,
       };
     });
   };
-
+  const resetSlotInBookingDetailState = () => {
+    const { slotId, slotName, price, unit } = defaultBookingDetailState;
+    handleOnChange("slotId", slotId);
+    handleOnChange("slotName", slotName);
+    handleOnChange("price", price);
+    handleOnChange("unit", unit);
+  };
   const openSetting = () => {
+    resetSlotInBookingDetailState();
     setIsSetting(true);
   };
 
   const closeSetting = () => {
-    if (
-      bookingRequest.licensePlate == "" ||
-      !bookingRequest.checkInDate ||
-      !bookingRequest.checkInTime ||
-      !bookingRequest.checkOutTime ||
-      !bookingRequest.checkOutDate
-    ) {
-      Alert.alert("Please fill all required fill");
-    } else {
+    const isTimesValid = timeValidator();
+    const isLicensePlateValid = licensePlateValidator();
+    if (isTimesValid && isLicensePlateValid) {
       setIsSetting(false);
     }
   };
-
-  useLayoutEffect(() => {
-    goToNextPage &&
-      navigation.navigate("BookingSummary", {
-        bookingRequest: bookingRequest,
-        parkingLot: parkingLot,
-      });
-    setGoToNextPage(false);
-  }, [goToNextPage]);
-
-  useLayoutEffect(() => {
-    isFocused && setBookingRequest(bookingRequest); //refresh screen
-  }, [isFocused]);
 
   const handleNavigation = () => {
     setGoToNextPage(true);
   };
 
-  const handleClickRecommend = (slot: RecommendedSlotType) => {
-    handleOnChange("slot", slot.slotName);
-    handleOnChange("price", slot.price);
-    handleOnChange("unit", slot.unit);
+  const handleClickRecommend = (slot: Slot) => {
+    handleOnChange("slotId", slot._id);
+    handleOnChange("slotName", slot.name);
+    handleOnChange(
+      "price",
+      slot.is_privilege_available
+        ? slot.privilege_price_rate
+        : slot.default_price_rate
+    );
+    handleOnChange(
+      "unit",
+      slot.is_privilege_available
+        ? slot.privilege_price_unit
+        : slot.default_price_rate_unit
+    );
     handleNavigation();
   };
 
-  const renderRecommendedSlot = useCallback(
-    ({ slotName, recommendType, price, unit }: RecommendedSlotType) => {
-      return (
-        <Pressable
-          onPress={handleClickRecommend.bind(this, {
-            slotName,
-            recommendType,
-            price,
-            unit,
-          })}
-        >
-          <View style={styles.recommendSlotContainer}>
-            <View style={styles.rowContainer}>
-              <MaterialCommunityIcons
-                name="alpha-p-circle-outline"
-                style={styles.iconParking}
-                size={20}
-              />
-              <View
-                style={{
-                  gap: 5,
-                }}
-              >
-                <BodyText text={`Slot: ${slotName}`}></BodyText>
-                <BodyText text={recommendType}></BodyText>
-              </View>
-            </View>
-            <BodyText text={`${price.toString()} ${unit}`}></BodyText>
-          </View>
-        </Pressable>
+  const timeValidator = () => {
+    const status = validateTimeInputs(bookingDetailState);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.MISSING:
+        Alert.alert("Please fill all required fill");
+        return false;
+      case ValidateStatus.TIMEOUT:
+        Alert.alert(
+          "Invalid booking time",
+          "CheckIn or CheckOut Time is before current time"
+        );
+        setBookingDetailState(defaultBookingDetailState);
+        setIsSetting(true);
+        return false;
+    }
+  };
+
+  const licensePlateValidator = () => {
+    const status = validateLicensePlate(bookingDetailState);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.MISSING:
+        Alert.alert("Please fill all required fill");
+        return false;
+    }
+  };
+
+  useLayoutEffect(() => {
+    if (goToNextPage) {
+      const isTimeValid = timeValidator();
+      const isLicensePlateValid = licensePlateValidator();
+      const isOtherValid =
+        validateAfterClosingSetting(bookingDetailState) ==
+        ValidateStatus.SUCCESS;
+      if (isTimeValid && isLicensePlateValid && isOtherValid) {
+        navigation.navigate("BookingSummary", {
+          bookingDetailState: bookingDetailState,
+          parkingLot: parkingLot,
+        });
+      }
+    }
+    setGoToNextPage(false);
+  }, [goToNextPage]);
+
+  useLayoutEffect(() => {
+    if (!isSetting) {
+      const queryParams = getQueryParamFromBookingDetailState(
+        bookingDetailState,
+        parkingLot
       );
-    },
-    []
-  );
+      setAvailableSlotQueryParam(queryParams);
+    }
+  }, [isSetting]);
+
+  useLayoutEffect(() => {
+    if (getAvailableSlot.isSuccess) {
+      setAvailableSlot(getAvailableSlot.data);
+    }
+  }, [getAvailableSlot.data]);
+
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.bookingDetailContainer}>
@@ -195,84 +208,57 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
         {isSetting ? (
           <View style={styles.bookingDetailComponentContainer}>
             <BookingDetailComponent
-              licensePlate={bookingRequest.licensePlate}
-              setLicensePlate={(value: string) => {
-                handleOnChange("licensePlate", value);
-              }}
-              checkInDate={bookingRequest.checkInDate}
-              setCheckInDate={(value: string | null) =>
-                handleOnChange("checkInDate", value)
-              }
-              checkInTime={bookingRequest.checkInTime}
-              setCheckInTime={(value: string | null) =>
-                handleOnChange("checkInTime", value)
-              }
-              specification={bookingRequest.specification}
-              setSpecification={(value: string | undefined) =>
-                handleOnChange("specification", value)
-              }
+              bookingDetailState={bookingDetailState}
+              onChange={handleOnChange}
               closeSetting={closeSetting}
-              checkOutTime={bookingRequest.checkOutTime}
-              setCheckOutTime={(value: string | null) =>
-                handleOnChange("checkOutTime", value)
-              }
-              checkOutDate={bookingRequest.checkOutDate}
-              setCheckOutDate={(value: string | null) =>
-                handleOnChange("checkOutDate", value)
-              }
-              licensePlateList={licensePlateList}
-              disableDate={disableDate}
-              getOpenCloseTime={getOpenCloseTime}
+              bussinessDays={parkingLot.businessDays}
             />
           </View>
         ) : (
           <BookingCardSummary
-            checkInDate={bookingRequest.checkInDate ?? ""}
-            checkInTime={bookingRequest.checkInTime ?? ""}
-            specification={bookingRequest.specification}
+            checkIn={
+              bookingDetailState.checkInDate && bookingDetailState.checkInTime
+                ? `${formatHumanReadableDateFromDateString(
+                    bookingDetailState.checkInDate
+                  )} ${bookingDetailState.checkInTime}`
+                : ""
+            }
+            specification={bookingDetailState.specification}
             openSetting={openSetting}
           />
         )}
       </View>
-      {!isSetting && (
-        <View style={styles.scrollViewContainer}>
-          <ScrollView>
-            <View style={styles.scrollViewContent}>
-              <SubHeaderText
-                text={"Recommended Slot"}
-                containerStyle={styles.header}
-              />
-              <View style={styles.recommendSlotOuterContainer}>
-                {renderRecommendedSlot({
-                  slotName: "6A",
-                  recommendType: "Cheapest slot",
-                  price: 20,
-                  unit: "Baht/hr",
-                })}
-                {renderRecommendedSlot({
-                  slotName: "8B",
-                  recommendType: "Nearest to the entrance",
-                  price: 30,
-                  unit: "Baht/hr",
-                })}
+      {!isSetting &&
+        availableSlot.recommended_slots &&
+        availableSlot.available_slots.length != 0 && (
+          <View style={styles.scrollViewContainer}>
+            <ScrollView>
+              <View style={styles.scrollViewContent}>
+                <SubHeaderText
+                  text={"Recommended Slot"}
+                  containerStyle={styles.header}
+                />
+                <View style={styles.recommendSlotOuterContainer}>
+                  <RecommendedSlotCard
+                    slot={availableSlot.recommended_slots}
+                    recommendType={"Cheapest slot"}
+                    handleClickRecommend={handleClickRecommend}
+                  />
+                </View>
+                <SubHeaderText
+                  text={"View All Available Slot"}
+                  containerStyle={{ marginVertical: 10 }}
+                />
+                <ParkingPlan
+                  bookingDetailState={bookingDetailState}
+                  availableSlot={availableSlot.available_slots}
+                  onChange={handleOnChange}
+                  handleConfirm={handleNavigation}
+                />
               </View>
-              <SubHeaderText
-                text={"View All Available Slot"}
-                containerStyle={{ marginVertical: 10 }}
-              />
-              <ParkingPlan
-                floor={bookingRequest.floor}
-                setFloor={(value: string) => handleOnChange("floor", value)}
-                slot={bookingRequest.slot}
-                setSlot={(value: string) => handleOnChange("slot", value)}
-                handleConfirm={handleNavigation}
-                setPrice={(value: number) => handleOnChange("price", value)}
-                setUnit={(value: string) => handleOnChange("unit", value)}
-              />
-            </View>
-          </ScrollView>
-        </View>
-      )}
+            </ScrollView>
+          </View>
+        )}
     </BodyContainer>
   );
 };
@@ -311,29 +297,5 @@ const styles = StyleSheet.create({
     gap: Platform.OS == "ios" ? 25 : 20,
     marginBottom: 10,
   },
-  recommendSlotContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 5,
-    backgroundColor: Colors.white,
-    padding: 10,
-    shadowColor: Colors.black,
-    borderRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 4,
-  },
-  parkingOutline: {
-    borderRadius: 100,
-    borderWidth: 1,
-    alignSelf: "baseline",
-    marginRight: 10,
-  },
-  iconParking: { marginRight: 10 },
-  rowContainer: { flexDirection: "row" },
   scrollViewContent: { marginBottom: 100 },
 });

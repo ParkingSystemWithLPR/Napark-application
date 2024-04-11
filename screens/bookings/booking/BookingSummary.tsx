@@ -1,7 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import ProcessingModalContent from "@/components/booking/ProcessingModalContent";
@@ -13,6 +13,16 @@ import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import {
+  formatCreateBookingRequest,
+  validateTimeInputs,
+} from "@/utils/bookingRequest";
+import {
+  CreatingBookingStatus,
+  ValidateStatus,
+} from "@/enum/BookingValidateStatus";
+import { useCreateBooking } from "@/store/api/booking/useCreateBooking";
+import { useAuth } from "@/store/context/auth";
 
 export type Attribute = {
   attribute: string;
@@ -27,21 +37,66 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
   navigation,
   route,
 }) => {
-  const bookingRequest = route.params.bookingRequest;
-  const parkingLot = route.params.parkingLot;
+  const { bookingDetailState, parkingLot } = route.params;
+  const { accessToken, authenticate } = useAuth();
+  const {
+    slotName,
+    checkInDate,
+    checkInTime,
+    checkOutDate,
+    checkOutTime,
+    specification,
+    price,
+    unit,
+  } = bookingDetailState;
+  const { mutateAsync: createBooking } = useCreateBooking();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isSendingRequest, setIsSendingRequest] = useState(false);
-
-  const sendCreateRequest = () => {
-    setIsSendingRequest(true);
-    setTimeout(() => {
-      setIsSendingRequest(false);
-    }, 2000);
+  const [status, setStatus] = useState<CreatingBookingStatus>(
+    CreatingBookingStatus.PENDING
+  );
+  const createBookingRequest = formatCreateBookingRequest(
+    bookingDetailState,
+    parkingLot
+  );
+  const timeValidator = () => {
+    const status = validateTimeInputs(bookingDetailState);
+    switch (status) {
+      case ValidateStatus.SUCCESS:
+        return true;
+      case ValidateStatus.TIMEOUT:
+        Alert.alert(
+          "Invalid booking time",
+          "CheckIn or CheckOut Time is before current time"
+        );
+        navigation.navigate("MainScreen", { screen: "Landing" });
+        return false;
+      default:
+        return false;
+    }
   };
 
-  const openModal = () => {
+  const sendCreateRequest = async () => {
+    await createBooking(
+      {
+        auth: { accessToken, authenticate },
+        body: createBookingRequest,
+      },
+      {
+        onSuccess() {
+          setStatus(CreatingBookingStatus.SUCCESS);
+        },
+        onError() {
+          setStatus(CreatingBookingStatus.FAIL);
+        },
+      }
+    );
+  };
+
+  const openModal = async () => {
     setIsOpenModal(true);
-    sendCreateRequest();
+    setStatus(CreatingBookingStatus.PENDING);
+    const isTimeValid = timeValidator();
+    if (isTimeValid) await sendCreateRequest();
   };
 
   const closeModal = () => {
@@ -83,36 +138,36 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
             text="Booking Details"
             containerStyle={styles.headerStyle}
           />
-          {renderAttribute({ attribute: "Space", value: bookingRequest.slot })}
+          {renderAttribute({
+            attribute: "Space",
+            value: slotName,
+          })}
           {renderAttribute({
             attribute: "Check-in Date",
             value:
-              bookingRequest.checkInDate &&
-              formatHumanReadableDateFromDateString(bookingRequest.checkInDate),
+              checkInDate && formatHumanReadableDateFromDateString(checkInDate),
           })}
           {renderAttribute({
             attribute: "Check-in Time",
-            value: bookingRequest.checkInTime ?? "",
+            value: checkInTime ?? "",
           })}
           {renderAttribute({
             attribute: "Check-out Date (Est)",
             value:
-              bookingRequest.checkOutDate &&
-              formatHumanReadableDateFromDateString(
-                bookingRequest.checkOutDate
-              ),
+              checkOutDate &&
+              formatHumanReadableDateFromDateString(checkOutDate),
           })}
           {renderAttribute({
             attribute: "Check-out Time (Est)",
-            value: bookingRequest.checkOutTime ?? "",
+            value: checkOutTime ?? "",
           })}
           {renderAttribute({
             attribute: "Specifications",
-            value: bookingRequest.specification,
+            value: specification,
           })}
           {renderAttribute({
             attribute: "Cost per Unit",
-            value: `${bookingRequest.price}  ${bookingRequest.unit}`,
+            value: `${price}  ${unit}`,
           })}
         </View>
         <View style={styles.routeContainer}>
@@ -130,7 +185,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
       <ModalOverlay visible={isOpenModal} closeModal={closeModal}>
         <View style={styles.modalBackground}>
           <ProcessingModalContent
-            isCreatingBooking={isSendingRequest}
+            status={status}
             handlecloseModal={closeModal}
           />
         </View>

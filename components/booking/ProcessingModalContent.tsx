@@ -6,26 +6,28 @@ import BodyText from "../text/BodyText";
 import LoadingOverlay from "../ui/LoadingOverlay";
 
 import Colors from "@/constants/color";
+import { CreatingBookingStatus } from "@/enum/BookingValidateStatus";
+import { useCallback } from "react";
 
 export type ProcessingModalContentProps = {
-  isCreatingBooking: boolean;
+  status: CreatingBookingStatus;
   handlecloseModal: () => void;
 };
 const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
-  isCreatingBooking,
+  status,
   handlecloseModal,
 }) => {
-  return (
-    <TouchableWithoutFeedback>
-      <View style={styles.modalContainer}>
-        {isCreatingBooking ? (
-          <LoadingOverlay message={"Loading..."} />
-        ) : (
+  const renderModalContent = useCallback(() => {
+    switch (status) {
+      case CreatingBookingStatus.PENDING:
+        return <LoadingOverlay message={"Loading..."} />;
+      case CreatingBookingStatus.SUCCESS:
+        return (
           <>
             <View style={styles.iconContainer}>
               <MaterialCommunityIcons
                 name="check-circle"
-                style={styles.closeButton}
+                style={styles.check}
               />
               <BodyText text="Successfully Booked" />
             </View>
@@ -33,8 +35,27 @@ const ProcessingModalContent: React.FC<ProcessingModalContentProps> = ({
               <PrimaryButton title={"close"} onPress={handlecloseModal} />
             </View>
           </>
-        )}
-      </View>
+        );
+      default:
+        return (
+          <>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name="alpha-x-circle"
+                style={styles.cross}
+              />
+              <BodyText text="Please try again" />
+            </View>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton title={"close"} onPress={handlecloseModal} />
+            </View>
+          </>
+        );
+    }
+  }, [status]);
+  return (
+    <TouchableWithoutFeedback>
+      <View style={styles.modalContainer}>{renderModalContent()}</View>
     </TouchableWithoutFeedback>
   );
 };
@@ -66,8 +87,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  closeButton: {
+  check: {
     fontSize: 100,
     color: Colors.green[700],
+  },
+  cross: {
+    fontSize: 100,
+    color: Colors.red[400],
   },
 });
