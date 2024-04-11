@@ -14,7 +14,7 @@ import {
   defaultBookingDetailState,
   getTotalFloor,
 } from "@/utils/bookingRequest";
-import { Slot } from "@/types/booking/Booking";
+import { Slot } from "@/types/booking";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type ParkingPlanProps = {

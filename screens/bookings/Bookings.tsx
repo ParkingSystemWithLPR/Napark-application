@@ -15,20 +15,12 @@ import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import SessionsList from "@/components/booking/SessionsList";
 import { BookingType } from "@/enum/BookingType";
-import { useCallback } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
+import { Booking } from "@/types/booking";
 
 const Tab = createMaterialTopTabNavigator();
 
 const mockBalance = 555.99;
-
-const capitalizeFirstLetter = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
-const capitalizedActiveBookingType = capitalizeFirstLetter(BookingType.ACTIVE);
-const capitalizedCompletedBookingType = capitalizeFirstLetter(
-  BookingType.COMPLETED
-);
 
 export type BookingsProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
@@ -36,6 +28,16 @@ export type BookingsProps = CompositeScreenProps<
 >;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
+  const [bookings, setBookings] = useState<Booking[]>();
+
+  useLayoutEffect(()=>{
+    // get all bookings here
+  },[])
+
+  const renderUpcomingBookings = useCallback(() => {
+    return <SessionsList type={BookingType.UPCOMING} />;
+  }, []);
+
   const renderActiveBookings = useCallback(() => {
     return <SessionsList type={BookingType.ACTIVE} />;
   }, []);
@@ -78,11 +80,15 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
         sceneContainerStyle={styles.tabContent}
       >
         <Tab.Screen
-          name={capitalizedActiveBookingType}
+          name={BookingType.UPCOMING}
+          component={renderUpcomingBookings}
+        />
+        <Tab.Screen
+          name={BookingType.ACTIVE}
           component={renderActiveBookings}
         />
         <Tab.Screen
-          name={capitalizedCompletedBookingType}
+          name={BookingType.COMPLETED}
           component={renderCompletedBookings}
         />
       </Tab.Navigator>

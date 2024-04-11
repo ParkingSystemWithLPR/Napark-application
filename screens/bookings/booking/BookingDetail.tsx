@@ -20,7 +20,7 @@ import {
   useGetAvailableSlot,
 } from "@/store/api/booking/useGetAvailableSlot";
 import { useAuth } from "@/store/context/auth";
-import { AvailableSlotResponse, Slot } from "@/types/booking/Booking";
+import { AvailableSlotResponse, Slot } from "@/types/booking";
 import {
   defaultBookingDetailState,
   getQueryParamFromBookingDetailState,

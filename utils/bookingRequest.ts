@@ -5,9 +5,9 @@ import {
   isCheckOutTimeout,
 } from "./date";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
-import { CreateBookingRequest, Slot } from "@/types/booking/Booking";
+import { CreateBookingRequest, Slot } from "@/types/booking";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { Profile } from "@/types/user";
 

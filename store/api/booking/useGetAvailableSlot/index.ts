@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { BOOKING_URL } from "..";
 
 import apiRequest, { HTTPMethod } from "@/utils/http";
-import { AvailableSlotResponse } from "@/types/booking/Booking";
+import { AvailableSlotResponse } from "@/types/booking";
 
 export interface GetAvailableSlotsQueryParam {
   parkinglot_id: string;

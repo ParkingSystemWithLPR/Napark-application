@@ -1,7 +1,7 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 
-import { ParkingLot } from "./parking-lot/ParkingLot";
+import { ParkingLot } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";

@@ -2,7 +2,7 @@ import { View, Pressable, StyleSheet, Platform } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BodyText from "../text/BodyText";
 import Colors from "@/constants/color";
-import { Slot } from "@/types/booking/Booking";
+import { Slot } from "@/types/booking";
 
 export type RecommendedSlotType = {
   slot: Slot;

@@ -1,4 +1,5 @@
 export enum BookingType {
-  ACTIVE = "active",
-  COMPLETED = "completed",
+  UPCOMING = "Upcoming",
+  ACTIVE = "Active",
+  COMPLETED = "Completed",
 }

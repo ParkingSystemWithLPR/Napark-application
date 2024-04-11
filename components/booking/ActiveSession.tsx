@@ -1,38 +1,101 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 
-import BodyText from "../text/BodyText";
-import HeaderText from "../text/HeaderText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import DetailText from "../text/DetailText";
+import { BookingStatus } from "@/enum/BookingStatus";
+import { intervalToDuration } from "date-fns";
 
 export interface activeSessionProps {
+  bookingStatus: BookingStatus;
   licensePlate: string;
   space: string;
   timeRemaining: string;
+  onPress: () => void;
 }
 
 const ActiveSession: React.FC<activeSessionProps> = ({
   licensePlate,
   space,
   timeRemaining,
+  onPress,
+  bookingStatus,
 }) => {
+  const [timeCountdown, setTimeCounting] = useState<number>();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeCounting((prev) => {
+        return prev ? prev - 1 : new Date().getTime();
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getColor = useCallback(() => {
+    switch (bookingStatus) {
+      case BookingStatus.BOOKED:
+        return Colors.red[600];
+      case BookingStatus.PAID:
+        return Colors.blue[500];
+      default:
+        return Colors.red[600];
+    }
+  }, []);
+  const getIcon = useCallback(() => {
+    switch (bookingStatus) {
+      case BookingStatus.BOOKED:
+        return "car-side";
+      case BookingStatus.PAID:
+        return "cash-fast";
+      default:
+        return "car-side";
+    }
+  }, []);
+
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.topContainer}>
-        <HeaderText text={licensePlate} textStyle={{ color: Colors.black }} />
-        <BodyText text={space} textStyle={{ color: Colors.gray[800] }} />
-      </View>
-      <View style={styles.bottomContainer}>
-        <SubHeaderText
-          text="Time remaining"
-          textStyle={{ color: Colors.gray[800] }}
-        />
-        <SubHeaderText
-          text={`${timeRemaining} hr`}
-          textStyle={{ color: Colors.red[400] }}
-        />
-      </View>
+    <View style={styles.outerContainer}>
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.container}>
+          <View style={styles.buttonContainer}>
+            <MaterialCommunityIcons
+              name={getIcon()}
+              size={20}
+              color={getColor()}
+            />
+          </View>
+          <View style={styles.informationContainer}>
+            <View>
+              <SubHeaderText text={"Samyan mitrtown"} />
+              <DetailText
+                text={space}
+                textStyle={{ color: Colors.gray[800] }}
+              />
+              <View style={styles.subDetailContainer}>
+                <DetailText
+                  text={bookingStatus}
+                  containerStyle={{
+                    borderRightWidth: 1,
+                    borderRightColor: getColor(),
+                    paddingRight: 5,
+                  }}
+                  textStyle={{ color: getColor() }}
+                />
+                <DetailText
+                  text={licensePlate}
+                  textStyle={{ color: Colors.gray[800] }}
+                />
+              </View>
+            </View>
+            <View>
+              <SubHeaderText text={`${timeCountdown} hr`} />
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -40,29 +103,29 @@ const ActiveSession: React.FC<activeSessionProps> = ({
 export default ActiveSession;
 
 const styles = StyleSheet.create({
-  wrapper: {
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    marginBottom: 20,
-    backgroundColor: Colors.white,
-    borderRadius: 8,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
-  },
-  topContainer: {
-    paddingVertical: 5,
-    borderBottomColor: Colors.gray[700],
+  outerContainer: {
+    borderBottomColor: Colors.gray[600],
     borderBottomWidth: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
   },
-  bottomContainer: {
-    paddingTop: 5,
-    paddingBottom: 10,
+  container: {
+    padding: 10,
+    flexDirection: "row",
+    gap: 5,
+  },
+  buttonContainer: {
+    borderRadius: 24,
+    padding: 6,
+    margin: 8,
+    backgroundColor: Colors.gray[400],
+    height: 32,
+  },
+  informationContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    flex: 1,
+  },
+  subDetailContainer: {
+    flexDirection: "row",
+    gap: 5,
   },
 });

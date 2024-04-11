@@ -26,7 +26,7 @@ import {
   formatDropdownFromLicensePlates,
   initDropdownValue,
 } from "@/utils/dropdown";
-import { BusinessDay } from "@/types/parking-lot/ParkingLot";
+import { BusinessDay } from "@/types/parking-lot";
 import { useProfile } from "@/store/context/profile";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 

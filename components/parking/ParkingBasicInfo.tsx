@@ -4,7 +4,7 @@ import DetailText from "../text/DetailText";
 import SectionAppForm from "../ui/SectionAppForm";
 
 import Colors from "@/constants/color";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import { formatAddress } from "@/utils/address";
 
 export type ParkingBasicInfoProps = {

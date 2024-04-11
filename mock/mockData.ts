@@ -1,6 +1,6 @@
 import { THAI_PROVINCE } from "@/constants/province";
 import { CardType } from "@/enum/CardType";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 
 export type mockedSessionsProps = {
   licensePlate: string;
