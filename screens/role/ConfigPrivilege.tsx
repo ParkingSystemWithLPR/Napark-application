@@ -1,19 +1,11 @@
 import BodyContainer from "@/components/ui/BodyContainer";
-import Colors from "@/constants/color";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
-import {
-  Controller,
-  FieldValues,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 import TextInput from "@/components/input/TextInput";
 import SubHeaderText from "@/components/text/SubHeaderText";
-import ConfigPricing from "@/components/parking-lot/ConfigPricing";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import ChangeScreenTab from "@/components/button/ChangeScreenTab";
 import RoleCard from "@/components/card/RoleCard";

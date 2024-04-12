@@ -1,19 +1,12 @@
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
-import DropdownInput from "@/components/input/DropdownInput";
 import ParkingZonePrivilegeInput from "@/components/input/ParkingZonePrivilegeInput";
-import TextInput from "@/components/input/TextInput";
-import StepPricing from "@/components/pricingRule/StepPricing";
 import BodyContainer from "@/components/ui/BodyContainer";
-import { PriceRateUnit } from "@/enum/ParkingLot";
-import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
-import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
-import { Controller, FieldValues } from "react-hook-form";
-import { Alert, LogBox, StyleSheet, View } from "react-native";
+import { Controller } from "react-hook-form";
+import { LogBox, StyleSheet, View } from "react-native";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",

@@ -1,12 +1,11 @@
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import DropdownInput from "./DropdownInput";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import TextInput from "./TextInput";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 import { PriceRateUnit } from "@/enum/ParkingLot";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
-import StepPricing from "../pricingRule/StepPricing";
 import SecondaryButton from "../button/SecondaryButton";
 import Colors from "@/constants/color";
 import IconButton from "../button/IconButton";
@@ -178,13 +177,3 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
-
-const a = {
-  description: undefined,
-  name: undefined,
-  privilege: [
-    { floor: "1", price: "1", unit: undefined, zone: undefined },
-    { floor: "1", price: "2", unit: undefined, zone: undefined },
-    { floor: "1", price: "4", unit: undefined, zone: undefined },
-  ],
-};
