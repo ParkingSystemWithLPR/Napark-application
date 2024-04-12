@@ -9,8 +9,7 @@ import { ActionMode } from "@/enum/ActionMode";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { ManagingCategory } from "@/enum/ManagingCategory";
-import { BookingRequest } from "@/screens/bookings/booking/BookingDetail";
-import { Control, FieldValues, UseFormReturn } from "react-hook-form";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 export type RootParamList = {
   Splash: undefined;

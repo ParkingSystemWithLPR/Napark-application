@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 
 import { ParkingLotRequest } from "@/types/parking-lot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
+import { ParkingLotRequest } from "@/types/parking-lot";
 
 export type CreateParkingLotRequestInput = {
   data: ParkingLotRequest;
