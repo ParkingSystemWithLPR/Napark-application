@@ -14,7 +14,7 @@ import DropdownInput from "./DropdownInput";
 
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { ParkingLotRequest, Zone } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest, Zone } from "@/types/parking-lot";
 import { ZoneType } from "@/enum/ParkingLot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 

@@ -141,31 +141,6 @@ export const MOCKED_CREDIT_CARD = [
   },
 ];
 
-export const mockParkingLot: ParkingLot = {
-  _id: "660ecca7e55e2ede401ec843",
-  name: "mockName",
-  address: {
-    address1: "mockAddress",
-    sub_district: "mockSubDistict",
-    district: "mockDistict",
-    province: "mockProvince",
-    zip_code: "10160",
-  },
-  coord: {
-    latitude: 13.734836872447342,
-    longitude: 100.53327154257514,
-    latitudeDelta: 13.734836872447342,
-    longitudeDelta: 100.53327154257514,
-  },
-  businessDays: {
-    Monday: { openTime: "00:00", closeTime: "23:59" },
-    Tuesday: { open_time: "08:00", close_time: "22:00" },
-    Wednesday: { openTime: "00:00", closeTime: "23:59" },
-    Friday: { open_time: "11:00", close_time: "17:00" },
-    Saturday: { open_time: "12:00", close_time: "23:00" },
-    Sunday: { openTime: "09:00", closeTime: "19:01" },
-  },
-};
 export interface mockedPaymentLicensePlateProps {
   licensePlate: string;
   id: string;

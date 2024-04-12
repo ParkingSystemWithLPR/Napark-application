@@ -5,7 +5,7 @@ import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import * as Location from "expo-location";
 
 import Colors from "@/constants/color";
-import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest } from "@/types/parking-lot";
 
 import TextInput from "../input/TextInput";
 import { InputType } from "@/enum/InputType";

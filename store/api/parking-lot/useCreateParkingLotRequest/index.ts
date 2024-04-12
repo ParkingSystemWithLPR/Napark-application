@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { ParkingLot, ParkingLotRequest } from "@/types/parking-lot";
+import { ParkingLotRequest } from "@/types/parking-lot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 export type CreateParkingLotRequestInput = {

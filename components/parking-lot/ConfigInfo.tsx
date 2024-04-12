@@ -1,7 +1,7 @@
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { ScrollView } from "react-native";
 
-import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest } from "@/types/parking-lot";
 
 import BusinessDayInput from "../input/BusinessDayInput";
 import ImageUploader from "../input/ImageUploader";

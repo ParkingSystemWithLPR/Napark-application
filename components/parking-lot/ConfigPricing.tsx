@@ -5,7 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import DropdownInput from "@/components/input/DropdownInput";
 import TextInput from "@/components/input/TextInput";
-import { ParkingLotRequest, Plan, Zone } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest, Plan, Zone } from "@/types/parking-lot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import Colors from "@/constants/color";

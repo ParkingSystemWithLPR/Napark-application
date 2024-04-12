@@ -19,7 +19,7 @@ import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import ConfigAddress from "@/components/parking-lot/ConfigAddress";
 import { useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
 import { useAuth } from "@/store/context/auth";
-import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest } from "@/types/parking-lot";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 export type RequestParkingLotProps = CompositeScreenProps<

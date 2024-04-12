@@ -211,7 +211,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               bookingDetailState={bookingDetailState}
               onChange={handleOnChange}
               closeSetting={closeSetting}
-              bussinessDays={parkingLot.businessDays}
+              bussinessDays={parkingLot.business_days}
             />
           </View>
         ) : (
