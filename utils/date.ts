@@ -60,6 +60,13 @@ export const getDateFromDateAndTime = (date: string, time?: string) => {
   return parseISO(`${date} ${time}`.trimEnd());
 };
 
+export const getDateFromTime = (time: string = "") => {
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, seconds || 0, 0);
+  return date;
+};
+
 export const getDayInAWeek = (date: Date): DayInAWeek => {
   const day = format(date, "eeee").toUpperCase();
   return DayInAWeek[day as keyof typeof DayInAWeek];
