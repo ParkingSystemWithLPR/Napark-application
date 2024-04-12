@@ -3,7 +3,6 @@ import { StyleSheet, FlatList, Image, View } from "react-native";
 import IconButton from "../button/IconButton";
 
 import Colors from "@/constants/color";
-import { ImageProps } from "@/types";
 
 export type ImageContainerProps = {
   images: string[];
