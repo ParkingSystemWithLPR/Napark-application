@@ -1,4 +1,6 @@
 import { BookingStatus } from "@/enum/BookingStatus";
+import { PriceRateUnit } from "@/enum/ParkingLot";
+import { SlotType } from "@/enum/SlotType";
 
 export interface AvailableSlotResponse {
   recommended_slots: SlotProfileWithPrivilege | null;
@@ -17,6 +19,23 @@ export interface SlotProfileWithPrivilege {
   name: string;
   privilege_price_rate: number;
   privilege_price_unit: string;
+}
+
+export interface SlotProfile {
+  _id: string;
+  name: string;
+  floor: number;
+  zone: string;
+  type: SlotType;
+  is_vacant: boolean;
+  default_price_rate: number;
+  default_price_rate_unit: PriceRateUnit;
+}
+
+export interface SlotPriceProfile {
+  slot_id: string;
+  price_rate: number;
+  price_rate_unit: PriceRateUnit;
 }
 
 export interface CreateBookingRequest {

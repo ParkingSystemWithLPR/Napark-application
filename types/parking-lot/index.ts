@@ -3,16 +3,29 @@ import { LatLng } from "react-native-maps";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { ZoneType } from "@/enum/ParkingLot";
 import { ImageProps } from "..";
+import { SlotPriceProfile, SlotProfile } from "../booking";
 
 export type ParkingLot = {
   _id: string;
   owner_id: string;
   name: string;
+  slots: SlotProfile[];
   available_slots_count: number;
   address: Address;
+  management_roles: ManagementRoleProfile[];
+  parking_privileges: ParkingPrivilegeProfile[];
   coord: LatLng;
-  business_days: BusinessDay[];
   images: string[];
+  floor_images: FloorImage[];
+  business_days: BusinessDay[];
+  created_at: string;
+  updated_at: string;
+  is_open: boolean;
+};
+
+export type FloorImage = {
+  floor: number;
+  image: string;
 };
 
 export type ParkingLotRequest = {
@@ -55,4 +68,16 @@ export type Zone = {
   type: ZoneType;
   price?: number;
   price_unit?: string;
+};
+
+export type ManagementRoleProfile = {
+  title: string;
+  user_ids: string[];
+  permissions: string[];
+};
+
+export type ParkingPrivilegeProfile = {
+  title: string;
+  user_ids: string[];
+  slot_prices: SlotPriceProfile[];
 };
