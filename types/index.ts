@@ -1,11 +1,11 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 
-import { ParkingLot } from "./parking-lot/ParkingLot";
+import { ParkingLot } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingRequest } from "@/screens/bookings/booking/BookingDetail";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;
@@ -55,8 +55,11 @@ export type OtherStackParamList = {
 };
 
 export type BookingsStackParamList = {
-  BookingDetail: { parkingLot: ParkingLot };
-  BookingSummary: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
+  BookingDetail: { parkingLot: ParkingLot; defaultValue?: BookingDetailState };
+  BookingSummary: {
+    bookingDetailState: BookingDetailState;
+    parkingLot: ParkingLot;
+  };
   RoleMember: undefined;
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
@@ -67,8 +70,8 @@ export type BookingsStackParamList = {
 };
 
 export type ParkingFlowStackParamList = {
-  Arriving: { bookingRequest: BookingRequest; parkingLot: ParkingLot };
-  ParkingConfirmation: { bookingRequest: BookingRequest };
+  Arriving: { bookingRequest: BookingDetailState; parkingLot: ParkingLot };
+  ParkingConfirmation: { bookingRequest: BookingDetailState };
 };
 
 export type AuthenticatedStackParamListProps =

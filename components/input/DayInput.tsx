@@ -18,7 +18,7 @@ import { MINIMUM_DATE, formatDate } from "@/utils/date";
 export type DayInputProps = {
   title: string;
   date: string | null;
-  shownDate?: string;
+  displayDateFormatter?: (date: string) => string;
   placeholder?: string;
   onChange: (date: string) => void;
   isRequired?: boolean;
@@ -33,7 +33,7 @@ export type DayInputProps = {
 const DayInput: React.FC<DayInputProps> = ({
   title,
   date,
-  shownDate = date,
+  displayDateFormatter,
   onChange,
   isRequired = false,
   placeholder = "YYYY-MM-DD",
@@ -78,12 +78,18 @@ const DayInput: React.FC<DayInputProps> = ({
           ]}
         >
           <BodyText
-            text={shownDate ? shownDate : placeholder}
+            text={
+              date
+                ? displayDateFormatter
+                  ? displayDateFormatter(date)
+                  : date
+                : placeholder
+            }
             containerStyle={styles.dateTextContainer}
             textStyle={[
               styles.text,
               !editable && styles.uneditableText,
-              !shownDate && styles.placeholderText,
+              !date && styles.placeholderText,
             ]}
           />
           <MaterialCommunityIcons

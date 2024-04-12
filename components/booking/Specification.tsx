@@ -23,16 +23,6 @@ const Specification: React.FC<SpecificationProps> = ({
         color: Colors.red[400].toString(),
       },
       {
-        id: "Ladies Parking",
-        label: "Ladies Parking",
-        color: Colors.red[400].toString(),
-      },
-      {
-        id: "Bus Parking",
-        label: "Bus Parking",
-        color: Colors.red[400].toString(),
-      },
-      {
         id: "None",
         label: "None",
         color: Colors.red[400].toString(),

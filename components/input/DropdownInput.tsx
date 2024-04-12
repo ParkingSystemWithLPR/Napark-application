@@ -6,48 +6,46 @@ import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
 
-export interface DropdownItem {
+export interface DropdownItem<T> {
   label: string;
-  value: string;
-  price?: number;
-  unit?: string;
+  value: T;
 }
 
-export type DropdownInputProps = {
-  selectedValue: string;
+export type DropdownInputProps<T> = {
+  selectedValue?: DropdownItem<T> | string;
   placeholder: string;
-  onSelect: (selected: string) => void;
-  items: DropdownItem[];
+  onSelect?: (selected: T) => void; //shortcut for use dropdown item type string
+  onSpecialSelect?: (selected: DropdownItem<T>) => void;
+  items: DropdownItem<T>[];
   withTitle?: boolean;
   title?: string;
   isRequired?: boolean;
   withSearch?: boolean;
-  renderItem?: (item: DropdownItem) => JSX.Element;
-  onSpecialSelect?: (item: DropdownItem) => void;
+  renderItem?: (item: DropdownItem<T>) => JSX.Element;
   errorText?: string;
   editable?: boolean;
   containerStyle?: object;
 };
 
-const DropdownInput: React.FC<DropdownInputProps> = ({
+const DropdownInput = <T,>({
   selectedValue,
   placeholder,
   onSelect,
+  onSpecialSelect,
   items,
   withTitle = true,
   title,
   isRequired = false,
   withSearch = false,
   renderItem,
-  onSpecialSelect,
   errorText,
   editable = true,
   containerStyle,
-}) => {
-  const handleChange = (item: DropdownItem) => {
+}: DropdownInputProps<T>) => {
+  const handleOnChange = (item: DropdownItem<T>) => {
     if (onSpecialSelect) {
       onSpecialSelect(item);
-    } else {
+    } else if (onSelect) {
       onSelect(item.value);
     }
   };
@@ -66,9 +64,8 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
         data={items}
         labelField={"label"}
         valueField={"value"}
-        searchField={"value"}
         placeholder={placeholder}
-        onChange={handleChange}
+        onChange={handleOnChange}
         search={withSearch}
         searchPlaceholder="Search..."
         style={[

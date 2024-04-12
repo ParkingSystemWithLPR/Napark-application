@@ -3,11 +3,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Colors from "@/constants/color";
-import Bookings from "@/screens/bookings/Bookings";
 import Account from "@/screens/account/Account";
+import Bookings from "@/screens/bookings/Bookings";
 import Landing from "@/screens/landing/Landing";
-import Other from "@/screens/other/Other";
 import Notification from "@/screens/Notification";
+import Other from "@/screens/other/Other";
 import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,

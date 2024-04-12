@@ -6,58 +6,109 @@ import SecondaryButton from "../button/SecondaryButton";
 import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
 
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { Slot } from "@/types/booking";
+import {
+  defaultBookingDetailState,
+  getTotalFloor,
+} from "@/utils/bookingRequest";
+import {
+  formatDropdownFromFloorList,
+  formatDropdownFromSlotList,
+  initDropdownValue,
+} from "@/utils/dropdown";
+
 export type ParkingPlanProps = {
-  floor: string;
-  setFloor: (data: string) => void;
-  slot: string;
-  setSlot: (data: string) => void;
-  setPrice: (data: number) => void;
-  setUnit: (data: string) => void;
+  bookingDetailState: BookingDetailState;
+  availableSlot: Slot[];
+  onChange: <T>(identifierKey: string, enteredValue: T) => void;
   handleConfirm: () => void;
 };
-
+export type ParkingValue = {
+  slotId: string;
+  slotName: string;
+  price: number;
+  unit: string;
+};
 const ParkingPlan: React.FC<ParkingPlanProps> = ({
-  floor,
-  setFloor,
-  slot,
-  setSlot,
-  setPrice,
-  setUnit,
+  bookingDetailState,
+  availableSlot,
+  onChange,
   handleConfirm,
 }) => {
-  const [isFirstUpdate, setIsFirstUpdate] = useState(true);
+  const { floor, slotId, slotName, price, unit } = bookingDetailState;
   const [canClickConfirm, setCanClickConfirm] = useState(false);
+  const floorDropDown = formatDropdownFromFloorList(
+    getTotalFloor(availableSlot)
+  );
+  const [slotInFloor, setSlotInFloor] =
+    useState<DropdownItem<ParkingValue>[]>();
+  const [parkingValue, SetParkingValue] = useState<DropdownItem<ParkingValue>>(
+    initDropdownValue<ParkingValue>(slotName, {
+      slotId: slotId,
+      slotName: slotName,
+      price: price,
+      unit: unit,
+    })
+  );
+  const [dropDownFloor, SetDropDownFloor] = useState<DropdownItem<number>>();
+  const setFloor = (value: number) => {
+    onChange("floor", value);
+  };
+  const setSlotId = (value: string) => {
+    onChange("slotId", value);
+  };
+  const setSlotName = (value: string) => {
+    onChange("slotName", value);
+  };
+  const setPrice = (value: number) => {
+    onChange("price", value);
+  };
+  const setUnit = (value: string) => {
+    onChange("unit", value);
+  };
   useLayoutEffect(() => {
-    if (!isFirstUpdate && floor != "") {
-      setSlot("");
-    } else {
-      setIsFirstUpdate(false);
+    if (floor != -1) {
+      const { slotId, slotName, price, unit } = defaultBookingDetailState;
+      setSlotId(slotId);
+      setSlotName(slotName);
+      setPrice(price);
+      setUnit(unit);
+      SetParkingValue(
+        initDropdownValue<ParkingValue>(slotName, {
+          slotId: slotId,
+          slotName: slotName,
+          price: price,
+          unit: unit,
+        })
+      );
+      const filteredSlot = availableSlot.filter((slot) => slot.floor == floor);
+      setSlotInFloor(formatDropdownFromSlotList(filteredSlot));
     }
   }, [floor]);
 
   useLayoutEffect(() => {
-    if (floor != "" && slot != "") {
+    if (slotId != "") {
       setCanClickConfirm(true);
     } else {
       setCanClickConfirm(false);
     }
-  }, [floor, slot]);
+  }, [floor, slotId]);
 
-  const renderItem = (item: DropdownItem) => {
+  const renderItem = (item: DropdownItem<ParkingValue>) => {
     return (
       <View style={styles.item}>
-        <BodyText text={item.value} />
-        <BodyText
-          text={`${item.price && item.price.toString()} ${item.unit}`}
-        />
+        <BodyText text={item.value.slotName} />
+        <BodyText text={`${item.value.price} ${item.value.unit}`} />
       </View>
     );
   };
 
-  const onSpecialSelect = (item: DropdownItem) => {
-    setPrice(item.price ?? 0);
-    setSlot(item.value);
-    setUnit(item.unit ?? "");
+  const onSelect = (item: ParkingValue) => {
+    setSlotId(item.slotId);
+    setPrice(item.price);
+    setSlotName(item.slotName);
+    setUnit(item.unit);
   };
 
   const unableToConfirmHandler = () => {
@@ -66,12 +117,12 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   return (
     <View style={styles.container}>
       <DropdownInput
-        items={[
-          { label: "floor1", value: "url1" },
-          { label: "floor2", value: "url2" },
-        ]}
-        selectedValue={floor}
-        onSelect={setFloor}
+        items={floorDropDown}
+        selectedValue={dropDownFloor}
+        onSpecialSelect={(item) => {
+          setFloor(item.value);
+          SetDropDownFloor(item);
+        }}
         placeholder={"Select floor"}
       />
       {floor && (
@@ -81,15 +132,14 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
             style={styles.centerContainer}
           />
           <DropdownInput
-            items={[
-              { label: "a1", value: "a1", price: 25, unit: "baht/hr" },
-              { label: "a2", value: "a2", price: 25, unit: "baht/hr" },
-            ]}
-            selectedValue={slot}
-            onSelect={setSlot}
+            items={slotInFloor ?? []}
+            selectedValue={parkingValue}
+            onSpecialSelect={(item) => {
+              onSelect(item.value);
+              SetParkingValue(item);
+            }}
             placeholder={"Select Slot"}
             renderItem={renderItem}
-            onSpecialSelect={onSpecialSelect}
           />
           {canClickConfirm ? (
             <PrimaryButton

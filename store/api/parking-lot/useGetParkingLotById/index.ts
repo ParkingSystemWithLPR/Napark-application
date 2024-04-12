@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 import { PARKING_LOT_URL } from "..";
 
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 type GetParkingLotInput = {

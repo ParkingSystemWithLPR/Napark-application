@@ -44,7 +44,7 @@ import {
   AuthenticatedStackParamList,
   MainPageBottomTabParamList,
 } from "@/types";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
@@ -244,7 +244,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             onPress={() => {
               searchInputRef.current?.setAddressText("");
               dismissAll();
-              navigation.navigate("BookingStack", {
+              navigation.navigate("BookingsStack", {
                 screen: "BookingDetail",
                 params: { parkingLot: selectedParkingSpace },
               });

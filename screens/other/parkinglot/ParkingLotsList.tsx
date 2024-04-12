@@ -14,7 +14,7 @@ import { useGetParkingLotsByUserId } from "@/store/api/parking-lot/useGetParking
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { ParkingLot } from "@/types/parking-lot/ParkingLot";
+import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours } from "@/utils/date";
 import { format } from "date-fns";
 
