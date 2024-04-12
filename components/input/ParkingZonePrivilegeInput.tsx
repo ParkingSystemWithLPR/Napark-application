@@ -112,7 +112,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
         ))}
       </View>
       <SecondaryButton
-        title="+ Add more zone to this floor"
+        title="+ Add more zone"
         buttonStyle={styles.addZoneButton}
         textStyle={{ color: Colors.black }}
         onPress={() => {
