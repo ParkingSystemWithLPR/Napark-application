@@ -46,7 +46,6 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   }, [getMyBookings.data]);
 
   const renderUpcomingBookings = useCallback(() => {
-    console.log(bookings);
     const upcomingBookings = bookings.filter(
       (booking) => booking.status === BookingStatus.UPCOMING
     );
