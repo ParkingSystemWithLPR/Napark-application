@@ -1,25 +1,38 @@
-import { Region } from "react-native-maps";
+import { LatLng } from "react-native-maps";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { ZoneType } from "@/enum/ParkingLot";
 import { ImageProps } from "..";
+import { SlotPriceProfile, SlotProfile } from "../booking";
 
 export type ParkingLot = {
   _id: string;
+  owner_id: string;
   name: string;
+  slots: SlotProfile[];
+  available_slots_count: number;
   address: Address;
-  coord: Region;
-  businessDays?: BusinessDay;
-  images?: string[];
-  plan: Plan[];
-  availability?: number;
+  management_roles: ManagementRoleProfile[];
+  parking_privileges: ParkingPrivilegeProfile[];
+  coord: LatLng;
+  images: string[];
+  floor_images: FloorImage[];
+  business_days: BusinessDay[];
+  created_at: string;
+  updated_at: string;
+  is_open: boolean;
+};
+
+export type FloorImage = {
+  floor: number;
+  image: string;
 };
 
 export type ParkingLotRequest = {
   name: string;
   images?: ImageProps[];
-  businessDays: BusinessDay[];
-  coord: Region;
+  business_days: BusinessDay[];
+  coord: LatLng;
   address: Address;
   plan: Plan[];
 };
@@ -33,14 +46,14 @@ export type Address = {
 };
 
 export type BusinessDay = {
-  openTime: string;
-  closeTime: string;
-  day: DayInAWeek;
+  open_time: string;
+  close_time: string;
+  weekday: DayInAWeek;
 };
 
 export type BusinessHour = {
-  openTime: string;
-  closeTime: string;
+  open_time: string;
+  close_time: string;
 };
 
 export type Plan = {
@@ -54,12 +67,17 @@ export type Zone = {
   capacity?: number;
   type: ZoneType;
   price?: number;
-  unit?: string;
+  price_unit?: string;
 };
 
-export type ZonePricing = {
-  floor: number;
-  zone: string;
-  price: number;
-  unit: string;
+export type ManagementRoleProfile = {
+  title: string;
+  user_ids: string[];
+  permissions: string[];
+};
+
+export type ParkingPrivilegeProfile = {
+  title: string;
+  user_ids: string[];
+  slot_prices: SlotPriceProfile[];
 };

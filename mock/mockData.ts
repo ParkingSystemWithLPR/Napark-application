@@ -2,6 +2,9 @@ import { DropdownItem } from "@/components/input/DropdownInput";
 import { THAI_PROVINCE } from "@/constants/province";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { CardType } from "@/enum/CardType";
+import { DayInAWeek } from "@/enum/DayInAWeek";
+import { PriceRateUnit } from "@/enum/ParkingLot";
+import { SlotType } from "@/enum/SlotType";
 import { Booking } from "@/types/booking";
 import { ParkingLot } from "@/types/parking-lot";
 
@@ -142,31 +145,6 @@ export const MOCKED_CREDIT_CARD = [
   },
 ];
 
-export const mockParkingLot: ParkingLot = {
-  _id: "660ecca7e55e2ede401ec843",
-  name: "mockName",
-  address: {
-    address1: "mockAddress",
-    sub_district: "mockSubDistict",
-    district: "mockDistict",
-    province: "mockProvince",
-    zip_code: "10160",
-  },
-  coord: {
-    latitude: 13.734836872447342,
-    longitude: 100.53327154257514,
-    latitudeDelta: 13.734836872447342,
-    longitudeDelta: 100.53327154257514,
-  },
-  businessDays: {
-    Monday: { openTime: "00:00", closeTime: "23:59" },
-    Tuesday: { openTime: "08:00", closeTime: "22:00" },
-    Wednesday: { openTime: "00:00", closeTime: "23:59" },
-    Friday: { openTime: "11:00", closeTime: "17:00" },
-    Saturday: { openTime: "12:00", closeTime: "23:00" },
-    Sunday: { openTime: "09:00", closeTime: "19:01" },
-  },
-};
 export interface mockedPaymentLicensePlateProps {
   licensePlate: string;
   id: string;
@@ -195,6 +173,50 @@ export const MOCKED_PAYMENTLICENSEPLATE = [
     province: THAI_PROVINCE[0].value,
   },
 ];
+
+export const mockParkingLot: ParkingLot = {
+  _id: "660ecca7e55e2ede401ec843",
+  owner_id: "65e5481524315e45c536f6b9",
+  name: "string",
+  slots: [
+    {
+      _id: "660ecca7e55e2ede401ec844",
+      name: "string",
+      floor: 1,
+      zone: "",
+      type: SlotType.Normal,
+      is_vacant: true,
+      default_price_rate: 1,
+      default_price_rate_unit: PriceRateUnit.BAHT_PER_DAY,
+    },
+  ],
+  available_slots_count: 3,
+  address: {
+    address1: "string",
+    sub_district: "string",
+    district: "string",
+    province: "string",
+    zip_code: "string",
+  },
+  management_roles: [],
+  parking_privileges: [],
+  coord: {
+    latitude: 10,
+    longitude: 10,
+  },
+  images: [""],
+  floor_images: [],
+  business_days: [
+    {
+      weekday: DayInAWeek.SUNDAY,
+      open_time: "08:00:00",
+      close_time: "23:00:00",
+    },
+  ],
+  created_at: "2024-04-04T22:52:07.89+07:00",
+  updated_at: "2024-04-04T22:52:07.89+07:00",
+  is_open: true,
+};
 
 export const MOCKED_ZONE = [
   {

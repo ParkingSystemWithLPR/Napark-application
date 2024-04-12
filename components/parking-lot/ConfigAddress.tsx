@@ -1,20 +1,26 @@
-import { Control, Controller, FieldValues, UseFormReturn } from "react-hook-form";
+import { useLayoutEffect, useState } from "react";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import * as Location from "expo-location";
 
-import BusinessDayInput from "../input/BusinessDayInput";
-import ImageUploader from "../input/ImageUploader";
-import TextInput from "../input/TextInput";
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import Colors from "@/constants/color";
-import { useLayoutEffect, useState } from "react";
+import { ParkingLotRequest } from "@/types/parking-lot";
+import { InputType } from "@/enum/InputType";
+import { RegionType } from "@/screens/landing/Landing";
+
+import TextInput from "../input/TextInput";
 
 export type ConfigAddressProps = {
-  form: UseFormReturn<FieldValues, any, undefined>;
+  form: UseFormReturn<ParkingLotRequest, any, undefined>;
 };
 
 const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
-  const { control } = form;
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = form;
   const [region, setRegion] = useState<Region>();
 
   useLayoutEffect(() => {
@@ -30,6 +36,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
       }
       const location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
+      setValue("coord", { latitude, longitude });
       setRegion({
         latitude,
         longitude,
@@ -52,21 +59,39 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
             onPress={(event) => {
               const { latitude, longitude } = event.nativeEvent.coordinate;
               onChange(event.nativeEvent.coordinate);
-              setRegion({
-                latitude,
-                longitude,
-                latitudeDelta: 0.0522,
-                longitudeDelta: 0.0121,
+              setRegion((prevRegion: RegionType | undefined) => {
+                if (!prevRegion) {
+                  return {
+                    latitude: latitude,
+                    longitude: longitude,
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0121,
+                  };
+                }
+                return {
+                  ...prevRegion,
+                  latitude: latitude,
+                  longitude: longitude,
+                };
               });
             }}
             onMarkerDragEnd={(event) => {
               const { latitude, longitude } = event.nativeEvent.coordinate;
               onChange(event.nativeEvent.coordinate);
-              setRegion({
-                latitude,
-                longitude,
-                latitudeDelta: 0.0522,
-                longitudeDelta: 0.0121,
+              setRegion((prevRegion: RegionType | undefined) => {
+                if (!prevRegion) {
+                  return {
+                    latitude: latitude,
+                    longitude: longitude,
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0121,
+                  };
+                }
+                return {
+                  ...prevRegion,
+                  latitude: latitude,
+                  longitude: longitude,
+                };
               });
             }}
             initialRegion={region}
@@ -81,9 +106,6 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
                 latitude: region?.latitude || 0,
                 longitude: region?.longitude || 0,
               }}
-              onDragEnd={(e) => {
-                console.log("dragEnd", e.nativeEvent.coordinate);
-              }}
               draggable
             >
               <Image
@@ -96,12 +118,19 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
       <Controller
         name={"address.address1"}
         control={control}
+        rules={{ required: "Please enter your parking space address" }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="address"
             placeholder={"Enter your address"}
             value={value}
             onChangeText={onChange}
+            errorText={
+              errors.address && errors.address.address1
+                ? errors.address.address1.message
+                : ""
+            }
+            isRequired
           />
         )}
       />
@@ -109,6 +138,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
         <Controller
           name={"address.sub_district"}
           control={control}
+          rules={{ required: "Please enter sub-district" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               title="Sub-district"
@@ -116,12 +146,19 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               value={value}
               onChangeText={onChange}
               containerStyle={{ flex: 1 }}
+              errorText={
+                errors.address && errors.address.sub_district
+                  ? errors.address.sub_district.message
+                  : ""
+              }
+              isRequired
             />
           )}
         />
         <Controller
           name={"address.district"}
           control={control}
+          rules={{ required: "Please enter district" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               title="District"
@@ -129,6 +166,12 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               value={value}
               onChangeText={onChange}
               containerStyle={{ flex: 1 }}
+              errorText={
+                errors.address && errors.address.district
+                  ? errors.address.district.message
+                  : ""
+              }
+              isRequired
             />
           )}
         />
@@ -137,6 +180,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
         <Controller
           name={"address.province"}
           control={control}
+          rules={{ required: "Please enter province" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               title="Province"
@@ -144,12 +188,19 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               value={value}
               onChangeText={onChange}
               containerStyle={{ flex: 1 }}
+              errorText={
+                errors.address && errors.address.province
+                  ? errors.address.province.message
+                  : ""
+              }
+              isRequired
             />
           )}
         />
         <Controller
           name={"address.zip_code"}
           control={control}
+          rules={{ required: "Please enter zip-code" }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               title="Zip-code"
@@ -157,6 +208,13 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               value={value}
               onChangeText={onChange}
               containerStyle={{ flex: 1 }}
+              inputMode={InputType.Numeric}
+              errorText={
+                errors.address && errors.address.zip_code
+                  ? errors.address.zip_code.message
+                  : ""
+              }
+              isRequired
             />
           )}
         />

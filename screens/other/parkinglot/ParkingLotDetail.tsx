@@ -102,7 +102,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
           </View>
           {parkingLot.images && (
             <SectionAppForm title={"Photos"} icon={"camera"}>
-              <ImageContainer imageUrls={parkingLot.images} />
+              <ImageContainer images={parkingLot.images} />
             </SectionAppForm>
           )}
           <ParkingBasicInfo parkingLot={parkingLot} />

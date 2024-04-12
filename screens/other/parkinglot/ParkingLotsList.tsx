@@ -16,6 +16,7 @@ import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours } from "@/utils/date";
+import { format } from "date-fns";
 
 export type ParkingLotsListProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,
@@ -25,6 +26,7 @@ export type ParkingLotsListProps = CompositeScreenProps<
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
   const { profile } = useProfile();
+  const today = format(new Date(), "eeee").toLocaleLowerCase();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
 
@@ -74,8 +76,8 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
                 businessHours={
-                  item.businessDays
-                    ? getBusinessHours(item.businessDays)
+                  item.business_days?.weekday === today
+                    ? getBusinessHours(item.business_days)
                     : "Not available"
                 }
                 availabilty={0}

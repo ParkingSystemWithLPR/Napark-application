@@ -7,7 +7,7 @@ import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
 
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { Slot } from "@/types/booking";
+import { SlotProfileWithPrivilege } from "@/types/booking";
 import {
   defaultBookingDetailState,
   getTotalFloor,
@@ -20,7 +20,7 @@ import {
 
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
-  availableSlot: Slot[];
+  availableSlot: SlotProfileWithPrivilege[];
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   handleConfirm: () => void;
 };

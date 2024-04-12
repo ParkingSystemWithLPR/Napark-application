@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {  useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Platform } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -20,7 +20,10 @@ import {
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import { AvailableSlotResponse, Slot } from "@/types/booking";
+import {
+  AvailableSlotResponse,
+  SlotProfileWithPrivilege,
+} from "@/types/booking";
 import {
   defaultBookingDetailState,
   getQueryParamFromBookingDetailState,
@@ -112,7 +115,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     setGoToNextPage(true);
   };
 
-  const handleClickRecommend = (slot: Slot) => {
+  const handleClickRecommend = (slot: SlotProfileWithPrivilege) => {
     handleOnChange("slotId", slot._id);
     handleOnChange("slotName", slot.name);
     handleOnChange(
@@ -211,7 +214,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               bookingDetailState={bookingDetailState}
               onChange={handleOnChange}
               closeSetting={closeSetting}
-              bussinessDays={parkingLot.businessDays}
+              bussinessDays={parkingLot.business_days}
             />
           </View>
         ) : (

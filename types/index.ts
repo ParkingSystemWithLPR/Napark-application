@@ -111,4 +111,4 @@ export type HyperlinkTextProps = TextProps & {
 export type ImageProps = {
   content: string;
   filename: string;
-};
+}

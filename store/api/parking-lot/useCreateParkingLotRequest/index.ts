@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
+import { ParkingLotRequest } from "@/types/parking-lot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 import { ParkingLotRequest } from "@/types/parking-lot";
 
@@ -27,7 +28,7 @@ export const createParkingLotRequest: CreateParkingLotRequestService = async (
 ) => {
   const { data, auth } = input;
   const response = await apiRequest<ParkingLotRequest>(
-    PARKING_LOT_URL + `/parkinglot_v1/parkinglot/request/create`,
+    PARKING_LOT_URL + `/parkinglot_v1/request/create`,
     HTTPMethod.POST,
     auth.accessToken,
     auth.authenticate,
