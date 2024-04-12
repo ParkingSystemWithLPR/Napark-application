@@ -26,7 +26,7 @@ export type ConfigZoneProps = CompositeScreenProps<
 
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
   const { form, mode, index } = route.params;
-  const { control, handleSubmit } = form;
+  const { control } = form;
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -37,9 +37,9 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
           <ParkingZonePrivilegeInput
             value={value}
             onChange={onChange}
-            control={control}
             mode={mode}
             zoneIndex={index}
+            form={form}
           />
         )}
       />
