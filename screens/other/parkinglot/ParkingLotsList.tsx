@@ -72,13 +72,15 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
             data={parkingLots}
-            renderItem={({ item }) => (
+            renderItem={({ item }) => {
+              const businessDay = item.business_days.find((businessday) => {
+                businessday.weekday == getDayInAWeek(new Date());
+              });
+              return (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
                 businessHours={
-                  item.business_days?.weekday === today
-                    ? getBusinessHours(item.business_days)
-                    : "Not available"
+                  businessDay ? getBusinessHours(businessDay) : "Not available"
                 }
                 availabilty={0}
                 onPress={() =>
@@ -87,7 +89,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                   })
                 }
               />
-            )}
+            )}}
             overScrollMode="never"
           />
         </View>
