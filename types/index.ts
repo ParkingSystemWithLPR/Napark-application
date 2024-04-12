@@ -57,7 +57,11 @@ export type OtherStackParamList = {
   ManagingCategory: { parkingLotId: string };
   ManagingList: { category: ManagingCategory };
   ConfigPrivilege: { mode: ActionMode; roleId?: string };
-  ConfigZone: { form: UseFormReturn<FieldValues, any, undefined> };
+  ConfigZone: {
+    form: UseFormReturn<FieldValues, any, undefined>;
+    mode: ActionMode;
+    index?: number;
+  };
 };
 
 export type BookingsStackParamList = {
