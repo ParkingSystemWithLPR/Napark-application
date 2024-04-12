@@ -11,20 +11,25 @@ import SecondaryButton from "../button/SecondaryButton";
 import Colors from "@/constants/color";
 import IconButton from "../button/IconButton";
 import { ZonePricing } from "@/types/parking-lot/ParkingLot";
+import { ActionMode } from "@/enum/ActionMode";
 
 export type ParkingZonePrivilegeInputProps = {
   value: ZonePricing[];
   onChange: (zones?: ZonePricing[]) => void;
   control: any;
+  mode: ActionMode;
+  zoneIndex?: number;
 };
 
 const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   value,
   onChange,
   control,
+  mode,
+  zoneIndex,
 }) => {
   const [zones, setZones] = useState<ZonePricing[]>(
-    value ?? [{ floor: 0, zone: "A", price: 0, unit: "baht/hour" }]
+    [{ floor: 0, zone: "A", price: 0, unit: "baht/hour" }]
   );
 
   return (
@@ -34,7 +39,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
           <View style={{ gap: 5 }}>
             <View style={styles.dropdownContainer}>
               <Controller
-                name={`privilege.${index}.floor`}
+                name={`privilege.${zoneIndex}.${index}.floor`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <DropdownInput
@@ -48,7 +53,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                 )}
               />
               <Controller
-                name={`privilege.${index}.zone`}
+                name={`privilege.${zoneIndex}.${index}.zone`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <DropdownInput
@@ -66,7 +71,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
             </View>
             <View style={styles.sameLineInputContainer}>
               <Controller
-                name={`privilege.${index}.price`}
+                name={`privilege.${zoneIndex}.${index}.price`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <TextInput
@@ -79,7 +84,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                 )}
               />
               <Controller
-                name={`privilege.${index}.unit`}
+                name={`privilege.${zoneIndex}.${index}.unit`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <DropdownInput
@@ -111,17 +116,19 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
           </View>
         ))}
       </View>
-      <SecondaryButton
-        title="+ Add more zone"
-        buttonStyle={styles.addZoneButton}
-        textStyle={{ color: Colors.black }}
-        onPress={() => {
-          setZones([
-            ...zones,
-            { floor: 0, zone: "A", price: 0, unit: "baht/hour" },
-          ]);
-        }}
-      />
+      {mode === ActionMode.CREATE && (
+        <SecondaryButton
+          title="+ Add more zone"
+          buttonStyle={styles.addZoneButton}
+          textStyle={{ color: Colors.black }}
+          onPress={() => {
+            setZones([
+              ...zones,
+              { floor: 0, zone: "A", price: 0, unit: "baht/hour" },
+            ]);
+          }}
+        />
+      )}
     </View>
   );
 };

@@ -25,13 +25,14 @@ export type ConfigZoneProps = CompositeScreenProps<
 >;
 
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
-  const form = route.params.form;
+  const { form, mode, index } = route.params;
   const { control, handleSubmit } = form;
 
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
-      console.log("data", data);
+      console.log("data", JSON.stringify(data));
+      navigation.goBack();
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -46,7 +47,13 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
         name="privilege"
         control={control}
         render={({ field: { onChange, value } }) => (
-          <ParkingZonePrivilegeInput value={value} onChange={onChange} control={control} />
+          <ParkingZonePrivilegeInput
+            value={value}
+            onChange={onChange}
+            control={control}
+            mode={mode}
+            zoneIndex={index}
+          />
         )}
       />
       <View style={styles.buttonContainer}>

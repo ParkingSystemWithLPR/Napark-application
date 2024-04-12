@@ -19,6 +19,7 @@ import ChangeScreenTab from "@/components/button/ChangeScreenTab";
 import RoleCard from "@/components/card/RoleCard";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import SecondaryButton from "@/components/button/SecondaryButton";
+import { ActionMode } from "@/enum/ActionMode";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
@@ -40,6 +41,8 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
       );
     }
   };
+
+  const mock = [{}, {}, {}];
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -69,20 +72,37 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
       />
       <SubHeaderText text="Privilege" />
       <View style={styles.roleCardContainer}>
-        <RoleCard
-          category={category}
-          roleName="A1"
-          description="60 baht/hr"
-          onPress={() => navigation.navigate("ConfigZone", { form: form })}
-        />
-        <RoleCard
+        {mock.map((_, index) => (
+          <RoleCard
+            category={category}
+            roleName="A1"
+            description="60 baht/hr"
+            key={index}
+            onPress={() =>
+              navigation.navigate("ConfigZone", {
+                form: form,
+                mode: ActionMode.EDIT,
+                index: index,
+              })
+            }
+          />
+        ))}
+        {/* <RoleCard
           category={category}
           roleName="B4"
           description="30 baht/hr"
           onPress={() => {}}
-        />
+        /> */}
       </View>
-      <PrimaryButton title="+ Add new zone" onPress={() => {}} />
+      <PrimaryButton
+        title="+ Add new zone"
+        onPress={() =>
+          navigation.navigate("ConfigZone", {
+            form: form,
+            mode: ActionMode.CREATE,
+          })
+        }
+      />
       <SubHeaderText text="Assign to" />
       <ChangeScreenTab
         icon={"account-supervisor"}
