@@ -4,12 +4,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import BodyText from "../text/BodyText";
 
 import Colors from "@/constants/color";
-import { Slot } from "@/types/booking";
+import { SlotProfileWithPrivilege } from "@/types/booking";
 
 export type RecommendedSlotType = {
-  slot: Slot;
+  slot: SlotProfileWithPrivilege;
   recommendType: string;
-  handleClickRecommend: (slot: Slot) => void;
+  handleClickRecommend: (slot: SlotProfileWithPrivilege) => void;
 };
 
 const RecommendedSlotCard: React.FC<RecommendedSlotType> = ({

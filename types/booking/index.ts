@@ -1,11 +1,11 @@
 import { BookingStatus } from "@/enum/BookingStatus";
 
 export interface AvailableSlotResponse {
-  recommended_slots: Slot | null;
-  available_slots: Slot[];
+  recommended_slots: SlotProfileWithPrivilege | null;
+  available_slots: SlotProfileWithPrivilege[];
 }
 
-export interface Slot {
+export interface SlotProfileWithPrivilege {
   _id: string;
   default_price_rate: number;
   default_price_rate_unit: string;

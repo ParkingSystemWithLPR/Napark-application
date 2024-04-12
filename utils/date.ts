@@ -41,9 +41,7 @@ export const formatISODate = (date?: string) => {
 };
 
 export const getBusinessHours = (business_day: BusinessDay) => {
-  return `${business_day.open_time} - ${
-    business_day.close_time
-  }`;
+  return `${business_day.open_time} - ${business_day.close_time}`;
 };
 
 export const isCheckInTimeout = (date: Date) => {
@@ -54,26 +52,6 @@ export const isCheckOutTimeout = (date: Date) => {
   return isBefore(date, new Date());
 };
 
-export const getOpenCloseTime = (
-  dateString: string,
-  businessDays: BusinessDay
-) => {
-  const dateObject = parseISO(dateString);
-  const day = format(dateObject, "eeee");
-  const bussinessDay = businessDays[`${day}` as DayInAWeek];
-  if (bussinessDay) {
-    return {
-      openTime: bussinessDay.openTime,
-      closeTime: bussinessDay.closeTime,
-    };
-  }
-};
-
-export const disableDate = (businessDays: BusinessDay, date: Date) => {
-  const day = format(date, "eeee");
-  return businessDays[`${day}` as DayInAWeek] === undefined;
-};
-
 export const duration = (minTime: Date, maxTime: Date): string => {
   return `open ${formatTime(minTime)} - ${formatTime(maxTime)}`;
 };
@@ -82,25 +60,22 @@ export const getDateFromDateAndTime = (date: string, time?: string) => {
   return parseISO(`${date} ${time}`.trimEnd());
 };
 
-type TmpNewBusinessDay = {
-  weekday: string;
-  open_time: string;
-  close_time: string;
+export const getDayInAWeek = (date: Date): DayInAWeek => {
+  const day = format(date, "eeee").toUpperCase();
+  return DayInAWeek[day as keyof typeof DayInAWeek];
 };
 
-type NewBussinessDays = TmpNewBusinessDay[];
-
-export const newDisableDate = (bussinessDays: NewBussinessDays, date: Date) => {
+export const disableDate = (bussinessDays: BusinessDay[], date: Date) => {
   const day = format(date, "eeee").toLowerCase();
   return (
-    bussinessDays.filter((bussinessDay) => bussinessDay.weekday == day)
-      .length == 0
+    bussinessDays.find((bussinessDay) => bussinessDay.weekday == day) ==
+    undefined
   );
 };
 
-export const newGetOpenCloseTime = (
+export const getOpenCloseTime = (
   dateString: string,
-  businessDays: NewBussinessDays
+  businessDays: BusinessDay[]
 ) => {
   const dateObject = parseISO(dateString);
   const day = format(dateObject, "eeee").toLowerCase();
@@ -109,8 +84,8 @@ export const newGetOpenCloseTime = (
   );
   if (bussinessDay.length != 0) {
     return {
-      openTime: bussinessDay[0].open_time,
-      closeTime: bussinessDay[0].close_time,
+      open_time: bussinessDay[0].open_time,
+      close_time: bussinessDay[0].close_time,
     };
   }
 };

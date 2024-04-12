@@ -6,22 +6,22 @@ import { ImageProps } from "..";
 
 export type ParkingLot = {
   _id: string;
+  owner_id: string;
   name: string;
+  available_slots_count: number;
   address: Address;
-  coord: LatLng,
-  business_days?: BusinessDay,
-  images?: string[],
-  plan: Plan[],
-  availability?: number,
+  coord: LatLng;
+  business_days: BusinessDay[];
+  images: string[];
 };
 
 export type ParkingLotRequest = {
   name: string;
   images?: ImageProps[];
   business_days: BusinessDay[];
-  coord: LatLng,
+  coord: LatLng;
   address: Address;
-  plan: Plan[],
+  plan: Plan[];
 };
 
 export type Address = {

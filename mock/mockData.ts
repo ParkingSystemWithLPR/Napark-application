@@ -1,6 +1,7 @@
 import { THAI_PROVINCE } from "@/constants/province";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { CardType } from "@/enum/CardType";
+import { DayInAWeek } from "@/enum/DayInAWeek";
 import { Booking } from "@/types/booking";
 import { ParkingLot } from "@/types/parking-lot";
 
@@ -169,3 +170,29 @@ export const MOCKED_PAYMENTLICENSEPLATE = [
     province: THAI_PROVINCE[0].value,
   },
 ];
+
+export const mockParkingLot: ParkingLot = {
+  _id: "660ecca7e55e2ede401ec843",
+  owner_id: "65e5481524315e45c536f6b9",
+  name: "string",
+  available_slots_count: 3,
+  address: {
+    address1: "string",
+    sub_district: "string",
+    district: "string",
+    province: "string",
+    zip_code: "string",
+  },
+  coord: {
+    latitude: 10,
+    longitude: 10,
+  },
+  images: [""],
+  business_days: [
+    {
+      weekday: DayInAWeek.MONDAY,
+      open_time: "08:00:00",
+      close_time: "23:00:00",
+    },
+  ],
+};

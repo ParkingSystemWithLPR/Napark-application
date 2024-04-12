@@ -34,7 +34,7 @@ export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   closeSetting: () => void;
-  bussinessDays?: BusinessDay[];
+  bussinessDays: BusinessDay[];
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
