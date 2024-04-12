@@ -8,6 +8,7 @@ import Colors from "@/constants/color";
 import { ParkingLotRequest } from "@/types/parking-lot/ParkingLot";
 
 import TextInput from "../input/TextInput";
+import { InputType } from "@/enum/InputType";
 
 export type ConfigAddressProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;
@@ -191,6 +192,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               value={value}
               onChangeText={onChange}
               containerStyle={{ flex: 1 }}
+              inputMode={InputType.Numeric}
               errorText={
                 errors.address && errors.address.zip_code
                   ? (errors.address.zip_code.message as string)

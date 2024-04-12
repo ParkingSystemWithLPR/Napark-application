@@ -25,6 +25,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
     control,
     setValue,
     getValues,
+    register,
     formState: { errors },
   } = form;
 
@@ -83,13 +84,14 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
             <MyTextInput
               title="Floor"
               placeholder={"Floor"}
-              value={value ? value.toString() : ''}
+              value={value ? value.toString() : ""}
               onChangeText={(value) => onChange(parseInt(value))}
               containerStyle={{ flex: 1 }}
               inputMode={InputType.Numeric}
-              errorText={errors.plan && errors.plan[index]
-                ? (errors.plan[index]?.floor?.message as string)
-                : ""
+              errorText={
+                errors.plan && errors.plan[index]
+                  ? (errors.plan[index]?.floor?.message as string)
+                  : ""
               }
               isRequired
               editable
@@ -100,7 +102,13 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
           name={`plan.${index}.zones`}
           control={control}
           render={({ field: { onChange, value } }) => (
-            <ParkingZoneInput value={value} onChange={onChange} />
+            <ParkingZoneInput
+              value={value}
+              onChange={onChange}
+              floor={index}
+              register={register}
+              errors={errors}
+            />
           )}
         />
       </View>

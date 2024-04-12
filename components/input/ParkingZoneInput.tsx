@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 
 import MyTextInput from "../input/TextInput";
@@ -9,18 +14,24 @@ import DropdownInput from "./DropdownInput";
 
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { Zone } from "@/types/parking-lot/ParkingLot";
+import { ParkingLotRequest, Zone } from "@/types/parking-lot/ParkingLot";
 import { ZoneType } from "@/enum/ParkingLot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
 export type ParkingZoneInputProps = {
   value: Zone[];
   onChange: (zones?: Zone[]) => void;
+  floor: number;
+  register: UseFormRegister<ParkingLotRequest>;
+  errors: FieldErrors<ParkingLotRequest>;
 };
 
 const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
   value,
   onChange,
+  floor,
+  register,
+  errors,
 }) => {
   const { control, getValues, setValue } = useForm<Zone[]>();
   const [zones, setZones] = useState<Zone[]>(
@@ -30,21 +41,21 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
         type: ZoneType.NORMAL,
       },
     ]
-    );
+  );
 
   useEffect(() => {
-    if(value) {
+    if (value) {
       value.forEach((item, index) => {
-        setValue(`${index}`,  item);
-      })
+        setValue(`${index}`, item);
+      });
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const formData = getValues();
     const newZones: Zone[] = [];
     Object.values(formData).forEach((zone: Zone, index: number) => {
-      if(index < zones.length) newZones.push(zone);
+      if (index < zones.length) newZones.push(zone);
     });
     onChange(newZones);
   }, [zones]);
@@ -59,11 +70,18 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
               control={control}
               render={({ field: { onChange, value } }) => (
                 <MyTextInput
+                  {...register(`plan.${floor}.zones.${index}.name`, {
+                    required: "Please enter zone name",
+                  })}
                   title="Zone"
                   placeholder={"Zone"}
                   value={value}
                   onChangeText={onChange}
                   containerStyle={{ flex: 1 }}
+                  errorText={
+                    errors.plan &&
+                    errors.plan[floor]?.zones?.[index]?.name?.message
+                  }
                   isRequired
                   editable
                 />
@@ -72,14 +90,23 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
             <Controller
               name={`${index}.capacity`}
               control={control}
-              render={({ field: { onChange, value } }) => (
+              rules={{ required: "Please enter zone capacity " }}
+              render={({ field: { onChange, onBlur, value } }) => (
                 <MyTextInput
+                  {...register(`plan.${floor}.zones.${index}.capacity`, {
+                    required: "Please enter zone capacity",
+                  })}
                   title="Capacity"
                   placeholder={"Capacity"}
-                  value={value ? value.toString() : ''}
+                  onSubmitEditing={onBlur}
+                  value={value ? value.toString() : ""}
                   onChangeText={(value) => onChange(parseInt(value))}
                   containerStyle={{ flex: 1 }}
                   inputMode={InputType.Numeric}
+                  errorText={
+                    errors.plan &&
+                    errors.plan[floor]?.zones?.[index]?.capacity?.message
+                  }
                   isRequired
                   editable
                 />
@@ -90,6 +117,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
             name={`${index}.type`}
             control={control}
             defaultValue={zone.type}
+            rules={{ required: "Please select zone type " }}
             render={({ field: { onChange, value } }) => (
               <DropdownInput
                 title={"Parking zone type"}
@@ -167,7 +195,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     justifyContent: "space-between",
-    alignItems: "center",
   },
   closeButton: {
     position: "absolute",
