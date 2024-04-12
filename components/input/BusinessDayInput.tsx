@@ -10,17 +10,22 @@ import SubHeaderText from "../text/SubHeaderText";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot";
+import { formatToSentenceCase } from "@/utils/text";
 
 export type DateInputProps = {
   title: string;
-  businessDays: BusinessDay;
-  onChange: (businessDays: BusinessDay) => void;
+  businessDays: BusinessDay[];
+  onChange: (businessDays: BusinessDay[]) => void;
+  errorText: string;
+  isRequired: boolean;
 };
 
 const DateInput: React.FC<DateInputProps> = ({
   title,
   businessDays,
   onChange,
+  errorText,
+  isRequired,
 }) => {
   const { control, getValues, setValue } = useForm();
 
@@ -48,7 +53,7 @@ const DateInput: React.FC<DateInputProps> = ({
   });
 
   const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
-    return a.openTime === b.openTime && a.closeTime === b.closeTime;
+    return a.open_time === b.open_time && a.close_time === b.close_time;
   };
 
   useEffect(() => {
@@ -56,16 +61,24 @@ const DateInput: React.FC<DateInputProps> = ({
       const newSelectedDay = selectedDay;
       const businessHoursSet: BusinessHour[] = [];
       const newFormList: number[] = [];
-      Object.entries(businessDays).forEach(([day, value]) => {
-        if (!businessHoursSet.some((e) => isEqualBusinessHour(e, value))) {
-          businessHoursSet.push(value);
+      businessDays.forEach((businessDay) => {
+        const { weekday, close_time, open_time } = businessDay;
+        if (
+          !businessHoursSet.some((e) =>
+            isEqualBusinessHour(e, { close_time, open_time })
+          )
+        ) {
+          businessHoursSet.push({ close_time, open_time });
           newFormList.push(0);
         }
         const index = businessHoursSet.findIndex((e) =>
-          isEqualBusinessHour(e, value)
+          isEqualBusinessHour(e, { close_time, open_time })
         );
-        newSelectedDay[day as DayInAWeek] = { set: index, isSelected: true };
-        setValue(`${index}`, value);
+        newSelectedDay[weekday as DayInAWeek] = {
+          set: index,
+          isSelected: true,
+        };
+        setValue(`${index}`, { close_time, open_time });
       });
       setSelectedDay(newSelectedDay);
       setFormList(newFormList);
@@ -74,11 +87,16 @@ const DateInput: React.FC<DateInputProps> = ({
 
   const onInputChange = () => {
     const formData = getValues();
-    const newBusinessDays: BusinessDay = {};
+    const newBusinessDays: BusinessDay[] = [];
     Object.entries(selectedDay).forEach(([day, value]) => {
       if (value.isSelected) {
-        const { openTime, closeTime } = formData[value.set ?? -2];
-        newBusinessDays[day as DayInAWeek] = { openTime, closeTime };
+        const { open_time, close_time } = formData[value.set ?? -2];
+        const newDay = day as DayInAWeek;
+        newBusinessDays.push({
+          weekday: newDay,
+          open_time: open_time + ":00",
+          close_time: close_time + ":00",
+        });
       }
     });
 
@@ -122,7 +140,7 @@ const DateInput: React.FC<DateInputProps> = ({
         }}
       >
         <BodyText
-          text={day.slice(0, 2)}
+          text={formatToSentenceCase(day.slice(0, 2))}
           textStyle={
             selectedDay[day].isSelected && selectedDay[day].set === index
               ? styles.textSelected
@@ -136,16 +154,24 @@ const DateInput: React.FC<DateInputProps> = ({
   const renderDayWithTimeSelector = (index: number) => {
     return (
       <View style={styles.outerContainer} key={index}>
-        <View style={styles.title}>
+        <View style={styles.titleContainer}>
           <SubHeaderText text={title} />
+          {isRequired && (
+            <BodyText text="*" textStyle={styles.requiredIndicator} />
+          )}
         </View>
         <View style={styles.container}>
           {selectableDay.map((day) => renderDaySelector(day, index))}
         </View>
+        {errorText && (
+          <BodyText text={errorText} textStyle={styles.errorText} />
+        )}
         <View style={styles.sameLineInputContainer}>
           <Controller
-            name={`${index}.openTime`}
+            name={`${index}.open_time`}
             control={control}
+            rules={{ required: "Please select open time" }}
+            defaultValue={"08:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Open time"}
@@ -161,8 +187,10 @@ const DateInput: React.FC<DateInputProps> = ({
           />
           <BodyText text={"to"} textStyle={{ color: Colors.gray[700] }} />
           <Controller
-            name={`${index}.closeTime`}
+            name={`${index}.close_time`}
             control={control}
+            rules={{ required: "Please select close time" }}
+            defaultValue={"20:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Close time"}
@@ -223,10 +251,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  title: {
+  titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
   idle: {
     borderRadius: 100,

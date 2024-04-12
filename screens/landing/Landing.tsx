@@ -45,7 +45,7 @@ import {
   MainPageBottomTabParamList,
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import { getBusinessHours } from "@/utils/date";
+import { getBusinessHours, getDayInAWeek } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
@@ -211,18 +211,21 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       >
         <FlatList
           data={parkingSpaces}
-          renderItem={({ item }) => (
-            <ParkingSpaceCard
-              parkingSpaceName={item.name}
-              businessHours={
-                item.businessDays
-                  ? getBusinessHours(item.businessDays)
-                  : "Not available"
-              }
-              availabilty={item.availability ?? 0}
-              onPress={() => handleChooseParkingSpace(item)}
-            />
-          )}
+          renderItem={({ item }) => {
+            const businessDay = item.business_days.find((businessday) => {
+              businessday.weekday == getDayInAWeek(new Date());
+            });
+            return (
+              <ParkingSpaceCard
+                parkingSpaceName={item.name}
+                businessHours={
+                  businessDay ? getBusinessHours(businessDay) : "Not available"
+                }
+                availabilty={item.available_slots_count ?? 0}
+                onPress={() => handleChooseParkingSpace(item)}
+              />
+            );
+          }}
           overScrollMode="never"
         />
       </CustomBottomSheetModal>
@@ -275,7 +278,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>
-              <ImageContainer imageUrls={["image1", "image2"]} />
+              <ImageContainer images={[]} />
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>

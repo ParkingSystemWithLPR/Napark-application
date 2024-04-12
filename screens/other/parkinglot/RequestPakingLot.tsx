@@ -1,8 +1,9 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
@@ -15,6 +16,11 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
+import ConfigAddress from "@/components/parking-lot/ConfigAddress";
+import { useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
+import { useAuth } from "@/store/context/auth";
+import { ParkingLotRequest } from "@/types/parking-lot";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -24,15 +30,24 @@ export type RequestParkingLotProps = CompositeScreenProps<
 const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
   navigation,
 }) => {
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm();
+  const { accessToken, authenticate } = useAuth();
+  const form = useForm<ParkingLotRequest>();
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = form;
   const [step, setStep] = useState<number>(1);
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
+  const [isSubmitSuccessful, setSubmitSuccessful] = useState<boolean>(false);
+  const { mutateAsync: createRequestAsync } = useCreateParkingLotRequest();
 
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data: ParkingLotRequest) => {
     try {
-      // await mutateAsync(data);
-      console.log("data", JSON.stringify(data));
-      navigation.navigate("OtherStack", {screen: "ParkingLotsList"})
+      await createRequestAsync({ data, auth: { accessToken, authenticate } });
+      setTimeout(() => {
+        setSubmitSuccessful(true)
+      }, 2000)
+      navigation.navigate("OtherStack", { screen: "ParkingLotsList" });
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -41,18 +56,27 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
     }
   };
 
+  const onGoNextStep = () => {
+    setStep(step + 1);
+  };
+
+  const onOpenConfirmModal = () => {
+    setOpenConfirmModal(true);
+  };
+
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <Stepper step={step} setStep={setStep} />
-      {step == 1 && <ConfigInfo control={control} />}
-      {step == 2 && <ConfigPlan control={control} />}
-      {step == 3 && <ConfigPricing control={control} />}
-      {step != 3 ? (
-        <PrimaryButton title="Next" onPress={() => setStep(step + 1)} />
+      <Stepper nowStep={step} setStep={setStep} stepAmount={4} />
+      {step == 1 && <ConfigInfo form={form} />}
+      {step == 2 && <ConfigAddress form={form} />}
+      {step == 3 && <ConfigPlan form={form} />}
+      {step == 4 && <ConfigPricing form={form} />}
+      {step != 4 ? (
+        <PrimaryButton title="Next" onPress={handleSubmit(onGoNextStep)} />
       ) : (
         <PrimaryButton
           title="Send request to admin"
-          onPress={() => setOpenConfirmModal(true)}
+          onPress={handleSubmit(onOpenConfirmModal)}
         />
       )}
       <ModalOverlay
@@ -61,7 +85,15 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       >
         <View style={styles.centeredContent}>
           <View style={styles.confirmModalContainer}>
-            <SubHeaderText text={"Confirm request information"}/>
+            <SubHeaderText text={"Confirm request information"} />
+            {isSubmitting && <LoadingOverlay />}
+            {isSubmitSuccessful && (
+              <MaterialCommunityIcons
+                name="check-circle"
+                size={40}
+                color={Colors.green[600]}
+              />
+            )}
             <View style={styles.buttonContainer}>
               <SecondaryButton
                 title={"Cancle"}
@@ -124,5 +156,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-  }
+  },
 });

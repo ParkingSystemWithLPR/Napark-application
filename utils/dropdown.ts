@@ -2,7 +2,7 @@ import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer
 
 import { ParkingValue } from "@/components/booking/ParkingPlan";
 import { DropdownItem } from "@/components/input/DropdownInput";
-import { Slot } from "@/types/booking";
+import { SlotProfileWithPrivilege } from "@/types/booking";
 import { Car } from "@/types/user";
 
 export const initDropdownValue = <T>(
@@ -35,7 +35,7 @@ export const formatDropdownFromFloorList = (
 };
 
 export const formatDropdownFromSlotList = (
-  slotList: Slot[]
+  slotList: SlotProfileWithPrivilege[]
 ): DropdownItem<ParkingValue>[] => {
   return slotList.flatMap((item) => {
     return {
@@ -51,5 +51,13 @@ export const formatDropdownFromSlotList = (
           : item.default_price_rate_unit,
       },
     };
+  });
+};
+
+export const formatEnumtoDropdownItem = (
+  enums: object
+): DropdownItem<object>[] => {
+  return Object.values(enums).map((value) => {
+    return { label: value, value: value };
   });
 };

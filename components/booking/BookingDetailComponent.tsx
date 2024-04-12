@@ -34,7 +34,7 @@ export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   closeSetting: () => void;
-  bussinessDays?: BusinessDay;
+  bussinessDays: BusinessDay[];
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
@@ -171,12 +171,12 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     const now = new Date();
     const value = bussinessDays && getOpenCloseTime(date, bussinessDays);
     if (value) {
-      const { openTime, closeTime } = value;
-      const openTimeObject = openTime
-        ? getDateFromDateAndTime(date, openTime)
+      const { open_time, close_time } = value;
+      const openTimeObject = open_time
+        ? getDateFromDateAndTime(date, open_time)
         : undefined;
-      const closeTimeObject = closeTime
-        ? getDateFromDateAndTime(date, closeTime)
+      const closeTimeObject = close_time
+        ? getDateFromDateAndTime(date, close_time)
         : undefined;
       setMinTime(openTimeObject && max([openTimeObject, now]));
       setMaxTime(closeTimeObject && max([closeTimeObject, now]));

@@ -8,7 +8,10 @@ import {
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
-import { CreateBookingRequest, Slot } from "@/types/booking";
+import {
+  CreateBookingRequest,
+  SlotProfileWithPrivilege,
+} from "@/types/booking";
 import { ParkingLot } from "@/types/parking-lot";
 import { Profile } from "@/types/user";
 
@@ -32,7 +35,6 @@ export const createDefaultBookingDetailState = (
   const defaultLicensePlate = profile.user_cars
     ?.filter((car) => car.is_default)
     .map((defaultcar) => defaultcar._id)[0];
-  console.log(defaultLicensePlate);
   return {
     ...defaultBookingDetailState,
     licensePlate: defaultLicensePlate ?? "",
@@ -103,7 +105,7 @@ export const getQueryParamFromBookingDetailState = (
   };
 };
 
-export const getTotalFloor = (slots: Slot[]) => {
+export const getTotalFloor = (slots: SlotProfileWithPrivilege[]) => {
   return [...new Set(slots.map((item) => item.floor))];
 };
 
