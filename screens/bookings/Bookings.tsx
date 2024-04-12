@@ -39,10 +39,10 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
   });
 
   useLayoutEffect(() => {
-    setBookings(mockedBooking);
     if (getMyBookings.isSuccess) {
       setBookings(getMyBookings.data);
     }
+    setBookings(mockedBooking);
   }, [getMyBookings.data]);
 
   const renderUpcomingBookings = useCallback(() => {
