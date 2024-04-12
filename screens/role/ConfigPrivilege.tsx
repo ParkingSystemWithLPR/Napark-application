@@ -43,7 +43,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
     }
   };
 
-  const mock = [{}, {}, {}];
+  const mock = [{}];
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>

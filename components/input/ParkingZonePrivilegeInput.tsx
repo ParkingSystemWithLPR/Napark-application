@@ -17,19 +17,20 @@ import { ZonePricing } from "@/types/parking-lot";
 export type ParkingZonePrivilegeInputProps = {
   value: ZonePricing[];
   onChange: (zones?: ZonePricing[]) => void;
-  control: any;
   mode: ActionMode;
   zoneIndex: number;
+  form: any;
 };
 
 const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
-  control,
   mode,
   zoneIndex,
+  form,
 }) => {
   const [zones, setZones] = useState<ZonePricing[]>([
     { floor: 0, zone: "A", price: 0, unit: "baht/hour" },
   ]);
+  const { control, getValues, setValue } = form;
 
   return (
     <View>
@@ -37,7 +38,6 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
         {zones.map((_, index) => {
           const privilegeIndex =
             mode === ActionMode.CREATE ? zoneIndex + index : zoneIndex;
-          console.log(privilegeIndex);
           return (
             <View style={{ gap: 5 }}>
               <View style={styles.dropdownContainer}>
@@ -101,20 +101,25 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   )}
                 />
               </View>
-              {index !== 0 && (
-                <IconButton
-                  icon={"close"}
-                  size={0}
-                  color={""}
-                  buttonStyle={styles.closeButton}
-                  onPress={() =>
-                    setZones([
-                      ...zones.slice(0, index - 1),
-                      ...zones.slice(index),
-                    ])
-                  }
-                />
-              )}
+              {privilegeIndex === zones.length + zoneIndex - 1 &&
+                index !== 0 && (
+                  <IconButton
+                    icon={"close"}
+                    size={0}
+                    color={""}
+                    buttonStyle={styles.closeButton}
+                    onPress={() => {
+                      const newZone = zones;
+                      newZone.splice(index, 1);
+                      setZones(newZone);
+                      const privilegeList: ZonePricing[] =
+                        getValues("privilege");
+                      privilegeList.splice(index + zoneIndex, 1);
+                      setZones(zones);
+                      setValue("privilege", privilegeList);
+                    }}
+                  />
+                )}
               {index !== zones.length - 1 && <View style={styles.divider} />}
             </View>
           );
@@ -178,10 +183,8 @@ const a = {
   description: undefined,
   name: undefined,
   privilege: [
-    { floor: "1", price: "1", unit: "baht/day", zone: "A" },
-    { floor: "1", price: "3", unit: "baht/hour", zone: "A" },
-    { floor: "1", price: "3", unit: "baht/hour", zone: "A" },
-    { floor: "1", price: "444", unit: "baht/hour", zone: "A" },
-    { floor: "1", price: "1", unit: "baht/hour", zone: "B" },
+    { floor: "1", price: "1", unit: undefined, zone: undefined },
+    { floor: "1", price: "2", unit: undefined, zone: undefined },
+    { floor: "1", price: "4", unit: undefined, zone: undefined },
   ],
 };
