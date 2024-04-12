@@ -33,6 +33,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
 
   const onSubmit = async (data: FieldValues) => {
     try {
+      // todo: send data
       console.log("data", data);
     } catch (error) {
       Alert.alert(
@@ -87,12 +88,6 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
             }
           />
         ))}
-        {/* <RoleCard
-          category={category}
-          roleName="B4"
-          description="30 baht/hr"
-          onPress={() => {}}
-        /> */}
       </View>
       <PrimaryButton
         title="+ Add new zone"
@@ -100,6 +95,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
           navigation.navigate("ConfigZone", {
             form: form,
             mode: ActionMode.CREATE,
+            index: mock.length,
           })
         }
       />

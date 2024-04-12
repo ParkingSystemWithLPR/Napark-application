@@ -19,12 +19,10 @@ export type ParkingZonePrivilegeInputProps = {
   onChange: (zones?: ZonePricing[]) => void;
   control: any;
   mode: ActionMode;
-  zoneIndex?: number;
+  zoneIndex: number;
 };
 
 const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
-  value,
-  onChange,
   control,
   mode,
   zoneIndex,
@@ -36,86 +34,91 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   return (
     <View>
       <View style={{ gap: 5 }}>
-        {zones.map((_, index) => (
-          <View style={{ gap: 5 }}>
-            <View style={styles.dropdownContainer}>
-              <Controller
-                name={`privilege.${zoneIndex}.${index}.floor`}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <DropdownInput
-                    title="Floor"
-                    selectedValue={value}
-                    placeholder="Select floor"
-                    onSelect={onChange}
-                    items={[{ label: "1", value: "1" }]}
-                    containerStyle={{ flex: 1 }}
-                  />
-                )}
-              />
-              <Controller
-                name={`privilege.${zoneIndex}.${index}.zone`}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <DropdownInput
-                    title="Zone"
-                    selectedValue={value}
-                    placeholder="Select zone"
-                    onSelect={onChange}
-                    items={MOCKED_ZONE_DROPDOWN.map((z) => {
-                      return { label: z, value: z };
-                    })}
-                    containerStyle={{ flex: 1 }}
-                  />
-                )}
-              />
+        {zones.map((_, index) => {
+          const privilegeIndex =
+            mode === ActionMode.CREATE ? zoneIndex + index : zoneIndex;
+          console.log(privilegeIndex);
+          return (
+            <View style={{ gap: 5 }}>
+              <View style={styles.dropdownContainer}>
+                <Controller
+                  name={`privilege.${privilegeIndex}.floor`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <DropdownInput
+                      title="Floor"
+                      selectedValue={value}
+                      placeholder="Select floor"
+                      onSelect={onChange}
+                      items={[{ label: "1", value: "1" }]}
+                      containerStyle={{ flex: 1 }}
+                    />
+                  )}
+                />
+                <Controller
+                  name={`privilege.${privilegeIndex}.zone`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <DropdownInput
+                      title="Zone"
+                      selectedValue={value}
+                      placeholder="Select zone"
+                      onSelect={onChange}
+                      items={MOCKED_ZONE_DROPDOWN.map((z) => {
+                        return { label: z, value: z };
+                      })}
+                      containerStyle={{ flex: 1 }}
+                    />
+                  )}
+                />
+              </View>
+              <View style={styles.sameLineInputContainer}>
+                <Controller
+                  name={`privilege.${privilegeIndex}.price`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <TextInput
+                      title="Price"
+                      placeholder="Enter parking fee"
+                      value={value}
+                      onChangeText={(value) => onChange(value)}
+                      containerStyle={{ flex: 1 }}
+                    />
+                  )}
+                />
+                <Controller
+                  name={`privilege.${privilegeIndex}.unit`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <DropdownInput
+                      selectedValue={value}
+                      title="Unit"
+                      placeholder={"Select fee unit"}
+                      onSelect={(value) => onChange(value)}
+                      items={formatEnumtoDropdownItem(PriceRateUnit)}
+                      containerStyle={{ flex: 1 }}
+                    />
+                  )}
+                />
+              </View>
+              {index !== 0 && (
+                <IconButton
+                  icon={"close"}
+                  size={0}
+                  color={""}
+                  buttonStyle={styles.closeButton}
+                  onPress={() =>
+                    setZones([
+                      ...zones.slice(0, index - 1),
+                      ...zones.slice(index),
+                    ])
+                  }
+                />
+              )}
+              {index !== zones.length - 1 && <View style={styles.divider} />}
             </View>
-            <View style={styles.sameLineInputContainer}>
-              <Controller
-                name={`privilege.${zoneIndex}.${index}.price`}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    title="Price"
-                    placeholder="Enter parking fee"
-                    value={value}
-                    onChangeText={(value) => onChange(value)}
-                    containerStyle={{ flex: 1 }}
-                  />
-                )}
-              />
-              <Controller
-                name={`privilege.${zoneIndex}.${index}.unit`}
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <DropdownInput
-                    selectedValue={value}
-                    title="Unit"
-                    placeholder={"Select fee unit"}
-                    onSelect={(value) => onChange(value)}
-                    items={formatEnumtoDropdownItem(PriceRateUnit)}
-                    containerStyle={{ flex: 1 }}
-                  />
-                )}
-              />
-            </View>
-            {index !== 0 && (
-              <IconButton
-                icon={"close"}
-                size={0}
-                color={""}
-                buttonStyle={styles.closeButton}
-                onPress={() =>
-                  setZones([
-                    ...zones.slice(0, index - 1),
-                    ...zones.slice(index),
-                  ])
-                }
-              />
-            )}
-            {index !== zones.length - 1 && <View style={styles.divider} />}
-          </View>
-        ))}
+          );
+        })}
       </View>
       {mode === ActionMode.CREATE && (
         <SecondaryButton
@@ -170,3 +173,15 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+const a = {
+  description: undefined,
+  name: undefined,
+  privilege: [
+    { floor: "1", price: "1", unit: "baht/day", zone: "A" },
+    { floor: "1", price: "3", unit: "baht/hour", zone: "A" },
+    { floor: "1", price: "3", unit: "baht/hour", zone: "A" },
+    { floor: "1", price: "444", unit: "baht/hour", zone: "A" },
+    { floor: "1", price: "1", unit: "baht/hour", zone: "B" },
+  ],
+};

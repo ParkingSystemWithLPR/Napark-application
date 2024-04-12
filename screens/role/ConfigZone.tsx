@@ -28,19 +28,6 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
   const { form, mode, index } = route.params;
   const { control, handleSubmit } = form;
 
-  const onSubmit = async (data: FieldValues) => {
-    try {
-      // await mutateAsync(data);
-      console.log("data", JSON.stringify(data));
-      navigation.goBack();
-    } catch (error) {
-      Alert.alert(
-        "Create request error",
-        "Please try again!!: " + (error as Error).message
-      );
-    }
-  };
-
   return (
     <BodyContainer innerContainerStyle={styles.container}>
       <Controller
@@ -63,7 +50,7 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
             navigation.goBack();
           }}
         />
-        <PrimaryButton title={"Save"} onPress={handleSubmit(onSubmit)} />
+        <PrimaryButton title={"Save"} onPress={() => navigation.goBack()} />
       </View>
     </BodyContainer>
   );

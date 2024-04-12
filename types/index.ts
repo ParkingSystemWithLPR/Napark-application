@@ -59,7 +59,7 @@ export type OtherStackParamList = {
   ConfigZone: {
     form: UseFormReturn<FieldValues, any, undefined>;
     mode: ActionMode;
-    index?: number;
+    index: number;
   };
 };
 
