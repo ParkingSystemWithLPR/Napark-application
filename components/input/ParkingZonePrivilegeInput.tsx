@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import DropdownInput from "./DropdownInput";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import TextInput from "./TextInput";
@@ -33,7 +33,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   const { control, getValues, setValue } = form;
 
   return (
-    <View>
+    <ScrollView>
       <View style={{ gap: 5 }}>
         {zones.map((_, index) => {
           const privilegeIndex =
@@ -138,7 +138,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
           }}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
