@@ -8,7 +8,7 @@ import { ImageProps } from "@/types";
 export type ImageContainerProps = {
   images: string[];
   editable?: boolean;
-  onDelete?: (imageUrl: ImageProps) => void;
+  onDelete?: (image: string) => void;
   containerStyle?: object;
 };
 
@@ -28,7 +28,7 @@ const ImageContainer: React.FC<ImageContainerProps> = ({
           <View>
             <Image
               source={{
-                uri: "data:image/jpeg;base64," + item.content,
+                uri: item,
               }}
               height={IMAGE_SIZE}
               width={IMAGE_SIZE}
