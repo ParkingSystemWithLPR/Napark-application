@@ -78,7 +78,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
         <RoleCard
           category={category}
           roleName="B4"
-          description="step pricing"
+          description="30 baht/hr"
           onPress={() => {}}
         />
       </View>

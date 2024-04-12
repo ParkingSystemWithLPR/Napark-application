@@ -22,7 +22,9 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
       <View>
         <SubHeaderText
           text={`List of ${
-            category === ManagingCategory.ROLE ? "Managing Roles" : "Parking Privileges"
+            category === ManagingCategory.ROLE
+              ? "Managing Roles"
+              : "Parking Privileges"
           }`}
         />
         <View style={styles.roleCardContainer}>
@@ -30,13 +32,33 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
             category={category}
             roleName="VVIP"
             member="2"
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate(
+                category === ManagingCategory.ROLE
+                  ? "ConfigRole"
+                  : "ConfigPrivilege",
+                {
+                  mode: ActionMode.EDIT,
+                  roleId: "1",
+                }
+              )
+            }
           />
           <RoleCard
             category={category}
             roleName="C-level"
             member="10"
-            onPress={() => {}}
+            onPress={() =>
+              navigation.navigate(
+                category === ManagingCategory.ROLE
+                  ? "ConfigRole"
+                  : "ConfigPrivilege",
+                {
+                  mode: ActionMode.EDIT,
+                  roleId: "1",
+                }
+              )
+            }
           />
         </View>
       </View>
