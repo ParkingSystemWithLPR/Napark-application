@@ -29,7 +29,7 @@ export const useGetMyBookings = (
   input: getMyBookingssInput
 ): UseQueryResult<Booking[], AxiosError> => {
   return useQuery({
-    queryKey: [],
+    queryKey: ["my-bookings", input.auth.accessToken],
     queryFn: async () => getMyBookings(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
