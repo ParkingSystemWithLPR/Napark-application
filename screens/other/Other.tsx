@@ -1,10 +1,12 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import ChangeScreenTab from "@/components/button/ChangeScreenTab";
 import PrimaryButton from "@/components/button/PrimaryButton";
+import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
+import Colors from "@/constants/color";
 import { useAuth } from "@/store/context/auth";
 import {
   MainPageBottomTabParamList,
@@ -23,12 +25,11 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
       containerStyle={styles.container}
       innerContainerStyle={styles.tabContainer}
     >
-      <ChangeScreenTab
-        icon="lock-outline"
-        screenName="Change password"
-        onPress={() => {
-          navigation.push("OtherStack", { screen: "ChangePassword" });
+      <SubHeaderText
+        containerStyle={{
+          width: "100%",
         }}
+        text="Parking space's owner options"
       />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
@@ -36,6 +37,16 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
         onPress={() => {
           navigation.push("OtherStack", { screen: "ParkingLotsList" });
         }}
+      />
+      <SubHeaderText
+        containerStyle={{
+          width: "100%",
+          marginTop: 10,
+          borderTopWidth: 1,
+          paddingTop: 10,
+          borderColor: Colors.gray[800],
+        }}
+        text="Application user options"
       />
       <ChangeScreenTab
         icon="car-outline"
@@ -45,6 +56,13 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
         }}
       />
       <ChangeScreenTab
+        icon="lock-outline"
+        screenName="Change password"
+        onPress={() => {
+          navigation.push("OtherStack", { screen: "ChangePassword" });
+        }}
+      />
+      {/* <ChangeScreenTab
         icon="cog-outline"
         screenName="Settings"
         onPress={() => {}}
@@ -53,7 +71,7 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
         icon="information-outline"
         screenName="About Us"
         onPress={() => {}}
-      />
+      /> */}
       <PrimaryButton
         title="Sign out"
         onPress={logout}
