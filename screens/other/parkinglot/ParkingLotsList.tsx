@@ -15,7 +15,7 @@ import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import { getBusinessHours } from "@/utils/date";
+import { getBusinessHours, getDayInAWeek } from "@/utils/date";
 import { format } from "date-fns";
 
 export type ParkingLotsListProps = CompositeScreenProps<
@@ -72,18 +72,20 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
             data={parkingLots}
-            renderItem={({ item }) => (
+            renderItem={({ item }) => {
+              const businessDay = item.business_days.find((businessday) => {
+                businessday.weekday == getDayInAWeek(new Date());
+              });
+              return (
               <ParkingSpaceCard
                 parkingSpaceName={item.name}
                 businessHours={
-                  item.business_days?.weekday === today
-                    ? getBusinessHours(item.business_days)
-                    : "Not available"
+                  businessDay ? getBusinessHours(businessDay) : "Not available"
                 }
                 availabilty={0}
                 onPress={() => navigation.navigate("ParkingLotDetail", { parkingLotId: item._id })}
               />
-            )}
+            )}}
             overScrollMode="never"
           />
         </View>
