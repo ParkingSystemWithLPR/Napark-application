@@ -10,8 +10,9 @@ import StepPricing from "../pricingRule/StepPricing";
 import SecondaryButton from "../button/SecondaryButton";
 import Colors from "@/constants/color";
 import IconButton from "../button/IconButton";
-import { ZonePricing } from "@/types/parking-lot/ParkingLot";
+
 import { ActionMode } from "@/enum/ActionMode";
+import { ZonePricing } from "@/types/parking-lot";
 
 export type ParkingZonePrivilegeInputProps = {
   value: ZonePricing[];
@@ -28,9 +29,9 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   mode,
   zoneIndex,
 }) => {
-  const [zones, setZones] = useState<ZonePricing[]>(
-    [{ floor: 0, zone: "A", price: 0, unit: "baht/hour" }]
-  );
+  const [zones, setZones] = useState<ZonePricing[]>([
+    { floor: 0, zone: "A", price: 0, unit: "baht/hour" },
+  ]);
 
   return (
     <View>

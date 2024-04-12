@@ -10,9 +10,10 @@ import SubHeaderText from "../text/SubHeaderText";
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { Plan } from "@/types/parking-lot/ParkingLot";
+
 import ParkingZoneInput from "../input/ParkingZoneInput";
 import { ImageProps } from "@/types";
+import { Plan } from "@/types/parking-lot";
 
 export type ConfigPlanProps = {
   form: UseFormReturn<FieldValues, any, undefined>;
@@ -50,7 +51,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
             filename: img.fileName,
           });
           setValue(`plan.${images.length + index}.image`, {
-            content: img.base64.slice(0,10),
+            content: img.base64.slice(0, 10),
             filename: img.fileName,
           });
         }
