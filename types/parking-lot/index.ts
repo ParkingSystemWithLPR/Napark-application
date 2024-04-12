@@ -81,3 +81,10 @@ export type ParkingPrivilegeProfile = {
   user_ids: string[];
   slot_prices: SlotPriceProfile[];
 };
+
+export type ZonePricing = {
+  floor: number;
+  zone: string;
+  price: number;
+  unit: string;
+};
