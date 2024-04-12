@@ -130,10 +130,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
             <>
               <Pressable
                 android_ripple={{ color: Colors.gray[600] }}
-                style={({ pressed }) => [
-                  styles.card,
-                  pressed ? styles.cardPressed : null,
-                ]}
+                style={({ pressed }) => [pressed ? styles.cardPressed : null]}
                 onPress={pickImage}
               >
                 <View style={styles.uploadContainer}>
@@ -182,7 +179,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
   },
-  card: {},
   cardPressed: {
     opacity: 0.5,
   },

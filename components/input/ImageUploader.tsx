@@ -51,8 +51,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
   };
 
-  const onDelete = (image: ImageProps) => {
-    const newImage: ImageProps[] = images.filter((img) => img !== image);
+  const onDelete = (image: string) => {
+    const imageToDelete = image.replace('data:image/jpeg;base64,', '');
+    const newImage: ImageProps[] = images.filter((img) => img.content !== imageToDelete);
     setImages(newImage);
     onChange(newImage);
   };
@@ -86,7 +87,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         </View>
       </Pressable>
       {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
-      <ImageContainer images={images} onDelete={onDelete} editable />
+      <ImageContainer images={images.map((image) => { return "data:image/jpeg;base64,"+ image.content})} onDelete={onDelete} editable />
     </View>
   );
 };

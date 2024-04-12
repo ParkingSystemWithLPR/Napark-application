@@ -43,7 +43,6 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
 
   const onSubmit = async (data: ParkingLotRequest) => {
     try {
-      console.log('data', JSON.stringify(data));
       await createRequestAsync({ data, auth: { accessToken, authenticate } });
       setTimeout(() => {
         setSubmitSuccessful(true)

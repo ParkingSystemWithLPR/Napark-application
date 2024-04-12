@@ -6,9 +6,10 @@ import * as Location from "expo-location";
 
 import Colors from "@/constants/color";
 import { ParkingLotRequest } from "@/types/parking-lot";
+import { InputType } from "@/enum/InputType";
+import { RegionType } from "@/screens/landing/Landing";
 
 import TextInput from "../input/TextInput";
-import { InputType } from "@/enum/InputType";
 
 export type ConfigAddressProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;
@@ -58,21 +59,39 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
             onPress={(event) => {
               const { latitude, longitude } = event.nativeEvent.coordinate;
               onChange(event.nativeEvent.coordinate);
-              setRegion({
-                latitude,
-                longitude,
-                latitudeDelta: 0.0522,
-                longitudeDelta: 0.0121,
+              setRegion((prevRegion: RegionType | undefined) => {
+                if (!prevRegion) {
+                  return {
+                    latitude: latitude,
+                    longitude: longitude,
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0121,
+                  };
+                }
+                return {
+                  ...prevRegion,
+                  latitude: latitude,
+                  longitude: longitude,
+                };
               });
             }}
             onMarkerDragEnd={(event) => {
               const { latitude, longitude } = event.nativeEvent.coordinate;
               onChange(event.nativeEvent.coordinate);
-              setRegion({
-                latitude,
-                longitude,
-                latitudeDelta: 0.0522,
-                longitudeDelta: 0.0121,
+              setRegion((prevRegion: RegionType | undefined) => {
+                if (!prevRegion) {
+                  return {
+                    latitude: latitude,
+                    longitude: longitude,
+                    latitudeDelta: 0.0522,
+                    longitudeDelta: 0.0121,
+                  };
+                }
+                return {
+                  ...prevRegion,
+                  latitude: latitude,
+                  longitude: longitude,
+                };
               });
             }}
             initialRegion={region}
@@ -86,9 +105,6 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               coordinate={{
                 latitude: region?.latitude || 0,
                 longitude: region?.longitude || 0,
-              }}
-              onDragEnd={(e) => {
-                console.log("dragEnd", e.nativeEvent.coordinate);
               }}
               draggable
             >
@@ -111,7 +127,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
             onChangeText={onChange}
             errorText={
               errors.address && errors.address.address1
-                ? (errors.address.address1.message as string)
+                ? errors.address.address1.message
                 : ""
             }
             isRequired
@@ -132,7 +148,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               containerStyle={{ flex: 1 }}
               errorText={
                 errors.address && errors.address.sub_district
-                  ? (errors.address.sub_district.message as string)
+                  ? errors.address.sub_district.message
                   : ""
               }
               isRequired
@@ -152,7 +168,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               containerStyle={{ flex: 1 }}
               errorText={
                 errors.address && errors.address.district
-                  ? (errors.address.district.message as string)
+                  ? errors.address.district.message
                   : ""
               }
               isRequired
@@ -174,7 +190,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               containerStyle={{ flex: 1 }}
               errorText={
                 errors.address && errors.address.province
-                  ? (errors.address.province.message as string)
+                  ? errors.address.province.message
                   : ""
               }
               isRequired
@@ -195,7 +211,7 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
               inputMode={InputType.Numeric}
               errorText={
                 errors.address && errors.address.zip_code
-                  ? (errors.address.zip_code.message as string)
+                  ? errors.address.zip_code.message
                   : ""
               }
               isRequired
