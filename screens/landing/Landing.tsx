@@ -306,7 +306,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>
-              <ImageContainer images={[]} />
+              <ImageContainer images={selectedParkingSpace.images} />
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>
