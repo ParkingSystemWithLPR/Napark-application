@@ -6,6 +6,7 @@ import {
 } from "./date";
 
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import { SlotType } from "@/enum/SlotType";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
 import {
@@ -22,7 +23,7 @@ export const defaultBookingDetailState: BookingDetailState = {
   checkInTime: null,
   checkOutDate: null,
   checkOutTime: null,
-  specification: "None",
+  specification: SlotType.Normal,
   floor: -1,
   slotId: "",
   slotName: "",
@@ -93,7 +94,7 @@ export const getQueryParamFromBookingDetailState = (
       end_time: bookingDetailState.checkOutTime
         ? formatTimeWithSecond(bookingDetailState.checkOutTime)
         : "",
-      is_for_disabled: bookingDetailState.specification != "None",
+      is_for_disabled: bookingDetailState.specification != SlotType.Normal,
     };
   }
   return {

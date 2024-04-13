@@ -8,6 +8,7 @@ import BodyText from "../text/BodyText";
 
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { SlotProfileWithPrivilege } from "@/types/booking";
+import { FloorImage } from "@/types/parking-lot";
 import {
   defaultBookingDetailState,
   getTotalFloor,
@@ -21,18 +22,24 @@ import {
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
   availableSlot: SlotProfileWithPrivilege[];
+  floorImages: FloorImage[];
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   handleConfirm: () => void;
 };
+
 export type ParkingValue = {
   slotId: string;
   slotName: string;
   price: number;
   unit: string;
 };
+
+const IMAGE_SIZE = 200;
+
 const ParkingPlan: React.FC<ParkingPlanProps> = ({
   bookingDetailState,
   availableSlot,
+  floorImages,
   onChange,
   handleConfirm,
 }) => {
@@ -114,6 +121,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
   const unableToConfirmHandler = () => {
     Alert.alert("Please select a slot");
   };
+
   return (
     <View style={styles.container}>
       <DropdownInput
@@ -124,12 +132,17 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
           SetDropDownFloor(item);
         }}
         placeholder={"Select floor"}
+        withSearch
       />
-      {floor && (
+      {floor !== -1 && (
         <View style={styles.container}>
           <Image
-            source={require("../../assets/images/icon.png")}
+            source={{
+              uri: floorImages.find((each) => each.floor === floor)?.image,
+            }}
             style={styles.centerContainer}
+            height={IMAGE_SIZE}
+            width={IMAGE_SIZE}
           />
           <DropdownInput
             items={slotInFloor ?? []}
@@ -140,6 +153,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
             }}
             placeholder={"Select Slot"}
             renderItem={renderItem}
+            withSearch
           />
           {canClickConfirm ? (
             <PrimaryButton

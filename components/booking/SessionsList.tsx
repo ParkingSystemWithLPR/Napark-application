@@ -18,6 +18,7 @@ import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
 import { Booking } from "@/types/booking";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { AuthenticatedStackParamList } from "@/types";
+import { formatToSentenceCase } from "@/utils/text";
 
 interface SessionCardProps {
   booking: Booking;
@@ -108,10 +109,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               />
               <View style={styles.subDetailContainer}>
                 <DetailText
-                  text={
-                    booking.status.charAt(0).toUpperCase() +
-                    booking.status.slice(1)
-                  }
+                  text={formatToSentenceCase(booking.status)}
                   containerStyle={{
                     borderRightWidth: 1,
                     borderRightColor: getColor(

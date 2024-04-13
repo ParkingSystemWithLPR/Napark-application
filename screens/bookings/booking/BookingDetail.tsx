@@ -257,6 +257,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
                   availableSlot={availableSlot.available_slots}
                   onChange={handleOnChange}
                   handleConfirm={handleNavigation}
+                  floorImages={parkingLot.floor_images}
                 />
               </View>
             </ScrollView>

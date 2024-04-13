@@ -6,6 +6,9 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Colors from "../../constants/color";
 import SubHeaderText from "../text/SubHeaderText";
 
+import { SlotType } from "@/enum/SlotType";
+import { formatToSentenceCase } from "@/utils/text";
+
 export type SpecificationProps = {
   specification: string | undefined;
   onChange: (id: string | undefined) => void;
@@ -16,18 +19,14 @@ const Specification: React.FC<SpecificationProps> = ({
   onChange,
 }) => {
   const radioButtons: RadioButtonProps[] = useMemo(
-    () => [
-      {
-        id: "Disable Parking",
-        label: "Disable Parking",
-        color: Colors.red[400].toString(),
-      },
-      {
-        id: "None",
-        label: "None",
-        color: Colors.red[400].toString(),
-      },
-    ],
+    () =>
+      Object.values(SlotType).map((value) => {
+        return {
+          id: value,
+          label: formatToSentenceCase(value),
+          color: Colors.red[400].toString(),
+        };
+      }),
     []
   );
 
