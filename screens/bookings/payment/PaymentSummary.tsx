@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 
@@ -10,21 +11,20 @@ import AttributeText, {
 } from "@/components/text/AttributeText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
-import { PaymentMethod } from "@/enum/PaymentMethod";
-import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
-import { formatDefaultBookingValue } from "@/utils/bookingRequest";
+import { PaymentMethod } from "@/enum/PaymentMethod";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
+import { useProfile } from "@/store/context/profile";
+import { BookingsStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import LoadingOverlay from "@/components/ui/LoadingOverlay";
-import { parseISO } from "date-fns";
+import { formatDefaultBookingValue } from "@/utils/bookingRequest";
 import {
   formatHumanReadableDateFromDateString,
   formatTime,
 } from "@/utils/date";
-import { useProfile } from "@/store/context/profile";
 import { formatToSentenceCase } from "@/utils/text";
 
 export type PaymentSummaryProps = NativeStackScreenProps<
