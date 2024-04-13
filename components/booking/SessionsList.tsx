@@ -16,6 +16,16 @@ import SubHeaderText from "../text/SubHeaderText";
 import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { Booking } from "@/types/booking";
+import {
+  CompositeScreenProps,
+  NavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
+import {
+  AuthenticatedStackParamList,
+  BookingsStackParamList,
+  MainPageBottomTabParamList,
+} from "@/types";
 
 interface SessionCardProps {
   booking: Booking;
@@ -126,12 +136,27 @@ interface sessionsProps {
 }
 
 const SessionsList: React.FC<sessionsProps> = ({ bookings }) => {
+  const navigation =
+    useNavigation<NavigationProp<AuthenticatedStackParamList>>();
+  const handleOnClick = (booking: Booking) => {
+    navigation.navigate("BookingsStack", {
+      screen: "PaymentSummary",
+      params: { booking: booking, mybalance: 555.99 }, // mockvalue
+    });
+  };
   return bookings.length > 0 ? (
     <FlatList
       data={bookings}
       keyExtractor={(item: Booking) => item._id}
       renderItem={({ item }) => {
-        return <SessionCard booking={item} onPress={() => {}} />;
+        return (
+          <SessionCard
+            booking={item}
+            onPress={() => {
+              handleOnClick(item);
+            }}
+          />
+        );
       }}
       overScrollMode="never"
     />

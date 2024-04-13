@@ -62,7 +62,7 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
           title: "Booking summary",
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="TopUp"
         component={TopUp}
         options={{
@@ -91,6 +91,7 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
         options={{
           title: "Pay the bill",
           headerBackTitle: "Back",
+          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen

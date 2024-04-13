@@ -9,6 +9,7 @@ import { ValidateStatus } from "@/enum/BookingValidateStatus";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
 import {
+  Booking,
   CreateBookingRequest,
   SlotProfileWithPrivilege,
 } from "@/types/booking";
@@ -126,4 +127,10 @@ export const formatCreateBookingRequest = (
     parkinglot_id: parkingLot._id,
     slot_id: bookingDetailState.slotId,
   };
+};
+
+export const formatDefaultBookingValue = (
+  booking: Booking
+): BookingDetailState => {
+  return { ...defaultBookingDetailState, licensePlate: booking.car_id };
 };
