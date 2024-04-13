@@ -2,7 +2,8 @@ import { differenceInMinutes, format, isBefore, parseISO } from "date-fns";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
-import { BusinessDay } from "@/types/parking-lot";
+import { BusinessDay, BusinessHour } from "@/types/parking-lot";
+import { formatToSentenceCase } from "./text";
 
 export const MINIMUM_DATE = new Date(1900, 1, 1);
 
@@ -100,4 +101,37 @@ export const getOpenCloseTime = (
       close_time: bussinessDay[0].close_time,
     };
   }
+};
+
+export const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
+  return a.open_time === b.open_time && a.close_time === b.close_time;
+};
+
+export const formatDayRange = (days: DayInAWeek[]): string => {
+  if (days.length === 7) return "everyday";
+  const dayInaWeek =
+  [...Object.values(DayInAWeek).slice(1), Object.values(DayInAWeek)[0], "freeday"];
+  let result = "";
+  days.sort((a, b) => {
+    return (
+      dayInaWeek.indexOf(a as DayInAWeek) - dayInaWeek.indexOf(b as DayInAWeek)
+      );
+    });
+  let startDay = "";
+  let lastDay = ""; 
+  dayInaWeek.forEach((day) => {
+    if(days.includes(day as DayInAWeek)) {
+      if(!startDay) startDay = day;
+      lastDay = day;
+    } else if(startDay){
+        if(startDay === lastDay) {
+            result += `${formatToSentenceCase(startDay)}, `;
+        } else {
+            result += `${formatToSentenceCase(startDay)} - ${formatToSentenceCase(lastDay)}, `;
+        }
+        startDay="";
+    }
+  })
+
+  return result.slice(0,-2);
 };

@@ -11,6 +11,7 @@ import SubHeaderText from "../text/SubHeaderText";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot";
 import { formatToSentenceCase } from "@/utils/text";
+import { isEqualBusinessHour } from "@/utils/date";
 import { formatDisplayTime, formatTimeWithSecond } from "@/utils/date";
 
 export type DateInputProps = {
@@ -52,10 +53,6 @@ const DateInput: React.FC<DateInputProps> = ({
     [DayInAWeek.FRIDAY]: { isSelected: false },
     [DayInAWeek.SATURDAY]: { isSelected: false },
   });
-
-  const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
-    return a.open_time === b.open_time && a.close_time === b.close_time;
-  };
 
   useEffect(() => {
     if (businessDays) {
