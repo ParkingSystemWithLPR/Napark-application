@@ -46,6 +46,7 @@ import {
   MainPageBottomTabParamList,
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
+import { estimateDistance } from "@/utils/address";
 import { getBusinessHours, getDateFromTime, getDayInAWeek } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
@@ -292,7 +293,16 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
                 }}
               />
               <View style={styles.verticalSeparator}></View>
-              <StatusDetail title="Distance" value="2.0km" />
+              <StatusDetail
+                title="Distance"
+                value={`${estimateDistance(
+                  {
+                    latitude: region?.latitude ?? 0,
+                    longitude: region?.longitude ?? 0,
+                  },
+                  selectedParkingSpace.coord
+                )} km`}
+              />
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>
