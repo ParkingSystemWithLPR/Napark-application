@@ -21,10 +21,9 @@ import {
   AuthenticatedStackParamList,
 } from "@/types";
 import { Booking } from "@/types/booking";
+import { useProfile } from "@/store/context/profile";
 
 const Tab = createMaterialTopTabNavigator();
-
-const mockBalance = 555.99;
 
 export type BookingsProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Bookings">,
@@ -32,6 +31,7 @@ export type BookingsProps = CompositeScreenProps<
 >;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
+  const { profile } = useProfile();
   const { accessToken, authenticate } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const getMyBookings = useGetMyBookings({
@@ -42,7 +42,6 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
     if (getMyBookings.isSuccess) {
       setBookings(getMyBookings.data);
     }
-    setBookings(mockedBooking);
   }, [getMyBookings.data]);
 
   const renderUpcomingBookings = useCallback(() => {
@@ -54,9 +53,7 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
 
   const renderActiveBookings = useCallback(() => {
     const activeBookings = bookings.filter(
-      (booking) =>
-        booking.status === BookingStatus.PAID ||
-        booking.status === BookingStatus.UNPAID
+      (booking) => booking.status === BookingStatus.ACTIVE
     );
     return <SessionsList bookings={activeBookings} />;
   }, [bookings]);
@@ -81,14 +78,14 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
         </View>
         <View style={styles.walletRow}>
           <HeaderText
-            text={`฿ ${mockBalance}`}
+            text={`฿ ${profile.credit}`}
             textStyle={{ color: Colors.black, fontSize: 18 }}
           />
           <SecondaryButton
             onPress={() => {
               navigation.navigate("BookingsStack", {
                 screen: "TopUp",
-                params: { balance: mockBalance },
+                params: { balance: profile.credit },
               });
             }}
             buttonStyle={styles.topUpButton}

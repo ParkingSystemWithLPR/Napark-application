@@ -1,5 +1,5 @@
 import { THAI_PROVINCE } from "@/constants/province";
-import { BookingStatus } from "@/enum/BookingStatus";
+import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
 import { CardType } from "@/enum/CardType";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { PriceRateUnit } from "@/enum/ParkingLot";
@@ -26,7 +26,7 @@ export const mockedBooking: Booking[] = [
     _id: "1",
     car_id: "",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "2024-02-28T14:55:31.615Z",
     estimated_price: 120,
     parkinglot_id: "",
@@ -35,13 +35,15 @@ export const mockedBooking: Booking[] = [
     slot_name: "A1",
     start_time: "2024-02-26T14:55:31.615Z",
     status: BookingStatus.UPCOMING,
+    actual_price: 0,
+    payment_status: PaymentStatus.UNPAID,
     user_id: "",
   },
   {
     _id: "2",
     car_id: "",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "2024-02-26T14:55:31.615Z",
     estimated_price: 120,
     parkinglot_id: "",
@@ -49,14 +51,16 @@ export const mockedBooking: Booking[] = [
     slot_id: "2",
     slot_name: "B12",
     start_time: "2024-02-26T14:55:31.615Z",
-    status: BookingStatus.UNPAID,
+    status: BookingStatus.ACTIVE,
+    payment_status: PaymentStatus.UNPAID,
     user_id: "",
+    actual_price: 0,
   },
   {
     _id: "3",
     car_id: "",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "2024-02-26T14:55:31.615Z",
     estimated_price: 120,
     parkinglot_id: "",
@@ -64,14 +68,16 @@ export const mockedBooking: Booking[] = [
     slot_id: "3",
     slot_name: "C1",
     start_time: "2024-02-26T14:55:31.615Z",
-    status: BookingStatus.PAID,
+    status: BookingStatus.CANCELLED,
     user_id: "",
+    actual_price: 0,
+    payment_status: PaymentStatus.UNPAID,
   },
   {
     _id: "4",
     car_id: "",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "2024-02-26T14:55:31.615Z",
     estimated_price: 120,
     parkinglot_id: "",
@@ -81,12 +87,14 @@ export const mockedBooking: Booking[] = [
     start_time: "2024-02-26T14:55:31.615Z",
     status: BookingStatus.COMPLETED,
     user_id: "",
+    actual_price: 120,
+    payment_status: PaymentStatus.PAID,
   },
   {
     _id: "5",
     car_id: "",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "2024-02-26T14:55:31.615Z",
     estimated_price: 120,
     parkinglot_id: "",
@@ -96,12 +104,14 @@ export const mockedBooking: Booking[] = [
     start_time: "2024-02-26T14:55:31.615Z",
     status: BookingStatus.CANCELLED,
     user_id: "",
+    actual_price: 0,
+    payment_status: PaymentStatus.UNPAID,
   },
   {
     _id: "6",
     car_id: "2024-02-26T14:55:31.615Z",
     license_plate: "กข 1234",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
     end_time: "",
     estimated_price: 120,
     parkinglot_id: "",
@@ -111,6 +121,8 @@ export const mockedBooking: Booking[] = [
     start_time: "2024-02-26T14:55:31.615Z",
     status: BookingStatus.UPCOMING,
     user_id: "",
+    actual_price: 120,
+    payment_status: PaymentStatus.UNPAID,
   },
 ];
 
@@ -147,29 +159,29 @@ export const MOCKED_CREDIT_CARD = [
 export interface mockedPaymentLicensePlateProps {
   licensePlate: string;
   id: string;
-  province: string;
+  province_of_reg: string;
 }
 
 export const MOCKED_PAYMENTLICENSEPLATE = [
   {
     id: "1",
     licensePlate: "ผบ 5982",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
   },
   {
     id: "2",
     licensePlate: "ฬห 8705",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
   },
   {
     id: "3",
     licensePlate: "รวย 9999",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
   },
   {
     id: "4",
     licensePlate: "เฮง 888",
-    province: THAI_PROVINCE[0].value,
+    province_of_reg: THAI_PROVINCE[0].value,
   },
 ];
 

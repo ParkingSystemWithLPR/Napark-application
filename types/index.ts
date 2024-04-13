@@ -66,7 +66,7 @@ export type BookingsStackParamList = {
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
   PayTheBill: undefined;
-  PaymentSummary: { booking: Booking; mybalance: number }; // will change my balance to get from useProfile instead
+  PaymentSummary: { booking: Booking };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;
 };

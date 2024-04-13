@@ -1,4 +1,4 @@
-import { BookingStatus } from "@/enum/BookingStatus";
+import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import { SlotType } from "@/enum/SlotType";
 
@@ -52,7 +52,7 @@ export interface Booking {
   _id: string;
   car_id: string;
   license_plate: string;
-  province: string;
+  province_of_reg: string;
   end_time: string;
   estimated_price: number;
   parkinglot_id: string;
@@ -61,5 +61,7 @@ export interface Booking {
   slot_name: string;
   start_time: string;
   status: BookingStatus;
+  payment_status: PaymentStatus;
+  actual_price: number;
   user_id: string;
 }

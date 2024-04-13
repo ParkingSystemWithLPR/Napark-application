@@ -1,7 +1,11 @@
 export enum BookingStatus {
   UPCOMING = "upcoming",
-  UNPAID = "unpaid",
-  PAID = "paid",
+  ACTIVE = "active",
   CANCELLED = "cancelled",
   COMPLETED = "completed",
+}
+
+export enum PaymentStatus {
+  UNPAID = "unpaid",
+  PAID = "paid",
 }

@@ -14,7 +14,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { PaymentMethod } from "@/enum/PaymentMethod";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import { BookingStatus } from "@/enum/BookingStatus";
+import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
 import { formatDefaultBookingValue } from "@/utils/bookingRequest";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
@@ -25,6 +25,7 @@ import {
   formatHumanReadableDateFromDateString,
   formatTime,
 } from "@/utils/date";
+import { useProfile } from "@/store/context/profile";
 
 export type PaymentSummaryProps = NativeStackScreenProps<
   BookingsStackParamList,
@@ -35,8 +36,8 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   navigation,
   route,
 }) => {
-  //need another endpoint for get real payment not the estimation
-  const { booking, mybalance } = route.params;
+  const { booking } = route.params;
+  const { profile } = useProfile();
   const {
     license_plate,
     end_time,
@@ -45,6 +46,8 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     slot_name,
     start_time,
     status,
+    payment_status,
+    actual_price,
   } = booking;
   const startTimeFormat = parseISO(start_time);
   const endTimeFormat = parseISO(end_time);
@@ -59,8 +62,8 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   });
 
   const creditPaymentHandler = () => {
-    if (mybalance < booking.estimated_price) {
-      navigation.navigate("TopUp", { balance: mybalance });
+    if (profile.credit < booking.estimated_price) {
+      navigation.navigate("TopUp", { balance: profile.credit });
     } else {
       navigation.navigate("PaymentSuccessful");
     }
@@ -147,8 +150,11 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
       status == BookingStatus.CANCELLED ||
       status == BookingStatus.COMPLETED
     ) {
-      return <PrimaryButton title={"ReBooking"} onPress={handleReBooking} />;
-    } else if (status == BookingStatus.UNPAID) {
+      return <PrimaryButton title={"Book Again"} onPress={handleReBooking} />;
+    } else if (
+      status == BookingStatus.ACTIVE &&
+      payment_status === PaymentStatus.UNPAID
+    ) {
       return (
         <>
           <DropdownInput
@@ -191,9 +197,9 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     }
   }, [getParkingLot.data]);
 
-  // if (isLoading) {
-  //   return <LoadingOverlay message="Loading..." />;
-  // }
+  if (isLoading) {
+    return <LoadingOverlay message="Loading..." />;
+  }
   return (
     <BodyContainer>
       <View style={{ gap: 20 }}>
@@ -231,7 +237,10 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
           </View>
           {renderTotal({
             attribute: "TOTAL",
-            value: `${estimated_price}`,
+            value: `${(status === BookingStatus.UPCOMING
+              ? estimated_price
+              : actual_price
+            ).toFixed(2)}`,
           })}
         </View>
         {renderBottomPanal()}
