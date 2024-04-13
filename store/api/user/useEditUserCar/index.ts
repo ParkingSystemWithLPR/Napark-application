@@ -23,7 +23,7 @@ type EditUserCarService = (input: EditUserCarInput) => Promise<Profile>;
 export const editUserCar: EditUserCarService = async ({ body, auth }) => {
   const profile = await apiRequest<Profile>(
     USER_URL + "/user/default-car",
-    HTTPMethod.POST,
+    HTTPMethod.PATCH,
     auth.accessToken,
     auth.authenticate,
     body
