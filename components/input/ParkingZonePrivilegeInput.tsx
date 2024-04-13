@@ -1,17 +1,18 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import DropdownInput from "./DropdownInput";
-import { Controller } from "react-hook-form";
-import TextInput from "./TextInput";
-import { formatEnumtoDropdownItem } from "@/utils/dropdown";
-import { PriceRateUnit } from "@/enum/ParkingLot";
 import { useState } from "react";
-import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
-import SecondaryButton from "../button/SecondaryButton";
-import Colors from "@/constants/color";
-import IconButton from "../button/IconButton";
+import { Controller } from "react-hook-form";
+import { ScrollView, StyleSheet, View } from "react-native";
 
+import DropdownInput from "./DropdownInput";
+import TextInput from "./TextInput";
+import IconButton from "../button/IconButton";
+import SecondaryButton from "../button/SecondaryButton";
+
+import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
+import { PriceRateUnit } from "@/enum/ParkingLot";
+import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
 import { ZonePricing } from "@/types/parking-lot";
+import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
 export type ParkingZonePrivilegeInputProps = {
   value: ZonePricing[];

@@ -1,12 +1,13 @@
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Controller } from "react-hook-form";
+import { LogBox, StyleSheet, View } from "react-native";
+
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingZonePrivilegeInput from "@/components/input/ParkingZonePrivilegeInput";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Controller } from "react-hook-form";
-import { LogBox, StyleSheet, View } from "react-native";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",

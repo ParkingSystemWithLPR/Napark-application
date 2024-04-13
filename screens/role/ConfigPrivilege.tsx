@@ -1,17 +1,18 @@
-import BodyContainer from "@/components/ui/BodyContainer";
-import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
+
+import ChangeScreenTab from "@/components/button/ChangeScreenTab";
+import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
+import RoleCard from "@/components/card/RoleCard";
 import TextInput from "@/components/input/TextInput";
 import SubHeaderText from "@/components/text/SubHeaderText";
-import PrimaryButton from "@/components/button/PrimaryButton";
-import ChangeScreenTab from "@/components/button/ChangeScreenTab";
-import RoleCard from "@/components/card/RoleCard";
-import { ManagingCategory } from "@/enum/ManagingCategory";
-import SecondaryButton from "@/components/button/SecondaryButton";
+import BodyContainer from "@/components/ui/BodyContainer";
 import { ActionMode } from "@/enum/ActionMode";
+import { ManagingCategory } from "@/enum/ManagingCategory";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
