@@ -11,7 +11,7 @@ export type RoleCardProps = {
   category: ManagingCategory;
   roleName: string;
   description?: string;
-  member?: string;
+  member?: number;
   onPress: () => void;
 };
 

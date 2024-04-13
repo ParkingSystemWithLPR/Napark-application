@@ -49,7 +49,7 @@ export type OtherStackParamList = {
   ConfigPricing: undefined;
   ConfigPlan: undefined;
   RoleMember: undefined;
-  ConfigRole: { mode: ActionMode; roleId?: string };
+  ConfigRole: { mode: ActionMode; index: number };
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;

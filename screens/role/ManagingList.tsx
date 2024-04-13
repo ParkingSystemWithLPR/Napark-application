@@ -4,11 +4,13 @@ import { StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import RoleCard from "@/components/card/RoleCard";
+import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
 export type ManagingListProps = CompositeScreenProps<
@@ -17,6 +19,8 @@ export type ManagingListProps = CompositeScreenProps<
 >;
 
 const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
+  const { parkingLot } = useParkingLot();
+  const management_roles = parkingLot.management_roles;
   const category = route.params.category;
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -29,38 +33,32 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
           }`}
         />
         <View style={styles.roleCardContainer}>
-          <RoleCard
-            category={category}
-            roleName="VVIP"
-            member="2"
-            onPress={() =>
-              navigation.navigate(
-                category === ManagingCategory.ROLE
-                  ? "ConfigRole"
-                  : "ConfigPrivilege",
-                {
-                  mode: ActionMode.EDIT,
-                  roleId: "1",
+          {management_roles.map((m, index) => {
+            return (
+              <RoleCard
+                category={category}
+                roleName={m.title}
+                member={m.user_ids.length}
+                onPress={() =>
+                  navigation.navigate(
+                    category === ManagingCategory.ROLE
+                      ? "ConfigRole"
+                      : "ConfigPrivilege",
+                    {
+                      mode: ActionMode.EDIT,
+                      index: index,
+                    }
+                  )
                 }
-              )
-            }
-          />
-          <RoleCard
-            category={category}
-            roleName="C-level"
-            member="10"
-            onPress={() =>
-              navigation.navigate(
-                category === ManagingCategory.ROLE
-                  ? "ConfigRole"
-                  : "ConfigPrivilege",
-                {
-                  mode: ActionMode.EDIT,
-                  roleId: "1",
-                }
-              )
-            }
-          />
+              />
+            );
+          })}
+          {management_roles.length === 0 && (
+            <BodyText
+              text="No managing role created."
+              textStyle={styles.noItemText}
+            />
+          )}
         </View>
       </View>
       <PrimaryButton
@@ -74,6 +72,7 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
               : "ConfigPrivilege",
             {
               mode: ActionMode.CREATE,
+              index: management_roles.length,
             }
           );
         }}
@@ -97,5 +96,8 @@ const styles = StyleSheet.create({
   roleCardContainer: {
     paddingTop: 10,
     gap: 5,
+  },
+  noItemText: {
+    color: Colors.gray[700],
   },
 });
