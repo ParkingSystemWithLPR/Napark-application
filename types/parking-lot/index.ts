@@ -82,3 +82,8 @@ export type ParkingPrivilegeProfile = {
   user_ids: string[];
   slot_prices: SlotPriceProfile[];
 };
+
+export type Availability = {
+  vacant: number;
+  capacity: number;
+};
