@@ -13,15 +13,14 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingType } from "@/enum/BookingType";
-import { mockedBooking } from "@/mock/mockData";
 import { useGetMyBookings } from "@/store/api/booking/useGetMyBookings";
 import { useAuth } from "@/store/context/auth";
+import { useProfile } from "@/store/context/profile";
 import {
   MainPageBottomTabParamList,
   AuthenticatedStackParamList,
 } from "@/types";
 import { Booking } from "@/types/booking";
-import { useProfile } from "@/store/context/profile";
 
 const Tab = createMaterialTopTabNavigator();
 
