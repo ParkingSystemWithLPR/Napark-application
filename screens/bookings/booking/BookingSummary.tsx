@@ -175,7 +175,7 @@ const BookingSummary: React.FC<BookingSummaryProps> = ({
           <HyperLinkText
             text={"Get Directions"}
             textStyle={styles.colorLinkText}
-            url={"https://www.youtube.com/watch?v=srcPwOKtH5E"}
+            url={`https://www.google.com/maps/dir/?api=1&destination=${parkingLot.coord.latitude},${parkingLot.coord.longitude}`}
           />
         </View>
       </View>
