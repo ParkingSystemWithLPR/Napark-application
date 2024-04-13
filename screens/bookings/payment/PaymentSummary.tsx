@@ -1,4 +1,3 @@
-import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
@@ -26,6 +25,7 @@ import {
   formatTime,
 } from "@/utils/date";
 import { useProfile } from "@/store/context/profile";
+import { formatToSentenceCase } from "@/utils/text";
 
 export type PaymentSummaryProps = NativeStackScreenProps<
   BookingsStackParamList,
@@ -232,7 +232,10 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
             })}
             {renderAttribute({
               attribute: "Status",
-              value: status.toString(),
+              value:
+                booking.status === BookingStatus.ACTIVE
+                  ? formatToSentenceCase(booking.payment_status)
+                  : formatToSentenceCase(booking.status),
             })}
           </View>
           {renderTotal({

@@ -37,6 +37,8 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               return Colors.red[600];
             case PaymentStatus.PAID:
               return Colors.blue[600];
+            default:
+              return Colors.red[600];
           }
         case BookingStatus.CANCELLED:
           return Colors.gray[800];
@@ -60,6 +62,8 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               return "barcode-scan";
             case PaymentStatus.PAID:
               return "cash-fast";
+            default:
+              return "barcode-scan";
           }
         case BookingStatus.CANCELLED:
           return "car-off";
@@ -109,7 +113,11 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               />
               <View style={styles.subDetailContainer}>
                 <DetailText
-                  text={formatToSentenceCase(booking.status)}
+                  text={
+                    booking.status === BookingStatus.ACTIVE
+                      ? formatToSentenceCase(booking.payment_status)
+                      : formatToSentenceCase(booking.status)
+                  }
                   containerStyle={{
                     borderRightWidth: 1,
                     borderRightColor: getColor(
