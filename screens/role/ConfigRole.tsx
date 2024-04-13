@@ -79,6 +79,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
       <Controller
         name={"name"}
         control={control}
+        defaultValue={management_roles[index]?.title}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Name"

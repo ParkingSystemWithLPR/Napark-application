@@ -21,7 +21,65 @@ export type ManagingListProps = CompositeScreenProps<
 const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
   const { parkingLot } = useParkingLot();
   const management_roles = parkingLot.management_roles;
+  const parking_privileges = parkingLot.parking_privileges;
   const category = route.params.category;
+
+  const renderManagementRoles = () => {
+    return (
+      <View style={{ gap: 10 }}>
+        {management_roles.map((m, index) => {
+          return (
+            <RoleCard
+              category={category}
+              roleName={m.title}
+              member={m.user_ids.length}
+              onPress={() =>
+                navigation.navigate("ConfigRole", {
+                  mode: ActionMode.EDIT,
+                  index: index,
+                })
+              }
+            />
+          );
+        })}
+        {management_roles.length === 0 && (
+          <BodyText
+            text="No managing role created."
+            textStyle={styles.noItemText}
+          />
+        )}
+      </View>
+    );
+  };
+
+  const renderParkingPrivileges = () => {
+    return (
+      <View style={{ gap: 10 }}>
+        {parking_privileges.map((p, index) => {
+          return (
+            <RoleCard
+              category={category}
+              roleName={p.title}
+              member={p.user_ids.length}
+              onPress={() =>
+                navigation.navigate("ConfigPrivilege", {
+                  mode: ActionMode.EDIT,
+                  index: index,
+                })
+              }
+            />
+          );
+        })}
+        {parking_privileges.length === 0 && (
+          <BodyText
+            text="No parking privilege created."
+            textStyle={styles.noItemText}
+          />
+        )}
+      </View>
+    );
+  };
+
   return (
     <BodyContainer innerContainerStyle={styles.container}>
       <View>
@@ -32,34 +90,10 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
               : "Parking Privileges"
           }`}
         />
-        <View style={styles.roleCardContainer}>
-          {management_roles.map((m, index) => {
-            return (
-              <RoleCard
-                category={category}
-                roleName={m.title}
-                member={m.user_ids.length}
-                onPress={() =>
-                  navigation.navigate(
-                    category === ManagingCategory.ROLE
-                      ? "ConfigRole"
-                      : "ConfigPrivilege",
-                    {
-                      mode: ActionMode.EDIT,
-                      index: index,
-                    }
-                  )
-                }
-              />
-            );
-          })}
-          {management_roles.length === 0 && (
-            <BodyText
-              text="No managing role created."
-              textStyle={styles.noItemText}
-            />
-          )}
-        </View>
+        <View style={styles.roleCardContainer}></View>
+        {category === ManagingCategory.ROLE
+          ? renderManagementRoles()
+          : renderParkingPrivileges()}
       </View>
       <PrimaryButton
         title={`+ Add new ${
