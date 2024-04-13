@@ -1,13 +1,13 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 
+import { Booking } from "./booking";
 import { ParkingLot } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { Booking } from "./booking";
 import { BookingStatus } from "@/enum/BookingStatus";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;
@@ -53,7 +53,6 @@ export type OtherStackParamList = {
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;
-  PayTheBill: undefined;
 };
 
 export type BookingsStackParamList = {
@@ -65,7 +64,6 @@ export type BookingsStackParamList = {
   RoleMember: undefined;
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
-  PayTheBill: undefined;
   PaymentSummary: { booking: Booking };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;

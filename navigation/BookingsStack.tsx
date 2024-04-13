@@ -10,10 +10,8 @@ import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
 import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
 import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
-import PayTheBill from "@/screens/bookings/payment/PayTheBill";
 import TopUp from "@/screens/bookings/payment/TopUp";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
-import { BookingStatus } from "@/enum/BookingStatus";
 
 const Stack = createNativeStackNavigator<BookingsStackParamList>();
 
@@ -86,14 +84,6 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
         component={PaymentOptions}
         options={{
           title: "Payment Options",
-        }}
-      />
-      <Stack.Screen
-        name="PayTheBill"
-        component={PayTheBill}
-        options={{
-          title: "Pay the bill",
-          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
