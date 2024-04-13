@@ -1,6 +1,7 @@
 import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { isAfter, isBefore } from "date-fns";
 import * as Location from "expo-location";
 import React, {
   useCallback,
@@ -45,7 +46,8 @@ import {
   MainPageBottomTabParamList,
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import { getBusinessHours, getDayInAWeek } from "@/utils/date";
+import { estimateDistance } from "@/utils/address";
+import { getBusinessHours, getDateFromTime, getDayInAWeek } from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
@@ -233,8 +235,22 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   }, [recommendedBottomSheetRef, parkingSpaces]);
 
   const renderParkingSpaceDetail = useCallback(() => {
-    const isOpen = true;
-    if (selectedParkingSpace)
+    if (selectedParkingSpace) {
+      const now = new Date();
+      const businessDay = selectedParkingSpace.business_days.find(
+        (businessday) => {
+          businessday.weekday == getDayInAWeek(now);
+        }
+      );
+      const isOpen =
+        isAfter(now, getDateFromTime(businessDay?.open_time)) &&
+        isBefore(now, getDateFromTime(businessDay?.close_time));
+      const availableSlotsCount = selectedParkingSpace.available_slots_count;
+      const totalSlots = selectedParkingSpace.slots.length;
+      const trafficPercentage =
+        isNaN(availableSlotsCount) || isNaN(totalSlots) || totalSlots === 0
+          ? 0
+          : Math.floor(availableSlotsCount / totalSlots);
       return (
         <CustomBottomSheetModal
           ref={parkingSpaceDetailBottomSheetRef}
@@ -268,13 +284,25 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               <View style={styles.verticalSeparator}></View>
               <StatusDetail
                 title="Traffic"
-                value="92% (2 slots left)"
+                value={`${trafficPercentage}% (${availableSlotsCount} slots left)`}
                 bodyTextStyle={{
-                  color: false ? Colors.green[700] : Colors.red[400],
+                  color:
+                    trafficPercentage < 80
+                      ? Colors.green[700]
+                      : Colors.red[400],
                 }}
               />
               <View style={styles.verticalSeparator}></View>
-              <StatusDetail title="Distance" value="2.0km" />
+              <StatusDetail
+                title="Distance"
+                value={`${estimateDistance(
+                  {
+                    latitude: region?.latitude ?? 0,
+                    longitude: region?.longitude ?? 0,
+                  },
+                  selectedParkingSpace.coord
+                )} km`}
+              />
             </View>
             <View style={styles.horizontalSeparator}></View>
             <View>
@@ -287,6 +315,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           </ScrollView>
         </CustomBottomSheetModal>
       );
+    }
   }, [parkingSpaceDetailBottomSheetRef, selectedParkingSpace]);
 
   return (

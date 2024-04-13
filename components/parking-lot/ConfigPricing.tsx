@@ -3,14 +3,14 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { StyleSheet, View, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
+import SubHeaderText from "../text/SubHeaderText";
+
 import DropdownInput from "@/components/input/DropdownInput";
 import TextInput from "@/components/input/TextInput";
+import Colors from "@/constants/color";
+import { PriceRateUnit } from "@/enum/ParkingLot";
 import { ParkingLotRequest, Plan, Zone } from "@/types/parking-lot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
-import { PriceRateUnit } from "@/enum/ParkingLot";
-import Colors from "@/constants/color";
-
-import SubHeaderText from "../text/SubHeaderText";
 
 export type ConfigPricingProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;
@@ -97,7 +97,8 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
                           containerStyle={{ flex: 1 }}
                           errorText={
                             errors.plan &&
-                            errors.plan[index]?.zones?.[zIndex]?.price_unit?.message
+                            errors.plan[index]?.zones?.[zIndex]?.price_unit
+                              ?.message
                           }
                           isRequired
                         />
