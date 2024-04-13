@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Pressable, View, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Colors from "../../constants/color";
 import BodyText from "../text/BodyText";
 import SubHeaderText from "../text/SubHeaderText";
 import ImageContainer from "../ui/ImageContainer";
+
+import Colors from "@/constants/color";
 import { ImageProps } from "@/types";
 
 type ImageUploaderProps = {
@@ -52,8 +53,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   };
 
   const onDelete = (image: string) => {
-    const imageToDelete = image.replace('data:image/jpeg;base64,', '');
-    const newImage: ImageProps[] = images.filter((img) => img.content !== imageToDelete);
+    const imageToDelete = image.replace("data:image/jpeg;base64,", "");
+    const newImage: ImageProps[] = images.filter(
+      (img) => img.content !== imageToDelete
+    );
     setImages(newImage);
     onChange(newImage);
   };
@@ -87,7 +90,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         </View>
       </Pressable>
       {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
-      <ImageContainer images={images.map((image) => { return "data:image/jpeg;base64,"+ image.content})} onDelete={onDelete} editable />
+      <ImageContainer
+        images={images.map((image) => {
+          return "data:image/jpeg;base64," + image.content;
+        })}
+        onDelete={onDelete}
+        editable
+      />
     </View>
   );
 };

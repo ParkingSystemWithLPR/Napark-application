@@ -1,5 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -83,7 +84,11 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                   businessDay ? getBusinessHours(businessDay) : "Not available"
                 }
                 availabilty={0}
-                onPress={() => navigation.navigate("ParkingLotDetail", { parkingLotId: item._id })}
+                onPress={() =>
+                  navigation.navigate("ParkingLotDetail", {
+                    parkingLotId: item._id,
+                  })
+                }
               />
             )}}
             overScrollMode="never"

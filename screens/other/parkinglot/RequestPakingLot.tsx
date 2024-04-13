@@ -7,20 +7,20 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
+import ConfigAddress from "@/components/parking-lot/ConfigAddress";
 import ConfigInfo from "@/components/parking-lot/ConfigInfo";
 import ConfigPlan from "@/components/parking-lot/ConfigPlan";
 import ConfigPricing from "@/components/parking-lot/ConfigPricing";
 import Stepper from "@/components/stepper/Stepper";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
-import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import ConfigAddress from "@/components/parking-lot/ConfigAddress";
 import { useCreateParkingLotRequest } from "@/store/api/parking-lot/useCreateParkingLotRequest";
 import { useAuth } from "@/store/context/auth";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLotRequest } from "@/types/parking-lot";
-import LoadingOverlay from "@/components/ui/LoadingOverlay";
 
 export type RequestParkingLotProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "RequestParkingLot">,
@@ -45,8 +45,8 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
     try {
       await createRequestAsync({ data, auth: { accessToken, authenticate } });
       setTimeout(() => {
-        setSubmitSuccessful(true)
-      }, 2000)
+        setSubmitSuccessful(true);
+      }, 2000);
       navigation.navigate("OtherStack", { screen: "ParkingLotsList" });
     } catch (error) {
       Alert.alert(
