@@ -101,7 +101,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       !maxCheckOutTime ||
       !isEqual(minCheckOutTime, maxCheckOutTime));
 
-  const licensePlateList = profile.user_cars;
+  const licensePlateList = profile.cars;
   const licensePlateDropdown =
     (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
     [];
