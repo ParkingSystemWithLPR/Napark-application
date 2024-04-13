@@ -4,15 +4,15 @@ import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { ScrollView, View, StyleSheet, Pressable, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import ParkingZoneInput from "../input/ParkingZoneInput";
 import MyTextInput from "../input/TextInput";
 import SubHeaderText from "../text/SubHeaderText";
 
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { ParkingLotRequest, Plan } from "@/types/parking-lot";
-import ParkingZoneInput from "../input/ParkingZoneInput";
 import { ImageProps } from "@/types";
+import { ParkingLotRequest, Plan } from "@/types/parking-lot";
 
 export type ConfigPlanProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;

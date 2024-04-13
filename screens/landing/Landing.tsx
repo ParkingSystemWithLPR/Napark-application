@@ -246,7 +246,6 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         isBefore(now, getDateFromTime(businessDay?.close_time));
       const availableSlotsCount = selectedParkingSpace.available_slots_count;
       const totalSlots = selectedParkingSpace.slots.length;
-      console.log(availableSlotsCount, totalSlots);
       const trafficPercentage =
         isNaN(availableSlotsCount) || isNaN(totalSlots) || totalSlots === 0
           ? 0

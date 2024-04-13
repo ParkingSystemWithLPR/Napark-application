@@ -7,7 +7,7 @@ import Specification from "./Specification";
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
-import DropdownInput, { DropdownItem } from "../input/DropdownInput";
+import DropdownInput from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
