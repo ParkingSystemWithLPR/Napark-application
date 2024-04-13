@@ -5,6 +5,7 @@ import {
 
 import IconButton from "@/components/button/IconButton";
 import Colors from "@/constants/color";
+import { BookingStatus } from "@/enum/BookingStatus";
 import BookingDetail from "@/screens/bookings/booking/BookingDetail";
 import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
