@@ -146,44 +146,48 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     []
   );
   const renderBottomPanal = useCallback(() => {
-    if (
-      status == BookingStatus.CANCELLED ||
-      status == BookingStatus.COMPLETED
-    ) {
-      return <PrimaryButton title={"Book Again"} onPress={handleReBooking} />;
-    } else if (
-      status == BookingStatus.ACTIVE &&
-      payment_status === PaymentStatus.UNPAID
-    ) {
-      return (
-        <>
-          <DropdownInput
-            selectedValue={paymentMethod}
-            placeholder={"Choose payment method"}
-            onSelect={setPaymentMethod}
-            items={[
-              {
-                label: PaymentMethod.CREDIT.toString(),
-                value: PaymentMethod.CREDIT.toString(),
-              },
-              {
-                label: PaymentMethod.QR.toString(),
-                value: PaymentMethod.QR.toString(),
-              },
-            ]}
-          />
-          {isButtonEnable ? (
-            <PrimaryButton title={"Pay the bill"} onPress={handlePayment} />
-          ) : (
-            <SecondaryButton
-              title={"Pay the bill"}
-              onPress={handleNotFillInfo}
-            />
-          )}
-        </>
-      );
+    switch (status) {
+      case (BookingStatus.CANCELLED, BookingStatus.COMPLETED):
+        return <PrimaryButton title={"Book Again"} onPress={handleReBooking} />;
+      case BookingStatus.ACTIVE:
+        switch (payment_status) {
+          case PaymentStatus.UNPAID:
+            return (
+              <>
+                <DropdownInput
+                  selectedValue={paymentMethod}
+                  placeholder={"Choose payment method"}
+                  onSelect={setPaymentMethod}
+                  items={[
+                    {
+                      label: PaymentMethod.CREDIT.toString(),
+                      value: PaymentMethod.CREDIT.toString(),
+                    },
+                    {
+                      label: PaymentMethod.QR.toString(),
+                      value: PaymentMethod.QR.toString(),
+                    },
+                  ]}
+                />
+                {isButtonEnable ? (
+                  <PrimaryButton
+                    title={"Pay the bill"}
+                    onPress={handlePayment}
+                  />
+                ) : (
+                  <SecondaryButton
+                    title={"Pay the bill"}
+                    onPress={handleNotFillInfo}
+                  />
+                )}
+              </>
+            );
+          default:
+            return <></>;
+        }
+      default:
+        return <></>;
     }
-    return <></>;
   }, [paymentMethod, isButtonEnable]);
 
   useLayoutEffect(() => {
