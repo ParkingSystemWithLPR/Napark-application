@@ -42,7 +42,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
   }, []);
 
   const defaultCar = useCallback(() => {
-    const car = cars.filter((car) => car.is_default);
+    const car = cars.filter((car) => car._id === profile.default_car_id);
     return (
       <View style={styles.defaultCarContainer}>
         <SubHeaderText text="Default" />
@@ -60,9 +60,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
               await deleteUserCar(
                 {
                   body: {
-                    license_plate: car[0].license_plate,
-                    province_of_reg: car[0].province_of_reg,
-                    is_default: car[0].is_default,
+                    car_id: car[0]._id,
                   },
                   auth: {
                     accessToken,
@@ -82,10 +80,12 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
         )}
       </View>
     );
-  }, [cars]);
+  }, [profile, cars]);
 
   const otherCars = useCallback(() => {
-    const filteredCar = cars.filter((car) => !car.is_default);
+    const filteredCar = cars.filter(
+      (car) => car._id !== profile.default_car_id
+    );
     return (
       <View style={styles.otherCarsContainer}>
         <SubHeaderText text="Other cars" />
@@ -106,9 +106,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
                   await deleteUserCar(
                     {
                       body: {
-                        license_plate: item.license_plate,
-                        province_of_reg: item.province_of_reg,
-                        is_default: item.is_default,
+                        car_id: item._id,
                       },
                       auth: {
                         accessToken,
@@ -132,7 +130,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
         )}
       </View>
     );
-  }, [cars]);
+  }, [profile, cars]);
 
   return (
     <BodyContainer>

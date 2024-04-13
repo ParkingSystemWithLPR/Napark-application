@@ -25,7 +25,7 @@ export type CarInfoSetupProps = CompositeScreenProps<
 const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   const { mode, carInfo } = route.params;
   const { accessToken, authenticate } = useAuth();
-  const { setProfile } = useProfile();
+  const { profile, setProfile } = useProfile();
   const [licensePlate, setLicensePlate] = useState<InputValueType>({
     value: "",
   });
@@ -87,14 +87,11 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
         }
         break;
       case ActionMode.EDIT:
-        if (isDefault === carInfo?.is_default) navigation.goBack();
-        else {
+        if (carInfo?._id) {
           await editUserCar(
             {
               body: {
-                license_plate: licensePlate.value,
-                province_of_reg: province.value,
-                is_default: isDefault,
+                car_id: carInfo._id,
               },
               auth: {
                 accessToken,
@@ -118,7 +115,7 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
       if (carInfo) {
         setLicensePlate({ value: carInfo.license_plate });
         setProvince({ value: carInfo.province_of_reg });
-        setDefault(carInfo.is_default);
+        setDefault(carInfo._id === profile.default_car_id);
       } else {
         Alert.alert("Something wrong!");
         navigation.goBack();
