@@ -25,8 +25,13 @@ export const formatTime = (date: Date) => {
 };
 
 export const formatTimeWithSecond = (timeString: string) => {
-  return `${timeString}:00`;
+  const hourWithSecond = timeString.split(':').slice(0,2).join(':');
+  return `${hourWithSecond}:00`;
 };
+
+export const formatDisplayTime = (timeString: string) => {
+  return timeString.split(':').slice(0,2).join(':');
+}
 
 export const formatStringDate = (date: string) => {
   return date.replaceAll("/", "-");
