@@ -16,6 +16,7 @@ import SubHeaderText from "../text/SubHeaderText";
 import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { Booking } from "@/types/booking";
+import { formatToSentenceCase } from "@/utils/text";
 
 interface SessionCardProps {
   booking: Booking;
@@ -96,10 +97,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               />
               <View style={styles.subDetailContainer}>
                 <DetailText
-                  text={
-                    booking.status.charAt(0).toUpperCase() +
-                    booking.status.slice(1)
-                  }
+                  text={formatToSentenceCase(booking.status)}
                   containerStyle={{
                     borderRightWidth: 1,
                     borderRightColor: getColor(booking.status),
