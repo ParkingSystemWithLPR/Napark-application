@@ -10,6 +10,7 @@ import { SlotType } from "@/enum/SlotType";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailableSlot";
 import {
+  Booking,
   CreateBookingRequest,
   SlotProfileWithPrivilege,
 } from "@/types/booking";
@@ -17,7 +18,7 @@ import { ParkingLot } from "@/types/parking-lot";
 import { Profile } from "@/types/user";
 
 export const defaultBookingDetailState: BookingDetailState = {
-  licensePlate: "",
+  carId: "",
   checkInDate: null,
   checkInTime: null,
   checkOutDate: null,
@@ -38,7 +39,7 @@ export const createDefaultBookingDetailState = (
     .map((defaultcar) => defaultcar._id)[0];
   return {
     ...defaultBookingDetailState,
-    licensePlate: defaultLicensePlate ?? "",
+    carId: defaultLicensePlate ?? "",
   };
 };
 
@@ -58,8 +59,8 @@ export const validateTimeInputs = (bookingRequest: BookingDetailState) => {
 };
 
 export const validateLicensePlate = (bookingRequest: BookingDetailState) => {
-  const { licensePlate } = bookingRequest;
-  return licensePlate != defaultBookingDetailState.licensePlate
+  const { carId } = bookingRequest;
+  return carId != defaultBookingDetailState.carId
     ? ValidateStatus.SUCCESS
     : ValidateStatus.MISSING;
 };
@@ -115,7 +116,7 @@ export const formatCreateBookingRequest = (
   parkingLot: ParkingLot
 ): CreateBookingRequest => {
   return {
-    car_id: bookingDetailState.licensePlate,
+    car_id: bookingDetailState.carId,
     end_date: bookingDetailState.checkOutDate ?? "",
     end_time: bookingDetailState.checkOutTime
       ? formatTimeWithSecond(bookingDetailState.checkOutTime)
@@ -127,4 +128,10 @@ export const formatCreateBookingRequest = (
     parkinglot_id: parkingLot._id,
     slot_id: bookingDetailState.slotId,
   };
+};
+
+export const formatDefaultBookingValue = (
+  booking: Booking
+): BookingDetailState => {
+  return { ...defaultBookingDetailState, carId: booking.car_id };
 };

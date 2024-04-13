@@ -13,6 +13,7 @@ import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
 import PayTheBill from "@/screens/bookings/payment/PayTheBill";
 import TopUp from "@/screens/bookings/payment/TopUp";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import { BookingStatus } from "@/enum/BookingStatus";
 
 const Stack = createNativeStackNavigator<BookingsStackParamList>();
 
@@ -34,6 +35,16 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
     );
   };
 
+  const selectHeaderTitle = (bookingStatus: BookingStatus) => {
+    switch (bookingStatus) {
+      case BookingStatus.UPCOMING:
+        return "Upcoming Booking";
+      case BookingStatus.ACTIVE:
+        return "Active Booking";
+      default:
+        return "Complete Booking";
+    }
+  };
   return (
     <Stack.Navigator
       screenOptions={{
@@ -62,7 +73,7 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
           title: "Booking summary",
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="TopUp"
         component={TopUp}
         options={{
@@ -88,10 +99,11 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
       <Stack.Screen
         name="PaymentSummary"
         component={PaymentSummary}
-        options={{
-          title: "Pay the bill",
+        options={({ route }) => ({
+          title: selectHeaderTitle(route.params.booking.status),
           headerBackTitle: "Back",
-        }}
+          headerLeft: backToPreviousPage,
+        })}
       />
       <Stack.Screen
         name="PaymentSuccessful"

@@ -1,4 +1,3 @@
-import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
@@ -14,19 +13,65 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { PaymentMethod } from "@/enum/PaymentMethod";
 import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
+import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
+import { formatDefaultBookingValue } from "@/utils/bookingRequest";
+import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
+import { useAuth } from "@/store/context/auth";
+import { ParkingLot } from "@/types/parking-lot";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import { parseISO } from "date-fns";
+import {
+  formatHumanReadableDateFromDateString,
+  formatTime,
+} from "@/utils/date";
+import { useProfile } from "@/store/context/profile";
+import { formatToSentenceCase } from "@/utils/text";
 
-export type PaymentSummaryProps = CompositeScreenProps<
-  NativeStackScreenProps<BookingsStackParamList, "PaymentSummary">,
-  NativeStackScreenProps<AuthenticatedStackParamList>
+export type PaymentSummaryProps = NativeStackScreenProps<
+  BookingsStackParamList,
+  "PaymentSummary"
 >;
 
-const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
-  const [paymentMethod, setPaymentMethod] = useState("");
+const PaymentSummary: React.FC<PaymentSummaryProps> = ({
+  navigation,
+  route,
+}) => {
+  const { booking } = route.params;
+  const { profile } = useProfile();
+  const {
+    license_plate,
+    end_time,
+    estimated_price,
+    parkinglot_name,
+    slot_name,
+    start_time,
+    status,
+    payment_status,
+    actual_price,
+  } = booking;
+  const startTimeFormat = parseISO(start_time);
+  const endTimeFormat = parseISO(end_time);
+  const { accessToken, authenticate } = useAuth();
+  const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [isButtonEnable, setIsButtonEnable] = useState(false);
+  const [parkingLot, setParkingLot] = useState<ParkingLot>();
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const getParkingLot = useGetParkingLot({
+    queryParams: { parkingLotId: booking.parkinglot_id },
+    auth: { accessToken, authenticate },
+  });
 
-  const creditPaymentHandler = () => {}; // if credit is not enough navigate to top up else deduct credit
+  const creditPaymentHandler = () => {
+    if (profile.credit < booking.estimated_price) {
+      navigation.navigate("TopUp", { balance: profile.credit });
+    } else {
+      navigation.navigate("PaymentSuccessful");
+    }
+  }; // if credit is not enough navigate to top up else deduct credit
 
-  const QRPaymentHandler = () => {}; // navigate to QR page
+  const QRPaymentHandler = () => {
+    navigation.navigate("PaymentSuccessful"); //will change to QR page later
+  }; // navigate to QR page
 
   const handlePayment = () => {
     switch (paymentMethod) {
@@ -37,16 +82,21 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
         QRPaymentHandler();
         break;
     }
-    navigation.navigate("PaymentSuccessful"); //this is just mock
+  };
+
+  const handleReBooking = () => {
+    const newDefaultBooking = formatDefaultBookingValue(booking);
+    if (parkingLot) {
+      navigation.navigate("BookingDetail", {
+        parkingLot: parkingLot,
+        defaultValue: newDefaultBooking,
+      });
+    }
   };
 
   const handleNotFillInfo = () => {
     alert("Please choose payment method");
   };
-
-  useLayoutEffect(() => {
-    setIsButtonEnable(paymentMethod != "");
-  }, [paymentMethod]);
 
   const renderAttribute = useCallback(
     ({ attribute, value }: AttributeTextProps) => {
@@ -95,71 +145,112 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({ navigation }) => {
     },
     []
   );
+  const renderBottomPanal = useCallback(() => {
+    switch (status) {
+      case (BookingStatus.CANCELLED, BookingStatus.COMPLETED):
+        return <PrimaryButton title={"Book Again"} onPress={handleReBooking} />;
+      case BookingStatus.ACTIVE:
+        switch (payment_status) {
+          case PaymentStatus.UNPAID:
+            return (
+              <>
+                <DropdownInput
+                  selectedValue={paymentMethod}
+                  placeholder={"Choose payment method"}
+                  onSelect={setPaymentMethod}
+                  items={[
+                    {
+                      label: PaymentMethod.CREDIT.toString(),
+                      value: PaymentMethod.CREDIT.toString(),
+                    },
+                    {
+                      label: PaymentMethod.QR.toString(),
+                      value: PaymentMethod.QR.toString(),
+                    },
+                  ]}
+                />
+                {isButtonEnable ? (
+                  <PrimaryButton
+                    title={"Pay the bill"}
+                    onPress={handlePayment}
+                  />
+                ) : (
+                  <SecondaryButton
+                    title={"Pay the bill"}
+                    onPress={handleNotFillInfo}
+                  />
+                )}
+              </>
+            );
+          default:
+            return <></>;
+        }
+      default:
+        return <></>;
+    }
+  }, [paymentMethod, isButtonEnable]);
 
+  useLayoutEffect(() => {
+    setIsButtonEnable(paymentMethod !== undefined);
+  }, [paymentMethod]);
+
+  useLayoutEffect(() => {
+    if (getParkingLot.data) {
+      setParkingLot(getParkingLot.data);
+      setLoading(false);
+    }
+  }, [getParkingLot.data]);
+
+  if (isLoading) {
+    return <LoadingOverlay message="Loading..." />;
+  }
   return (
     <BodyContainer>
       <View style={{ gap: 20 }}>
-        <SubHeaderText text={"All the Bills"}></SubHeaderText>
+        <SubHeaderText text={license_plate}></SubHeaderText>
         <View style={styles.content}>
           <View style={styles.attribute}>
             {renderAttribute({
-              attribute: "Name",
-              value: "Jackson Maine",
+              attribute: "ParkingLot",
+              value: parkinglot_name,
             })}
             {renderAttribute({
-              attribute: "Address",
-              value: "403 East 4th Street, Santa Ana",
+              attribute: "Slot",
+              value: slot_name,
             })}
             {renderAttribute({
-              attribute: "Phone number",
-              value: "+8424599721",
+              attribute: "Start Date",
+              value: formatHumanReadableDateFromDateString(start_time),
             })}
             {renderAttribute({
-              attribute: "Code",
-              value: "#2343543",
+              attribute: "Start Time",
+              value: formatTime(startTimeFormat),
             })}
             {renderAttribute({
-              attribute: "From",
-              value: "01/10/2019",
+              attribute: "End Date",
+              value: formatHumanReadableDateFromDateString(end_time),
             })}
             {renderAttribute({
-              attribute: "To",
-              value: "01/11/2019",
+              attribute: "End Time",
+              value: formatTime(endTimeFormat),
+            })}
+            {renderAttribute({
+              attribute: "Status",
+              value:
+                booking.status === BookingStatus.ACTIVE
+                  ? formatToSentenceCase(booking.payment_status)
+                  : formatToSentenceCase(booking.status),
             })}
           </View>
-          {renderPrice({
-            attribute: "Internet fee",
-            value: "$50",
-          })}
-          {renderPrice({
-            attribute: "Tax",
-            value: "$10",
-          })}
           {renderTotal({
             attribute: "TOTAL",
-            value: "$60",
+            value: `${(status === BookingStatus.UPCOMING
+              ? estimated_price
+              : actual_price
+            ).toFixed(2)}`,
           })}
         </View>
-        <DropdownInput
-          selectedValue={paymentMethod}
-          placeholder={"Choose payment method"}
-          onSelect={setPaymentMethod}
-          items={[
-            {
-              label: PaymentMethod.CREDIT,
-              value: PaymentMethod.CREDIT,
-            },
-            {
-              label: PaymentMethod.QR,
-              value: PaymentMethod.QR,
-            },
-          ]}
-        />
-        {isButtonEnable ? (
-          <PrimaryButton title={"Pay the bill"} onPress={handlePayment} />
-        ) : (
-          <SecondaryButton title={"Pay the bill"} onPress={handleNotFillInfo} />
-        )}
+        {renderBottomPanal()}
       </View>
     </BodyContainer>
   );

@@ -6,6 +6,8 @@ import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { Booking } from "./booking";
+import { BookingStatus } from "@/enum/BookingStatus";
 
 export type RootParamList = {
   Splash: undefined;
@@ -64,7 +66,7 @@ export type BookingsStackParamList = {
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
   PayTheBill: undefined;
-  PaymentSummary: undefined;
+  PaymentSummary: { booking: Booking };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;
 };
@@ -102,4 +104,4 @@ export type HyperlinkTextProps = TextProps & {
 export type ImageProps = {
   content: string;
   filename: string;
-}
+};
