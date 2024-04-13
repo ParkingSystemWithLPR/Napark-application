@@ -28,7 +28,7 @@ type EditProfileService = (input: EditProfileInput) => Promise<Profile>;
 export const editProfile: EditProfileService = async ({ body, auth }) => {
   const data = await apiRequest<Profile>(
     USER_URL + "/user/edit",
-    HTTPMethod.POST,
+    HTTPMethod.PATCH,
     auth.accessToken,
     auth.authenticate,
     body
