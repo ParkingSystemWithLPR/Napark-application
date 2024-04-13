@@ -1,6 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { ScrollView, View, StyleSheet, Pressable, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -12,7 +12,7 @@ import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
 import { ImageProps } from "@/types";
-import { ParkingLotRequest, Plan } from "@/types/parking-lot";
+import { ParkingLotRequest } from "@/types/parking-lot";
 
 export type ConfigPlanProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;

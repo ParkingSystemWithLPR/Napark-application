@@ -37,7 +37,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   });
 
   useLayoutEffect(() => {
-    if (getParkingLot.data) {
+    if (getParkingLot.isSuccess) {
       setParkingLot(getParkingLot.data);
       setLoading(false);
     }

@@ -36,7 +36,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   });
 
   useEffect(() => {
-    if (getParkingLots.data) {
+    if (getParkingLots.isSuccess) {
       setParkingLots(getParkingLots.data);
       setLoading(false);
     }

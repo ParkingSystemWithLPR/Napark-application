@@ -30,7 +30,7 @@ const ConfigPricing: React.FC<ConfigPricingProps> = ({ form }) => {
   return (
     <ScrollView style={styles.container}>
       {plan.map((value: Plan, index: number) => (
-        <View style={styles.formContainer}>
+        <View style={styles.formContainer} key={`floor-${value.floor}`}>
           <SubHeaderText text={`Floor ${value.floor}`} />
           <Image
             source={{
