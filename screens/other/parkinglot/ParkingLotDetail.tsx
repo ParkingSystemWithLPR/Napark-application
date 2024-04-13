@@ -14,8 +14,8 @@ import SectionAppForm from "@/components/ui/SectionAppForm";
 import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { ParkingLot } from "@/types/parking-lot";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotDetail">,
@@ -27,7 +27,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   route,
 }) => {
   const parkingLotId = route.params.parkingLotId;
-  const [parkingLot, setParkingLot] = useState<ParkingLot>();
+  const { parkingLot, setParkingLot } = useParkingLot();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
