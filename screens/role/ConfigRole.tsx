@@ -12,6 +12,10 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { ActionMode } from "@/enum/ActionMode";
+import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
+import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
 export type ConfigRoleProps = CompositeScreenProps<
@@ -19,7 +23,12 @@ export type ConfigRoleProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
+const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
+  const { mode, index } = route.params;
+  const { parkingLot, setParkingLot } = useParkingLot();
+  const management_roles = parkingLot.management_roles;
+  const { accessToken, authenticate } = useAuth();
+  const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const { control, handleSubmit } = useForm();
   const [isEnableEditRole, setEnableEditRole] = useState<boolean>(false);
   const [isEnableManageParkingSpace, setEnableManageParkingSpace] =
@@ -32,8 +41,31 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      // await mutateAsync(data);
-      console.log("data", data);
+      const role = {
+        title: data.name,
+        user_ids: [],
+        permissions: [],
+      };
+      if (mode === ActionMode.CREATE) {
+        management_roles.push(role);
+      } else {
+        management_roles[index] = role;
+      }
+      await editParkingLotAsync(
+        {
+          queryParams: {
+            parkingLotId: parkingLot._id,
+            editParams: { management_roles: management_roles },
+          },
+          auth: { accessToken: accessToken, authenticate: authenticate },
+        },
+        {
+          onSuccess(data) {
+            setParkingLot(data);
+          },
+        }
+      );
+      navigation.goBack();
     } catch (error) {
       Alert.alert(
         "Create request error",

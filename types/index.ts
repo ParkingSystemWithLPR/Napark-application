@@ -48,14 +48,14 @@ export type OtherStackParamList = {
   ConfigPricing: undefined;
   ConfigPlan: undefined;
   RoleMember: undefined;
-  ConfigRole: { mode: ActionMode; roleId?: string };
+  ConfigRole: { mode: ActionMode; index: number };
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;
   PayTheBill: undefined;
   ManagingCategory: { parkingLotId: string };
   ManagingList: { category: ManagingCategory };
-  ConfigPrivilege: { mode: ActionMode; roleId?: string };
+  ConfigPrivilege: { mode: ActionMode; index: number };
   ConfigZone: {
     form: UseFormReturn<FieldValues, any, undefined>;
     mode: ActionMode;
