@@ -1,13 +1,13 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { ParkingLot } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { ManagingCategory } from "@/enum/ManagingCategory";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
   Splash: undefined;
@@ -111,4 +111,4 @@ export type HyperlinkTextProps = TextProps & {
 export type ImageProps = {
   content: string;
   filename: string;
-}
+};

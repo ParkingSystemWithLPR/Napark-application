@@ -1,10 +1,11 @@
-import ChangeScreenTab from "@/components/button/ChangeScreenTab";
-import BodyContainer from "@/components/ui/BodyContainer";
-import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
+
+import ChangeScreenTab from "@/components/button/ChangeScreenTab";
+import BodyContainer from "@/components/ui/BodyContainer";
 import { ManagingCategory as Category } from "@/enum/ManagingCategory";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
 export type ManagingCategoryProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ManagingCategory">,

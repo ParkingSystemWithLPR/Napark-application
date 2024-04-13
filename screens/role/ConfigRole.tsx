@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
@@ -12,7 +13,6 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
-import { CompositeScreenProps } from "@react-navigation/native";
 
 export type ConfigRoleProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigRole">,
@@ -96,7 +96,10 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           control={control}
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
-              <BodyText text="Edit managing role" textStyle={styles.permissionText} />
+              <BodyText
+                text="Edit managing role"
+                textStyle={styles.permissionText}
+              />
               <Switch
                 onValueChange={(value) => {
                   onChange(value);
