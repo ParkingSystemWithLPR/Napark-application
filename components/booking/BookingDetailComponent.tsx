@@ -46,7 +46,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   const {
     checkOutTime,
     checkOutDate,
-    licensePlate,
+    carId,
     checkInDate,
     checkInTime,
     specification,
@@ -70,7 +70,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   };
 
   const setLicensePlate = (value: string) => {
-    onChange("licensePlate", value);
+    onChange("carId", value);
   };
 
   const setCheckInDate = (value: string | null) => {
@@ -229,7 +229,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   return (
     <View style={styles.outerContainer}>
       <DropdownInput
-        selectedValue={licensePlate}
+        selectedValue={carId}
         placeholder={"ex.  กข1234"}
         onSelect={setLicensePlateHandler}
         items={[

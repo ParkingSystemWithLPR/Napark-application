@@ -35,7 +35,7 @@ import {
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
 
 export type BookingDetailState = {
-  licensePlate: string;
+  carId: string;
   checkInDate: string | null;
   checkInTime: string | null;
   checkOutDate: string | null;
