@@ -7,11 +7,17 @@ import { AxiosError } from "axios";
 
 import { USER_URL } from "..";
 
-import { Car, Profile } from "@/types/user";
+import { Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
+interface CarWithDefaultFlag {
+  license_plate: string;
+  province_of_reg: string;
+  is_default: boolean;
+}
+
 interface CreateUserCarInput {
-  body: Car;
+  body: CarWithDefaultFlag;
   auth: {
     accessToken: string;
     authenticate: (accessToken: string, refreshToken: string) => void;

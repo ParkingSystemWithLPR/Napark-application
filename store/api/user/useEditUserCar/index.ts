@@ -7,11 +7,11 @@ import { AxiosError } from "axios";
 
 import { USER_URL } from "..";
 
-import { Car, Profile } from "@/types/user";
+import { Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 interface EditUserCarInput {
-  body: Car;
+  body: { car_id: string };
   auth: {
     accessToken: string;
     authenticate: (accessToken: string, refreshToken: string) => void;
@@ -22,7 +22,7 @@ type EditUserCarService = (input: EditUserCarInput) => Promise<Profile>;
 
 export const editUserCar: EditUserCarService = async ({ body, auth }) => {
   const profile = await apiRequest<Profile>(
-    USER_URL + "/user/edit-default-car",
+    USER_URL + "/user/default-car",
     HTTPMethod.POST,
     auth.accessToken,
     auth.authenticate,

@@ -34,7 +34,7 @@ export const createDefaultBookingDetailState = (
   profile: Profile
 ): BookingDetailState => {
   const defaultLicensePlate = profile.cars
-    ?.filter((car) => car.is_default)
+    ?.filter((car) => car._id == profile.default_car_id)
     .map((defaultcar) => defaultcar._id)[0];
   return {
     ...defaultBookingDetailState,
