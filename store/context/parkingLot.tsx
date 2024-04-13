@@ -84,3 +84,5 @@ const ParkingLotContextProvider = ({ children }: { children: ReactNode }) => {
     </ParkingLotContext.Provider>
   );
 };
+
+export default ParkingLotContextProvider;

@@ -11,13 +11,14 @@ import ChangePassword from "@/screens/other/ChangePassword";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
+import ConfigPrivilege from "@/screens/role/ConfigPrivilege";
 import ConfigRole from "@/screens/role/ConfigRole";
-import RoleMember from "@/screens/role/RoleMember";
-import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import ConfigZone from "@/screens/role/ConfigZone";
 import ManagingCategory from "@/screens/role/ManagingCategory";
 import ManagingList from "@/screens/role/ManagingList";
-import ConfigPrivilege from "@/screens/role/ConfigPrivilege";
-import ConfigZone from "@/screens/role/ConfigZone";
+import RoleMember from "@/screens/role/RoleMember";
+import ParkingLotContextProvider from "@/store/context/parkingLot";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -39,105 +40,107 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
     );
   };
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: Colors.red[400].toString(),
-        },
-        headerBackTitleVisible: false,
-        headerTitleStyle: {
-          fontSize: 18,
-        },
-        headerTintColor: Colors.white.toString(),
-        headerTitleAlign: "center",
-      }}
-    >
-      <Stack.Screen
-        name="CarInfo"
-        component={CarInfo}
-        options={{
-          title: "My car",
-          headerLeft: backToPreviousPage,
+    <ParkingLotContextProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: Colors.red[400].toString(),
+          },
+          headerBackTitleVisible: false,
+          headerTitleStyle: {
+            fontSize: 18,
+          },
+          headerTintColor: Colors.white.toString(),
+          headerTitleAlign: "center",
         }}
-      />
-      <Stack.Screen
-        name="CarInfoSetup"
-        component={CarInfoSetup}
-        options={{ title: "Set up" }}
-      />
-      <Stack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
-        options={{
-          title: "Change password",
-          headerLeft: backToPreviousPage,
-        }}
-      />
-      <Stack.Screen
-        name="ParkingLotsList"
-        component={ParkingLotsList}
-        options={{
-          title: "My parking sapce",
-          headerLeft: backToPreviousPage,
-        }}
-      />
-      <Stack.Screen
-        name="RequestParkingLot"
-        component={RequestParkingLot}
-        options={{
-          title: "Create parking space",
-        }}
-      />
-      <Stack.Screen
-        name="ParkingLotDetail"
-        component={ParkingLotDetail}
-        options={{
-          title: "Parking space detail",
-        }}
-      />
-      <Stack.Screen
-        name="ConfigRole"
-        component={ConfigRole}
-        options={{
-          title: "Role",
-        }}
-      />
-      <Stack.Screen
-        name="RoleMember"
-        component={RoleMember}
-        options={{
-          title: "Assign member",
-        }}
-      />
-      <Stack.Screen
-        name="ManagingCategory"
-        component={ManagingCategory}
-        options={{
-          title: "Managing Category",
-        }}
-      />
-      <Stack.Screen
-        name="ManagingList"
-        component={ManagingList}
-        options={{
-          title: "Managing List",
-        }}
-      />
-      <Stack.Screen
-        name="ConfigPrivilege"
-        component={ConfigPrivilege}
-        options={{
-          title: "Privilege",
-        }}
-      />
-      <Stack.Screen
-        name="ConfigZone"
-        component={ConfigZone}
-        options={{
-          title: "Zone",
-        }}
-      />
-    </Stack.Navigator>
+      >
+        <Stack.Screen
+          name="CarInfo"
+          component={CarInfo}
+          options={{
+            title: "My car",
+            headerLeft: backToPreviousPage,
+          }}
+        />
+        <Stack.Screen
+          name="CarInfoSetup"
+          component={CarInfoSetup}
+          options={{ title: "Set up" }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{
+            title: "Change password",
+            headerLeft: backToPreviousPage,
+          }}
+        />
+        <Stack.Screen
+          name="ParkingLotsList"
+          component={ParkingLotsList}
+          options={{
+            title: "My parking sapce",
+            headerLeft: backToPreviousPage,
+          }}
+        />
+        <Stack.Screen
+          name="RequestParkingLot"
+          component={RequestParkingLot}
+          options={{
+            title: "Create parking space",
+          }}
+        />
+        <Stack.Screen
+          name="ParkingLotDetail"
+          component={ParkingLotDetail}
+          options={{
+            title: "Parking space detail",
+          }}
+        />
+        <Stack.Screen
+          name="ConfigRole"
+          component={ConfigRole}
+          options={{
+            title: "Role",
+          }}
+        />
+        <Stack.Screen
+          name="RoleMember"
+          component={RoleMember}
+          options={{
+            title: "Assign member",
+          }}
+        />
+        <Stack.Screen
+          name="ManagingCategory"
+          component={ManagingCategory}
+          options={{
+            title: "Managing Category",
+          }}
+        />
+        <Stack.Screen
+          name="ManagingList"
+          component={ManagingList}
+          options={{
+            title: "Managing List",
+          }}
+        />
+        <Stack.Screen
+          name="ConfigPrivilege"
+          component={ConfigPrivilege}
+          options={{
+            title: "Privilege",
+          }}
+        />
+        <Stack.Screen
+          name="ConfigZone"
+          component={ConfigZone}
+          options={{
+            title: "Zone",
+          }}
+        />
+      </Stack.Navigator>
+    </ParkingLotContextProvider>
   );
 };
 
