@@ -1,15 +1,15 @@
+import * as Location from "expo-location";
 import { useLayoutEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import * as Location from "expo-location";
-
-import Colors from "@/constants/color";
-import { ParkingLotRequest } from "@/types/parking-lot";
-import { InputType } from "@/enum/InputType";
-import { RegionType } from "@/screens/landing/Landing";
 
 import TextInput from "../input/TextInput";
+
+import Colors from "@/constants/color";
+import { InputType } from "@/enum/InputType";
+import { RegionType } from "@/screens/landing/Landing";
+import { ParkingLotRequest } from "@/types/parking-lot";
 
 export type ConfigAddressProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;

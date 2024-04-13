@@ -29,7 +29,7 @@ const CarInfo: React.FC<CarInfoProps> = ({ navigation }) => {
 
   useLayoutEffect(() => {
     if (profile) {
-      setCars(profile.user_cars ?? []);
+      setCars(profile.cars ?? []);
     }
   }, [profile]);
 

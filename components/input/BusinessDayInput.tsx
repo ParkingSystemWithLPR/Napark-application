@@ -11,6 +11,8 @@ import SubHeaderText from "../text/SubHeaderText";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot";
 import { formatToSentenceCase } from "@/utils/text";
+import { isEqualBusinessHour } from "@/utils/date";
+import { formatDisplayTime, formatTimeWithSecond } from "@/utils/date";
 
 export type DateInputProps = {
   title: string;
@@ -52,10 +54,6 @@ const DateInput: React.FC<DateInputProps> = ({
     [DayInAWeek.SATURDAY]: { isSelected: false },
   });
 
-  const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
-    return a.open_time === b.open_time && a.close_time === b.close_time;
-  };
-
   useEffect(() => {
     if (businessDays) {
       const newSelectedDay = selectedDay;
@@ -85,6 +83,24 @@ const DateInput: React.FC<DateInputProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    const formData = getValues();
+    const newBusinessDays: BusinessDay[] = [];
+    Object.entries(selectedDay).forEach(([day, value]) => {
+      if (value.isSelected) {
+        const { open_time, close_time } = formData[value.set ?? -2];
+        const newDay = day as DayInAWeek;
+        newBusinessDays.push({
+          weekday: newDay,
+          open_time: formatTimeWithSecond(open_time),
+          close_time: formatTimeWithSecond(close_time),
+        });
+      }
+    });
+
+    onChange(newBusinessDays);
+  }, [selectedDay]);
+
   const onInputChange = () => {
     const formData = getValues();
     const newBusinessDays: BusinessDay[] = [];
@@ -94,8 +110,8 @@ const DateInput: React.FC<DateInputProps> = ({
         const newDay = day as DayInAWeek;
         newBusinessDays.push({
           weekday: newDay,
-          open_time: open_time + ":00",
-          close_time: close_time + ":00",
+          open_time: formatTimeWithSecond(open_time),
+          close_time: formatTimeWithSecond(close_time),
         });
       }
     });
@@ -136,7 +152,6 @@ const DateInput: React.FC<DateInputProps> = ({
                 : true,
             },
           });
-          onInputChange();
         }}
       >
         <BodyText
@@ -171,11 +186,11 @@ const DateInput: React.FC<DateInputProps> = ({
             name={`${index}.open_time`}
             control={control}
             rules={{ required: "Please select open time" }}
-            defaultValue={"08:00"}
+            defaultValue={"08:00:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Open time"}
-                value={value}
+                value={formatDisplayTime(value)}
                 onTimeChange={(value) => {
                   onChange(value);
                   onInputChange();
@@ -190,11 +205,11 @@ const DateInput: React.FC<DateInputProps> = ({
             name={`${index}.close_time`}
             control={control}
             rules={{ required: "Please select close time" }}
-            defaultValue={"20:00"}
+            defaultValue={"20:00:00"}
             render={({ field: { onChange, value } }) => (
               <TimeInput
                 title={"Close time"}
-                value={value}
+                value={formatDisplayTime(value)}
                 onTimeChange={(value) => {
                   onChange(value);
                   onInputChange();

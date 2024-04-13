@@ -182,10 +182,13 @@ const Account: React.FC<AccountProps> = () => {
         onSuccess(data) {
           setDefaultProfile(data);
           setEditImageOption(false);
+          setUploading(false);
+        },
+        onError() {
+          setUploading(false);
         },
       }
     );
-    setUploading(false);
   };
 
   const uploadImage = async () => {

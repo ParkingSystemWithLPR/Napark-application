@@ -7,7 +7,7 @@ import Specification from "./Specification";
 import Colors from "../../constants/color";
 import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
-import DropdownInput, { DropdownItem } from "../input/DropdownInput";
+import DropdownInput from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
 
 import { ActionMode } from "@/enum/ActionMode";
@@ -101,7 +101,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       !maxCheckOutTime ||
       !isEqual(minCheckOutTime, maxCheckOutTime));
 
-  const licensePlateList = profile.user_cars;
+  const licensePlateList = profile.cars;
   const licensePlateDropdown =
     (licensePlateList && formatDropdownFromLicensePlates(licensePlateList)) ??
     [];
@@ -237,10 +237,6 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
           {
             label: "Not found your license plate",
             value: "Not found your license plate",
-          },
-          {
-            label: "Test",
-            value: "Test",
           },
         ]}
         title="License Plate"

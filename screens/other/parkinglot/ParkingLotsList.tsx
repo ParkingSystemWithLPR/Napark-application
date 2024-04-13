@@ -1,5 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,7 +17,6 @@ import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours } from "@/utils/date";
-import { format } from "date-fns";
 
 export type ParkingLotsListProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,
@@ -36,7 +36,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   });
 
   useEffect(() => {
-    if (getParkingLots.data) {
+    if (getParkingLots.isSuccess) {
       setParkingLots(getParkingLots.data);
       setLoading(false);
     }
@@ -81,7 +81,11 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                     : "Not available"
                 }
                 availabilty={0}
-                onPress={() => navigation.navigate("ParkingLotDetail", { parkingLotId: item._id })}
+                onPress={() =>
+                  navigation.navigate("ParkingLotDetail", {
+                    parkingLotId: item._id,
+                  })
+                }
               />
             )}
             overScrollMode="never"

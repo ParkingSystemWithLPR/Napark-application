@@ -7,15 +7,15 @@ import {
 } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 
-import MyTextInput from "../input/TextInput";
-import SecondaryButton from "../button/SecondaryButton";
-import IconButton from "../button/IconButton";
 import DropdownInput from "./DropdownInput";
+import IconButton from "../button/IconButton";
+import SecondaryButton from "../button/SecondaryButton";
+import MyTextInput from "../input/TextInput";
 
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { ParkingLotRequest, Zone } from "@/types/parking-lot";
 import { ZoneType } from "@/enum/ParkingLot";
+import { ParkingLotRequest, Zone } from "@/types/parking-lot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
 export type ParkingZoneInputProps = {
