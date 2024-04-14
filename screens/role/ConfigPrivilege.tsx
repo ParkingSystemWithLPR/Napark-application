@@ -1,5 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -14,7 +15,7 @@ import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
 import { useAuth } from "@/store/context/auth";
-import { useParkingLot } from "@/store/context/parkingLot";
+import { PrivilegeZone, useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
@@ -26,17 +27,23 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   navigation,
   route,
 }) => {
-  const { mode, index } = route.params;
-  const { parkingLot, setParkingLot } = useParkingLot();
+  const { mode, index: privilegeIndex } = route.params;
+  const { parkingLot, setParkingLot, getPrivilegeArea } = useParkingLot();
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const { accessToken, authenticate } = useAuth();
-  const parking_privileges = parkingLot.parking_privileges;
+
+  const privilegeZones = getPrivilegeArea(privilegeIndex);
+
+  // const privilegeArea = getPrivilegeArea(privilegeIndex); // get all discount list in this privilege
+  // const privilegeArea = [{ floor: 1, zone: "A", price: 10, unit: "baht/hr" }];
+  const parking_privileges = parkingLot.parking_privileges; // get all privileges
   const category = ManagingCategory.PRIVILEGE;
   const form = useForm();
   const { control, handleSubmit } = form;
 
   const onSubmit = async (data: FieldValues) => {
     try {
+      console.log("data", data);
       const privilege = {
         title: data.name,
         user_ids: [],
@@ -45,7 +52,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       if (mode === ActionMode.CREATE) {
         parking_privileges.push(privilege);
       } else {
-        parking_privileges[index] = privilege;
+        parking_privileges[privilegeIndex] = privilege;
       }
       await editParkingLotAsync(
         {
@@ -62,7 +69,6 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
         }
       );
       navigation.goBack();
-      console.log("data", data);
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -76,7 +82,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       <Controller
         name={"name"}
         control={control}
-        defaultValue={parking_privileges[index]?.title}
+        defaultValue={parking_privileges[privilegeIndex]?.title}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Name"
@@ -100,17 +106,18 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       />
       <SubHeaderText text="Privilege" />
       <View style={styles.roleCardContainer}>
-        {parking_privileges.map((_, index) => (
+        {privilegeZones.map((a, index) => (
           <RoleCard
             category={category}
-            roleName="A1"
-            description="60 baht/hr"
+            roleName={`${a.floor} ${a.zone}`}
+            description=""
             key={index}
             onPress={() =>
               navigation.navigate("ConfigZone", {
                 form: form,
                 mode: ActionMode.EDIT,
-                index: index,
+                zoneIndex: index,
+                data: a,
               })
             }
           />
@@ -122,7 +129,6 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
           navigation.navigate("ConfigZone", {
             form: form,
             mode: ActionMode.CREATE,
-            index: parking_privileges.length,
           })
         }
       />

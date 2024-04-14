@@ -1,6 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Controller } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+import { Controller, FieldValues } from "react-hook-form";
 import { LogBox, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -8,6 +9,7 @@ import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingZonePrivilegeInput from "@/components/input/ParkingZonePrivilegeInput";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import { ZonePricing } from "@/types/parking-lot";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -19,23 +21,24 @@ export type ConfigZoneProps = CompositeScreenProps<
 >;
 
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
-  const { form, mode, index } = route.params;
-  const { control } = form;
+  const { form, mode, zoneIndex, data } = route.params;
+  const { control, handleSubmit, setValue } = form;
+
+  const [zones, setZones] = useState<ZonePricing[]>(
+    !!data ? [data] : [{ floor: 0, zone: "A", price: 0, unit: "baht/hour" }]
+  );
+
+  const updateForm = () => {
+    setValue("privilege", zones);
+  };
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <Controller
-        name="privilege"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <ParkingZonePrivilegeInput
-            value={value}
-            onChange={onChange}
-            mode={mode}
-            zoneIndex={index}
-            form={form}
-          />
-        )}
+      <ParkingZonePrivilegeInput
+        mode={mode}
+        form={form}
+        zones={zones}
+        setZones={setZones}
       />
       <View style={styles.buttonContainer}>
         <SecondaryButton
@@ -44,7 +47,13 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
             navigation.goBack();
           }}
         />
-        <PrimaryButton title={"Save"} onPress={() => navigation.goBack()} />
+        <PrimaryButton
+          title={"Save"}
+          onPress={() => {
+            updateForm();
+            navigation.goBack();
+          }}
+        />
       </View>
     </BodyContainer>
   );

@@ -8,6 +8,7 @@ import { Car } from "./user";
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
+import { PrivilegeZone } from "@/store/context/parkingLot";
 
 export type RootParamList = {
   Splash: undefined;
@@ -59,7 +60,8 @@ export type OtherStackParamList = {
   ConfigZone: {
     form: UseFormReturn<FieldValues, any, undefined>;
     mode: ActionMode;
-    index: number;
+    zoneIndex?: number;
+    data?: PrivilegeZone;
   };
 };
 
