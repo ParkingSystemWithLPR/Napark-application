@@ -12,6 +12,9 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
+import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
+import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
@@ -19,14 +22,46 @@ export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
+const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
+  navigation,
+  route,
+}) => {
+  const { mode, index } = route.params;
+  const { parkingLot, setParkingLot } = useParkingLot();
+  const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
+  const { accessToken, authenticate } = useAuth();
+  const parking_privileges = parkingLot.parking_privileges;
   const category = ManagingCategory.PRIVILEGE;
   const form = useForm();
   const { control, handleSubmit } = form;
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      // todo: send data
+      const privilege = {
+        title: data.name,
+        user_ids: [],
+        slot_prices: [],
+      };
+      if (mode === ActionMode.CREATE) {
+        parking_privileges.push(privilege);
+      } else {
+        parking_privileges[index] = privilege;
+      }
+      await editParkingLotAsync(
+        {
+          queryParams: {
+            parkingLotId: parkingLot._id,
+            editParams: { parking_privileges: parking_privileges },
+          },
+          auth: { accessToken, authenticate },
+        },
+        {
+          onSuccess(data) {
+            setParkingLot(data);
+          },
+        }
+      );
+      navigation.goBack();
       console.log("data", data);
     } catch (error) {
       Alert.alert(
@@ -36,13 +71,12 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
     }
   };
 
-  const mock = [{}];
-
   return (
     <BodyContainer innerContainerStyle={styles.container}>
       <Controller
         name={"name"}
         control={control}
+        defaultValue={parking_privileges[index]?.title}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Name"
@@ -66,7 +100,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
       />
       <SubHeaderText text="Privilege" />
       <View style={styles.roleCardContainer}>
-        {mock.map((_, index) => (
+        {parking_privileges.map((_, index) => (
           <RoleCard
             category={category}
             roleName="A1"
@@ -88,7 +122,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({ navigation }) => {
           navigation.navigate("ConfigZone", {
             form: form,
             mode: ActionMode.CREATE,
-            index: mock.length,
+            index: parking_privileges.length,
           })
         }
       />
