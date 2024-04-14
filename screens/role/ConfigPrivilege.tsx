@@ -1,6 +1,5 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -34,9 +33,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
 
   const privilegeZones = getPrivilegeArea(privilegeIndex);
 
-  // const privilegeArea = getPrivilegeArea(privilegeIndex); // get all discount list in this privilege
-  // const privilegeArea = [{ floor: 1, zone: "A", price: 10, unit: "baht/hr" }];
-  const parking_privileges = parkingLot.parking_privileges; // get all privileges
+  const parking_privileges = parkingLot.parking_privileges;
   const category = ManagingCategory.PRIVILEGE;
   const form = useForm();
   const { control, handleSubmit } = form;
