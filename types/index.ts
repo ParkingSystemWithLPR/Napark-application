@@ -2,13 +2,12 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
-import { ParkingLot } from "./parking-lot";
+import { ParkingLot, ZonePricing } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { PrivilegeZone } from "@/store/context/parkingLot";
 
 export type RootParamList = {
   Splash: undefined;
@@ -61,7 +60,7 @@ export type OtherStackParamList = {
     form: UseFormReturn<FieldValues, any, undefined>;
     mode: ActionMode;
     zoneIndex?: number;
-    data?: PrivilegeZone;
+    data?: ZonePricing;
   };
 };
 

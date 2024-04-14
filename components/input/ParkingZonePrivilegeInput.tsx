@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import DropdownInput from "./DropdownInput";
@@ -11,8 +10,6 @@ import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
 import { InputType } from "@/enum/InputType";
 import { PriceRateUnit } from "@/enum/ParkingLot";
-import { MOCKED_ZONE_DROPDOWN } from "@/mock/mockData";
-import { PrivilegeZone, useParkingLot } from "@/store/context/parkingLot";
 import { ZonePricing } from "@/types/parking-lot";
 import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
@@ -29,37 +26,56 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   zones,
   setZones,
 }) => {
+  const [floor, setFloor] = useState<string[]>([
+    zones[0].floor?.toString() ?? "",
+  ]);
+  const [zone, setZone] = useState<string[]>([zones[0].zone ?? ""]);
+  const [price, setPrice] = useState<number[]>([zones[0].price ?? 0]);
+  const [unit, setUnit] = useState<PriceRateUnit[]>([
+    zones[0].unit ?? PriceRateUnit.BAHT_PER_HOUR,
+  ]);
+
+  useEffect(() => {
+    for (let i = 0; i < floor.length; i++) {
+      const newZone = {
+        floor: +floor[i],
+        zone: zone[i],
+        price: price[i],
+        unit: unit[i],
+      };
+      zones[i] = newZone;
+    }
+  }, [floor, zone, price, unit]);
+
   return (
     <ScrollView>
       <View style={{ gap: 5 }}>
         {zones.map((_, index) => {
           const idx = mode === ActionMode.CREATE ? index : 0;
-          const [floor, setFloor] = useState<string>();
-          const [zone, setZone] = useState<string>();
-          const [price, setPrice] = useState<number>(zones[idx].price);
-          const [unit, setUnit] = useState<PriceRateUnit>();
-
-          // useEffect(() => {
-          //   const newZone = {floor, zone, price, unit}
-          //   zones[idx] = newZone
-          // }, [floor, price]);
-
           return (
             <View style={{ gap: 5 }}>
               <View style={styles.dropdownContainer}>
                 <DropdownInput
                   title="Floor"
                   placeholder="Select floor"
-                  selectedValue={floor}
-                  onSelect={setFloor}
+                  selectedValue={floor[idx]}
+                  onSelect={(f) => {
+                    const newFloor = [...floor];
+                    newFloor[idx] = f;
+                    setFloor(newFloor);
+                  }}
                   items={[{ label: "1", value: "1" }]}
                   containerStyle={{ flex: 1 }}
                 />
                 <DropdownInput
                   title="Zone"
-                  selectedValue={zone}
+                  selectedValue={zone[idx]}
                   placeholder="Select zone"
-                  onSelect={setZone}
+                  onSelect={(z) => {
+                    const newZone = [...zone];
+                    newZone[idx] = z;
+                    setZone(newZone);
+                  }}
                   items={[{ label: "A", value: "A" }]}
                   containerStyle={{ flex: 1 }}
                 />
@@ -68,17 +84,27 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                 <TextInput
                   title="Price"
                   placeholder="Enter parking fee"
-                  value={price.toString()}
-                  onChangeText={(price: string) => setPrice(+price)}
+                  value={price[idx]?.toString() ?? 0}
+                  onChangeText={(p: string) => {
+                    const newPrice = [...price];
+                    newPrice[idx] = parseInt(p);
+                    setPrice(newPrice);
+                  }}
                   inputMode={InputType.Numeric}
                   containerStyle={{ flex: 1 }}
                 />
                 <DropdownInput
-                  selectedValue={unit}
+                  selectedValue={unit[idx]}
                   title="Unit"
                   placeholder={"Select fee unit"}
-                  onSelect={setUnit}
-                  items={formatEnumtoDropdownItem(PriceRateUnit)}
+                  onSelect={(u: PriceRateUnit) => {
+                    const newUnit = [...unit];
+                    newUnit[idx] = u;
+                    setUnit(newUnit);
+                  }}
+                  items={Object.values(PriceRateUnit).map((value) => {
+                    return { label: value, value: value };
+                  })}
                   containerStyle={{ flex: 1 }}
                 />
               </View>
@@ -106,10 +132,11 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
           buttonStyle={styles.addZoneButton}
           textStyle={{ color: Colors.black }}
           onPress={() => {
-            setZones([
-              ...zones,
-              { floor: 0, zone: "A", price: 0, unit: "baht/hour" },
-            ]);
+            setZones([...zones, {}]);
+            setFloor([...floor, ""]);
+            setZone([...zone, ""]);
+            setPrice([...price, 0]);
+            setUnit([...unit, PriceRateUnit.BAHT_PER_HOUR]);
           }}
         />
       )}

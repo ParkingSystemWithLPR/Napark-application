@@ -1,8 +1,7 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useEffect, useState } from "react";
-import { Controller, FieldValues } from "react-hook-form";
-import { LogBox, StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Alert, LogBox, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
@@ -24,12 +23,19 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
   const { form, mode, zoneIndex, data } = route.params;
   const { control, handleSubmit, setValue } = form;
 
-  const [zones, setZones] = useState<ZonePricing[]>(
-    !!data ? [data] : [{ floor: 0, zone: "A", price: 0, unit: "baht/hour" }]
-  );
+  const [zones, setZones] = useState<ZonePricing[]>(!!data ? [data] : [{}]);
 
-  const updateForm = () => {
+  const onSave = () => {
+    for (let i = 0; i < zones.length; i++) {
+      const { floor, zone, price, unit } = zones[i];
+      if (!floor || !zone || !price || !unit) {
+        console.log(zones[i])
+        Alert.alert("Please fill all information.");
+        return;
+      }
+    }
     setValue("privilege", zones);
+    navigation.goBack();
   };
 
   return (
@@ -50,8 +56,7 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
         <PrimaryButton
           title={"Save"}
           onPress={() => {
-            updateForm();
-            navigation.goBack();
+            onSave();
           }}
         />
       </View>
