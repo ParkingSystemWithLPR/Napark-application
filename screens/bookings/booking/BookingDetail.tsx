@@ -33,6 +33,7 @@ import {
   createDefaultBookingDetailState,
 } from "@/utils/bookingRequest";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
+import { SlotType } from "@/enum/SlotType";
 
 export type BookingDetailState = {
   carId: string;
@@ -40,8 +41,8 @@ export type BookingDetailState = {
   checkInTime: string | null;
   checkOutDate: string | null;
   checkOutTime: string | null;
-  specification: string;
-  floor: number;
+  specification: SlotType;
+  floor: number | null;
   slotId: string;
   slotName: string;
   price: number;
@@ -92,11 +93,12 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
     });
   };
   const resetSlotInBookingDetailState = () => {
-    const { slotId, slotName, price, unit } = defaultBookingDetailState;
+    const { slotId, slotName, price, unit, floor } = defaultBookingDetailState;
     handleOnChange("slotId", slotId);
     handleOnChange("slotName", slotName);
     handleOnChange("price", price);
     handleOnChange("unit", unit);
+    handleOnChange("floor", floor);
   };
   const openSetting = () => {
     resetSlotInBookingDetailState();
@@ -192,7 +194,11 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     if (getAvailableSlot.isSuccess) {
-      setAvailableSlot(getAvailableSlot.data);
+      if (getAvailableSlot.data.recommended_slots) {
+        setAvailableSlot(getAvailableSlot.data);
+      } else {
+        Alert.alert("No Available Slot from the selected duration");
+      }
     }
   }, [getAvailableSlot.data]);
 
@@ -214,7 +220,7 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
               bookingDetailState={bookingDetailState}
               onChange={handleOnChange}
               closeSetting={closeSetting}
-              bussinessDays={parkingLot.business_days}
+              parkingLot={parkingLot}
             />
           </View>
         ) : (

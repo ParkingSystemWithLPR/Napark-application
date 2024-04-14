@@ -12,21 +12,29 @@ import { formatToSentenceCase } from "@/utils/text";
 export type SpecificationProps = {
   specification: string | undefined;
   onChange: (id: string | undefined) => void;
+  existingSpecification: SlotType[];
 };
 
 const Specification: React.FC<SpecificationProps> = ({
   specification,
   onChange,
+  existingSpecification,
 }) => {
   const radioButtons: RadioButtonProps[] = useMemo(
     () =>
-      Object.values(SlotType).map((value) => {
-        return {
-          id: value,
-          label: formatToSentenceCase(value),
-          color: Colors.red[400].toString(),
-        };
-      }),
+      Object.values(SlotType)
+        .filter((value) => {
+          return existingSpecification.some(
+            (comparedValue) => comparedValue === value
+          );
+        })
+        .map((value) => {
+          return {
+            id: value,
+            label: formatToSentenceCase(value),
+            color: Colors.red[400].toString(),
+          };
+        }),
     []
   );
 

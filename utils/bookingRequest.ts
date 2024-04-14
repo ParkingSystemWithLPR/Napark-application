@@ -12,6 +12,8 @@ import { GetAvailableSlotsQueryParam } from "@/store/api/booking/useGetAvailable
 import {
   Booking,
   CreateBookingRequest,
+  FloorProfile,
+  SlotProfile,
   SlotProfileWithPrivilege,
 } from "@/types/booking";
 import { ParkingLot } from "@/types/parking-lot";
@@ -24,7 +26,7 @@ export const defaultBookingDetailState: BookingDetailState = {
   checkOutDate: null,
   checkOutTime: null,
   specification: SlotType.Normal,
-  floor: -1,
+  floor: null,
   slotId: "",
   slotName: "",
   price: -1,
@@ -94,7 +96,7 @@ export const getQueryParamFromBookingDetailState = (
       end_time: bookingDetailState.checkOutTime
         ? formatTimeWithSecond(bookingDetailState.checkOutTime)
         : "",
-      is_for_disabled: bookingDetailState.specification != SlotType.Normal,
+      slot_type: bookingDetailState.specification,
     };
   }
   return {
@@ -103,12 +105,16 @@ export const getQueryParamFromBookingDetailState = (
     start_time: null,
     end_date: null,
     end_time: null,
-    is_for_disabled: false,
+    slot_type: SlotType.Normal,
   };
 };
 
-export const getTotalFloor = (slots: SlotProfileWithPrivilege[]) => {
-  return [...new Set(slots.map((item) => item.floor))];
+export const getTotalFloor = (slots: FloorProfile[]) => {
+  return slots.map((item) => item.floor);
+};
+
+export const getSpecificationList = (slots: SlotProfile[]) => {
+  return slots.map((item) => item.type); //ยังไม่มีอันไหนที่ใช้ได้ตรงๆอะเลยต้อง อ้อมๆแบบนี้ไปก่อน
 };
 
 export const formatCreateBookingRequest = (

@@ -5,6 +5,7 @@ import { BOOKING_URL } from "..";
 
 import { AvailableSlotResponse } from "@/types/booking";
 import apiRequest, { HTTPMethod } from "@/utils/http";
+import { SlotType } from "@/enum/SlotType";
 
 export interface GetAvailableSlotsQueryParam {
   parkinglot_id: string;
@@ -12,7 +13,7 @@ export interface GetAvailableSlotsQueryParam {
   start_time: string | null;
   end_date: string | null;
   end_time: string | null;
-  is_for_disabled: boolean;
+  slot_type: SlotType;
 }
 
 type GetAvailableSlotsInput = {
@@ -37,13 +38,11 @@ export const getAvailableSlot: GetAvailableSlotsService = async ({
     start_time,
     end_date,
     end_time,
-    is_for_disabled,
+    slot_type,
   } = queryParams;
   const data = await apiRequest<AvailableSlotResponse>(
     BOOKING_URL +
-      `/booking_v1/available-slots?parkinglot_id=${parkinglot_id}&start_date=${start_date}&start_time=${start_time}&end_date=${end_date}&end_time=${end_time}&is_for_disabled=${
-        is_for_disabled ? "true" : "false"
-      }`,
+      `/booking_v1/available-slots?parkinglot_id=${parkinglot_id}&start_date=${start_date}&start_time=${start_time}&end_date=${end_date}&end_time=${end_time}&slot_type=${slot_type}`,
     HTTPMethod.GET,
     auth.accessToken,
     auth.authenticate

@@ -14,7 +14,7 @@ import { ActionMode } from "@/enum/ActionMode";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 import { useProfile } from "@/store/context/profile";
 import { AuthenticatedStackParamListProps } from "@/types";
-import { BusinessDay } from "@/types/parking-lot";
+import { BusinessDay, ParkingLot } from "@/types/parking-lot";
 import {
   disableDate,
   duration,
@@ -25,23 +25,21 @@ import {
   isCheckInTimeout,
   isCheckOutTimeout,
 } from "@/utils/date";
-import {
-  formatDropdownFromLicensePlates,
-  initDropdownValue,
-} from "@/utils/dropdown";
+import { formatDropdownFromLicensePlates } from "@/utils/dropdown";
+import { getSpecificationList } from "@/utils/bookingRequest";
 
 export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   closeSetting: () => void;
-  bussinessDays: BusinessDay[];
+  parkingLot: ParkingLot;
 };
 
 const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   bookingDetailState,
   onChange,
   closeSetting,
-  bussinessDays,
+  parkingLot,
 }) => {
   const {
     checkOutTime,
@@ -51,6 +49,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     checkInTime,
     specification,
   } = bookingDetailState;
+  const { business_days, slots } = parkingLot;
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const { profile } = useProfile();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
@@ -107,7 +106,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     [];
 
   const disableDateHandler =
-    bussinessDays && disableDate.bind(this, bussinessDays);
+    business_days && disableDate.bind(this, business_days);
 
   const checkInTimeHandler = (checkInTime: string | null) => {
     if (checkInTime && checkInDate) {
@@ -169,7 +168,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     setDisplay: (displayString?: string) => void
   ) => {
     const now = new Date();
-    const value = bussinessDays && getOpenCloseTime(date, bussinessDays);
+    const value = business_days && getOpenCloseTime(date, business_days);
     if (value) {
       const { open_time, close_time } = value;
       const openTimeObject = open_time
@@ -292,11 +291,12 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         />
       </View>
       <Specification
+        existingSpecification={getSpecificationList(slots)}
         specification={specification}
         onChange={setSpecification}
       />
       <PrimaryButton
-        title={"Done"}
+        title={"Next"}
         onPress={closeSetting}
         outerContainerStyle={styles.buttonContainer}
         buttonStyle={styles.button}

@@ -2,9 +2,19 @@ import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import { SlotType } from "@/enum/SlotType";
 
+export interface ZoneProfile {
+  name: string;
+  slots: SlotProfileWithPrivilege[];
+}
+
+export interface FloorProfile {
+  floor: number;
+  zones: ZoneProfile[];
+}
+
 export interface AvailableSlotResponse {
   recommended_slots: SlotProfileWithPrivilege | null;
-  available_slots: SlotProfileWithPrivilege[];
+  available_slots: FloorProfile[];
 }
 
 export interface SlotProfileWithPrivilege {
