@@ -26,7 +26,6 @@ import {
   isCheckOutTimeout,
 } from "@/utils/date";
 import { formatDropdownFromLicensePlates } from "@/utils/dropdown";
-import { getSpecificationList } from "@/utils/bookingRequest";
 
 export type BookingDetailComponentProps = {
   bookingDetailState: BookingDetailState;
@@ -49,7 +48,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     checkInTime,
     specification,
   } = bookingDetailState;
-  const { business_days, slots } = parkingLot;
+  const { business_days } = parkingLot;
   const navigation = useNavigation<AuthenticatedStackParamListProps>();
   const { profile } = useProfile();
   const [isFirstUpdate, setIsFirstUpdate] = useState(true);
@@ -291,7 +290,6 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
         />
       </View>
       <Specification
-        existingSpecification={getSpecificationList(slots)}
         specification={specification}
         onChange={setSpecification}
       />

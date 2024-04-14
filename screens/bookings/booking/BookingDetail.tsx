@@ -13,6 +13,7 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ValidateStatus } from "@/enum/BookingValidateStatus";
+import { SlotType } from "@/enum/SlotType";
 import {
   GetAvailableSlotsQueryParam,
   useGetAvailableSlot,
@@ -33,7 +34,6 @@ import {
   createDefaultBookingDetailState,
 } from "@/utils/bookingRequest";
 import { formatHumanReadableDateFromDateString } from "@/utils/date";
-import { SlotType } from "@/enum/SlotType";
 
 export type BookingDetailState = {
   carId: string;
@@ -197,7 +197,10 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
       if (getAvailableSlot.data.recommended_slots) {
         setAvailableSlot(getAvailableSlot.data);
       } else {
-        Alert.alert("No Available Slot from the selected duration");
+        Alert.alert(
+          "No Available Slot from the selected duration or specification"
+        );
+        setIsSetting(true);
       }
     }
   }, [getAvailableSlot.data]);
