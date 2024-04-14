@@ -44,6 +44,8 @@ export interface SlotProfile {
 
 export interface SlotPriceProfile {
   slot_id: string;
+  floor: number;
+  zone: string;
   price_rate: number;
   price_rate_unit: PriceRateUnit;
 }
