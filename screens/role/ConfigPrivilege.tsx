@@ -15,7 +15,7 @@ import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
 import { useAuth } from "@/store/context/auth";
-import { PrivilegeZone, useParkingLot } from "@/store/context/parkingLot";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<

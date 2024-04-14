@@ -6,6 +6,7 @@ import { SlotPriceProfile, SlotProfile } from "../booking";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { ZoneType } from "@/enum/ParkingLot";
 import { ImageProps } from "..";
+import { PriceRateUnit, ZoneType } from "@/enum/ParkingLot";
 
 export type ParkingLot = {
   _id: string;
@@ -87,4 +88,10 @@ export type ParkingPrivilegeProfile = {
 export type Availability = {
   vacant: number;
   capacity: number;
+};
+export type ZonePricing = {
+  floor?: number;
+  zone?: string;
+  price?: number;
+  unit?: PriceRateUnit;
 };

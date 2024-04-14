@@ -1,19 +1,12 @@
 import { ReactNode, createContext, useContext, useMemo, useState } from "react";
 
 import { PriceRateUnit } from "@/enum/ParkingLot";
-import { ParkingLot } from "@/types/parking-lot";
-
-export type PrivilegeZone = {
-  floor: number;
-  zone: string;
-  price: number;
-  unit: PriceRateUnit;
-};
+import { ParkingLot, ZonePricing } from "@/types/parking-lot";
 
 interface IParkingLotContext {
   parkingLot: ParkingLot;
   setParkingLot: (parkingLot: ParkingLot) => void;
-  getPrivilegeArea: (index: number) => PrivilegeZone[];
+  getPrivilegeArea: (index: number) => ZonePricing[];
   floorsAndZones: { floor: number; zones: string[] }[];
 }
 
@@ -89,7 +82,7 @@ const ParkingLotContextProvider = ({ children }: { children: ReactNode }) => {
     const privilegeArea = useMemo(() => {
       return Object.values(
         parkingLot.parking_privileges[index].slot_prices.reduce(
-          (acc: { [key: string]: PrivilegeZone }, obj) => {
+          (acc: { [key: string]: ZonePricing }, obj) => {
             const key = `${obj.floor} ${obj.zone}`;
             if (!acc[key]) {
               acc[key] = {

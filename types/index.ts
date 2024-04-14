@@ -9,7 +9,6 @@ import { Car } from "./user";
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { PrivilegeZone } from "@/store/context/parkingLot";
 
 export type RootParamList = {
   Splash: undefined;
