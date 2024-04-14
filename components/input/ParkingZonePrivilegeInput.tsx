@@ -11,7 +11,6 @@ import { ActionMode } from "@/enum/ActionMode";
 import { InputType } from "@/enum/InputType";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import { ZonePricing } from "@/types/parking-lot";
-import { formatEnumtoDropdownItem } from "@/utils/dropdown";
 
 export type ParkingZonePrivilegeInputProps = {
   mode: ActionMode;
