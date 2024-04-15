@@ -23,9 +23,24 @@ export type RoleMemberProps = NativeStackScreenProps<
 >;
 
 const mockedMember = [
-  { _id: "6606a52af3a741552b912d56", firstname: "Kanin", lastname: "Kanin", email: "kanin.com" },
-  { _id: "6606a52af3a741552b912d57", firstname: "Tae", lastname: "VC", email: "taevc.com" },
-  { _id: "6606a52af3a741552b912d58", firstname: "Ing", lastname: "Huasom", email: "huasom.com" },
+  {
+    _id: "6606a52af3a741552b912d56",
+    firstname: "Kanin",
+    lastname: "Kanin",
+    email: "kanin.com",
+  },
+  {
+    _id: "6606a52af3a741552b912d57",
+    firstname: "Tae",
+    lastname: "VC",
+    email: "taevc.com",
+  },
+  {
+    _id: "6606a52af3a741552b912d58",
+    firstname: "Ing",
+    lastname: "Huasom",
+    email: "huasom.com",
+  },
 ];
 
 const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {

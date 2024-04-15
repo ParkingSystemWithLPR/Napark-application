@@ -56,11 +56,10 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
     try {
       const privilege = {
         title: data.name,
-        user_ids: data.user_ids ?? parking_privileges[privilegeIndex],
+        user_ids: data.user_ids ?? parking_privileges[privilegeIndex].user_ids,
         slot_prices: [],
       };
       if (mode === ActionMode.CREATE) {
@@ -171,7 +170,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
         onPress={() =>
           navigation.navigate("RoleMember", {
             form: form,
-            userList: parking_privileges[privilegeIndex].user_ids,
+            userList: parking_privileges[privilegeIndex]?.user_ids ?? [],
           })
         }
       />
