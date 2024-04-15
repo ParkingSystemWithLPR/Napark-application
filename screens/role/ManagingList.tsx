@@ -106,7 +106,10 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
               : "ConfigPrivilege",
             {
               mode: ActionMode.CREATE,
-              index: management_roles.length,
+              index:
+                category === ManagingCategory.ROLE
+                  ? management_roles.length
+                  : parking_privileges.length,
             }
           );
         }}

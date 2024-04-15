@@ -58,24 +58,32 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   title="Floor"
                   placeholder="Select floor"
                   selectedValue={floor[idx]}
+                  isRequired={true}
                   onSelect={(f) => {
                     const newFloor = [...floor];
                     newFloor[idx] = f;
                     setFloor(newFloor);
                   }}
-                  items={[{ label: "1", value: "1" }]}
+                  items={[
+                    { label: "1", value: "1" },
+                    { label: "20", value: "20" },
+                  ]}
                   containerStyle={{ flex: 1 }}
                 />
                 <DropdownInput
                   title="Zone"
                   selectedValue={zone[idx]}
                   placeholder="Select zone"
+                  isRequired={true}
                   onSelect={(z) => {
                     const newZone = [...zone];
                     newZone[idx] = z;
                     setZone(newZone);
                   }}
-                  items={[{ label: "A", value: "A" }]}
+                  items={[
+                    { label: "A", value: "A" },
+                    { label: "Z", value: "Z" },
+                  ]}
                   containerStyle={{ flex: 1 }}
                 />
               </View>
@@ -83,7 +91,8 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                 <TextInput
                   title="Price"
                   placeholder="Enter parking fee"
-                  value={price[idx]?.toString() ?? 0}
+                  value={price[idx]?.toString()}
+                  isRequired={true}
                   onChangeText={(p: string) => {
                     const newPrice = [...price];
                     newPrice[idx] = parseInt(p);
@@ -96,6 +105,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   selectedValue={unit[idx]}
                   title="Unit"
                   placeholder={"Select fee unit"}
+                  isRequired={true}
                   onSelect={(u: PriceRateUnit) => {
                     const newUnit = [...unit];
                     newUnit[idx] = u;
@@ -114,9 +124,21 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   color={""}
                   buttonStyle={styles.closeButton}
                   onPress={() => {
-                    const newZone = zones;
-                    newZone.splice(index, 1);
-                    setZones(newZone);
+                    const newZones = [...zones];
+                    newZones.splice(idx, 1);
+                    setZones(newZones);
+                    const newFloor = [...floor];
+                    const newZone = [...zone];
+                    const newPrice = [...price];
+                    const newUnit = [...unit];
+                    newFloor.splice(idx, 1);
+                    newZone.splice(idx, 1);
+                    newPrice.splice(idx, 1);
+                    newUnit.splice(idx, 1);
+                    setFloor(newFloor);
+                    setZone(newZone);
+                    setPrice(newPrice);
+                    setUnit(newUnit);
                   }}
                 />
               )}

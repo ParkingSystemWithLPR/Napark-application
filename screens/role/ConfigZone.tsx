@@ -7,6 +7,7 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingZonePrivilegeInput from "@/components/input/ParkingZonePrivilegeInput";
 import BodyContainer from "@/components/ui/BodyContainer";
+import { ActionMode } from "@/enum/ActionMode";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 import { ZonePricing } from "@/types/parking-lot";
 
@@ -20,21 +21,44 @@ export type ConfigZoneProps = CompositeScreenProps<
 >;
 
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
-  const { form, mode, zoneIndex, data } = route.params;
-  const { control, handleSubmit, setValue } = form;
+  const { form, mode, data, zoneIndex, onEditPrivilege } = route.params;
+  const { setValue, getValues } = form;
 
   const [zones, setZones] = useState<ZonePricing[]>(!!data ? [data] : [{}]);
 
   const onSave = () => {
-    for (let i = 0; i < zones.length; i++) {
-      const { floor, zone, price, unit } = zones[i];
-      if (!floor || !zone || !price || !unit) {
-        console.log(zones[i])
-        Alert.alert("Please fill all information.");
+    if (mode === ActionMode.EDIT) {
+      const { floor, zone, price, unit } = zones[0];
+      if (
+        zoneIndex !== undefined &&
+        floor &&
+        zone &&
+        price &&
+        unit &&
+        onEditPrivilege
+      ) {
+        onEditPrivilege(zoneIndex, zones[0]);
+      } else {
+        Alert.alert("Please fill all information");
         return;
       }
+    } else if (mode === ActionMode.DRAFT) {
+      if (zoneIndex) {
+        const newPrivilege = getValues("privilege");
+        newPrivilege[zoneIndex] = zones[0];
+        setValue("privilege", newPrivilege);
+      }
+    } else {
+      for (let i = 0; i < zones.length; i++) {
+        const { floor, zone, price, unit } = zones[i];
+        if (!floor || !zone || !price || !unit) {
+          Alert.alert("Please fill all information.");
+          return;
+        }
+      }
+      const oldPrivilege: ZonePricing[] = getValues("privilege") || [];
+      setValue("privilege", [...oldPrivilege, ...zones]);
     }
-    setValue("privilege", zones);
     navigation.goBack();
   };
 

@@ -80,8 +80,10 @@ const ParkingLotContextProvider = ({ children }: { children: ReactNode }) => {
 
   const getPrivilegeArea = (index: number) => {
     const privilegeArea = useMemo(() => {
+      const length = parkingLot.parking_privileges.length;
+      if (length === 0 || length === index) return [];
       return Object.values(
-        parkingLot.parking_privileges[index].slot_prices.reduce(
+        parkingLot?.parking_privileges[index]?.slot_prices?.reduce(
           (acc: { [key: string]: ZonePricing }, obj) => {
             const key = `${obj.floor} ${obj.zone}`;
             if (!acc[key]) {

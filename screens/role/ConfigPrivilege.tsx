@@ -1,5 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -12,10 +13,12 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
+import { PriceRateUnit } from "@/enum/ParkingLot";
 import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
+import { ZonePricing } from "@/types/parking-lot";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
@@ -31,16 +34,29 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const { accessToken, authenticate } = useAuth();
 
-  const privilegeZones = getPrivilegeArea(privilegeIndex);
+  // const privilegeZones = getPrivilegeArea(privilegeIndex);
 
   const parking_privileges = parkingLot.parking_privileges;
   const category = ManagingCategory.PRIVILEGE;
   const form = useForm();
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, getValues } = form;
+  const draftPrivileges: ZonePricing[] = getValues("privilege");
+
+  const privilegeZones: ZonePricing[] = [
+    { floor: 20, zone: "Z", price: 1000, unit: PriceRateUnit.BAHT_PER_DAY },
+  ];
+
+  const [editedPrivilegeZones, setEditedPrivilegeZones] =
+    useState<ZonePricing[]>(privilegeZones);
+
+  const onEditPrivilege = (idx: number, zone: ZonePricing) => {
+    const newEditedPrivilegeZones = editedPrivilegeZones;
+    newEditedPrivilegeZones[idx] = zone;
+    setEditedPrivilegeZones(newEditedPrivilegeZones);
+  };
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      console.log("data", data);
       const privilege = {
         title: data.name,
         user_ids: [],
@@ -103,7 +119,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       />
       <SubHeaderText text="Privilege" />
       <View style={styles.roleCardContainer}>
-        {privilegeZones.map((a, index) => (
+        {editedPrivilegeZones.map((a, index) => (
           <RoleCard
             category={category}
             roleName={`${a.floor} ${a.zone}`}
@@ -115,10 +131,45 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
                 mode: ActionMode.EDIT,
                 zoneIndex: index,
                 data: a,
+                onEditPrivilege: onEditPrivilege,
               })
             }
           />
         ))}
+        {draftPrivileges?.map((a, index) => (
+          <RoleCard
+            category={category}
+            roleName={`${a.floor} ${a.zone} draft`}
+            description=""
+            key={index}
+            onPress={() =>
+              navigation.navigate("ConfigZone", {
+                form: form,
+                mode: ActionMode.DRAFT,
+                zoneIndex: index,
+                data: a,
+              })
+            }
+          />
+        ))}
+        {/* <RoleCard
+          category={category}
+          roleName="1 A"
+          description=""
+          onPress={() =>
+            navigation.navigate("ConfigZone", {
+              form: form,
+              mode: ActionMode.EDIT,
+              zoneIndex: 0,
+              data: {
+                floor: 1,
+                zone: "A",
+                price: 10,
+                unit: PriceRateUnit.BAHT_PER_HOUR,
+              },
+            })
+          }
+        /> */}
       </View>
       <PrimaryButton
         title="+ Add new zone"
