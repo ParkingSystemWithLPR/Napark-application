@@ -152,24 +152,6 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
             }
           />
         ))}
-        {/* <RoleCard
-          category={category}
-          roleName="1 A"
-          description=""
-          onPress={() =>
-            navigation.navigate("ConfigZone", {
-              form: form,
-              mode: ActionMode.EDIT,
-              zoneIndex: 0,
-              data: {
-                floor: 1,
-                zone: "A",
-                price: 10,
-                unit: PriceRateUnit.BAHT_PER_HOUR,
-              },
-            })
-          }
-        /> */}
       </View>
       <PrimaryButton
         title="+ Add new zone"
