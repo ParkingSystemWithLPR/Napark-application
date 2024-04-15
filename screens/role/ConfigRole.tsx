@@ -45,8 +45,15 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
       const role = {
         title: data.name,
         user_ids: data.user_ids ?? management_roles[index]?.user_ids,
-        permissions: [],
+        permissions: {
+          manage_parking_space: data.manageParkingSpace,
+          edit_management_role: data.editRole,
+          assign_management_role_mambers: data.assignRole,
+          edit_parking_privilege: data.editPrivilege,
+          assign_parking_privilege_members: data.assignPrivilege,
+        },
       };
+      console.log(role);
       if (mode === ActionMode.CREATE) {
         management_roles.push(role);
       } else {

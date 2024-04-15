@@ -74,7 +74,15 @@ export type Zone = {
 export type ManagementRoleProfile = {
   title: string;
   user_ids: string[];
-  permissions: string[];
+  permissions: ManagementPermission;
+};
+
+export type ManagementPermission = {
+  manage_parking_space: boolean;
+  edit_management_role: boolean;
+  assign_management_role_members: boolean;
+  edit_parking_privilege: boolean;
+  assign_parking_privilege_members: boolean;
 };
 
 export type ParkingPrivilegeProfile = {
