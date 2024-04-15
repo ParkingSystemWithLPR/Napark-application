@@ -4,8 +4,6 @@ import { ImageProps } from "..";
 import { SlotPriceProfile, SlotProfile } from "../booking";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
-import { ZoneType } from "@/enum/ParkingLot";
-import { ImageProps } from "..";
 import { PriceRateUnit, ZoneType } from "@/enum/ParkingLot";
 
 export type ParkingLot = {

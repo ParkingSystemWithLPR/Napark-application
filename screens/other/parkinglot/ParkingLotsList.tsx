@@ -16,7 +16,7 @@ import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import { getBusinessHours } from "@/utils/date";
+import { getBusinessHours, getDayInAWeek } from "@/utils/date";
 
 export type ParkingLotsListProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,

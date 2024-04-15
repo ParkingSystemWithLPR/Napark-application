@@ -3,11 +3,12 @@ import { NavigationProp } from "@react-navigation/native";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { Booking } from "./booking";
-import { ParkingLot } from "./parking-lot";
+import { ParkingLot, ZonePricing } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingStatus } from "@/enum/BookingStatus";
+import { ManagingCategory } from "@/enum/ManagingCategory";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
@@ -56,6 +57,16 @@ export type OtherStackParamList = {
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;
+  ManagingCategory: undefined;
+  ManagingList: { category: ManagingCategory };
+  ConfigPrivilege: { mode: ActionMode; index: number };
+  ConfigZone: {
+    form: UseFormReturn<FieldValues, any, undefined>;
+    mode: ActionMode;
+    zoneIndex?: number;
+    data?: ZonePricing;
+    onEditPrivilege?: (idx: number, zone: ZonePricing) => void;
+  };
 };
 
 export type BookingsStackParamList = {

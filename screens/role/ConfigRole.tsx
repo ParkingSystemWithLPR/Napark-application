@@ -48,7 +48,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
         permissions: {
           manage_parking_space: data.manageParkingSpace,
           edit_management_role: data.editRole,
-          assign_management_role_mambers: data.assignRole,
+          assign_management_role_members: data.assignRole,
           edit_parking_privilege: data.editPrivilege,
           assign_parking_privilege_members: data.assignPrivilege,
         },

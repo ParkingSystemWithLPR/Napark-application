@@ -1,9 +1,10 @@
 import { differenceInMinutes, format, isBefore, parseISO } from "date-fns";
 import { getFormatedDate } from "react-native-modern-datepicker";
 
+import { formatToSentenceCase } from "./text";
+
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot";
-import { formatToSentenceCase } from "./text";
 
 export const MINIMUM_DATE = new Date(1900, 1, 1);
 
