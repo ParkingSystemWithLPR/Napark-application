@@ -1,14 +1,12 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { Booking } from "./booking";
 import { ParkingLot, ZonePricing } from "./parking-lot";
 import { Car } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingStatus } from "@/enum/BookingStatus";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
@@ -50,11 +48,6 @@ export type OtherStackParamList = {
   EditParkingInfo: undefined;
   ConfigPricing: undefined;
   ConfigPlan: undefined;
-  RoleMember: {
-    form: UseFormReturn<FieldValues, any, undefined>;
-    userList: string[];
-  };
-  ConfigRole: { mode: ActionMode; index: number };
   RoleMember: {
     form: UseFormReturn<FieldValues, any, undefined>;
     userList: string[];
@@ -122,5 +115,4 @@ export type HyperlinkTextProps = TextProps & {
 export type ImageProps = {
   content: string;
   filename: string;
-};
 };
