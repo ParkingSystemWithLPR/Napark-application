@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Controller,
-  FieldErrors,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 
 import DropdownInput from "./DropdownInput";
@@ -22,7 +17,7 @@ export type ParkingZoneInputProps = {
   value: Zone[];
   onChange: (zones?: Zone[]) => void;
   floor: number;
-  register: UseFormRegister<ParkingLotRequest>;
+  control: Control<ParkingLotRequest, any>;
   errors: FieldErrors<ParkingLotRequest>;
 };
 
@@ -30,131 +25,148 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
   value,
   onChange,
   floor,
-  register,
+  control,
   errors,
 }) => {
-  const { control, getValues, setValue } = useForm<Zone[]>();
-  const [zones, setZones] = useState<Zone[]>(
-    value ?? [
-      {
-        name: "",
-        type: ZoneType.NORMAL,
-      },
-    ]
-  );
+  const [zones, setZones] = useState<Zone[]>();
 
   useEffect(() => {
-    if (value) {
-      value.forEach((item, index) => {
-        setValue(`${index}`, item);
+    if (value && value !== zones) {
+      const newZones: Zone[] = [];
+      value.forEach((item) => {
+        newZones.push(item);
       });
+      setZones(newZones);
     }
-  }, []);
+  }, [value]);
 
   useEffect(() => {
-    const formData = getValues();
-    const newZones: Zone[] = [];
-    Object.values(formData).forEach((zone: Zone, index: number) => {
-      if (index < zones.length) newZones.push(zone);
-    });
-    onChange(newZones);
+    onChange(zones);
   }, [zones]);
+
+  const onInputChange = (key: string, value: any, index: number) => {
+    if (zones) {
+      const editZone: Zone = {
+        ...zones[index],
+        [key]: value,
+      };
+      const newZones: Zone[] = [
+        ...zones.slice(0, index),
+        editZone,
+        ...zones.slice(index + 1),
+      ];
+      setZones(newZones);
+    }
+  };
+
+  const onAdd = () => {
+    if (zones)
+      setZones([
+        ...zones,
+        {
+          name: "",
+          type: ZoneType.NORMAL,
+        },
+      ]);
+  };
+
+  const onDelete = (index: number) => {
+    if (zones) {
+      setZones([...zones.slice(0, index), ...zones.slice(index + 1)]);
+    }
+  };
+
+  const isDuplicateZone = (name: string, idx: number): boolean => {
+    return (
+      !!zones &&
+      zones.filter((zone, index) => zone.name === name && index !== idx)
+        .length !== 0
+    );
+  };
 
   return (
     <View>
-      {zones.map((zone, index) => (
-        <View style={styles.settingContainer} key={`zone_${index}`}>
-          <View style={styles.sameLineInputContainer}>
-            <Controller
-              name={`${index}.name`}
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <MyTextInput
-                  {...register(`plan.${floor}.zones.${index}.name`, {
-                    required: "Please enter zone name",
-                  })}
-                  title="Zone"
-                  placeholder={"Zone"}
-                  value={value}
-                  onChangeText={onChange}
-                  containerStyle={{ flex: 1 }}
-                  errorText={
-                    errors.plan &&
-                    errors.plan[floor]?.zones?.[index]?.name?.message
-                  }
-                  isRequired
-                  editable
-                />
-              )}
-            />
-            <Controller
-              name={`${index}.capacity`}
-              control={control}
-              rules={{ required: "Please enter zone capacity " }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <MyTextInput
-                  {...register(`plan.${floor}.zones.${index}.capacity`, {
-                    required: "Please enter zone capacity",
-                  })}
-                  title="Capacity"
-                  placeholder={"Capacity"}
-                  onSubmitEditing={onBlur}
-                  value={value ? value.toString() : ""}
-                  onChangeText={(value) => onChange(parseInt(value))}
-                  containerStyle={{ flex: 1 }}
-                  inputMode={InputType.Numeric}
-                  errorText={
-                    errors.plan &&
-                    errors.plan[floor]?.zones?.[index]?.capacity?.message
-                  }
-                  isRequired
-                  editable
-                />
-              )}
-            />
-          </View>
-          <Controller
-            name={`${index}.type`}
-            control={control}
-            defaultValue={zone.type}
-            rules={{ required: "Please select zone type " }}
-            render={({ field: { onChange, value } }) => (
-              <DropdownInput
-                title={"Parking zone type"}
-                selectedValue={value}
-                placeholder={"Select zone type"}
-                onSelect={onChange}
-                items={formatEnumtoDropdownItem(ZoneType)}
-                isRequired
-              />
-            )}
-          />
-          {index !== 0 && (
+      {zones &&
+        zones.map((zone, index) => (
+          <View>
             <IconButton
               icon={"close"}
               size={0}
               color={""}
               buttonStyle={styles.closeButton}
-              onPress={() => {
-                setZones([...zones.slice(0, index - 1), ...zones.slice(index)]);
-              }}
+              onPress={() => onDelete(index)}
             />
-          )}
-        </View>
-      ))}
+            <View style={styles.settingContainer} key={`zone_${index}`}>
+              <View style={styles.sameLineInputContainer}>
+                <Controller
+                  name={`plan.${floor}.zones.${index}.name`}
+                  control={control}
+                  rules={{
+                    required: "Please enter zone name",
+                    validate: (value) =>
+                      !isDuplicateZone(value, index) ||
+                      "Please enter different zone name",
+                  }}
+                  render={() => (
+                    <MyTextInput
+                      title="Zone"
+                      placeholder={"Zone"}
+                      value={zone.name}
+                      onChangeText={(value) =>
+                        onInputChange("name", value, index)
+                      }
+                      containerStyle={{ flex: 1 }}
+                      errorText={
+                        errors.plan &&
+                        errors.plan[floor]?.zones?.[index]?.name?.message
+                      }
+                      isRequired
+                      editable
+                    />
+                  )}
+                />
+                <Controller
+                  name={`plan.${floor}.zones.${index}.capacity`}
+                  control={control}
+                  rules={{ required: "Please enter zone capacity" }}
+                  render={() => (
+                    <MyTextInput
+                      title="Capacity"
+                      placeholder={"Capacity"}
+                      value={zone.capacity ? zone.capacity.toString() : ""}
+                      onChangeText={(value) =>
+                        onInputChange("capacity", parseInt(value), index)
+                      }
+                      containerStyle={{ flex: 1 }}
+                      inputMode={InputType.Numeric}
+                      errorText={
+                        errors.plan &&
+                        errors.plan[floor]?.zones?.[index]?.capacity?.message
+                      }
+                      isRequired
+                      editable
+                    />
+                  )}
+                />
+              </View>
+              <DropdownInput
+                title={"Parking zone type"}
+                selectedValue={zone.type}
+                placeholder={"Select zone type"}
+                onSelect={(selectedValue) =>
+                  onInputChange("type", selectedValue, index)
+                }
+                items={formatEnumtoDropdownItem(ZoneType)}
+                isRequired
+              />
+            </View>
+          </View>
+        ))}
       <SecondaryButton
         title="+ Add more zone to this floor"
         buttonStyle={styles.addZoneButton}
         textStyle={{ color: Colors.black }}
-        onPress={() => {
-          setZones([
-            ...zones,
-            {
-              name: "",
-              type: ZoneType.NORMAL,
-            },
-          ]);
-        }}
+        onPress={() => onAdd()}
       />
     </View>
   );
@@ -168,6 +180,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   settingContainer: {
+    zIndex: -1,
     borderRadius: 8,
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
@@ -198,7 +211,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    top: -195,
+    top: -10,
     right: -10,
   },
   addZoneButton: {
