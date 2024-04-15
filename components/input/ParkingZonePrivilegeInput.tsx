@@ -38,7 +38,6 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   ]);
 
   useEffect(() => {
-    console.log(zoneDropdown, floor);
     for (let i = 0; i < floor.length; i++) {
       const newZone = {
         floor: +floor[i],
