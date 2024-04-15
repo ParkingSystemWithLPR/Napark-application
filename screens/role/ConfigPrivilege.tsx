@@ -43,7 +43,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   const draftPrivileges: ZonePricing[] = getValues("privilege");
 
   const privilegeZones: ZonePricing[] = [
-    { floor: 20, zone: "Z", price: 1000, unit: PriceRateUnit.BAHT_PER_DAY },
+    { floor: 1, zone: "A", price: 1000, unit: PriceRateUnit.BAHT_PER_DAY },
   ];
 
   const [editedPrivilegeZones, setEditedPrivilegeZones] =
