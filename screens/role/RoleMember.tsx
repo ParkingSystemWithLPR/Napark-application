@@ -9,6 +9,11 @@ import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import {
+  getAllProfile,
+  useGetAllProfile,
+} from "@/store/api/user/useGetProfile";
+import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList } from "@/types";
 import { Profile } from "@/types/user";
 
@@ -32,6 +37,10 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
   const [displayedMember, setDisplayedMember] =
     useState<Profile[]>(mockedMember);
   const [isSelectAll, setSelectAll] = useState<boolean>(false);
+  // const { accessToken, authenticate } = useAuth();
+  // const allUsersList = useGetAllProfile({
+  //   auth: { accessToken, authenticate },
+  // });
 
   useEffect(() => {
     const searchResult = mockedMember.filter((member) =>
@@ -103,10 +112,6 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
         <View style={styles.memberListContainer}>
           <View style={styles.memberListTextContainer}>
             <BodyText text={searchResult ? "Suggested" : "Assignee"} />
-            {/* <BodyText
-              text={searchResult ? "Select all" : "Clear all"}
-              textStyle={styles.text}
-            /> */}
             {!searchResult && (
               <CheckboxInput
                 isChecked={isSelectAll}
