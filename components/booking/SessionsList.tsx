@@ -174,7 +174,14 @@ const SessionsList: React.FC<sessionsProps> = ({ bookings }) => {
       overScrollMode="never"
     />
   ) : (
-    <BodyText text="No bookings" />
+    <BodyText
+      text="No bookings"
+      containerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    />
   );
 };
 
