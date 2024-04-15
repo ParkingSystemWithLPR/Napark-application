@@ -48,7 +48,7 @@ export type OtherStackParamList = {
   EditParkingInfo: undefined;
   ConfigPricing: undefined;
   ConfigPlan: undefined;
-  RoleMember: undefined;
+  RoleMember: { form: UseFormReturn<FieldValues, any, undefined> };
   ConfigRole: { mode: ActionMode; index: number };
   ChangePassword: undefined;
   AccountAndCard: undefined;

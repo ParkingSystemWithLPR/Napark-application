@@ -1,11 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, Image, StyleSheet, View } from "react-native";
 
 import IconButton from "@/components/button/IconButton";
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -15,26 +10,60 @@ import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { OtherStackParamList } from "@/types";
+import { Profile } from "@/types/user";
 
 export type RoleMemberProps = NativeStackScreenProps<
   OtherStackParamList,
   "RoleMember"
 >;
 
-type Member = {
-  profile: string;
-  name: string;
-};
+const mockedMember = [
+  { _id: "111", firstname: "Kanin", lastname: "Kanin", email: "kanin.com" },
+  { _id: "121", firstname: "Tae", lastname: "VC", email: "taevc.com" },
+  { _id: "131", firstname: "Ing", lastname: "Huasom", email: "huasom.com" },
+];
 
-const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
+const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
+  const { form } = route.params;
+  const { setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
+  const [userIdList, setUserIdList] = useState<string[]>([]);
+  const [displayedMember, setDisplayedMember] =
+    useState<Profile[]>(mockedMember);
+  const [isSelectAll, setSelectAll] = useState<boolean>(false);
 
-  const mockMembers: Member[] = [
-    { profile: "mockImage", name: "Chayakorn Vongbunsin" },
-    { profile: "mockImage", name: "Worachot Chanaram" },
-    { profile: "mockImage", name: "Pattrawut Julasukhol" },
-  ];
+  useEffect(() => {
+    const searchResult = mockedMember.filter((member) =>
+      `${member.firstname} ${member.lastname}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+    setDisplayedMember(searchResult);
+  }, [searchText]);
+
+  const onCheckboxClick = (id: string) => {
+    if (userIdList.includes(id)) {
+      const newList = userIdList.filter((item) => {
+        return item !== id;
+      });
+      setUserIdList(newList);
+    } else {
+      const newList = [...userIdList, id];
+      setUserIdList(newList);
+    }
+  };
+
+  const onSelectAll = () => {
+    if (isSelectAll) {
+      setSelectAll(false);
+      setUserIdList([]);
+    } else {
+      setSelectAll(true);
+      const allUserIdList = mockedMember.flatMap((member) => member._id);
+      setUserIdList(allUserIdList);
+    }
+  };
 
   const handleTextInputChange = (text: string) => {
     setSearch(text.length > 0);
@@ -68,35 +97,54 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
     );
   }, [searchText, searchIcon]);
 
-  const renderMemberList = useCallback((searchResult?: boolean) => {
-    return (
-      <View style={styles.memberListContainer}>
-        <View style={styles.memberListTextContainer}>
-          <BodyText text={searchResult? "Suggested" : "Assignee"} />
-          <BodyText text={searchResult? "Select all" : "Clear all"} textStyle={styles.text}/>
-        </View>
-        <FlatList
-          data={mockMembers}
-          renderItem={({ item }) => (
-            <View style={styles.memberInfoContainer}>
-              <View style={styles.memberInfoWrapper}>
-                <Image
-                  style={styles.image}
-                  source={require("../../assets/images/icon.png")}
-                />
-                <BodyText text={item.name} textStyle={styles.name} />
-              </View>
+  const renderMemberList = useCallback(
+    (searchResult?: boolean) => {
+      return (
+        <View style={styles.memberListContainer}>
+          <View style={styles.memberListTextContainer}>
+            <BodyText text={searchResult ? "Suggested" : "Assignee"} />
+            {/* <BodyText
+              text={searchResult ? "Select all" : "Clear all"}
+              textStyle={styles.text}
+            /> */}
+            {!searchResult && (
               <CheckboxInput
-                text={""}
-                onPress={() => {}}
-                isChecked={!searchResult}
+                isChecked={isSelectAll}
+                onPress={() => onSelectAll()}
+                text="Select all"
+                containerStyle={{ flexDirection: "row-reverse" }}
+                textStyle={styles.text}
               />
-            </View>
-          )}
-        />
-      </View>
-    );
-  }, [mockMembers]);
+            )}
+          </View>
+          <FlatList
+            data={displayedMember}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <View style={styles.memberInfoContainer}>
+                <View style={styles.memberInfoWrapper}>
+                  <Image
+                    style={styles.image}
+                    source={require("../../assets/images/icon.png")}
+                  />
+                  <BodyText
+                    text={`${item.firstname} ${item.lastname}`}
+                    textStyle={styles.name}
+                  />
+                </View>
+                <CheckboxInput
+                  text={""}
+                  onPress={() => onCheckboxClick(item._id)}
+                  isChecked={userIdList.includes(item._id)}
+                />
+              </View>
+            )}
+          />
+        </View>
+      );
+    },
+    [displayedMember, userIdList]
+  );
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
@@ -105,7 +153,13 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
         {renderMemberList()}
         {renderMemberList(true)}
       </View>
-      <PrimaryButton title="Save" onPress={() => {navigation.goBack()}}/>
+      <PrimaryButton
+        title="Save"
+        onPress={() => {
+          setValue("user_ids", userIdList);
+          navigation.goBack();
+        }}
+      />
     </BodyContainer>
   );
 };
@@ -141,6 +195,7 @@ const styles = StyleSheet.create({
   memberListTextContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingRight: 10,
   },
   memberListContainer: {
@@ -168,5 +223,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.red[400],
-  }
+  },
 });
