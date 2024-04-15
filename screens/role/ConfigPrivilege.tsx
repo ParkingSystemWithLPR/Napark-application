@@ -166,7 +166,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       <ChangeScreenTab
         icon={"account-supervisor"}
         screenName={"Role"}
-        onPress={() => navigation.navigate("RoleMember")}
+        onPress={() => navigation.navigate("RoleMember", { form: form })}
       />
       <View style={styles.buttonContainer}>
         <SecondaryButton

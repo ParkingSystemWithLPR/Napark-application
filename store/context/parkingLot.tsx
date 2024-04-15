@@ -1,6 +1,5 @@
 import { ReactNode, createContext, useContext, useMemo, useState } from "react";
 
-import { PriceRateUnit } from "@/enum/ParkingLot";
 import { ParkingLot, ZonePricing } from "@/types/parking-lot";
 
 interface IParkingLotContext {
