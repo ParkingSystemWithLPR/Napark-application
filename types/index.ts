@@ -61,6 +61,7 @@ export type OtherStackParamList = {
     mode: ActionMode;
     zoneIndex?: number;
     data?: ZonePricing;
+    onEditPrivilege?: (idx: number, zone: ZonePricing) => void;
   };
 };
 
