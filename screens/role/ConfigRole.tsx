@@ -29,7 +29,8 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
   const management_roles = parkingLot.management_roles;
   const { accessToken, authenticate } = useAuth();
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
-  const { control, handleSubmit } = useForm();
+  const form = useForm();
+  const { control, handleSubmit, getValues } = form;
   const [isEnableEditRole, setEnableEditRole] = useState<boolean>(false);
   const [isEnableManageParkingSpace, setEnableManageParkingSpace] =
     useState<boolean>(false);
@@ -43,7 +44,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
     try {
       const role = {
         title: data.name,
-        user_ids: [],
+        user_ids: data.user_ids ?? management_roles[index]?.user_ids,
         permissions: [],
       };
       if (mode === ActionMode.CREATE) {
@@ -206,7 +207,10 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
         icon={"human-male-female-child"}
         screenName={"Members"}
         onPress={() => {
-          navigation.navigate("RoleMember");
+          navigation.navigate("RoleMember", {
+            form: form,
+            userList: management_roles[index]?.user_ids ?? [],
+          });
         }}
       />
       <View style={styles.buttonContainer}>
