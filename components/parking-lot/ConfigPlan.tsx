@@ -26,6 +26,7 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
     setValue,
     getValues,
     control,
+    clearErrors,
     formState: { errors },
   } = form;
 
@@ -58,8 +59,8 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
             },
           });
         }
+        clearErrors("plan");
       });
-
       setPlans(newPlans);
     }
   };
@@ -106,31 +107,40 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
           <SubHeaderText text={"Plan upload"} />
           <BodyText text="*" textStyle={styles.requiredIndicator} />
         </View>
-        <Pressable
-          android_ripple={{ color: Colors.gray[600] }}
-          style={({ pressed }) => [pressed ? styles.cardPressed : null]}
-          onPress={pickImage}
-        >
-          <View style={styles.uploadContainer}>
-            <MaterialCommunityIcons
-              name={"cloud-upload-outline"}
-              size={120}
-              color={Colors.red[400]}
-            />
-            <SubHeaderText text="Press here to upload image" />
-            <BodyText text="Supported format: .jpg, .png" />
-          </View>
-        </Pressable>
-        <BodyText
-          text="Please upload your plan in .jpg format to create your parking slot to config in this application"
-          textStyle={{ color: Colors.gray[800] }}
+        <Controller
+          name={"plan"}
+          control={control}
+          rules={{ required: "Please upload at least 1 plan image" }}
+          render={() => (
+            <>
+              <Pressable
+                android_ripple={{ color: Colors.gray[600] }}
+                style={({ pressed }) => [pressed ? styles.cardPressed : null]}
+                onPress={pickImage}
+              >
+                <View style={styles.uploadContainer}>
+                  <MaterialCommunityIcons
+                    name={"cloud-upload-outline"}
+                    size={120}
+                    color={Colors.red[400]}
+                  />
+                  <SubHeaderText text="Press here to upload image" />
+                  <BodyText text="Supported format: .jpg, .png" />
+                </View>
+              </Pressable>
+              <BodyText
+                text="Please upload your plan in .jpg format to create your parking slot to config in this application"
+                textStyle={{ color: Colors.gray[800] }}
+              />
+              {errors.plan && (
+                <BodyText
+                  text={errors.plan.message as string}
+                  textStyle={styles.errorText}
+                />
+              )}
+            </>
+          )}
         />
-        {errors.plan && (
-          <BodyText
-            text={errors.plan.message as string}
-            textStyle={styles.errorText}
-          />
-        )}
       </View>
       {plans &&
         plans.map((plan, index) => (
@@ -254,7 +264,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: "absolute",
-    zIndex: -100,
+    zIndex: -1,
     backgroundColor: Colors.gray[400],
     opacity: 0.8,
     top: 0,
