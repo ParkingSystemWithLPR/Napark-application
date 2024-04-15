@@ -200,7 +200,13 @@ const ConfigAddress: React.FC<ConfigAddressProps> = ({ form }) => {
         <Controller
           name={"address.zip_code"}
           control={control}
-          rules={{ required: "Please enter zip-code" }}
+          rules={{
+            required: "Please enter zip-code",
+            pattern: {
+              value: /^\d{5}$/,
+              message: "Please enter a valid 5-digit zip-code",
+            },
+          }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               title="Zip-code"

@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { ScrollView, View, StyleSheet, Pressable, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -7,12 +7,13 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import ParkingZoneInput from "../input/ParkingZoneInput";
 import MyTextInput from "../input/TextInput";
 import SubHeaderText from "../text/SubHeaderText";
+import IconButton from "../button/IconButton";
 
 import BodyText from "@/components/text/BodyText";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
-import { ImageProps } from "@/types";
-import { ParkingLotRequest } from "@/types/parking-lot";
+import { ParkingLotRequest, Plan } from "@/types/parking-lot";
+import { ZoneType } from "@/enum/ParkingLot";
 
 export type ConfigPlanProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;
@@ -22,16 +23,17 @@ const IMAGE_SIZE = { width: 350, height: 200 };
 
 const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
   const {
-    control,
     setValue,
     getValues,
-    register,
+    control,
     formState: { errors },
   } = form;
 
-  const [images, setImages] = useState<ImageProps[]>(
-    getValues().plan ? getValues().plan.map((item) => item.image) : []
-  );
+  const [plans, setPlans] = useState<Plan[]>();
+
+  useEffect(() => {
+    setPlans(getValues("plan"));
+  }, []);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -42,76 +44,58 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
     });
 
     if (!result.canceled) {
-      const newImages: ImageProps[] = [];
+      const newPlans: Plan[] = plans ? [...plans] : [];
+
       result.assets.forEach((img, index) => {
+        const planIndex = plans ? plans.length + index : index;
         if (img.base64 && img.fileName) {
-          newImages.push({
-            content: img.base64,
-            filename: img.fileName,
-          });
-          setValue(`plan.${images.length + index}.image`, {
-            content: img.base64,
-            filename: img.fileName,
+          newPlans.push({
+            floor: planIndex + 1,
+            zones: [{ name: "", type: ZoneType.NORMAL }],
+            image: {
+              content: img.base64,
+              filename: img.fileName,
+            },
           });
         }
       });
-      setImages(images.concat(newImages));
+
+      setPlans(newPlans);
     }
   };
 
-  const renderPlanSetting = (index: number) => {
+  useEffect(() => {
+    if (plans) {
+      setValue("plan", plans);
+    }
+  }, [plans]);
+
+  const onInputChange = (key: string, value: any, index: number) => {
+    if (plans) {
+      const editPlan: Plan = {
+        ...plans[index],
+        [key]: value,
+      };
+      const newPlans: Plan[] = [
+        ...plans.slice(0, index),
+        editPlan,
+        ...plans.slice(index + 1),
+      ];
+      setPlans(newPlans);
+    }
+  };
+
+  const onDelete = (index: number) => {
+    if (plans) {
+      setPlans([...plans.slice(0, index), ...plans.slice(index + 1)]);
+    }
+  };
+
+  const isDuplicateFloor = (floor: number, idx: number): boolean => {
     return (
-      <View key={`plan_${index}`}>
-        <Controller
-          name={`plan.${index}.image`}
-          control={control}
-          render={({ field: { value } }) => (
-            <Image
-              source={{
-                uri: "data:image/jpeg;base64," + value.content,
-              }}
-              height={IMAGE_SIZE.height}
-              width={IMAGE_SIZE.width}
-              style={styles.image}
-            />
-          )}
-        />
-        <Controller
-          name={`plan.${index}.floor`}
-          control={control}
-          rules={{ required: "Please enter floor number for this plan" }}
-          render={({ field: { onChange, value } }) => (
-            <MyTextInput
-              title="Floor"
-              placeholder={"Floor"}
-              value={value ? value.toString() : ""}
-              onChangeText={(value) => onChange(parseInt(value))}
-              containerStyle={{ flex: 1 }}
-              inputMode={InputType.Numeric}
-              errorText={
-                errors.plan && errors.plan[index]
-                  ? (errors.plan[index]?.floor?.message as string)
-                  : ""
-              }
-              isRequired
-              editable
-            />
-          )}
-        />
-        <Controller
-          name={`plan.${index}.zones`}
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <ParkingZoneInput
-              value={value}
-              onChange={onChange}
-              floor={index}
-              register={register}
-              errors={errors}
-            />
-          )}
-        />
-      </View>
+      !!plans &&
+      plans.filter((plan, index) => plan.floor === floor && index !== idx)
+        .length !== 0
     );
   };
 
@@ -122,42 +106,90 @@ const ConfigPlan: React.FC<ConfigPlanProps> = ({ form }) => {
           <SubHeaderText text={"Plan upload"} />
           <BodyText text="*" textStyle={styles.requiredIndicator} />
         </View>
-        <Controller
-          name={"plan"}
-          control={control}
-          rules={{ required: "Please upload at least 1 plan image" }}
-          render={() => (
-            <>
-              <Pressable
-                android_ripple={{ color: Colors.gray[600] }}
-                style={({ pressed }) => [pressed ? styles.cardPressed : null]}
-                onPress={pickImage}
-              >
-                <View style={styles.uploadContainer}>
-                  <MaterialCommunityIcons
-                    name={"cloud-upload-outline"}
-                    size={120}
-                    color={Colors.red[400]}
-                  />
-                  <SubHeaderText text="Press here to upload image" />
-                  <BodyText text="Supported format: .jpg, .png" />
-                </View>
-              </Pressable>
-              <BodyText
-                text="Please upload your plan in .jpg format to create your parking slot to config in this application"
-                textStyle={{ color: Colors.gray[800] }}
-              />
-              {errors.plan && (
-                <BodyText
-                  text={errors.plan.message as string}
-                  textStyle={styles.errorText}
-                />
-              )}
-            </>
-          )}
+        <Pressable
+          android_ripple={{ color: Colors.gray[600] }}
+          style={({ pressed }) => [pressed ? styles.cardPressed : null]}
+          onPress={pickImage}
+        >
+          <View style={styles.uploadContainer}>
+            <MaterialCommunityIcons
+              name={"cloud-upload-outline"}
+              size={120}
+              color={Colors.red[400]}
+            />
+            <SubHeaderText text="Press here to upload image" />
+            <BodyText text="Supported format: .jpg, .png" />
+          </View>
+        </Pressable>
+        <BodyText
+          text="Please upload your plan in .jpg format to create your parking slot to config in this application"
+          textStyle={{ color: Colors.gray[800] }}
         />
+        {errors.plan && (
+          <BodyText
+            text={errors.plan.message as string}
+            textStyle={styles.errorText}
+          />
+        )}
       </View>
-      {images.map((_, index) => renderPlanSetting(index))}
+      {plans &&
+        plans.map((plan, index) => (
+          <View style={styles.planContainer} key={`plan_${index}`}>
+            <IconButton
+              icon={"close"}
+              size={0}
+              color={""}
+              buttonStyle={styles.closeButton}
+              onPress={() => onDelete(index)}
+            />
+            <View style={{ zIndex: -1 }}>
+              <Image
+                source={{
+                  uri: "data:image/jpeg;base64," + plan.image.content,
+                }}
+                height={IMAGE_SIZE.height}
+                width={IMAGE_SIZE.width}
+                style={styles.image}
+              />
+              <Controller
+                name={`plan.${index}.floor`}
+                control={control}
+                rules={{
+                  required: "Please enter floor number for this plan",
+                  validate: (value) =>
+                    !isDuplicateFloor(value, index) ||
+                    "Please enter different floor number",
+                }}
+                render={() => (
+                  <MyTextInput
+                    title="Floor"
+                    placeholder={"Floor"}
+                    value={plan.floor ? plan.floor.toString() : ""}
+                    onChangeText={(value) =>
+                      onInputChange("floor", parseInt(value), index)
+                    }
+                    containerStyle={{ flex: 1 }}
+                    inputMode={InputType.Numeric}
+                    errorText={
+                      errors.plan && errors.plan[index]
+                        ? (errors.plan[index]?.floor?.message as string)
+                        : ""
+                    }
+                    isRequired
+                    editable
+                  />
+                )}
+              />
+              <ParkingZoneInput
+                value={plan.zones}
+                onChange={(value) => onInputChange("zones", value, index)}
+                floor={index}
+                control={control}
+                errors={errors}
+              />
+            </View>
+          </View>
+        ))}
     </ScrollView>
   );
 };
@@ -178,6 +210,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 12,
+  },
+  planContainer: {
+    marginBottom: 10,
   },
   cardPressed: {
     opacity: 0.5,
@@ -216,5 +251,13 @@ const styles = StyleSheet.create({
   errorText: {
     color: Colors.red[400],
     fontSize: 12,
+  },
+  closeButton: {
+    position: "absolute",
+    zIndex: -100,
+    backgroundColor: Colors.gray[400],
+    opacity: 0.8,
+    top: 0,
+    right: 5,
   },
 });
