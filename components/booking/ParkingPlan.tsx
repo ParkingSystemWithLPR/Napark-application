@@ -7,7 +7,7 @@ import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
 
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { SlotProfileWithPrivilege } from "@/types/booking";
+import { FloorProfile, SlotProfileWithPrivilege } from "@/types/booking";
 import { FloorImage } from "@/types/parking-lot";
 import {
   defaultBookingDetailState,
@@ -21,7 +21,7 @@ import {
 
 export type ParkingPlanProps = {
   bookingDetailState: BookingDetailState;
-  availableSlot: SlotProfileWithPrivilege[];
+  availableSlot: FloorProfile[];
   floorImages: FloorImage[];
   onChange: <T>(identifierKey: string, enteredValue: T) => void;
   handleConfirm: () => void;
@@ -75,7 +75,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
     onChange("unit", value);
   };
   useLayoutEffect(() => {
-    if (floor != -1) {
+    if (floor) {
       const { slotId, slotName, price, unit } = defaultBookingDetailState;
       setSlotId(slotId);
       setSlotName(slotName);
@@ -134,7 +134,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
         placeholder={"Select floor"}
         withSearch
       />
-      {floor !== -1 && (
+      {floor && (
         <View style={styles.container}>
           <Image
             source={{

@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
 import { useCallback } from "react";
 import {
@@ -15,9 +16,8 @@ import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
 import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
-import { Booking } from "@/types/booking";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { AuthenticatedStackParamList } from "@/types";
+import { Booking } from "@/types/booking";
 import { formatToSentenceCase } from "@/utils/text";
 
 interface SessionCardProps {

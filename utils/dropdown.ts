@@ -2,7 +2,7 @@ import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer
 
 import { ParkingValue } from "@/components/booking/ParkingPlan";
 import { DropdownItem } from "@/components/input/DropdownInput";
-import { SlotProfileWithPrivilege } from "@/types/booking";
+import { FloorProfile, SlotProfileWithPrivilege } from "@/types/booking";
 import { Car } from "@/types/user";
 
 export const initDropdownValue = <T>(
@@ -35,22 +35,26 @@ export const formatDropdownFromFloorList = (
 };
 
 export const formatDropdownFromSlotList = (
-  slotList: SlotProfileWithPrivilege[]
+  floorList: FloorProfile[]
 ): DropdownItem<ParkingValue>[] => {
-  return slotList.flatMap((item) => {
-    return {
-      label: item.name,
-      value: {
-        slotId: item._id,
-        price: item.is_privilege_available
-          ? item.privilege_price_rate
-          : item.default_price_rate,
-        slotName: item.name,
-        unit: item.is_privilege_available
-          ? item.privilege_price_unit
-          : item.default_price_rate_unit,
-      },
-    };
+  return floorList.flatMap((floor) => {
+    return floor.zones.flatMap((zone) => {
+      return zone.slots.flatMap((slot) => {
+        return {
+          label: slot.name,
+          value: {
+            slotId: slot._id,
+            price: slot.is_privilege_available
+              ? slot.privilege_price_rate
+              : slot.default_price_rate,
+            slotName: slot.name,
+            unit: slot.is_privilege_available
+              ? slot.privilege_price_unit
+              : slot.default_price_rate_unit,
+          },
+        };
+      });
+    });
   });
 };
 
