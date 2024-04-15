@@ -23,17 +23,17 @@ export type RoleMemberProps = NativeStackScreenProps<
 >;
 
 const mockedMember = [
-  { _id: "111", firstname: "Kanin", lastname: "Kanin", email: "kanin.com" },
-  { _id: "121", firstname: "Tae", lastname: "VC", email: "taevc.com" },
-  { _id: "131", firstname: "Ing", lastname: "Huasom", email: "huasom.com" },
+  { _id: "6606a52af3a741552b912d56", firstname: "Kanin", lastname: "Kanin", email: "kanin.com" },
+  { _id: "6606a52af3a741552b912d57", firstname: "Tae", lastname: "VC", email: "taevc.com" },
+  { _id: "6606a52af3a741552b912d58", firstname: "Ing", lastname: "Huasom", email: "huasom.com" },
 ];
 
 const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
-  const { form } = route.params;
+  const { form, userList } = route.params;
   const { setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
-  const [userIdList, setUserIdList] = useState<string[]>([]);
+  const [userIdList, setUserIdList] = useState<string[]>(userList);
   const [displayedMember, setDisplayedMember] =
     useState<Profile[]>(mockedMember);
   const [isSelectAll, setSelectAll] = useState<boolean>(false);

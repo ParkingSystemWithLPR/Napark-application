@@ -37,8 +37,8 @@ const RoleCard: React.FC<RoleCardProps> = ({
             <MaterialCommunityIcons
               name={
                 category === ManagingCategory.PRIVILEGE
-                  ? "car"
-                  : "human-male-female-child"
+                  ? "account-star"
+                  : "account-supervisor"
               }
               size={20}
               color={Colors.gray[800]}
@@ -49,15 +49,7 @@ const RoleCard: React.FC<RoleCardProps> = ({
                 textStyle={{ color: Colors.gray[900] }}
               />
               <BodyText
-                text={
-                  !!description
-                    ? description
-                    : `${member} ${
-                        category === ManagingCategory.PRIVILEGE
-                          ? "Role(s)"
-                          : "Member(s)"
-                      }`
-                }
+                text={!!description ? description : `${member} ${"Member(s)"}`}
                 textStyle={{ color: Colors.gray[700] }}
               />
             </View>

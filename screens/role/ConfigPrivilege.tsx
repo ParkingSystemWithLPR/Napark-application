@@ -56,10 +56,11 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   };
 
   const onSubmit = async (data: FieldValues) => {
+    console.log(data);
     try {
       const privilege = {
         title: data.name,
-        user_ids: [],
+        user_ids: data.user_ids ?? parking_privileges[privilegeIndex],
         slot_prices: [],
       };
       if (mode === ActionMode.CREATE) {
@@ -108,6 +109,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       <Controller
         name={"description"}
         control={control}
+        // defaultValue={parking_privileges[privilegeIndex]?.description}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Description"
@@ -123,7 +125,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
           <RoleCard
             category={category}
             roleName={`${a.floor} ${a.zone}`}
-            description=""
+            description={`${a.price} ${a.unit}`}
             key={index}
             onPress={() =>
               navigation.navigate("ConfigZone", {
@@ -166,7 +168,12 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       <ChangeScreenTab
         icon={"account-supervisor"}
         screenName={"Role"}
-        onPress={() => navigation.navigate("RoleMember", { form: form })}
+        onPress={() =>
+          navigation.navigate("RoleMember", {
+            form: form,
+            userList: parking_privileges[privilegeIndex].user_ids,
+          })
+        }
       />
       <View style={styles.buttonContainer}>
         <SecondaryButton
