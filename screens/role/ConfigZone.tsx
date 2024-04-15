@@ -66,7 +66,6 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
     <BodyContainer innerContainerStyle={styles.container}>
       <ParkingZonePrivilegeInput
         mode={mode}
-        form={form}
         zones={zones}
         setZones={setZones}
       />

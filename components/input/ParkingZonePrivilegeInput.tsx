@@ -10,18 +10,17 @@ import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
 import { InputType } from "@/enum/InputType";
 import { PriceRateUnit } from "@/enum/ParkingLot";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { ZonePricing } from "@/types/parking-lot";
 
 export type ParkingZonePrivilegeInputProps = {
   mode: ActionMode;
-  form: any;
   zones: ZonePricing[];
   setZones: React.Dispatch<React.SetStateAction<ZonePricing[]>>;
 };
 
 const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   mode,
-  form,
   zones,
   setZones,
 }) => {
@@ -33,8 +32,13 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   const [unit, setUnit] = useState<PriceRateUnit[]>([
     zones[0].unit ?? PriceRateUnit.BAHT_PER_HOUR,
   ]);
+  const { floorsAndZones } = useParkingLot();
+  const [zoneDropdown, setZoneDropdown] = useState<string[][]>([
+    floorsAndZones.find((x) => x.floor === +floor[0])?.zones || [],
+  ]);
 
   useEffect(() => {
+    console.log(zoneDropdown, floor);
     for (let i = 0; i < floor.length; i++) {
       const newZone = {
         floor: +floor[i],
@@ -63,11 +67,15 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                     const newFloor = [...floor];
                     newFloor[idx] = f;
                     setFloor(newFloor);
+                    const newDropdown = [...zoneDropdown];
+                    newDropdown[idx] =
+                      floorsAndZones.find((x) => x.floor === +f)?.zones || [];
+                    setZoneDropdown(newDropdown);
                   }}
-                  items={[
-                    { label: "1", value: "1" },
-                    { label: "20", value: "20" },
-                  ]}
+                  items={floorsAndZones.map((f) => {
+                    const floor = f.floor.toString();
+                    return { label: floor, value: floor };
+                  })}
                   containerStyle={{ flex: 1 }}
                 />
                 <DropdownInput
@@ -80,10 +88,9 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                     newZone[idx] = z;
                     setZone(newZone);
                   }}
-                  items={[
-                    { label: "A", value: "A" },
-                    { label: "Z", value: "Z" },
-                  ]}
+                  items={zoneDropdown[idx]?.map((z) => {
+                    return { label: z, value: z };
+                  })}
                   containerStyle={{ flex: 1 }}
                 />
               </View>
@@ -131,14 +138,17 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                     const newZone = [...zone];
                     const newPrice = [...price];
                     const newUnit = [...unit];
+                    const newDropdown = [...zoneDropdown];
                     newFloor.splice(idx, 1);
                     newZone.splice(idx, 1);
                     newPrice.splice(idx, 1);
                     newUnit.splice(idx, 1);
+                    newDropdown.splice(idx, 1);
                     setFloor(newFloor);
                     setZone(newZone);
                     setPrice(newPrice);
                     setUnit(newUnit);
+                    setZoneDropdown(newDropdown);
                   }}
                 />
               )}
@@ -158,6 +168,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
             setZone([...zone, ""]);
             setPrice([...price, 0]);
             setUnit([...unit, PriceRateUnit.BAHT_PER_HOUR]);
+            setZoneDropdown([...zoneDropdown, []]);
           }}
         />
       )}
