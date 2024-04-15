@@ -250,7 +250,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       const trafficPercentage =
         isNaN(availableSlotsCount) || isNaN(totalSlots) || totalSlots === 0
           ? 0
-          : Math.floor(availableSlotsCount / totalSlots);
+          : Math.floor(((totalSlots - availableSlotsCount) * 100) / totalSlots);
       return (
         <CustomBottomSheetModal
           ref={parkingSpaceDetailBottomSheetRef}
@@ -335,6 +335,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               }}
               title="Your Location"
               pinColor={Colors.blue[600].toString()}
+              style={{ zIndex: 1 }}
             >
               <Image
                 source={require("../../assets/images/destination-pin.png")}
@@ -350,6 +351,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
                   }}
                   title={parkingSpace.name}
                   onPress={() => handleChooseParkingSpace(parkingSpace)}
+                  style={{ zIndex: 0 }}
                 >
                   <Image
                     source={require("../../assets/images/parking-space-pin.png")}
