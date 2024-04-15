@@ -47,3 +47,14 @@ export const useGetProfile = (
     refetchInterval: 0,
   });
 };
+
+export const useGetAllProfile = (
+  input: GetProfileInput
+): UseQueryResult<Profile[], AxiosError> => {
+  return useQuery({
+    queryKey: [],
+    queryFn: async () => getProfile(input),
+    refetchOnWindowFocus: false,
+    refetchInterval: 0,
+  });
+};
