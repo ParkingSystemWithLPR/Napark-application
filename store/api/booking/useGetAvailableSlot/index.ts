@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 
 import { BOOKING_URL } from "..";
 
+import { SlotType } from "@/enum/SlotType";
 import { AvailableSlotResponse } from "@/types/booking";
 import apiRequest, { HTTPMethod } from "@/utils/http";
-import { SlotType } from "@/enum/SlotType";
 
 export interface GetAvailableSlotsQueryParam {
   parkinglot_id: string;
