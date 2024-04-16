@@ -91,7 +91,6 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         component={ParkingLotDetail}
         options={{
           title: "Parking space detail",
-          headerLeft: backToPreviousPage,
         }}
       />
       <Stack.Screen
