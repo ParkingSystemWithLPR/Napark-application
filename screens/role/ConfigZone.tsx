@@ -21,7 +21,8 @@ export type ConfigZoneProps = CompositeScreenProps<
 >;
 
 const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
-  const { form, mode, data, zoneIndex, onEditPrivilege } = route.params;
+  const { form, mode, hasEditPermission, data, zoneIndex, onEditPrivilege } =
+    route.params;
   const { setValue, getValues } = form;
 
   const [zones, setZones] = useState<ZonePricing[]>(!!data ? [data] : [{}]);
@@ -68,6 +69,7 @@ const ConfigZone: React.FC<ConfigZoneProps> = ({ navigation, route }) => {
         mode={mode}
         zones={zones}
         setZones={setZones}
+        hasEditPermission={hasEditPermission}
       />
       <View style={styles.buttonContainer}>
         <SecondaryButton

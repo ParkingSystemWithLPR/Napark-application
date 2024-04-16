@@ -28,23 +28,26 @@ const mockedMember = [
     firstname: "Kanin",
     lastname: "Kanin",
     email: "kanin.com",
+    credit: 1234432143211234,
   },
   {
     _id: "6606a52af3a741552b912d57",
     firstname: "Tae",
     lastname: "VC",
     email: "taevc.com",
+    credit: 1234432143211235,
   },
   {
     _id: "6606a52af3a741552b912d58",
     firstname: "Ing",
     lastname: "Huasom",
     email: "huasom.com",
+    credit: 1234432143211236,
   },
 ];
 
 const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
-  const { form, userList } = route.params;
+  const { form, userList, hasAssignPermission } = route.params;
   const { setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
@@ -130,6 +133,7 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
             {!searchResult && (
               <CheckboxInput
                 isChecked={isSelectAll}
+                disabled={!hasAssignPermission}
                 onPress={() => onSelectAll()}
                 text="Select all"
                 containerStyle={{ flexDirection: "row-reverse" }}

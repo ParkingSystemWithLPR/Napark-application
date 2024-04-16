@@ -51,17 +51,19 @@ export type OtherStackParamList = {
   RoleMember: {
     form: UseFormReturn<FieldValues, any, undefined>;
     userList: string[];
+    hasAssignPermission: boolean;
   };
   ConfigRole: { mode: ActionMode; index: number };
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;
-  ManagingCategory: undefined;
+  ManagingCategory: { parkingLotId: string };
   ManagingList: { category: ManagingCategory };
   ConfigPrivilege: { mode: ActionMode; index: number };
   ConfigZone: {
     form: UseFormReturn<FieldValues, any, undefined>;
     mode: ActionMode;
+    hasEditPermission: boolean;
     zoneIndex?: number;
     data?: ZonePricing;
     onEditPrivilege?: (idx: number, zone: ZonePricing) => void;

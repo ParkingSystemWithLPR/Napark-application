@@ -2,7 +2,7 @@ import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer
 
 import { ParkingValue } from "@/components/booking/ParkingPlan";
 import { DropdownItem } from "@/components/input/DropdownInput";
-import { FloorProfile, SlotProfileWithPrivilege } from "@/types/booking";
+import { FloorProfile } from "@/types/booking";
 import { Car } from "@/types/user";
 
 export const initDropdownValue = <T>(
@@ -64,10 +64,4 @@ export const formatEnumtoDropdownItem = (
   return Object.values(enums).map((value) => {
     return { label: value, value: value };
   });
-};
-
-export const formatEnumtoDropdownItem = (enums: object): DropdownItem[] => {
-  return Object.values(enums).map((value) => {
-    return { label: value, value: value };
-  })
 };

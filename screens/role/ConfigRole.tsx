@@ -14,6 +14,7 @@ import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { ActionMode } from "@/enum/ActionMode";
 import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
+import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
@@ -39,6 +40,11 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
     useState<boolean>(false);
   const [isEnableEditPrivilege, setEnableEditPrivilege] =
     useState<boolean>(false);
+  // const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
+  // const { _, hasEditPermission, hasAssignPermission, _, _ } =
+  //   getProfile.management_role;
+  const hasEditPermission = false;
+  const hasAssignPermission = true;
 
   const onSubmit = async (data: FieldValues) => {
     try {
@@ -94,6 +100,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
             placeholder="Enter your role name"
             value={value}
             onChangeText={(value) => onChange(value)}
+            editable={hasEditPermission}
           />
         )}
       />
@@ -106,6 +113,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
             placeholder="Enter your role description"
             value={value}
             onChangeText={(value) => onChange(value)}
+            editable={hasEditPermission}
           />
         )}
       />
@@ -121,6 +129,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
                   setEnableManageParkingSpace(
@@ -141,7 +150,9 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
                 text="Edit managing role"
                 textStyle={styles.permissionText}
               />
+
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
                   setEnableEditRole((previousState) => !previousState);
@@ -161,6 +172,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
                   setEnableAssignRole((previousState) => !previousState);
@@ -180,6 +192,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
                   setEnableEditPrivilege((previousState) => !previousState);
@@ -199,6 +212,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
                   setEnableAssignPrivilege((previousState) => !previousState);
@@ -217,6 +231,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
           navigation.navigate("RoleMember", {
             form: form,
             userList: management_roles[index]?.user_ids ?? [],
+            hasAssignPermission: hasAssignPermission,
           });
         }}
       />

@@ -17,12 +17,14 @@ export type ParkingZonePrivilegeInputProps = {
   mode: ActionMode;
   zones: ZonePricing[];
   setZones: React.Dispatch<React.SetStateAction<ZonePricing[]>>;
+  hasEditPermission: boolean;
 };
 
 const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
   mode,
   zones,
   setZones,
+  hasEditPermission,
 }) => {
   const [floor, setFloor] = useState<string[]>([
     zones[0].floor?.toString() ?? "",
@@ -62,6 +64,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   placeholder="Select floor"
                   selectedValue={floor[idx]}
                   isRequired={true}
+                  editable={hasEditPermission}
                   onSelect={(f) => {
                     const newFloor = [...floor];
                     newFloor[idx] = f;
@@ -82,6 +85,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   selectedValue={zone[idx]}
                   placeholder="Select zone"
                   isRequired={true}
+                  editable={hasEditPermission}
                   onSelect={(z) => {
                     const newZone = [...zone];
                     newZone[idx] = z;
@@ -99,6 +103,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   placeholder="Enter parking fee"
                   value={price[idx]?.toString()}
                   isRequired={true}
+                  editable={hasEditPermission}
                   onChangeText={(p: string) => {
                     const newPrice = [...price];
                     newPrice[idx] = parseInt(p);
@@ -112,6 +117,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   title="Unit"
                   placeholder={"Select fee unit"}
                   isRequired={true}
+                  editable={hasEditPermission}
                   onSelect={(u: PriceRateUnit) => {
                     const newUnit = [...unit];
                     newUnit[idx] = u;
@@ -161,6 +167,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
           title="+ Add more zone"
           buttonStyle={styles.addZoneButton}
           textStyle={{ color: Colors.black }}
+          disabled={!hasEditPermission}
           onPress={() => {
             setZones([...zones, {}]);
             setFloor([...floor, ""]);
