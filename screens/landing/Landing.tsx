@@ -32,6 +32,7 @@ import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import RangeInput from "@/components/input/RangeInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
+import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
@@ -166,7 +167,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             },
           }}
         />
-        <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+        {/* <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
             <MaterialIcons
               name="more-vert"
@@ -174,7 +175,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               color={Colors.gray[800]}
             />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }, []);
@@ -211,25 +212,37 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         title="Recommended place"
         startIndex={0}
       >
-        <FlatList
-          data={parkingSpaces}
-          renderItem={({ item }) => {
-            const businessDay = item.business_days.find((businessday) => {
-              businessday.weekday == getDayInAWeek(new Date());
-            });
-            return (
-              <ParkingSpaceCard
-                parkingSpaceName={item.name}
-                businessHours={
-                  businessDay ? getBusinessHours(businessDay) : "Not available"
-                }
-                availabilty={item.available_slots_count ?? 0}
-                onPress={() => handleChooseParkingSpace(item)}
-              />
-            );
-          }}
-          overScrollMode="never"
-        />
+        {parkingSpaces && parkingSpaces.length > 0 ? (
+          <FlatList
+            data={parkingSpaces}
+            renderItem={({ item }) => {
+              const businessDay = item.business_days.find((businessday) => {
+                businessday.weekday == getDayInAWeek(new Date());
+              });
+              return (
+                <ParkingSpaceCard
+                  parkingSpaceName={item.name}
+                  businessHours={
+                    businessDay
+                      ? getBusinessHours(businessDay)
+                      : "Not available"
+                  }
+                  availabilty={item.available_slots_count ?? 0}
+                  onPress={() => handleChooseParkingSpace(item)}
+                />
+              );
+            }}
+            overScrollMode="never"
+          />
+        ) : (
+          <BodyText
+            text="Sorry! There is no parking space nearby the destination 🥹"
+            containerStyle={{
+              padding: 10,
+              alignItems: "center",
+            }}
+          />
+        )}
       </CustomBottomSheetModal>
     );
   }, [recommendedBottomSheetRef, parkingSpaces]);
