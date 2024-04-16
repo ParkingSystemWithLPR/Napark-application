@@ -9,6 +9,7 @@ import ImageContainer from "../ui/ImageContainer";
 
 import Colors from "@/constants/color";
 import { ImageProps } from "@/types";
+import { convertImagePropsToImages } from "@/utils/image";
 
 type ImageUploaderProps = {
   title?: string;
@@ -91,9 +92,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       </Pressable>
       {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
       <ImageContainer
-        images={images.map((image) => {
-          return "data:image/jpeg;base64," + image.content;
-        })}
+        images={convertImagePropsToImages(images)}
         onDelete={onDelete}
         editable
       />

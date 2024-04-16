@@ -9,7 +9,7 @@ import TextInput from "../input/TextInput";
 import Colors from "@/constants/color";
 import { InputType } from "@/enum/InputType";
 import { RegionType } from "@/screens/landing/Landing";
-import { ParkingLotRequest } from "@/types/parking-lot";
+import { ParkingLot, ParkingLotRequest } from "@/types/parking-lot";
 
 export type ConfigAddressProps = {
   form: UseFormReturn<ParkingLotRequest, any, undefined>;

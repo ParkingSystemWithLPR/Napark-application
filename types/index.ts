@@ -103,3 +103,7 @@ export type ImageProps = {
   content: string;
   filename: string;
 };
+
+export type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
