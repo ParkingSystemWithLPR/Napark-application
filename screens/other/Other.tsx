@@ -29,7 +29,7 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
         containerStyle={{
           width: "100%",
         }}
-        text="Parking space's owner options"
+        text="Parking space's management options"
       />
       <ChangeScreenTab
         icon="alpha-p-circle-outline"
