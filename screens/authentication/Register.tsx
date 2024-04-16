@@ -180,7 +180,7 @@ const Register: React.FC<RegisterProps> = ({ navigation }) => {
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleLogInPress}>
-            <BodyText text="Already have account?" />
+            <BodyText text="Already have an account?" />
           </Pressable>
         </View>
       </View>

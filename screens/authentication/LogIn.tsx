@@ -109,7 +109,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation, route }) => {
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleCreateAccountPress}>
-            <BodyText text="Create account" />
+            <BodyText text="Create an account" />
           </Pressable>
         </View>
         <View>
