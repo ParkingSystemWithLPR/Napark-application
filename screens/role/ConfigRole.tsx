@@ -32,18 +32,32 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const form = useForm();
   const { control, handleSubmit, getValues } = form;
-  const [isEnableEditRole, setEnableEditRole] = useState<boolean>(false);
+  const {
+    manage_parking_space,
+    edit_management_role,
+    assign_management_role_members,
+    edit_parking_privilege,
+    assign_parking_privilege_members,
+  } = management_roles[index]?.permissions;
   const [isEnableManageParkingSpace, setEnableManageParkingSpace] =
-    useState<boolean>(false);
-  const [isEnableAssignRole, setEnableAssignRole] = useState<boolean>(false);
-  const [isEnableAssignPrivilege, setEnableAssignPrivilege] =
-    useState<boolean>(false);
-  const [isEnableEditPrivilege, setEnableEditPrivilege] =
-    useState<boolean>(false);
+    useState<boolean>(manage_parking_space ?? false);
+  const [isEnableEditRole, setEnableEditRole] = useState<boolean>(
+    edit_management_role ?? false
+  );
+  const [isEnableAssignRole, setEnableAssignRole] = useState<boolean>(
+    assign_management_role_members ?? false
+  );
+  const [isEnableEditPrivilege, setEnableEditPrivilege] = useState<boolean>(
+    edit_parking_privilege ?? false
+  );
+  const [isEnableAssignPrivilege, setEnableAssignPrivilege] = useState<boolean>(
+    assign_parking_privilege_members ?? false
+  );
   // const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
   // const { _, hasEditPermission, hasAssignPermission, _, _ } =
   //   getProfile.management_role;
-  const hasEditPermission = false;
+
+  const hasEditPermission = true;
   const hasAssignPermission = true;
 
   const onSubmit = async (data: FieldValues) => {
@@ -52,14 +66,15 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
         title: data.name,
         user_ids: data.user_ids ?? management_roles[index]?.user_ids,
         permissions: {
-          manage_parking_space: data.manageParkingSpace,
-          edit_management_role: data.editRole,
-          assign_management_role_members: data.assignRole,
-          edit_parking_privilege: data.editPrivilege,
-          assign_parking_privilege_members: data.assignPrivilege,
+          manage_parking_space:
+            data.manageParkingSpace ?? isEnableManageParkingSpace,
+          edit_management_role: data.editRole ?? isEnableEditRole,
+          assign_management_role_members: data.assignRole ?? isEnableAssignRole,
+          edit_parking_privilege: data.editPrivilege ?? isEnableEditPrivilege,
+          assign_parking_privilege_members:
+            data.assignPrivilege ?? isEnableAssignPrivilege,
         },
       };
-      console.log(role);
       if (mode === ActionMode.CREATE) {
         management_roles.push(role);
       } else {
