@@ -88,7 +88,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
     <View>
       {zones &&
         zones.map((zone, index) => (
-          <View>
+          <View key={`zone_${index}`}>
             <IconButton
               icon={"close"}
               size={0}
@@ -96,7 +96,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
               buttonStyle={styles.closeButton}
               onPress={() => onDelete(index)}
             />
-            <View style={styles.settingContainer} key={`zone_${index}`}>
+            <View style={styles.settingContainer}>
               <View style={styles.sameLineInputContainer}>
                 <Controller
                   name={`plan.${floor}.zones.${index}.name`}
