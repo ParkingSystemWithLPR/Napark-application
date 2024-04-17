@@ -52,7 +52,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       setStep(1);
       setOpenConfirmModal(false);
       Alert.alert(
-        "Parking space alreay exists",
+        "Parking space already exists",
         "Please check information again and change information"
       );
     }
