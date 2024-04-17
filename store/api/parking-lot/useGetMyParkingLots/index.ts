@@ -17,9 +17,7 @@ type GetMyParkingLotsService = (
   input: GetMyParkingLotsInput
 ) => Promise<ParkingLot[]>;
 
-export const getMyParkingLots: GetMyParkingLotsService = async ({
-  auth,
-}) => {
+export const getMyParkingLots: GetMyParkingLotsService = async ({ auth }) => {
   const data = await apiRequest<ParkingLot[]>(
     PARKING_LOT_URL + `/parkinglot_v1/parkinglot/my`,
     HTTPMethod.GET,
