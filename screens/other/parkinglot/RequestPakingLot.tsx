@@ -49,9 +49,11 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       }, 2000);
       navigation.navigate("OtherStack", { screen: "ParkingLotsList" });
     } catch (error) {
+      // setStep(1);
+      setOpenConfirmModal(false);
       Alert.alert(
-        "Create request error",
-        "Please try again!!: " + (error as Error).message
+        "Parking space alreay exists",
+        "Please check information again and change information"
       );
     }
   };
@@ -86,7 +88,21 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
         <View style={styles.centeredContent}>
           <View style={styles.confirmModalContainer}>
             <SubHeaderText text={"Confirm request information"} />
-            {isSubmitting && <LoadingOverlay />}
+            {isSubmitting ? (
+              <LoadingOverlay />
+            ) : (
+              <View style={styles.buttonContainer}>
+                <SecondaryButton
+                  title={"Cancle"}
+                  onPress={() => setOpenConfirmModal(false)}
+                />
+                <PrimaryButton
+                  title={"Confirm"}
+                  disabled={isSubmitting}
+                  onPress={handleSubmit(onSubmit)}
+                />
+              </View>
+            )}
             {isSubmitSuccessful && (
               <MaterialCommunityIcons
                 name="check-circle"
@@ -94,17 +110,6 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
                 color={Colors.green[600]}
               />
             )}
-            <View style={styles.buttonContainer}>
-              <SecondaryButton
-                title={"Cancle"}
-                onPress={() => setOpenConfirmModal(false)}
-              />
-              <PrimaryButton
-                title={"Confirm"}
-                disabled={isSubmitting}
-                onPress={handleSubmit(onSubmit)}
-              />
-            </View>
           </View>
         </View>
       </ModalOverlay>
