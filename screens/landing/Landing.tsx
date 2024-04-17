@@ -251,9 +251,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     if (selectedParkingSpace) {
       const now = new Date();
       const businessDay = selectedParkingSpace.business_days.find(
-        (businessday) => {
-          businessday.weekday == getDayInAWeek(now);
-        }
+        (businessday) => businessday.weekday === getDayInAWeek(now)
       );
       const isOpen =
         isAfter(now, getDateFromTime(businessDay?.open_time)) &&
