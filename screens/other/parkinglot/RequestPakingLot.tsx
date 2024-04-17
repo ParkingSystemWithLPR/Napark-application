@@ -49,7 +49,7 @@ const RequestParkingLot: React.FC<RequestParkingLotProps> = ({
       }, 2000);
       navigation.navigate("OtherStack", { screen: "ParkingLotsList" });
     } catch (error) {
-      // setStep(1);
+      setStep(1);
       setOpenConfirmModal(false);
       Alert.alert(
         "Parking space alreay exists",
