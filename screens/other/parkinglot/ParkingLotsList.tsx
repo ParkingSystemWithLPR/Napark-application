@@ -31,7 +31,6 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const getParkingLots = useGetParkingLotsByUserId({
-    queryParams: { userId: profile._id },
     auth: { accessToken, authenticate },
   });
 

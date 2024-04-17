@@ -124,6 +124,8 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
     );
   }, [searchText, searchIcon]);
 
+  //todo: assignee = already assigned
+  //todo: user not save when save then go back
   const renderMemberList = useCallback(
     (searchResult?: boolean) => {
       return (
@@ -159,6 +161,7 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
                 <CheckboxInput
                   text={""}
                   onPress={() => onCheckboxClick(item._id)}
+                  disabled={!hasAssignPermission}
                   isChecked={userIdList.includes(item._id)}
                 />
               </View>

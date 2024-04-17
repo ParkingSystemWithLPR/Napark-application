@@ -53,6 +53,8 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
   };
 
   const renderParkingPrivileges = () => {
+    // todo: change logic
+    //todo: change to flatlist
     return (
       <View style={{ gap: 10 }}>
         {parking_privileges.map((p, index) => {

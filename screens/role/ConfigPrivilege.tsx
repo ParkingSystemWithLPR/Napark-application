@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
 
@@ -15,11 +15,13 @@ import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
+import { usePrivilege } from "@/store/api/parking-lot/useGetPrivilegeById";
 import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { ZonePricing } from "@/types/parking-lot";
+import { SlotPriceProfile } from "@/types/booking";
+import { ParkingPrivilegeProfile, ZonePricing } from "@/types/parking-lot";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
@@ -35,25 +37,54 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const { accessToken, authenticate } = useAuth();
 
-  // const privilegeZones = getPrivilegeArea(privilegeIndex);
+  const privileges = usePrivilege({
+    queryParams: { parkingLotId: parkingLot._id },
+    auth: { accessToken, authenticate },
+  });
+
+  const [privilegeZones, setPrivilegeZones] = useState<SlotPriceProfile[]>([]);
 
   const parking_privileges = parkingLot.parking_privileges;
   const category = ManagingCategory.PRIVILEGE;
   const form = useForm();
   const { control, handleSubmit, getValues } = form;
-  const draftPrivileges: ZonePricing[] = getValues("privilege");
+  const draftPrivileges: ZonePricing[] = getValues("privilege") ?? [];
   // const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
   // const { _, _, _, hasEditPermission, hasAssignPermission } =
   //   getProfile.parking_privilege;
-  const hasEditPermission = false;
-  const hasAssignPermission = true;
-
-  const privilegeZones: ZonePricing[] = [
-    { floor: 1, zone: "A", price: 1000, unit: PriceRateUnit.BAHT_PER_DAY },
-  ];
+  //todo: not able to click add when false
+  const hasEditPermission = true;
+  const hasAssignPermission = false;
 
   const [editedPrivilegeZones, setEditedPrivilegeZones] =
     useState<ZonePricing[]>(privilegeZones);
+
+  useEffect(() => {
+    if (privileges.isSuccess) {
+      setPrivilegeZones(privileges.data[privilegeIndex]?.slot_prices ?? []);
+    }
+  }, [privileges.data]);
+
+  useEffect(() => {
+    const newEditedPrivilegeZones = [];
+    const zonesSet = new Set();
+    if (privilegeZones.length !== 0) {
+      for (let i = 0; i < privilegeZones.length; i++) {
+        if (
+          !zonesSet.has(`${privilegeZones[i].floor} ${privilegeZones[i].zone}`)
+        ) {
+          zonesSet.add(`${privilegeZones[i].floor} ${privilegeZones[i].zone}`);
+          newEditedPrivilegeZones.push({
+            floor: privilegeZones[i].floor,
+            zone: privilegeZones[i].zone,
+            price: privilegeZones[i].price_rate,
+            unit: privilegeZones[i].price_rate_unit,
+          });
+        }
+      }
+    }
+    setEditedPrivilegeZones(newEditedPrivilegeZones);
+  }, [privilegeZones]);
 
   const onEditPrivilege = (idx: number, zone: ZonePricing) => {
     const newEditedPrivilegeZones = editedPrivilegeZones;
@@ -63,10 +94,34 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
 
   const onSubmit = async (data: FieldValues) => {
     try {
+      const slot_prices: SlotPriceProfile[] = [];
+      const totalPrivileges = [...editedPrivilegeZones, ...draftPrivileges];
+      const mappedPrivileges = totalPrivileges.map(
+        (x) => `${x.floor} ${x.zone}`
+      );
+      const totalPrivilegesSet = new Set(mappedPrivileges);
+      if (totalPrivilegesSet.size !== totalPrivileges.length) {
+        throw Error("Please make sure that the zones are not duplicated.");
+      }
+      totalPrivileges.map((p) => {
+        parkingLot.slots.map((s) => {
+          if (s.floor === p.floor && s.zone === p.zone) {
+            slot_prices.push({
+              slot_id: s._id,
+              slot_name: s.name,
+              floor: s.floor,
+              zone: s.zone,
+              price_rate: p.price ?? 0,
+              price_rate_unit: p.unit ?? PriceRateUnit.BAHT_PER_HOUR,
+            });
+          }
+        });
+      });
       const privilege = {
         title: data.name,
-        user_ids: data.user_ids ?? parking_privileges[privilegeIndex].user_ids,
-        slot_prices: [],
+        user_ids:
+          data.user_ids ?? parking_privileges[privilegeIndex]?.user_ids ?? [],
+        slot_prices: slot_prices,
       };
       if (mode === ActionMode.CREATE) {
         parking_privileges.push(privilege);
@@ -131,7 +186,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
         {editedPrivilegeZones.map((a, index) => (
           <RoleCard
             category={category}
-            roleName={`${a.floor} ${a.zone}`}
+            roleName={`Floor ${a.floor} Zone ${a.zone}`}
             description={`${a.price} ${a.unit}`}
             key={index}
             onPress={() =>
@@ -149,7 +204,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
         {draftPrivileges?.map((a, index) => (
           <RoleCard
             category={category}
-            roleName={`${a.floor} ${a.zone} draft`}
+            roleName={`$Floor: {a.floor} Zone: ${a.zone}`}
             description=""
             key={index}
             onPress={() =>
