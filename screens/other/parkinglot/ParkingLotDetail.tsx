@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
@@ -14,8 +14,8 @@ import SectionAppForm from "@/components/ui/SectionAppForm";
 import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
-import { ParkingLot } from "@/types/parking-lot";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotDetail">,
@@ -27,7 +27,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   route,
 }) => {
   const parkingLotId = route.params.parkingLotId;
-  const [parkingLot, setParkingLot] = useState<ParkingLot>();
+  const { parkingLot, setParkingLot } = useParkingLot();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
@@ -36,7 +36,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
     auth: { accessToken, authenticate },
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (getParkingLot.isSuccess) {
       setParkingLot(getParkingLot.data);
       setLoading(false);
@@ -45,7 +45,6 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   if (!parkingLot) return <></>;
-
 
   return (
     <BodyContainer innerContainerStyle={styles.bodyContainer}>
@@ -74,30 +73,34 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               title="Your Parking Space Location"
             />
           </MapView>
-          <View style={styles.buttonContainer}>
-            <IconButtonWithTitle
-              title={"Info"}
-              icon={"information-outline"}
-              onPress={() => {}}
-            />
-            <IconButtonWithTitle
-              title={"Plan"}
-              icon={"floor-plan"}
-              onPress={() => {}}
-            />
-            <IconButtonWithTitle
-              title={"Pricing"}
-              icon={"bank"}
-              onPress={() => {}}
-            />
-            <IconButtonWithTitle
-              title={"Role"}
-              icon={"head-cog-outline"}
-              onPress={() => {
-                navigation.navigate("OtherStack", { screen: "RoleList" });
-              }}
-            />
-          </View>
+          <SectionAppForm title={"Setting"} icon={"cog"}>
+            <View style={styles.buttonContainer}>
+              <IconButtonWithTitle
+                title={"Info"}
+                icon={"information-outline"}
+                onPress={() =>
+                  navigation.navigate("OtherStack", { screen: "EditParkingInfo" })
+                }
+              />
+              <IconButtonWithTitle
+                title={"Plan"}
+                icon={"floor-plan"}
+                onPress={() => {}}
+              />
+              <IconButtonWithTitle
+                title={"Pricing"}
+                icon={"bank"}
+                onPress={() => {}}
+              />
+              <IconButtonWithTitle
+                title={"Role"}
+                icon={"head-cog-outline"}
+                onPress={() => {
+                  navigation.navigate("OtherStack", { screen: "RoleList" });
+                }}
+              />
+            </View>
+          </SectionAppForm>
           {parkingLot.images && (
             <SectionAppForm title={"Photos"} icon={"camera"}>
               <ImageContainer images={parkingLot.images} />
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
     gap: 15,
-    paddingLeft: -10,
+    marginLeft: -20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

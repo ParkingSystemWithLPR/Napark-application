@@ -15,6 +15,7 @@ import ConfigRole from "@/screens/role/ConfigRole";
 import RoleList from "@/screens/role/RoleList";
 import RoleMember from "@/screens/role/RoleMember";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import EditParkingInfo from "@/screens/other/parkinglot/EditParkingInfo";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -90,6 +91,13 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
         component={ParkingLotDetail}
         options={{
           title: "Parking space detail",
+        }}
+      />
+      <Stack.Screen
+        name="EditParkingInfo"
+        component={EditParkingInfo}
+        options={{
+          title: "Edit parking space",
         }}
       />
       <Stack.Screen

@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 
 import { ParkingLotRequest } from "@/types/parking-lot";
 import apiRequest, { HTTPMethod } from "@/utils/http";
+import { PARKING_LOT_URL } from "..";
 
 export type CreateParkingLotRequestInput = {
   data: ParkingLotRequest;
@@ -19,8 +20,6 @@ export type CreateParkingLotRequestInput = {
 export type CreateParkingLotRequestService = (
   input: CreateParkingLotRequestInput
 ) => Promise<ParkingLotRequest>;
-
-const PARKING_LOT_URL = process.env.EXPO_PUBLIC_PARKING_LOT_API_URL;
 
 export const createParkingLotRequest: CreateParkingLotRequestService = async (
   input: CreateParkingLotRequestInput

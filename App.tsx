@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BaseNavigation from "./navigation/BaseNavigation";
 import AuthContextProvider from "./store/context/auth";
 import ProfileContextProvider from "./store/context/profile";
+import ParkingLotContextProvider from "./store/context/parkingLot";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -17,9 +18,11 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <AuthContextProvider>
             <ProfileContextProvider>
-              <BottomSheetModalProvider>
-                <BaseNavigation />
-              </BottomSheetModalProvider>
+              <ParkingLotContextProvider>
+                <BottomSheetModalProvider>
+                  <BaseNavigation />
+                </BottomSheetModalProvider>
+              </ParkingLotContextProvider>
             </ProfileContextProvider>
           </AuthContextProvider>
         </QueryClientProvider>
