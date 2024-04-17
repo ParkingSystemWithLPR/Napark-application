@@ -32,11 +32,7 @@ const AuthenticatedStack: React.FC<AuthenticatedProps> = () => {
     if (getProfile.isSuccess) {
       setProfile(getProfile.data);
     } else if (getProfile.isError) {
-      if (getProfile.error.status === HttpStatusCode.Unauthorized) {
-        logout();
-      } else {
-        Alert.alert("Failed to get the profile", getProfile.error.message);
-      }
+      logout();
     }
   }, [getProfile.data]);
 
