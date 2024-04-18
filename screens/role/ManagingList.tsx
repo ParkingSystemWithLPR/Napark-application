@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import RoleCard from "@/components/card/RoleCard";
@@ -27,25 +27,28 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
   const renderManagementRoles = () => {
     return (
       <View style={{ gap: 10 }}>
-        {management_roles.map((m, index) => {
-          return (
-            <RoleCard
-              category={category}
-              roleName={m.title}
-              member={m.user_ids.length}
-              onPress={() =>
-                navigation.navigate("ConfigRole", {
-                  mode: ActionMode.EDIT,
-                  index: index,
-                })
-              }
-            />
-          );
-        })}
-        {management_roles.length === 0 && (
+        {management_roles.length === 0 ? (
           <BodyText
             text="No managing role created."
             textStyle={styles.noItemText}
+          />
+        ) : (
+          <FlatList
+            data={management_roles}
+            keyExtractor={(item) => item.title}
+            renderItem={({ item, index }) => (
+              <RoleCard
+                category={category}
+                roleName={item.title}
+                member={item.user_ids.length}
+                onPress={() =>
+                  navigation.navigate("ConfigRole", {
+                    mode: ActionMode.EDIT,
+                    index: index,
+                  })
+                }
+              />
+            )}
           />
         )}
       </View>
@@ -53,29 +56,30 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
   };
 
   const renderParkingPrivileges = () => {
-    // todo: change logic
-    //todo: change to flatlist
     return (
       <View style={{ gap: 10 }}>
-        {parking_privileges.map((p, index) => {
-          return (
-            <RoleCard
-              category={category}
-              roleName={p.title}
-              member={p.user_ids.length}
-              onPress={() =>
-                navigation.navigate("ConfigPrivilege", {
-                  mode: ActionMode.EDIT,
-                  index: index,
-                })
-              }
-            />
-          );
-        })}
-        {parking_privileges.length === 0 && (
+        {parking_privileges.length === 0 ? (
           <BodyText
             text="No parking privilege created."
             textStyle={styles.noItemText}
+          />
+        ) : (
+          <FlatList
+            data={parking_privileges}
+            keyExtractor={(item) => item.title}
+            renderItem={({ item, index }) => (
+              <RoleCard
+                category={category}
+                roleName={item.title}
+                member={item.user_ids.length}
+                onPress={() =>
+                  navigation.navigate("ConfigPrivilege", {
+                    mode: ActionMode.EDIT,
+                    index: index,
+                  })
+                }
+              />
+            )}
           />
         )}
       </View>

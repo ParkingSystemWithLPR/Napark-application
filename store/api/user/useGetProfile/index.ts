@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 import { USER_URL } from "..";
 
-import { Profile } from "@/types/user";
+import { Profile, User } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 interface GetProfileInput {
@@ -14,7 +14,6 @@ interface GetProfileInput {
 }
 
 type GetProfileService = (input: GetProfileInput) => Promise<Profile>;
-type GetAllProfilesService = (input: GetProfileInput) => Promise<Profile[]>;
 
 export const getProfile: GetProfileService = async ({ auth }) => {
   const data = await apiRequest<Profile>(
@@ -26,31 +25,9 @@ export const getProfile: GetProfileService = async ({ auth }) => {
   return data;
 };
 
-export const getAllProfile: GetAllProfilesService = async ({ auth }) => {
-  // todo: add endpoint
-  const data = await apiRequest<Profile[]>(
-    USER_URL + "",
-    HTTPMethod.GET,
-    auth.accessToken,
-    auth.authenticate
-  );
-  return data;
-};
-
 export const useGetProfile = (
   input: GetProfileInput
 ): UseQueryResult<Profile, AxiosError> => {
-  return useQuery({
-    queryKey: [],
-    queryFn: async () => getProfile(input),
-    refetchOnWindowFocus: false,
-    refetchInterval: 0,
-  });
-};
-
-export const useGetAllProfile = (
-  input: GetProfileInput
-): UseQueryResult<Profile[], AxiosError> => {
   return useQuery({
     queryKey: [],
     queryFn: async () => getProfile(input),

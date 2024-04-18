@@ -18,16 +18,17 @@ export type EditParkingInfoProps = CompositeScreenProps<
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
-  navigation,
-}) => {
-  const { control, handleSubmit, formState: { isSubmitting } } = useForm();
+const EditParkingInfo: React.FC<EditParkingInfoProps> = ({ navigation }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
 
   const onSubmit = async (data: FieldValues) => {
     try {
       // await mutateAsync(data);
-      console.log("data", data);
       navigation.goBack();
     } catch (error) {
       Alert.alert(
@@ -39,14 +40,14 @@ const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <ConfigInfo control={control}/>
+      <ConfigInfo control={control} />
       <ModalOverlay
         visible={isOpenConfirmModal}
         closeModal={() => setOpenConfirmModal(false)}
       >
         <View style={styles.centeredContent}>
           <View style={styles.confirmModalContainer}>
-            <SubHeaderText text={"Confirm request information"}/>
+            <SubHeaderText text={"Confirm request information"} />
             <View style={styles.buttonContainer}>
               <SecondaryButton
                 title={"Cancle"}
@@ -102,5 +103,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-  }
+  },
 });

@@ -38,7 +38,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
     assign_management_role_members,
     edit_parking_privilege,
     assign_parking_privilege_members,
-  } = management_roles[index]?.permissions;
+  } = management_roles[index]?.permissions ?? {};
   const [isEnableManageParkingSpace, setEnableManageParkingSpace] =
     useState<boolean>(manage_parking_space ?? false);
   const [isEnableEditRole, setEnableEditRole] = useState<boolean>(

@@ -13,6 +13,7 @@ export type RoleCardProps = {
   description?: string;
   member?: number;
   onPress: () => void;
+  disabled?: boolean;
 };
 
 const RoleCard: React.FC<RoleCardProps> = ({
@@ -21,6 +22,7 @@ const RoleCard: React.FC<RoleCardProps> = ({
   description,
   member = 0,
   onPress,
+  disabled = false,
 }) => {
   return (
     <View style={styles.container}>
@@ -31,6 +33,7 @@ const RoleCard: React.FC<RoleCardProps> = ({
           pressed ? styles.cardPressed : null,
         ]}
         onPress={onPress}
+        disabled={disabled}
       >
         <View style={styles.innerContainer}>
           <View style={styles.contentWrapper}>

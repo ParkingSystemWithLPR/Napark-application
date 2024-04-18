@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, View } from "react-native";
+import { FlatList, Image, ScrollView, StyleSheet, View } from "react-native";
 
 import IconButton from "@/components/button/IconButton";
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -9,65 +9,37 @@ import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import {
-  getAllProfile,
-  useGetAllProfile,
-} from "@/store/api/user/useGetProfile";
+import { useGetAllUsers } from "@/store/api/user/useGetUsers";
 import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList } from "@/types";
-import { Profile } from "@/types/user";
+import { User } from "@/types/user";
 
 export type RoleMemberProps = NativeStackScreenProps<
   OtherStackParamList,
   "RoleMember"
 >;
 
-const mockedMember = [
-  {
-    _id: "6606a52af3a741552b912d56",
-    firstname: "Kanin",
-    lastname: "Kanin",
-    email: "kanin.com",
-    credit: 1234432143211234,
-  },
-  {
-    _id: "6606a52af3a741552b912d57",
-    firstname: "Tae",
-    lastname: "VC",
-    email: "taevc.com",
-    credit: 1234432143211235,
-  },
-  {
-    _id: "6606a52af3a741552b912d58",
-    firstname: "Ing",
-    lastname: "Huasom",
-    email: "huasom.com",
-    credit: 1234432143211236,
-  },
-];
-
 const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
   const { form, userList, hasAssignPermission } = route.params;
-  const { setValue } = form;
+  const { getValues, setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
-  const [userIdList, setUserIdList] = useState<string[]>(userList);
-  const [displayedMember, setDisplayedMember] =
-    useState<Profile[]>(mockedMember);
-  const [isSelectAll, setSelectAll] = useState<boolean>(false);
-  // const { accessToken, authenticate } = useAuth();
-  // const allUsersList = useGetAllProfile({
-  //   auth: { accessToken, authenticate },
-  // });
+  const [userIdList, setUserIdList] = useState<string[]>(
+    getValues("user_ids") ?? userList
+  );
+  const [members, setMembers] = useState<User[]>([]);
+  const { accessToken, authenticate } = useAuth();
+
+  const allUsersList = useGetAllUsers({
+    queryParams: { searchName: searchText },
+    auth: { accessToken, authenticate },
+  });
 
   useEffect(() => {
-    const searchResult = mockedMember.filter((member) =>
-      `${member.firstname} ${member.lastname}`
-        .toLowerCase()
-        .includes(searchText.toLowerCase())
-    );
-    setDisplayedMember(searchResult);
-  }, [searchText]);
+    if (allUsersList.isSuccess) {
+      setMembers(allUsersList.data.users);
+    }
+  }, [allUsersList.data]);
 
   const onCheckboxClick = (id: string) => {
     if (userIdList.includes(id)) {
@@ -78,17 +50,6 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
     } else {
       const newList = [...userIdList, id];
       setUserIdList(newList);
-    }
-  };
-
-  const onSelectAll = () => {
-    if (isSelectAll) {
-      setSelectAll(false);
-      setUserIdList([]);
-    } else {
-      setSelectAll(true);
-      const allUserIdList = mockedMember.flatMap((member) => member._id);
-      setUserIdList(allUserIdList);
     }
   };
 
@@ -124,29 +85,22 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
     );
   }, [searchText, searchIcon]);
 
-  //todo: assignee = already assigned
-  //todo: user not save when save then go back
   const renderMemberList = useCallback(
-    (searchResult?: boolean) => {
+    (isAssignee?: boolean) => {
+      const displayedMembers = isAssignee
+        ? members.filter((item) => userIdList.includes(item._id))
+        : members.filter((item) => !userIdList.includes(item._id));
       return (
         <View style={styles.memberListContainer}>
-          <View style={styles.memberListTextContainer}>
-            <BodyText text={searchResult ? "Suggested" : "Assignee"} />
-            {!searchResult && (
-              <CheckboxInput
-                isChecked={isSelectAll}
-                disabled={!hasAssignPermission}
-                onPress={() => onSelectAll()}
-                text="Select all"
-                containerStyle={{ flexDirection: "row-reverse" }}
-                textStyle={styles.text}
-              />
-            )}
-          </View>
-          <FlatList
-            data={displayedMember}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
+          <BodyText text={isAssignee ? "Assignee" : "Suggested"} />
+          {displayedMembers.length === 0 ? (
+            <BodyText
+              text={`No ${isAssignee ? "assigned" : "suggested"} member(s).`}
+              containerStyle={{ marginBottom: 10 }}
+              textStyle={{ color: Colors.gray[700] }}
+            />
+          ) : (
+            displayedMembers?.map((item) => (
               <View style={styles.memberInfoContainer}>
                 <View style={styles.memberInfoWrapper}>
                   <Image
@@ -165,28 +119,30 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
                   isChecked={userIdList.includes(item._id)}
                 />
               </View>
-            )}
-          />
+            ))
+          )}
         </View>
       );
     },
-    [displayedMember, userIdList]
+    [members, userIdList]
   );
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <View style={styles.innerContainer}>
-        {renderHeader()}
-        {renderMemberList()}
-        {renderMemberList(true)}
-      </View>
-      <PrimaryButton
-        title="Save"
-        onPress={() => {
-          setValue("user_ids", userIdList);
-          navigation.goBack();
-        }}
-      />
+      <ScrollView>
+        <View style={styles.innerContainer}>
+          {renderHeader()}
+          {renderMemberList(true)}
+          {renderMemberList()}
+        </View>
+        <PrimaryButton
+          title="Save"
+          onPress={() => {
+            setValue("user_ids", userIdList);
+            navigation.goBack();
+          }}
+        />
+      </ScrollView>
     </BodyContainer>
   );
 };

@@ -32,32 +32,28 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
   navigation,
   route,
 }) => {
+  const category = ManagingCategory.PRIVILEGE;
+  const form = useForm();
+  const { control, handleSubmit, getValues } = form;
   const { mode, index: privilegeIndex } = route.params;
   const { parkingLot, setParkingLot, getPrivilegeArea } = useParkingLot();
   const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
   const { accessToken, authenticate } = useAuth();
-
+  const parking_privileges = parkingLot.parking_privileges;
   const privileges = usePrivilege({
     queryParams: { parkingLotId: parkingLot._id },
     auth: { accessToken, authenticate },
   });
-
   const [privilegeZones, setPrivilegeZones] = useState<SlotPriceProfile[]>([]);
-
-  const parking_privileges = parkingLot.parking_privileges;
-  const category = ManagingCategory.PRIVILEGE;
-  const form = useForm();
-  const { control, handleSubmit, getValues } = form;
   const draftPrivileges: ZonePricing[] = getValues("privilege") ?? [];
+  const [editedPrivilegeZones, setEditedPrivilegeZones] =
+    useState<ZonePricing[]>(privilegeZones);
+
   // const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
   // const { _, _, _, hasEditPermission, hasAssignPermission } =
   //   getProfile.parking_privilege;
-  //todo: not able to click add when false
   const hasEditPermission = true;
-  const hasAssignPermission = false;
-
-  const [editedPrivilegeZones, setEditedPrivilegeZones] =
-    useState<ZonePricing[]>(privilegeZones);
+  const hasAssignPermission = true;
 
   useEffect(() => {
     if (privileges.isSuccess) {
@@ -199,12 +195,13 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
                 onEditPrivilege: onEditPrivilege,
               })
             }
+            disabled={!hasEditPermission}
           />
         ))}
         {draftPrivileges?.map((a, index) => (
           <RoleCard
             category={category}
-            roleName={`$Floor: {a.floor} Zone: ${a.zone}`}
+            roleName={`Floor: ${a.floor} Zone: ${a.zone}`}
             description=""
             key={index}
             onPress={() =>
@@ -216,6 +213,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
                 data: a,
               })
             }
+            disabled={!hasEditPermission}
           />
         ))}
       </View>
@@ -228,6 +226,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
             hasEditPermission: hasEditPermission,
           })
         }
+        disabled={!hasEditPermission}
       />
       <SubHeaderText text="Assign to" />
       <ChangeScreenTab
