@@ -43,18 +43,29 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
     }
   }, [getMyBookings.data]);
 
+  const refreshRequest = useCallback(async () => {
+    await getMyBookings.refetch();
+  }, []);
+
   const renderUpcomingBookings = useCallback(() => {
     const upcomingBookings = bookings.filter(
       (booking) => booking.status === BookingStatus.UPCOMING
     );
-    return <SessionsList bookings={upcomingBookings} />;
+    return (
+      <SessionsList
+        bookings={upcomingBookings}
+        refreshRequest={refreshRequest}
+      />
+    );
   }, [bookings]);
 
   const renderActiveBookings = useCallback(() => {
     const activeBookings = bookings.filter(
       (booking) => booking.status === BookingStatus.ACTIVE
     );
-    return <SessionsList bookings={activeBookings} />;
+    return (
+      <SessionsList bookings={activeBookings} refreshRequest={refreshRequest} />
+    );
   }, [bookings]);
 
   const renderCompletedBookings = useCallback(() => {
@@ -63,7 +74,12 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
         booking.status === BookingStatus.COMPLETED ||
         booking.status === BookingStatus.CANCELLED
     );
-    return <SessionsList bookings={completedBookings} />;
+    return (
+      <SessionsList
+        bookings={completedBookings}
+        refreshRequest={refreshRequest}
+      />
+    );
   }, [bookings]);
 
   return (
