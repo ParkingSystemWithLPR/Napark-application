@@ -61,10 +61,12 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
   const hasAssignPermission = true;
 
   const onSubmit = async (data: FieldValues) => {
+    const usersList = data.users ?? management_roles[index]?.users ?? [];
     try {
       const role = {
         title: data.name,
-        user_ids: data.user_ids ?? management_roles[index]?.user_ids,
+        description: data.description,
+        users: usersList,
         permissions: {
           manage_parking_space:
             data.manageParkingSpace ?? isEnableManageParkingSpace,
@@ -122,6 +124,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
       <Controller
         name={"description"}
         control={control}
+        defaultValue={management_roles[index]?.description}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Description"
@@ -245,7 +248,7 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
         onPress={() => {
           navigation.navigate("RoleMember", {
             form: form,
-            userList: management_roles[index]?.user_ids ?? [],
+            userList: management_roles[index]?.users ?? [],
             hasAssignPermission: hasAssignPermission,
           });
         }}

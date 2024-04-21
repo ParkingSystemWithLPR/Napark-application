@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 import { USER_URL } from "..";
 
-import { Profile, User } from "@/types/user";
+import { Profile } from "@/types/user";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
 interface GetProfileInput {

@@ -2,6 +2,7 @@ import { LatLng } from "react-native-maps";
 
 import { ImageProps } from "..";
 import { SlotPriceProfile, SlotProfile } from "../booking";
+import { User } from "../user";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { PriceRateUnit, ZoneType } from "@/enum/ParkingLot";
@@ -73,7 +74,8 @@ export type Zone = {
 
 export type ManagementRoleProfile = {
   title: string;
-  user_ids: string[];
+  description: string;
+  users: User[];
   permissions: ManagementPermission;
 };
 
@@ -87,7 +89,8 @@ export type ManagementPermission = {
 
 export type ParkingPrivilegeProfile = {
   title: string;
-  user_ids: string[];
+  description: string;
+  users: User[];
   slot_prices: SlotPriceProfile[];
 };
 

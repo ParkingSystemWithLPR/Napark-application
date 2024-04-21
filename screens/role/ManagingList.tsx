@@ -40,7 +40,7 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
               <RoleCard
                 category={category}
                 roleName={item.title}
-                member={item.user_ids.length}
+                member={item.users.length}
                 onPress={() =>
                   navigation.navigate("ConfigRole", {
                     mode: ActionMode.EDIT,
@@ -71,7 +71,7 @@ const ManagingList: React.FC<ManagingListProps> = ({ navigation, route }) => {
               <RoleCard
                 category={category}
                 roleName={item.title}
-                member={item.user_ids.length}
+                member={item.users.length}
                 onPress={() =>
                   navigation.navigate("ConfigPrivilege", {
                     mode: ActionMode.EDIT,

@@ -4,7 +4,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { Booking } from "./booking";
 import { ParkingLot, ZonePricing } from "./parking-lot";
-import { Car } from "./user";
+import { Car, User } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { ManagingCategory } from "@/enum/ManagingCategory";
@@ -50,7 +50,7 @@ export type OtherStackParamList = {
   ConfigPlan: undefined;
   RoleMember: {
     form: UseFormReturn<FieldValues, any, undefined>;
-    userList: string[];
+    userList: User[];
     hasAssignPermission: boolean;
   };
   ConfigRole: { mode: ActionMode; index: number };

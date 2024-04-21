@@ -21,7 +21,7 @@ import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { SlotPriceProfile } from "@/types/booking";
-import { ParkingPrivilegeProfile, ZonePricing } from "@/types/parking-lot";
+import { ZonePricing } from "@/types/parking-lot";
 
 export type ConfigPrivilegeProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ConfigPrivilege">,
@@ -113,10 +113,12 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
           }
         });
       });
+      const usersList =
+        data.users ?? parking_privileges[privilegeIndex]?.users ?? [];
       const privilege = {
         title: data.name,
-        user_ids:
-          data.user_ids ?? parking_privileges[privilegeIndex]?.user_ids ?? [],
+        description: data.description,
+        users: usersList,
         slot_prices: slot_prices,
       };
       if (mode === ActionMode.CREATE) {
@@ -166,7 +168,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
       <Controller
         name={"description"}
         control={control}
-        // defaultValue={parking_privileges[privilegeIndex]?.description}
+        defaultValue={parking_privileges[privilegeIndex]?.description}
         render={({ field: { onChange, value } }) => (
           <TextInput
             title="Description"
@@ -235,7 +237,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
         onPress={() =>
           navigation.navigate("RoleMember", {
             form: form,
-            userList: parking_privileges[privilegeIndex]?.user_ids ?? [],
+            userList: parking_privileges[privilegeIndex]?.users ?? [],
             hasAssignPermission: hasAssignPermission,
           })
         }

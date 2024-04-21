@@ -24,8 +24,8 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
   const { getValues, setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
-  const [userIdList, setUserIdList] = useState<string[]>(
-    getValues("user_ids") ?? userList
+  const [usersList, setUsersList] = useState<User[]>(
+    getValues("users") ?? userList
   );
   const [members, setMembers] = useState<User[]>([]);
   const { accessToken, authenticate } = useAuth();
@@ -41,15 +41,15 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
     }
   }, [allUsersList.data]);
 
-  const onCheckboxClick = (id: string) => {
-    if (userIdList.includes(id)) {
-      const newList = userIdList.filter((item) => {
-        return item !== id;
+  const onCheckboxClick = (user: User) => {
+    if (usersList.includes(user)) {
+      const newList = usersList.filter((item) => {
+        return item !== user;
       });
-      setUserIdList(newList);
+      setUsersList(newList);
     } else {
-      const newList = [...userIdList, id];
-      setUserIdList(newList);
+      const newList = [...usersList, user];
+      setUsersList(newList);
     }
   };
 
@@ -88,8 +88,10 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
   const renderMemberList = useCallback(
     (isAssignee?: boolean) => {
       const displayedMembers = isAssignee
-        ? members.filter((item) => userIdList.includes(item._id))
-        : members.filter((item) => !userIdList.includes(item._id));
+        ? usersList
+        : members.filter(
+            (item) => !usersList.some((user) => user._id === item._id)
+          );
       return (
         <View style={styles.memberListContainer}>
           <BodyText text={isAssignee ? "Assignee" : "Suggested"} />
@@ -101,7 +103,7 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
             />
           ) : (
             displayedMembers?.map((item) => (
-              <View style={styles.memberInfoContainer}>
+              <View style={styles.memberInfoContainer} key={item._id}>
                 <View style={styles.memberInfoWrapper}>
                   <Image
                     style={styles.image}
@@ -114,9 +116,9 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
                 </View>
                 <CheckboxInput
                   text={""}
-                  onPress={() => onCheckboxClick(item._id)}
+                  onPress={() => onCheckboxClick(item)}
                   disabled={!hasAssignPermission}
-                  isChecked={userIdList.includes(item._id)}
+                  isChecked={usersList.includes(item)}
                 />
               </View>
             ))
@@ -124,7 +126,7 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
         </View>
       );
     },
-    [members, userIdList]
+    [members, usersList]
   );
 
   return (
@@ -138,7 +140,7 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
         <PrimaryButton
           title="Save"
           onPress={() => {
-            setValue("user_ids", userIdList);
+            setValue("users", usersList);
             navigation.goBack();
           }}
         />

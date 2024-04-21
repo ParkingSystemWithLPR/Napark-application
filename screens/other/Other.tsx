@@ -29,24 +29,20 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
       containerStyle={styles.container}
       innerContainerStyle={styles.tabContainer}
     >
-      {hasManagePermission && (
-        <>
-          <SubHeaderText
-            containerStyle={{
-              width: "100%",
-            }}
-            text="Parking space's owner options"
-          />
-          <ChangeScreenTab
-            icon="alpha-p-circle-outline"
-            screenName="My parking space"
-            onPress={() => {
-              navigation.push("OtherStack", { screen: "ParkingLotsList" });
-            }}
-          />
-          <View style={styles.separator} />
-        </>
-      )}
+      <SubHeaderText
+        containerStyle={{
+          width: "100%",
+        }}
+        text="Parking space's owner options"
+      />
+      <ChangeScreenTab
+        icon="alpha-p-circle-outline"
+        screenName="My parking space"
+        onPress={() => {
+          navigation.push("OtherStack", { screen: "ParkingLotsList" });
+        }}
+      />
+      <View style={styles.separator} />
       <SubHeaderText
         containerStyle={{
           width: "100%",
