@@ -19,6 +19,7 @@ import ManagingList from "@/screens/role/ManagingList";
 import RoleMember from "@/screens/role/RoleMember";
 import ParkingLotContextProvider from "@/store/context/parkingLot";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
+import EditParkingInfo from "@/screens/other/parkinglot/EditParkingInfo";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 

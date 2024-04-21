@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
@@ -15,6 +15,7 @@ import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
+import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
@@ -28,6 +29,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
 }) => {
   const parkingLotId = route.params.parkingLotId;
   const { parkingLot, setParkingLot } = useParkingLot();
+  const { parkingLot, setParkingLot } = useParkingLot();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
 
@@ -36,7 +38,7 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
     auth: { accessToken, authenticate },
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (getParkingLot.isSuccess) {
       setParkingLot(getParkingLot.data);
       setLoading(false);
@@ -77,7 +79,11 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
             <IconButtonWithTitle
               title={"Info"}
               icon={"information-outline"}
-              onPress={() => {}}
+              onPress={() =>
+                navigation.navigate("OtherStack", {
+                  screen: "EditParkingInfo",
+                })
+              }
             />
             <IconButtonWithTitle
               title={"Plan"}
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
     gap: 15,
-    paddingLeft: -10,
+    marginLeft: -20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

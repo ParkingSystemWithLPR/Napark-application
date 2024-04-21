@@ -11,9 +11,8 @@ import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
-import { useGetParkingLotsByUserId } from "@/store/api/parking-lot/useGetParkingLotsByUserId";
 import { useAuth } from "@/store/context/auth";
-import { useProfile } from "@/store/context/profile";
+import { useGetMyParkingLots } from "@/store/api/parking-lot/useGetMyParkingLots";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { getBusinessHours, getDayInAWeek } from "@/utils/date";
@@ -25,12 +24,11 @@ export type ParkingLotsListProps = CompositeScreenProps<
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
-  const { profile } = useProfile();
   const today = format(new Date(), "eeee").toLocaleLowerCase();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const getParkingLots = useGetParkingLotsByUserId({
+  const getParkingLots = useGetMyParkingLots({
     auth: { accessToken, authenticate },
   });
 

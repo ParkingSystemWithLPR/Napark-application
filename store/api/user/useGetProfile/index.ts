@@ -33,5 +33,6 @@ export const useGetProfile = (
     queryFn: async () => getProfile(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
+    retry: 0,
   });
 };

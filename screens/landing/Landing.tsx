@@ -32,6 +32,7 @@ import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import RangeInput from "@/components/input/RangeInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
+import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
@@ -166,7 +167,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             },
           }}
         />
-        <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+        {/* <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
             <MaterialIcons
               name="more-vert"
@@ -174,7 +175,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               color={Colors.gray[800]}
             />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }, []);
@@ -211,25 +212,37 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         title="Recommended place"
         startIndex={0}
       >
-        <FlatList
-          data={parkingSpaces}
-          renderItem={({ item }) => {
-            const businessDay = item.business_days.find((businessday) => {
-              businessday.weekday == getDayInAWeek(new Date());
-            });
-            return (
-              <ParkingSpaceCard
-                parkingSpaceName={item.name}
-                businessHours={
-                  businessDay ? getBusinessHours(businessDay) : "Not available"
-                }
-                availabilty={item.available_slots_count ?? 0}
-                onPress={() => handleChooseParkingSpace(item)}
-              />
-            );
-          }}
-          overScrollMode="never"
-        />
+        {parkingSpaces && parkingSpaces.length > 0 ? (
+          <FlatList
+            data={parkingSpaces}
+            renderItem={({ item }) => {
+              const businessDay = item.business_days.find((businessday) => {
+                businessday.weekday == getDayInAWeek(new Date());
+              });
+              return (
+                <ParkingSpaceCard
+                  parkingSpaceName={item.name}
+                  businessHours={
+                    businessDay
+                      ? getBusinessHours(businessDay)
+                      : "Not available"
+                  }
+                  availabilty={item.available_slots_count ?? 0}
+                  onPress={() => handleChooseParkingSpace(item)}
+                />
+              );
+            }}
+            overScrollMode="never"
+          />
+        ) : (
+          <BodyText
+            text="Sorry! There is no parking space nearby the destination 🥹"
+            containerStyle={{
+              padding: 10,
+              alignItems: "center",
+            }}
+          />
+        )}
       </CustomBottomSheetModal>
     );
   }, [recommendedBottomSheetRef, parkingSpaces]);
@@ -238,9 +251,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     if (selectedParkingSpace) {
       const now = new Date();
       const businessDay = selectedParkingSpace.business_days.find(
-        (businessday) => {
-          businessday.weekday == getDayInAWeek(now);
-        }
+        (businessday) => businessday.weekday === getDayInAWeek(now)
       );
       const isOpen =
         isAfter(now, getDateFromTime(businessDay?.open_time)) &&
@@ -250,7 +261,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       const trafficPercentage =
         isNaN(availableSlotsCount) || isNaN(totalSlots) || totalSlots === 0
           ? 0
-          : Math.floor(availableSlotsCount / totalSlots);
+          : Math.floor(((totalSlots - availableSlotsCount) * 100) / totalSlots);
       return (
         <CustomBottomSheetModal
           ref={parkingSpaceDetailBottomSheetRef}
@@ -335,6 +346,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               }}
               title="Your Location"
               pinColor={Colors.blue[600].toString()}
+              style={{ zIndex: 1 }}
             >
               <Image
                 source={require("../../assets/images/destination-pin.png")}
@@ -350,6 +362,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
                   }}
                   title={parkingSpace.name}
                   onPress={() => handleChooseParkingSpace(parkingSpace)}
+                  style={{ zIndex: 0 }}
                 >
                   <Image
                     source={require("../../assets/images/parking-space-pin.png")}

@@ -1,5 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { HttpStatusCode } from "axios";
 import { useState } from "react";
 import { StyleSheet, View, Pressable, Alert } from "react-native";
 
@@ -75,10 +76,10 @@ const LogIn: React.FC<LogInProps> = ({ navigation, route }) => {
           screen: "MainScreen",
           params: { screen: "Landing" },
         });
-      } catch (error) {
+      } catch (error: any) {
         Alert.alert(
           "Authentication Failed",
-          "Please try logging in again!!: " + (error as Error).message
+          "Either email or password is incorrect"
         );
       }
     }
@@ -109,7 +110,7 @@ const LogIn: React.FC<LogInProps> = ({ navigation, route }) => {
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleCreateAccountPress}>
-            <BodyText text="Create account" />
+            <BodyText text="Create an account" />
           </Pressable>
         </View>
         <View>

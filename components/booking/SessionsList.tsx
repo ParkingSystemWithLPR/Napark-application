@@ -1,9 +1,10 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
   ColorValue,
   FlatList,
+  RefreshControl,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -146,9 +147,14 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
 
 interface sessionsProps {
   bookings: Booking[];
+  refreshRequest: () => Promise<void>;
 }
 
-const SessionsList: React.FC<sessionsProps> = ({ bookings }) => {
+const SessionsList: React.FC<sessionsProps> = ({
+  bookings,
+  refreshRequest,
+}) => {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const navigation =
     useNavigation<NavigationProp<AuthenticatedStackParamList>>();
   const handleOnClick = (booking: Booking) => {
@@ -157,10 +163,20 @@ const SessionsList: React.FC<sessionsProps> = ({ bookings }) => {
       params: { booking: booking },
     });
   };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshRequest();
+    setRefreshing(false);
+  }, []);
+
   return bookings.length > 0 ? (
     <FlatList
       data={bookings}
       keyExtractor={(item: Booking) => item._id}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       renderItem={({ item }) => {
         return (
           <SessionCard
@@ -174,7 +190,14 @@ const SessionsList: React.FC<sessionsProps> = ({ bookings }) => {
       overScrollMode="never"
     />
   ) : (
-    <BodyText text="No bookings" />
+    <BodyText
+      text="No bookings"
+      containerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    />
   );
 };
 

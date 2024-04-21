@@ -38,7 +38,7 @@ const CarInfoSetup: React.FC<CarInfoSetupProps> = ({ navigation, route }) => {
   const { mutateAsync: editUserCar } = useEditUserCar();
 
   const onPressAction = async () => {
-    const licensePlateRegex = /^[0-9]?[ก-๙]+\s[0-9]{1,4}$/;
+    const licensePlateRegex = /^[0-9]?[ก-๙]+[0-9]{1,4}$/;
     let isLicensePlateValid = false;
     let isProvinceSelected = false;
     let isValid;
