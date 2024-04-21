@@ -6,22 +6,22 @@ import { Alert, ScrollView, StyleSheet, View } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
+import BusinessDayInput from "@/components/input/BusinessDayInput";
+import ImageUploader from "@/components/input/ImageUploader";
+import MyTextInput from "@/components/input/TextInput";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
+import { useUpdateParkingLot } from "@/store/api/parking-lot/useUpdateParkingLot";
+import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
 import {
   OtherStackParamList,
   AuthenticatedStackParamList,
 } from "@/types";
-import { useUpdateParkingLot } from "@/store/api/parking-lot/useUpdateParkingLot";
 import { ParkingLot } from "@/types/parking-lot";
-import { useAuth } from "@/store/context/auth";
-import ImageUploader from "@/components/input/ImageUploader";
-import MyTextInput from "@/components/input/TextInput";
-import BusinessDayInput from "@/components/input/BusinessDayInput";
 import { convertImagesToImageProps } from "@/utils/image";
-import { useParkingLot } from "@/store/context/parkingLot";
 
 export type EditParkingInfoProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "EditParkingInfo">,
