@@ -8,6 +8,7 @@ import Colors from "@/constants/color";
 import CarInfo from "@/screens/other/carInfo/CarInfo";
 import CarInfoSetup from "@/screens/other/carInfo/CarInfoSetup";
 import ChangePassword from "@/screens/other/ChangePassword";
+import EditParkingInfo from "@/screens/other/parkinglot/EditParkingInfo";
 import ParkingLotDetail from "@/screens/other/parkinglot/ParkingLotDetail";
 import ParkingLotsList from "@/screens/other/parkinglot/ParkingLotsList";
 import RequestParkingLot from "@/screens/other/parkinglot/RequestPakingLot";
@@ -19,7 +20,6 @@ import ManagingList from "@/screens/role/ManagingList";
 import RoleMember from "@/screens/role/RoleMember";
 import ParkingLotContextProvider from "@/store/context/parkingLot";
 import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
-import EditParkingInfo from "@/screens/other/parkinglot/EditParkingInfo";
 
 const Stack = createNativeStackNavigator<OtherStackParamList>();
 
@@ -96,6 +96,13 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
           component={ParkingLotDetail}
           options={{
             title: "Parking space detail",
+          }}
+        />
+        <Stack.Screen
+          name="EditParkingInfo"
+          component={EditParkingInfo}
+          options={{
+            title: "Edit parking space",
           }}
         />
         <Stack.Screen

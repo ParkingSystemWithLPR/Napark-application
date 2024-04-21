@@ -15,7 +15,6 @@ import Colors from "@/constants/color";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
-import { useParkingLot } from "@/store/context/parkingLot";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 
 export type ParkingLotDetailProps = CompositeScreenProps<
@@ -28,7 +27,6 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
   route,
 }) => {
   const parkingLotId = route.params.parkingLotId;
-  const { parkingLot, setParkingLot } = useParkingLot();
   const { parkingLot, setParkingLot } = useParkingLot();
   const [isLoading, setLoading] = useState<boolean>(true);
   const { accessToken, authenticate } = useAuth();
