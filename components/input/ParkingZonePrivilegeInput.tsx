@@ -57,7 +57,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
         {zones.map((_, index) => {
           const idx = mode === ActionMode.CREATE ? index : 0;
           return (
-            <View style={{ gap: 5 }}>
+            <View style={{ gap: 5 }} key={idx}>
               <View style={styles.dropdownContainer}>
                 <DropdownInput
                   title="Floor"

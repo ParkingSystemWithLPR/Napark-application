@@ -204,7 +204,7 @@ const ConfigPrivilege: React.FC<ConfigPrivilegeProps> = ({
           <RoleCard
             category={category}
             roleName={`Floor: ${a.floor} Zone: ${a.zone}`}
-            description=""
+            description={`${a.price} ${a.unit}`}
             key={index}
             onPress={() =>
               navigation.navigate("ConfigZone", {
