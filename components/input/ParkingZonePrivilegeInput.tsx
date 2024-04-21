@@ -106,7 +106,7 @@ const ParkingZonePrivilegeInput: React.FC<ParkingZonePrivilegeInputProps> = ({
                   editable={hasEditPermission}
                   onChangeText={(p: string) => {
                     const newPrice = [...price];
-                    newPrice[idx] = parseInt(p);
+                    newPrice[idx] = isNaN(parseInt(p)) ? 0 : parseInt(p);
                     setPrice(newPrice);
                   }}
                   inputMode={InputType.Numeric}
