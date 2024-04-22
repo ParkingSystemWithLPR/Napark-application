@@ -2,9 +2,10 @@ import { LatLng } from "react-native-maps";
 
 import { ImageProps } from "..";
 import { SlotPriceProfile, SlotProfile } from "../booking";
+import { User } from "../user";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
-import { ZoneType } from "@/enum/ParkingLot";
+import { PriceRateUnit, ZoneType } from "@/enum/ParkingLot";
 
 export type ParkingLot = {
   _id: string;
@@ -73,17 +74,33 @@ export type Zone = {
 
 export type ManagementRoleProfile = {
   title: string;
-  user_ids: string[];
-  permissions: string[];
+  description: string;
+  users: User[];
+  permissions: ManagementPermission;
+};
+
+export type ManagementPermission = {
+  manage_parking_space: boolean;
+  edit_management_role: boolean;
+  assign_management_role_members: boolean;
+  edit_parking_privilege: boolean;
+  assign_parking_privilege_members: boolean;
 };
 
 export type ParkingPrivilegeProfile = {
   title: string;
-  user_ids: string[];
+  description: string;
+  users: User[];
   slot_prices: SlotPriceProfile[];
 };
 
 export type Availability = {
   vacant: number;
   capacity: number;
+};
+export type ZonePricing = {
+  floor?: number;
+  zone?: string;
+  price?: number;
+  unit?: PriceRateUnit;
 };

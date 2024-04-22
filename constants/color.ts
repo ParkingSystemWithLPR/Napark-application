@@ -24,8 +24,8 @@ export type ColorType = {
 };
 
 const Colors: ColorType = {
-  black: "#000",
-  white: "#fff",
+  black: "#000000",
+  white: "#ffffff",
   red: {
     50: "#FDE8E9",
     100: "#f9b9bb",

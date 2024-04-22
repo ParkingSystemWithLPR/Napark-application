@@ -13,6 +13,7 @@ export type CheckboxInputProps = {
   containerStyle?: object;
   textStyle?: object;
   checkboxStyle?: object;
+  disabled?: boolean;
 };
 
 const CheckboxInput: React.FC<CheckboxInputProps> = ({
@@ -22,6 +23,7 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
   containerStyle,
   textStyle,
   checkboxStyle,
+  disabled = true,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -30,6 +32,7 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
         value={isChecked}
         onValueChange={onPress}
         color={isChecked ? Colors.red[400] : undefined}
+        disabled={disabled}
       />
       <BodyText text={text} textStyle={textStyle} />
     </View>

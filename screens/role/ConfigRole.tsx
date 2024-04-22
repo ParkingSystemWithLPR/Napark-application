@@ -1,3 +1,4 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
@@ -11,25 +12,91 @@ import BodyText from "@/components/text/BodyText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { OtherStackParamList } from "@/types";
+import { ActionMode } from "@/enum/ActionMode";
+import useEditParkingLot from "@/store/api/parking-lot/useEditParkingLot";
+import { useGetProfile } from "@/store/api/user/useGetProfile";
+import { useAuth } from "@/store/context/auth";
+import { useParkingLot } from "@/store/context/parkingLot";
+import { AuthenticatedStackParamList, OtherStackParamList } from "@/types";
 
-export type ConfigRoleProps = NativeStackScreenProps<
-  OtherStackParamList,
-  "ConfigRole"
+export type ConfigRoleProps = CompositeScreenProps<
+  NativeStackScreenProps<OtherStackParamList, "ConfigRole">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
-  const { control, handleSubmit } = useForm();
-  const [isEnableEditPermission, setEnableEditPermission] =
-    useState<boolean>(false);
+const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation, route }) => {
+  const { mode, index } = route.params;
+  const { parkingLot, setParkingLot } = useParkingLot();
+  const management_roles = parkingLot.management_roles;
+  const { accessToken, authenticate } = useAuth();
+  const { mutateAsync: editParkingLotAsync } = useEditParkingLot();
+  const form = useForm();
+  const { control, handleSubmit, getValues } = form;
+  const {
+    manage_parking_space,
+    edit_management_role,
+    assign_management_role_members,
+    edit_parking_privilege,
+    assign_parking_privilege_members,
+  } = management_roles[index]?.permissions ?? {};
   const [isEnableManageParkingSpace, setEnableManageParkingSpace] =
-    useState<boolean>(false);
-  const [isEnableAssignRole, setEnableAssignRole] = useState<boolean>(false);
+    useState<boolean>(manage_parking_space ?? false);
+  const [isEnableEditRole, setEnableEditRole] = useState<boolean>(
+    edit_management_role ?? false
+  );
+  const [isEnableAssignRole, setEnableAssignRole] = useState<boolean>(
+    assign_management_role_members ?? false
+  );
+  const [isEnableEditPrivilege, setEnableEditPrivilege] = useState<boolean>(
+    edit_parking_privilege ?? false
+  );
+  const [isEnableAssignPrivilege, setEnableAssignPrivilege] = useState<boolean>(
+    assign_parking_privilege_members ?? false
+  );
+  // const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
+  // const { _, hasEditPermission, hasAssignPermission, _, _ } =
+  //   getProfile.management_role;
+
+  const hasEditPermission = true;
+  const hasAssignPermission = true;
 
   const onSubmit = async (data: FieldValues) => {
+    const usersList = data.users ?? management_roles[index]?.users ?? [];
     try {
-      // await mutateAsync(data);
-      console.log('data', data);
+      const role = {
+        title: data.name,
+        description: data.description,
+        users: usersList,
+        permissions: {
+          manage_parking_space:
+            data.manageParkingSpace ?? isEnableManageParkingSpace,
+          edit_management_role: data.editRole ?? isEnableEditRole,
+          assign_management_role_members: data.assignRole ?? isEnableAssignRole,
+          edit_parking_privilege: data.editPrivilege ?? isEnableEditPrivilege,
+          assign_parking_privilege_members:
+            data.assignPrivilege ?? isEnableAssignPrivilege,
+        },
+      };
+      if (mode === ActionMode.CREATE) {
+        management_roles.push(role);
+      } else {
+        management_roles[index] = role;
+      }
+      await editParkingLotAsync(
+        {
+          queryParams: {
+            parkingLotId: parkingLot._id,
+            editParams: { management_roles: management_roles },
+          },
+          auth: { accessToken: accessToken, authenticate: authenticate },
+        },
+        {
+          onSuccess(data) {
+            setParkingLot(data);
+          },
+        }
+      );
+      navigation.goBack();
     } catch (error) {
       Alert.alert(
         "Create request error",
@@ -43,48 +110,33 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
       <Controller
         name={"name"}
         control={control}
+        defaultValue={management_roles[index]?.title}
         render={({ field: { onChange, value } }) => (
           <TextInput
-            title="name"
+            title="Name"
             placeholder="Enter your role name"
             value={value}
             onChangeText={(value) => onChange(value)}
+            editable={hasEditPermission}
           />
         )}
       />
       <Controller
         name={"description"}
         control={control}
+        defaultValue={management_roles[index]?.description}
         render={({ field: { onChange, value } }) => (
           <TextInput
-            title="description"
+            title="Description"
             placeholder="Enter your role description"
             value={value}
             onChangeText={(value) => onChange(value)}
+            editable={hasEditPermission}
           />
         )}
       />
-      <SubHeaderText text="Permisions" />
+      <SubHeaderText text="Permission" />
       <View style={styles.permissionSetting}>
-        <Controller
-          name={"editPermision"}
-          control={control}
-          render={({ field: { onChange } }) => (
-            <View style={styles.switchContainer}>
-              <BodyText
-                text="Edit permssion"
-                textStyle={styles.permissionText}
-              />
-              <Switch
-                onValueChange={(value) => {
-                  onChange(value);
-                  setEnableEditPermission((previosState) => !previosState);
-                }}
-                value={isEnableEditPermission}
-              />
-            </View>
-          )}
-        />
         <Controller
           name={"manageParkingSpace"}
           control={control}
@@ -95,11 +147,35 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableManageParkingSpace((previosState) => !previosState);
+                  setEnableManageParkingSpace(
+                    (previousState) => !previousState
+                  );
                 }}
                 value={isEnableManageParkingSpace}
+              />
+            </View>
+          )}
+        />
+        <Controller
+          name={"editRole"}
+          control={control}
+          render={({ field: { onChange } }) => (
+            <View style={styles.switchContainer}>
+              <BodyText
+                text="Edit managing role"
+                textStyle={styles.permissionText}
+              />
+
+              <Switch
+                disabled={!hasEditPermission}
+                onValueChange={(value) => {
+                  onChange(value);
+                  setEnableEditRole((previousState) => !previousState);
+                }}
+                value={isEnableEditRole}
               />
             </View>
           )}
@@ -110,45 +186,58 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
           render={({ field: { onChange } }) => (
             <View style={styles.switchContainer}>
               <BodyText
-                text="Assign role member"
+                text="Assign managing role member"
                 textStyle={styles.permissionText}
               />
               <Switch
+                disabled={!hasEditPermission}
                 onValueChange={(value) => {
                   onChange(value);
-                  setEnableAssignRole((previosState) => !previosState);
+                  setEnableAssignRole((previousState) => !previousState);
                 }}
                 value={isEnableAssignRole}
               />
             </View>
           )}
         />
-      </View>
-      <View style={styles.sameLineInputContainer}>
         <Controller
-          name={"reservationPeriod"}
+          name={"editPrivilege"}
           control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              title="Reservation Period"
-              placeholder="reservation period"
-              value={value}
-              onChangeText={(value) => onChange(value)}
-              containerStyle={{ flex: 1 }}
-            />
+          render={({ field: { onChange } }) => (
+            <View style={styles.switchContainer}>
+              <BodyText
+                text="Edit parking privilege"
+                textStyle={styles.permissionText}
+              />
+              <Switch
+                disabled={!hasEditPermission}
+                onValueChange={(value) => {
+                  onChange(value);
+                  setEnableEditPrivilege((previousState) => !previousState);
+                }}
+                value={isEnableEditPrivilege}
+              />
+            </View>
           )}
         />
         <Controller
-          name={"maximumDuration"}
+          name={"assignPrivilege"}
           control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              title="Maximum duration"
-              placeholder="maximum duration"
-              value={value}
-              onChangeText={(value) => onChange(value)}
-              containerStyle={{ flex: 1 }}
-            />
+          render={({ field: { onChange } }) => (
+            <View style={styles.switchContainer}>
+              <BodyText
+                text="Assign parking privilege"
+                textStyle={styles.permissionText}
+              />
+              <Switch
+                disabled={!hasEditPermission}
+                onValueChange={(value) => {
+                  onChange(value);
+                  setEnableAssignPrivilege((previousState) => !previousState);
+                }}
+                value={isEnableAssignPrivilege}
+              />
+            </View>
           )}
         />
       </View>
@@ -157,7 +246,11 @@ const ConfigRole: React.FC<ConfigRoleProps> = ({ navigation }) => {
         icon={"human-male-female-child"}
         screenName={"Members"}
         onPress={() => {
-          navigation.navigate("RoleMember");
+          navigation.navigate("RoleMember", {
+            form: form,
+            userList: management_roles[index]?.users ?? [],
+            hasAssignPermission: hasAssignPermission,
+          });
         }}
       />
       <View style={styles.buttonContainer}>
@@ -192,12 +285,6 @@ const styles = StyleSheet.create({
   },
   permissionText: {
     color: Colors.gray[900],
-  },
-  sameLineInputContainer: {
-    gap: 15,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
   },
   buttonContainer: {
     flexDirection: "row",

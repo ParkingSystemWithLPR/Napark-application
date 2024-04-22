@@ -11,11 +11,11 @@ import HeaderText from "@/components/text/HeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
-import { useAuth } from "@/store/context/auth";
 import { useGetMyParkingLots } from "@/store/api/parking-lot/useGetMyParkingLots";
+import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
-import { getBusinessHours } from "@/utils/date";
+import { getBusinessHours, getDayInAWeek } from "@/utils/date";
 
 export type ParkingLotsListProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "ParkingLotsList">,
@@ -69,22 +69,27 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
         <View style={styles.parkingSpaceCardContainer}>
           <FlatList
             data={parkingLots}
-            renderItem={({ item }) => (
-              <ParkingSpaceCard
-                parkingSpaceName={item.name}
-                businessHours={
-                  item.business_days?.weekday === today
-                    ? getBusinessHours(item.business_days)
-                    : "Not available"
-                }
-                availabilty={0}
-                onPress={() =>
-                  navigation.navigate("ParkingLotDetail", {
-                    parkingLotId: item._id,
-                  })
-                }
-              />
-            )}
+            renderItem={({ item }) => {
+              const businessDay = item.business_days.find((businessday) => {
+                businessday.weekday == getDayInAWeek(new Date());
+              });
+              return (
+                <ParkingSpaceCard
+                  parkingSpaceName={item.name}
+                  businessHours={
+                    businessDay
+                      ? getBusinessHours(businessDay)
+                      : "Not available"
+                  }
+                  availabilty={0}
+                  onPress={() =>
+                    navigation.navigate("ParkingLotDetail", {
+                      parkingLotId: item._id,
+                    })
+                  }
+                />
+              );
+            }}
             overScrollMode="never"
           />
         </View>

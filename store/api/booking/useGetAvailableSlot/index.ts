@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 
 import { BOOKING_URL } from "..";
 
+import { SlotType } from "@/enum/SlotType";
 import { AvailableSlotResponse } from "@/types/booking";
 import apiRequest, { HTTPMethod } from "@/utils/http";
-import { SlotType } from "@/enum/SlotType";
 
 export interface GetAvailableSlotsQueryParam {
   parkinglot_id: string;
@@ -55,7 +55,7 @@ export const useGetAvailableSlot = (
 ): UseQueryResult<AvailableSlotResponse, AxiosError> => {
   const { queryParams } = input;
   return useQuery({
-    queryKey: ["postal-code-latlng-end_date", queryParams],
+    queryKey: ["available-slot", queryParams],
     queryFn: async () => getAvailableSlot(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,

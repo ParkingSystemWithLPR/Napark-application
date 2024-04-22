@@ -1,12 +1,13 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { Booking } from "./booking";
-import { ParkingLot } from "./parking-lot";
-import { Car } from "./user";
+import { ParkingLot, ZonePricing } from "./parking-lot";
+import { Car, User } from "./user";
 
 import { ActionMode } from "@/enum/ActionMode";
-import { BookingStatus } from "@/enum/BookingStatus";
+import { ManagingCategory } from "@/enum/ManagingCategory";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
 
 export type RootParamList = {
@@ -47,12 +48,26 @@ export type OtherStackParamList = {
   EditParkingInfo: undefined;
   ConfigPricing: undefined;
   ConfigPlan: undefined;
-  RoleList: undefined;
-  RoleMember: undefined;
-  ConfigRole: { mode: ActionMode; roleId?: string };
+  RoleMember: {
+    form: UseFormReturn<FieldValues, any, undefined>;
+    userList: User[];
+    hasAssignPermission: boolean;
+  };
+  ConfigRole: { mode: ActionMode; index: number };
   ChangePassword: undefined;
   AccountAndCard: undefined;
   ScanQR: undefined;
+  ManagingCategory: { parkingLotId: string };
+  ManagingList: { category: ManagingCategory };
+  ConfigPrivilege: { mode: ActionMode; index: number };
+  ConfigZone: {
+    form: UseFormReturn<FieldValues, any, undefined>;
+    mode: ActionMode;
+    hasEditPermission: boolean;
+    zoneIndex?: number;
+    data?: ZonePricing;
+    onEditPrivilege?: (idx: number, zone: ZonePricing) => void;
+  };
 };
 
 export type BookingsStackParamList = {

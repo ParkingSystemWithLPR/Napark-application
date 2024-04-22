@@ -7,7 +7,7 @@ import Colors from "@/constants/color";
 export type ImageContainerProps = {
   images: string[];
   editable?: boolean;
-  onDelete?: (imageUrl: string) => void;
+  onDelete?: (image: string) => void;
   containerStyle?: object;
 };
 

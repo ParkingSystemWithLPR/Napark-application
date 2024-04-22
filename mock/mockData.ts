@@ -1,3 +1,7 @@
+import { DropdownItem } from "@/components/input/DropdownInput";
+import { THAI_PROVINCE } from "@/constants/province";
+import { BookingStatus } from "@/enum/BookingStatus";
+import { CardType } from "@/enum/CardType";
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { PriceRateUnit } from "@/enum/ParkingLot";
 import { SlotType } from "@/enum/SlotType";
@@ -46,3 +50,18 @@ export const mockParkingLot: ParkingLot = {
   updated_at: "2024-04-04T22:52:07.89+07:00",
   is_open: true,
 };
+
+export const MOCKED_ZONE = [
+  {
+    name: "A1",
+    description: "60 baht/hr",
+  },
+  {
+    name: "B2",
+    description: "step pricing",
+  },
+];
+
+export const MOCKED_ZONE_DROPDOWN = ["A", "B", "C"];
+
+export const MOCKED_MANAGING_ROLE = ["CEO", "CEP", "CEQ"];

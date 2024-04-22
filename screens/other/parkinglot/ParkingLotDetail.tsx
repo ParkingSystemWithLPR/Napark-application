@@ -73,34 +73,37 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               title="Your Parking Space Location"
             />
           </MapView>
-          <SectionAppForm title={"Setting"} icon={"cog"}>
-            <View style={styles.buttonContainer}>
-              <IconButtonWithTitle
-                title={"Info"}
-                icon={"information-outline"}
-                onPress={() =>
-                  navigation.navigate("OtherStack", { screen: "EditParkingInfo" })
-                }
-              />
-              <IconButtonWithTitle
-                title={"Plan"}
-                icon={"floor-plan"}
-                onPress={() => {}}
-              />
-              <IconButtonWithTitle
-                title={"Pricing"}
-                icon={"bank"}
-                onPress={() => {}}
-              />
-              <IconButtonWithTitle
-                title={"Role"}
-                icon={"head-cog-outline"}
-                onPress={() => {
-                  navigation.navigate("OtherStack", { screen: "RoleList" });
-                }}
-              />
-            </View>
-          </SectionAppForm>
+          <View style={styles.buttonContainer}>
+            <IconButtonWithTitle
+              title={"Info"}
+              icon={"information-outline"}
+              onPress={() =>
+                navigation.navigate("OtherStack", {
+                  screen: "EditParkingInfo",
+                })
+              }
+            />
+            <IconButtonWithTitle
+              title={"Plan"}
+              icon={"floor-plan"}
+              onPress={() => {}}
+            />
+            <IconButtonWithTitle
+              title={"Pricing"}
+              icon={"bank"}
+              onPress={() => {}}
+            />
+            <IconButtonWithTitle
+              title={"Config"}
+              icon={"account-settings"}
+              onPress={() => {
+                navigation.navigate("OtherStack", {
+                  screen: "ManagingCategory",
+                  params: { parkingLotId: parkingLotId },
+                });
+              }}
+            />
+          </View>
           {parkingLot.images && (
             <SectionAppForm title={"Photos"} icon={"camera"}>
               <ImageContainer images={parkingLot.images} />

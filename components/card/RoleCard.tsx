@@ -5,14 +5,25 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import BodyText from "../text/BodyText";
 
 import Colors from "@/constants/color";
+import { ManagingCategory } from "@/enum/ManagingCategory";
 
 export type RoleCardProps = {
+  category: ManagingCategory;
   roleName: string;
-  member: string;
+  description?: string;
+  member?: number;
   onPress: () => void;
+  disabled?: boolean;
 };
 
-const RoleCard: React.FC<RoleCardProps> = ({ roleName, member, onPress }) => {
+const RoleCard: React.FC<RoleCardProps> = ({
+  category,
+  roleName,
+  description,
+  member = 0,
+  onPress,
+  disabled = false,
+}) => {
   return (
     <View style={styles.container}>
       <Pressable
@@ -22,11 +33,16 @@ const RoleCard: React.FC<RoleCardProps> = ({ roleName, member, onPress }) => {
           pressed ? styles.cardPressed : null,
         ]}
         onPress={onPress}
+        disabled={disabled}
       >
         <View style={styles.innerContainer}>
           <View style={styles.contentWrapper}>
             <MaterialCommunityIcons
-              name={"human-male-female-child"}
+              name={
+                category === ManagingCategory.PRIVILEGE
+                  ? "account-star"
+                  : "account-supervisor"
+              }
               size={20}
               color={Colors.gray[800]}
             />
@@ -36,7 +52,7 @@ const RoleCard: React.FC<RoleCardProps> = ({ roleName, member, onPress }) => {
                 textStyle={{ color: Colors.gray[900] }}
               />
               <BodyText
-                text={member + " Member(s)"}
+                text={!!description ? description : `${member} ${"Member(s)"}`}
                 textStyle={{ color: Colors.gray[700] }}
               />
             </View>
@@ -68,7 +84,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 4,
     marginVertical: 5,
-    marginHorizontal: 10,
   },
   innerContainer: {
     width: "100%",

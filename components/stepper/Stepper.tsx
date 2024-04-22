@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, View } from "react-native";
 
 import BodyText from "../text/BodyText";
 

@@ -1,11 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, Image, ScrollView, StyleSheet, View } from "react-native";
 
 import IconButton from "@/components/button/IconButton";
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -14,27 +9,49 @@ import TextInput from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { useGetAllUsers } from "@/store/api/user/useGetUsers";
+import { useAuth } from "@/store/context/auth";
 import { OtherStackParamList } from "@/types";
+import { User } from "@/types/user";
 
 export type RoleMemberProps = NativeStackScreenProps<
   OtherStackParamList,
   "RoleMember"
 >;
 
-type Member = {
-  profile: string;
-  name: string;
-};
-
-const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
+const RoleMember: React.FC<RoleMemberProps> = ({ navigation, route }) => {
+  const { form, userList, hasAssignPermission } = route.params;
+  const { getValues, setValue } = form;
   const [searchText, setSearchText] = useState<string>("");
   const [isSearch, setSearch] = useState<boolean>(false);
+  const [usersList, setUsersList] = useState<User[]>(
+    getValues("users") ?? userList
+  );
+  const [members, setMembers] = useState<User[]>([]);
+  const { accessToken, authenticate } = useAuth();
 
-  const mockMembers: Member[] = [
-    { profile: "mockImage", name: "Chayakorn Vongbunsin" },
-    { profile: "mockImage", name: "Worachot Chanaram" },
-    { profile: "mockImage", name: "Pattrawut Julasukhol" },
-  ];
+  const allUsersList = useGetAllUsers({
+    queryParams: { searchName: searchText },
+    auth: { accessToken, authenticate },
+  });
+
+  useEffect(() => {
+    if (allUsersList.isSuccess) {
+      setMembers(allUsersList.data.users);
+    }
+  }, [allUsersList.data]);
+
+  const onCheckboxClick = (user: User) => {
+    if (usersList.includes(user)) {
+      const newList = usersList.filter((item) => {
+        return item !== user;
+      });
+      setUsersList(newList);
+    } else {
+      const newList = [...usersList, user];
+      setUsersList(newList);
+    }
+  };
 
   const handleTextInputChange = (text: string) => {
     setSearch(text.length > 0);
@@ -68,44 +85,66 @@ const RoleMember: React.FC<RoleMemberProps> = ({ navigation }) => {
     );
   }, [searchText, searchIcon]);
 
-  const renderMemberList = useCallback((searchResult?: boolean) => {
-    return (
-      <View style={styles.memberListContainer}>
-        <View style={styles.memberListTextContainer}>
-          <BodyText text={searchResult? "Suggested" : "Assignee"} />
-          <BodyText text={searchResult? "Select all" : "Clear all"} textStyle={styles.text}/>
-        </View>
-        <FlatList
-          data={mockMembers}
-          renderItem={({ item }) => (
-            <View style={styles.memberInfoContainer}>
-              <View style={styles.memberInfoWrapper}>
-                <Image
-                  style={styles.image}
-                  source={require("../../assets/images/icon.png")}
+  const renderMemberList = useCallback(
+    (isAssignee?: boolean) => {
+      const displayedMembers = isAssignee
+        ? usersList
+        : members.filter(
+            (item) => !usersList.some((user) => user._id === item._id)
+          );
+      return (
+        <View style={styles.memberListContainer}>
+          <BodyText text={isAssignee ? "Assignee" : "Suggested"} />
+          {displayedMembers.length === 0 ? (
+            <BodyText
+              text={`No ${isAssignee ? "assigned" : "suggested"} member(s).`}
+              containerStyle={{ marginBottom: 10 }}
+              textStyle={{ color: Colors.gray[700] }}
+            />
+          ) : (
+            displayedMembers?.map((item) => (
+              <View style={styles.memberInfoContainer} key={item._id}>
+                <View style={styles.memberInfoWrapper}>
+                  <Image
+                    style={styles.image}
+                    source={require("../../assets/images/icon.png")}
+                  />
+                  <BodyText
+                    text={`${item.firstname} ${item.lastname}`}
+                    textStyle={styles.name}
+                  />
+                </View>
+                <CheckboxInput
+                  text={""}
+                  onPress={() => onCheckboxClick(item)}
+                  disabled={!hasAssignPermission}
+                  isChecked={usersList.includes(item)}
                 />
-                <BodyText text={item.name} textStyle={styles.name} />
               </View>
-              <CheckboxInput
-                text={""}
-                onPress={() => {}}
-                isChecked={!searchResult}
-              />
-            </View>
+            ))
           )}
-        />
-      </View>
-    );
-  }, [mockMembers]);
+        </View>
+      );
+    },
+    [members, usersList]
+  );
 
   return (
     <BodyContainer innerContainerStyle={styles.container}>
-      <View style={styles.innerContainer}>
-        {renderHeader()}
-        {renderMemberList()}
-        {renderMemberList(true)}
-      </View>
-      <PrimaryButton title="Save" onPress={() => {navigation.goBack()}}/>
+      <ScrollView>
+        <View style={styles.innerContainer}>
+          {renderHeader()}
+          {renderMemberList(true)}
+          {renderMemberList()}
+        </View>
+        <PrimaryButton
+          title="Save"
+          onPress={() => {
+            setValue("users", usersList);
+            navigation.goBack();
+          }}
+        />
+      </ScrollView>
     </BodyContainer>
   );
 };
@@ -141,6 +180,7 @@ const styles = StyleSheet.create({
   memberListTextContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     paddingRight: 10,
   },
   memberListContainer: {
@@ -168,5 +208,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.red[400],
-  }
+  },
 });

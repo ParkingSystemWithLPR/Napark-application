@@ -10,9 +10,12 @@ import SubHeaderText from "../text/SubHeaderText";
 
 import { DayInAWeek } from "@/enum/DayInAWeek";
 import { BusinessDay, BusinessHour } from "@/types/parking-lot";
+import {
+  formatDisplayTime,
+  formatTimeWithSecond,
+  isEqualBusinessHour,
+} from "@/utils/date";
 import { formatToSentenceCase } from "@/utils/text";
-import { isEqualBusinessHour } from "@/utils/date";
-import { formatDisplayTime, formatTimeWithSecond } from "@/utils/date";
 
 export type DateInputProps = {
   title: string;

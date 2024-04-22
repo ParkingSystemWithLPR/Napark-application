@@ -7,6 +7,7 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
+import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import {
   MainPageBottomTabParamList,
@@ -19,7 +20,10 @@ export type OtherProps = CompositeScreenProps<
 >;
 
 const Other: React.FC<OtherProps> = ({ navigation }) => {
-  const { logout } = useAuth();
+  const { accessToken, authenticate, logout } = useAuth();
+  // const { getProfile } = useGetProfile({ auth: { accessToken, authenticate } });
+  // const hasManagePermission = getProfile.management_role
+  const hasManagePermission = true;
   return (
     <BodyContainer
       containerStyle={styles.container}
@@ -38,13 +42,14 @@ const Other: React.FC<OtherProps> = ({ navigation }) => {
           navigation.push("OtherStack", { screen: "ParkingLotsList" });
         }}
       />
+      <View style={styles.separator} />
       <SubHeaderText
         containerStyle={{
           width: "100%",
-          marginTop: 10,
-          borderTopWidth: 1,
-          paddingTop: 10,
-          borderColor: Colors.gray[800],
+          // marginTop: 10,
+          // borderTopWidth: 1,
+          paddingTop: 5,
+          // borderColor: Colors.gray[800],
         }}
         text="Application user options"
       />
@@ -91,5 +96,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  separator: {
+    marginTop: 10,
+    width: "100%",
+    height: 1,
+    backgroundColor: Colors.gray[800],
   },
 });

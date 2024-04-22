@@ -16,3 +16,9 @@ export interface Profile {
   credit: number;
   default_car_id?: string;
 }
+
+export interface User {
+  _id: string;
+  firstname: string;
+  lastname: string;
+}
