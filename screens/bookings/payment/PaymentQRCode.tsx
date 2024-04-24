@@ -7,7 +7,8 @@ import SecondaryButton from "@/components/button/SecondaryButton";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
-import { MOCKED_QR_CODE_URL } from "@/mock/mockData";
+import { MOCKED_QR_CODE } from "@/mock/mockData";
+import { useConfirmTransaction } from "@/store/api/payment/useConfirmTransaction";
 import { useGetTopUpQRCode } from "@/store/api/payment/useGetTopUpQRCode";
 import { useAuth } from "@/store/context/auth";
 import { BookingsStackParamList, AuthenticatedStackParamList } from "@/types";
@@ -25,17 +26,27 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ route }) => {
   const amount = route.params.amount;
   const { accessToken, authenticate } = useAuth();
   const { mutateAsync: getTopUpQRCode } = useGetTopUpQRCode();
-  const [QRCode, setQRCode] = useState<QRCode>();
+  const { mutateAsync: confirmTransaction } = useConfirmTransaction();
+  const [QRCode, setQRCode] = useState<QRCode>(MOCKED_QR_CODE);
 
   const getQRCode = async () => {
     await getTopUpQRCode({
-      body: { ref_no: 111111111113, amount: amount },
+      body: { amount: amount },
       auth: { accessToken, authenticate },
     })
       .then((data) => {
         setQRCode(data);
       })
       .catch(() => {});
+  };
+
+  const onConfirmationClick = async () => {
+    await confirmTransaction({
+      queryParams: { transactionId: QRCode.id },
+      auth: { accessToken, authenticate },
+    })
+      .then()
+      .catch();
   };
 
   useEffect(() => {
@@ -45,7 +56,7 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ route }) => {
   const renderImage = useCallback(() => {
     return (
       <Image
-        source={{ uri: QRCode?.image ?? MOCKED_QR_CODE_URL }}
+        source={{ uri: QRCode.image }}
         height={IMAGE_SIZE}
         width={IMAGE_SIZE}
         style={styles.image}
@@ -71,7 +82,10 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ route }) => {
         <BodyText text={`Total amount: ฿ ${amount}`} textStyle={styles.text} />
       </View>
       {renderEndTimeText()}
-      <SecondaryButton title="Press to complete payment" onPress={() => {}} />
+      <SecondaryButton
+        title="Press to complete payment"
+        onPress={() => onConfirmationClick()}
+      />
     </BodyContainer>
   );
 };

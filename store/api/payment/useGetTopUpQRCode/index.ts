@@ -12,7 +12,6 @@ import apiRequest, { HTTPMethod } from "@/utils/http";
 
 export type GetTopUpQRCodeInput = {
   body: {
-    ref_no: number;
     amount: number;
   };
   auth: {
