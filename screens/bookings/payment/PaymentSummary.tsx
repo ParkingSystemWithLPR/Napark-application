@@ -71,7 +71,7 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   const handleCancelBooking = async () => {
     await cancelBooking(
       {
-        body: { booking_id: _id },
+        bookingId: _id,
         auth: { accessToken, authenticate },
       },
       {
