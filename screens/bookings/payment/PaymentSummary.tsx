@@ -9,6 +9,8 @@ import DropdownInput from "@/components/input/DropdownInput";
 import AttributeText, {
   AttributeTextProps,
 } from "@/components/text/AttributeText";
+import BodyText from "@/components/text/BodyText";
+import HyperLinkText from "@/components/text/HyperlinkText";
 import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
@@ -55,7 +57,6 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [isButtonEnable, setIsButtonEnable] = useState(false);
   const [parkingLot, setParkingLot] = useState<ParkingLot>();
-  const [isLoading, setLoading] = useState<boolean>(true);
   const getParkingLot = useGetParkingLot({
     queryParams: { parkingLotId: booking.parkinglot_id },
     auth: { accessToken, authenticate },
@@ -197,62 +198,72 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   useLayoutEffect(() => {
     if (getParkingLot.data) {
       setParkingLot(getParkingLot.data);
-      setLoading(false);
     }
   }, [getParkingLot.data]);
 
-  if (isLoading) {
-    return <LoadingOverlay message="Loading..." />;
-  }
   return (
-    <BodyContainer>
-      <View style={{ gap: 20 }}>
-        <SubHeaderText text={license_plate}></SubHeaderText>
-        <View style={styles.content}>
-          <View style={styles.attribute}>
-            {renderAttribute({
-              attribute: "ParkingLot",
-              value: parkinglot_name,
-            })}
-            {renderAttribute({
-              attribute: "Slot",
-              value: slot_name,
-            })}
-            {renderAttribute({
-              attribute: "Start Date",
-              value: formatHumanReadableDateFromDateString(start_time),
-            })}
-            {renderAttribute({
-              attribute: "Start Time",
-              value: formatTime(startTimeFormat),
-            })}
-            {renderAttribute({
-              attribute: "End Date",
-              value: formatHumanReadableDateFromDateString(end_time),
-            })}
-            {renderAttribute({
-              attribute: "End Time",
-              value: formatTime(endTimeFormat),
-            })}
-            {renderAttribute({
-              attribute: "Status",
-              value:
-                booking.status === BookingStatus.ACTIVE
-                  ? formatToSentenceCase(booking.payment_status)
-                  : formatToSentenceCase(booking.status),
-            })}
+    <>
+      {parkingLot ? (
+        <BodyContainer>
+          <View style={{ gap: 20 }}>
+            <SubHeaderText text={license_plate}></SubHeaderText>
+            <View style={styles.content}>
+              <View style={styles.attribute}>
+                {renderAttribute({
+                  attribute: "ParkingLot",
+                  value: parkinglot_name,
+                })}
+                {renderAttribute({
+                  attribute: "Slot",
+                  value: slot_name,
+                })}
+                {renderAttribute({
+                  attribute: "Start Date",
+                  value: formatHumanReadableDateFromDateString(start_time),
+                })}
+                {renderAttribute({
+                  attribute: "Start Time",
+                  value: formatTime(startTimeFormat),
+                })}
+                {renderAttribute({
+                  attribute: "End Date",
+                  value: formatHumanReadableDateFromDateString(end_time),
+                })}
+                {renderAttribute({
+                  attribute: "End Time",
+                  value: formatTime(endTimeFormat),
+                })}
+                {renderAttribute({
+                  attribute: "Status",
+                  value:
+                    booking.status === BookingStatus.ACTIVE
+                      ? formatToSentenceCase(booking.payment_status)
+                      : formatToSentenceCase(booking.status),
+                })}
+              </View>
+              {renderTotal({
+                attribute: "TOTAL",
+                value: `${(status === BookingStatus.UPCOMING
+                  ? estimated_price
+                  : actual_price
+                ).toFixed(2)}`,
+              })}
+            </View>
+            <View style={styles.routeContainer}>
+              <BodyText text={"Don`t know the route?"} />
+              <HyperLinkText
+                text={"Get Directions"}
+                textStyle={styles.colorLinkText}
+                url={`https://www.google.com/maps/dir/?api=1&destination=${parkingLot.coord.latitude},${parkingLot.coord.longitude}`}
+              />
+            </View>
+            {renderBottomPanal()}
           </View>
-          {renderTotal({
-            attribute: "TOTAL",
-            value: `${(status === BookingStatus.UPCOMING
-              ? estimated_price
-              : actual_price
-            ).toFixed(2)}`,
-          })}
-        </View>
-        {renderBottomPanal()}
-      </View>
-    </BodyContainer>
+        </BodyContainer>
+      ) : (
+        <LoadingOverlay message="Loading..." />
+      )}
+    </>
   );
 };
 export default PaymentSummary;
@@ -279,4 +290,12 @@ const styles = StyleSheet.create({
   bigText: { fontSize: 16 },
   blueText: { color: Colors.blue[600] },
   redText: { color: Colors.red[400] },
+  routeContainer: {
+    alignSelf: "center",
+    flexDirection: "row",
+    columnGap: 5,
+  },
+  colorLinkText: {
+    color: Colors.lightBlue[800],
+  },
 });
