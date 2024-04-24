@@ -22,7 +22,7 @@ export type PaymentQRCodeProps = CompositeScreenProps<
 
 const IMAGE_SIZE = 250;
 
-const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ route }) => {
+const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ navigation, route }) => {
   const amount = route.params.amount;
   const { accessToken, authenticate } = useAuth();
   const { mutateAsync: getTopUpQRCode } = useGetTopUpQRCode();
@@ -47,6 +47,8 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ route }) => {
     })
       .then()
       .catch();
+
+    navigation.navigate("MainScreen", { screen: "Bookings" });
   };
 
   useEffect(() => {
