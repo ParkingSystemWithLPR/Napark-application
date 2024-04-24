@@ -61,7 +61,9 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
 
   const renderActiveBookings = useCallback(() => {
     const activeBookings = bookings.filter(
-      (booking) => booking.status === BookingStatus.ACTIVE
+      (booking) =>
+        booking.status === BookingStatus.OVERDUE ||
+        booking.status === BookingStatus.PARKING
     );
     return (
       <SessionsList bookings={activeBookings} refreshRequest={refreshRequest} />
