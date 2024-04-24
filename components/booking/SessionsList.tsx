@@ -30,11 +30,11 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
   const getColor = useCallback((status: BookingStatus): ColorValue => {
     switch (status) {
       case BookingStatus.UPCOMING:
-        return Colors.blue[600];
         return Colors.black;
       case BookingStatus.OVERDUE:
         return Colors.red[600];
       case BookingStatus.PARKING:
+        return Colors.blue[600];
       case BookingStatus.CANCELLED:
         return Colors.gray[800];
       case BookingStatus.COMPLETED:
