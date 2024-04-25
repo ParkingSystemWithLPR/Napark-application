@@ -36,7 +36,7 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
     } else {
       try {
         const res = await axios.post(USER_URL + "/user/forget-password", {
-          email,
+          email: email.value,
         });
         Alert.alert("Please check your email", `Ref No: ${res.data.ref_no}`);
       } catch (error: any) {
