@@ -32,12 +32,19 @@ export type FloorImage = {
 
 export type ParkingLotRequest = {
   name: string;
+  penalty: Penalty;
+  minimumBookingDuration: string;
   images?: ImageProps[];
   business_days: BusinessDay[];
   coord: LatLng;
   address: Address;
   plan: Plan[];
 };
+
+export type Penalty = {
+  price: number;
+  price_unit: PriceRateUnit;
+}
 
 export type Address = {
   address1: string;
