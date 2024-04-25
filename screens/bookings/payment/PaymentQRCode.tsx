@@ -30,14 +30,17 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ navigation, route }) => {
   const [QRCode, setQRCode] = useState<QRCode>(MOCKED_QR_CODE);
 
   const getQRCode = async () => {
-    await getTopUpQRCode({
-      body: { amount: amount },
-      auth: { accessToken, authenticate },
-    })
-      .then((data) => {
-        setQRCode(data);
-      })
-      .catch(() => {});
+    await getTopUpQRCode(
+      {
+        body: { amount: amount },
+        auth: { accessToken, authenticate },
+      },
+      {
+        onSuccess(data) {
+          setQRCode(data);
+        },
+      }
+    );
   };
 
   const onConfirmationClick = async () => {
