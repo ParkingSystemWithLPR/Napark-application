@@ -1,12 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import axios from "axios";
 import { useState } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Alert } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
-import TextInput from "@/components/input/TextInput";
+import TextInput, { InputValueType } from "@/components/input/TextInput";
 import BodyText from "@/components/text/BodyText";
 import HeaderText from "@/components/text/HeaderText";
 import { InputType } from "@/enum/InputType";
+import { USER_URL } from "@/store/api/user";
 import { AuthStackParamList } from "@/types";
 
 export type ForgetPasswordProps = NativeStackScreenProps<
@@ -15,9 +17,30 @@ export type ForgetPasswordProps = NativeStackScreenProps<
 >;
 
 const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<InputValueType>({ value: "" });
   const handleLogInPress = () => {
     navigation.replace("LogIn");
+  };
+
+  const onSubmit = async () => {
+    const emailIsValid = email.value.includes("@");
+
+    const isValid = emailIsValid;
+    if (!isValid) {
+      setEmail((cur: InputValueType) => {
+        return {
+          ...cur,
+          errorText: emailIsValid ? undefined : "Invalid email address",
+        };
+      });
+    } else {
+      try {
+        const res = await axios.post(USER_URL + "/user/forget-password", {
+          email,
+        });
+        Alert.alert("Please check your email", `Ref No: ${res.data.ref_no}`);
+      } catch (error: any) {}
+    }
   };
 
   return (
@@ -26,13 +49,14 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
       <TextInput
         title="Email"
         placeholder="Your email"
-        value={email}
-        onChangeText={setEmail}
+        value={email.value}
+        onChangeText={(value) => setEmail({ value })}
         inputMode={InputType.Email}
+        errorText={email.errorText}
         isRequired
       />
       <BodyText text="Please enter your email in the box above. We will send you a link to access further instructions." />
-      <PrimaryButton title="Submit" onPress={() => {}} />
+      <PrimaryButton title="Submit" onPress={onSubmit} />
       <View style={styles.optionContainer}>
         <View>
           <Pressable onPress={handleLogInPress}>
