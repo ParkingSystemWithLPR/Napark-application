@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, Image } from "react-native";
 
-import SecondaryButton from "@/components/button/SecondaryButton";
+import PrimaryButton from "@/components/button/PrimaryButton";
 import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
@@ -80,12 +80,11 @@ const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ navigation, route }) => {
     <BodyContainer innerContainerStyle={styles.innerContainer}>
       {renderImage()}
       <View style={styles.textContainer}>
-        <BodyText text="Scan QR Code to pay the bill" textStyle={styles.text} />
-        <BodyText text={`Total amount: ฿ ${amount}`} textStyle={styles.text} />
+        <BodyText text={`Total amount: ฿ ${amount}`} />
+        {renderEndTimeText()}
       </View>
-      {renderEndTimeText()}
-      <SecondaryButton
-        title="Press to complete payment"
+      <PrimaryButton
+        title="Back to home"
         onPress={() => onConfirmationClick()}
       />
     </BodyContainer>
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     borderRadius: 8,
-    backgroundColor: Colors.red[400],
+    gap: 10,
   },
   text: {
     color: Colors.white,
