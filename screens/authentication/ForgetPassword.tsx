@@ -39,7 +39,9 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
           email,
         });
         Alert.alert("Please check your email", `Ref No: ${res.data.ref_no}`);
-      } catch (error: any) {}
+      } catch (error: any) {
+        Alert.alert("Error", error.response.data.message);
+      }
     }
   };
 
