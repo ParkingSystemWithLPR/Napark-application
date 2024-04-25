@@ -23,7 +23,7 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
   containerStyle,
   textStyle,
   checkboxStyle,
-  disabled = true,
+  disabled,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
