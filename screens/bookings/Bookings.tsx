@@ -54,6 +54,7 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
 
   const refreshRequest = useCallback(async () => {
     await getMyBookings.refetch();
+    await getProfile.refetch();
   }, []);
 
   const renderUpcomingBookings = useCallback(() => {
