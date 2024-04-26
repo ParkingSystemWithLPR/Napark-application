@@ -5,6 +5,7 @@ import {
   ColorValue,
   FlatList,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -65,7 +66,8 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
     switch (booking.status) {
       case BookingStatus.UPCOMING:
         return <BodyText text={""} />;
-      case BookingStatus.OVERDUE || BookingStatus.PARKING:
+      case BookingStatus.OVERDUE:
+      case BookingStatus.PARKING:
         return <BodyText text={""} />;
       case BookingStatus.CANCELLED:
         return <></>;
@@ -167,14 +169,20 @@ const SessionsList: React.FC<sessionsProps> = ({
       overScrollMode="never"
     />
   ) : (
-    <BodyText
-      text="No bookings"
-      containerStyle={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    />
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <BodyText
+        text="No bookings"
+        containerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+    </ScrollView>
   );
 };
 
