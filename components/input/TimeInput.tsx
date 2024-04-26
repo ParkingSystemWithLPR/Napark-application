@@ -19,7 +19,6 @@ export type TimeInputProps = {
   containerStyle?: object;
   minTime?: Date;
   maxTime?: Date;
-  errorText?: string;
 };
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -32,7 +31,6 @@ const TimeInput: React.FC<TimeInputProps> = ({
   containerStyle,
   minTime,
   maxTime,
-  errorText,
 }) => {
   const [isOpenTimePicker, setOpenTimePicker] = useState<boolean>(false);
   const openTimePicker = () => {
@@ -79,7 +77,6 @@ const TimeInput: React.FC<TimeInputProps> = ({
         minimumDate={minTime}
         maximumDate={maxTime}
       />
-      {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
     </View>
   );
 };
