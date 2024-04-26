@@ -16,31 +16,39 @@ import Colors from "@/constants/color";
 import { useUpdateParkingLot } from "@/store/api/parking-lot/useUpdateParkingLot";
 import { useAuth } from "@/store/context/auth";
 import { useParkingLot } from "@/store/context/parkingLot";
-import {
-  OtherStackParamList,
-  AuthenticatedStackParamList,
-} from "@/types";
+import { OtherStackParamList, AuthenticatedStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { convertImagesToImageProps } from "@/utils/image";
+import BodyText from "@/components/text/BodyText";
+import { InputType } from "@/enum/InputType";
+import DropdownInput from "@/components/input/DropdownInput";
+import { formatEnumtoDropdownItem } from "@/utils/dropdown";
+import { PriceRateUnit } from "@/enum/ParkingLot";
 
 export type EditParkingInfoProps = CompositeScreenProps<
   NativeStackScreenProps<OtherStackParamList, "EditParkingInfo">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
-const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
-  navigation,
-}) => {
+const EditParkingInfo: React.FC<EditParkingInfoProps> = ({ navigation }) => {
   const { parkingLot, setParkingLot } = useParkingLot();
   const { accessToken, authenticate } = useAuth();
   const form = useForm<ParkingLot>({ defaultValues: parkingLot });
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { isSubmitting, errors },
   } = form;
   const { mutateAsync: updateParkingLot } = useUpdateParkingLot();
   const [isOpenConfirmModal, setOpenConfirmModal] = useState<boolean>(false);
+  const [minimumBookingDuration, setMinimumBookingDuration] = useState<{
+    hour: string;
+    minute: string;
+  }>({
+    hour: parkingLot.minimum_booking_duration.split("h")[0],
+    minute: parkingLot.minimum_booking_duration.split("h")[1].slice(0, -1),
+  });
 
   const onSubmit = async (data: ParkingLot) => {
     try {
@@ -88,20 +96,6 @@ const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
           )}
         />
         <Controller
-          name={"images"}
-          control={control}
-          rules={{ required: "Please upload images of your parking space" }}
-          render={({ field: { onChange, value } }) => (
-            <ImageUploader
-              title="Parking space photo"
-              image={value ? convertImagesToImageProps(value) : []}
-              onChange={onChange}
-              errorText={errors.images?.message as string}
-              isRequired
-            />
-          )}
-        />
-        <Controller
           name={"business_days"}
           control={control}
           rules={{ required: "Please select at least 1 business day" }}
@@ -111,6 +105,108 @@ const EditParkingInfo: React.FC<EditParkingInfoProps> = ({
               onChange={onChange}
               businessDays={value ?? []}
               errorText={errors.business_days?.message as string}
+              isRequired
+            />
+          )}
+        />
+        <Controller
+          name={"minimum_booking_duration"}
+          control={control}
+          rules={{ required: "Please enter minimum booking duration" }}
+          render={({ field: { onChange } }) => (
+            <>
+              <View style={styles.titleContainer}>
+                <SubHeaderText text="Minimum booking duration" />
+                <BodyText text="*" textStyle={styles.requiredIndicator} />
+              </View>
+              <View style={styles.sameLineInputContainer}>
+                <MyTextInput
+                  placeholder="Hour"
+                  value={minimumBookingDuration.hour}
+                  onChangeText={(value) => {
+                    setMinimumBookingDuration({
+                      ...minimumBookingDuration,
+                      hour: value,
+                    });
+                    onChange(value + "h" + minimumBookingDuration.minute + "m");
+                  }}
+                  containerStyle={{ flex: 1 }}
+                  inputMode={InputType.Numeric}
+                />
+                <BodyText text="Hour" textStyle={styles.text} />
+                <MyTextInput
+                  placeholder="Minute"
+                  value={minimumBookingDuration.minute}
+                  containerStyle={{ flex: 1 }}
+                  onChangeText={(value) => {
+                    setMinimumBookingDuration({
+                      ...minimumBookingDuration,
+                      minute: value,
+                    });
+                    onChange(minimumBookingDuration.hour + "h" + value + "m");
+                  }}
+                  inputMode={InputType.Numeric}
+                />
+                <BodyText text="Minute" textStyle={styles.text} />
+              </View>
+              {errors.minimum_booking_duration && (
+                <BodyText
+                  text={errors.minimum_booking_duration.message as string}
+                  textStyle={styles.errorText}
+                />
+              )}
+            </>
+          )}
+        />
+        <View style={styles.sameLineInputContainer}>
+          <Controller
+            name={"penalty.price"}
+            control={control}
+            rules={{
+              required: "Please enter penalty price",
+            }}
+            render={({ field: { onChange, value } }) => (
+              <MyTextInput
+                title="Penalty fee"
+                placeholder="Enter penalty fee"
+                value={value ? value.toString() : ""}
+                onChangeText={(value) => onChange(parseInt(value))}
+                errorText={errors.penalty && errors.penalty.price?.message}
+                containerStyle={{ flex: 1 }}
+                isRequired
+              />
+            )}
+          />
+          <Controller
+            name={"penalty.price_unit"}
+            control={control}
+            rules={{
+              required: "Please select price unit",
+            }}
+            render={({ field: { onChange, value } }) => (
+              <DropdownInput
+                selectedValue={value ?? ""}
+                title="Unit"
+                placeholder={"Select rate unit"}
+                onSelect={(value) => onChange(value)}
+                items={formatEnumtoDropdownItem(PriceRateUnit)}
+                containerStyle={{ flex: 1, marginBottom: 10 }}
+                errorText={errors.penalty && errors.penalty.price_unit?.message}
+                isRequired
+              />
+            )}
+          />
+        </View>
+        <Controller
+          name={"images"}
+          control={control}
+          rules={{ required: "Please upload images of your parking space" }}
+          render={({ field: { onChange, value } }) => (
+            <ImageUploader
+              title="Parking space photo"
+              image={value ? convertImagesToImageProps(value) : []}
+              onChange={onChange}
+              errorText={errors.images?.message as string}
               isRequired
             />
           )}
@@ -191,5 +287,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
+  },
+  text: {
+    marginBottom: 10,
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
+    marginTop: -10,
+    marginBottom: 10,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  requiredIndicator: {
+    color: Colors.red[400],
   },
 });

@@ -11,6 +11,8 @@ export type ParkingLot = {
   _id: string;
   owner_id: string;
   name: string;
+  penalty: Penalty;
+  minimum_booking_duration: string;
   slots: SlotProfile[];
   available_slots_count: number;
   address: Address;
