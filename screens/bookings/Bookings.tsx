@@ -105,7 +105,7 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
         </View>
         <View style={styles.walletRow}>
           <HeaderText
-            text={`฿ ${profile.credit}`}
+            text={`฿ ${profile.credit.toFixed(2)}`}
             textStyle={{ color: Colors.black, fontSize: 18 }}
           />
           <SecondaryButton
