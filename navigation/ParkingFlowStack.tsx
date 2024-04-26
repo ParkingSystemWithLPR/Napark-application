@@ -44,6 +44,7 @@ const ParkingFlowStack: React.FC<ParkingFlowProps> = () => {
         name="ParkingConfirmation"
         component={ParkingConfirmation}
         options={{
+          title: "Parking confirmation",
           headerShown: false,
         }}
       />

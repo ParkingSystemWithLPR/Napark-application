@@ -37,11 +37,11 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
   const selectHeaderTitle = (bookingStatus: BookingStatus) => {
     switch (bookingStatus) {
       case BookingStatus.UPCOMING:
-        return "Upcoming Booking";
-      case BookingStatus.ACTIVE:
-        return "Active Booking";
+        return "Upcoming booking";
+      case BookingStatus.OVERDUE || BookingStatus.PARKING:
+        return "Active booking";
       default:
-        return "Complete Booking";
+        return "Complete booking";
     }
   };
   return (
