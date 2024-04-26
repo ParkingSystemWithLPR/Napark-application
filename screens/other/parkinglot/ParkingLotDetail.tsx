@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 20,
     gap: 15,
-    marginLeft: -20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
