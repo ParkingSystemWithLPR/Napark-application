@@ -173,6 +173,7 @@ const SessionsList: React.FC<sessionsProps> = ({
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
+      contentContainerStyle={{ flex: 1 }}
     >
       <BodyText
         text="No bookings"
