@@ -33,6 +33,7 @@ import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
 import DayInput from "@/components/input/DayInput";
+import MyTextInput from "@/components/input/TextInput";
 import TimeInput from "@/components/input/TimeInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
@@ -42,6 +43,7 @@ import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
+import { InputType } from "@/enum/InputType";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
 import { SlotType } from "@/enum/SlotType";
 import { GG_PLACE_API_KEY } from "@/store/api/google-maps/place";
@@ -93,12 +95,14 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [specification, setSpecification] = useState<string | undefined>(
     SlotType.Normal
   );
+  const [radius, setRadius] = useState<string>("");
 
   const getParkingSpaces = useGetParkingSpacesByLatLong({
     queryParams: {
       postal_code: postalCode,
       lat: region?.latitude,
       long: region?.longitude,
+      radius: radius || undefined,
       start_date: startDate || undefined,
       end_date: endDate || undefined,
       start_time: startTime || undefined,
@@ -244,47 +248,57 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
           </View>
           <SubHeaderText text="Filter options" />
-          <View style={styles.dateTimeContainer}>
-            <DayInput
-              title="Check in"
-              date={startDate}
-              displayDateFormatter={formatHumanReadableDateFromDateString}
-              onChange={setStartDate}
-              setMinimumDate={true}
-              editable={true}
-              outerContainerStyle={{ flex: 1 }}
+          <View style={styles.inputContainer}>
+            <View style={styles.dateTimeContainer}>
+              <DayInput
+                title="Check in"
+                date={startDate}
+                displayDateFormatter={formatHumanReadableDateFromDateString}
+                onChange={setStartDate}
+                setMinimumDate={true}
+                editable={true}
+                outerContainerStyle={{ flex: 1 }}
+              />
+              <TimeInput
+                title="Start time"
+                value={startTime}
+                onTimeChange={setStartTime}
+                editable={true}
+                outerContainerStyle={{ flex: 1 }}
+              />
+            </View>
+            <View style={styles.dateTimeContainer}>
+              <DayInput
+                title="Check out"
+                date={endDate}
+                displayDateFormatter={formatHumanReadableDateFromDateString}
+                onChange={setEndDate}
+                setMinimumDate={true}
+                editable={true}
+                outerContainerStyle={{ flex: 1 }}
+              />
+              <TimeInput
+                title="End time"
+                value={endTime}
+                onTimeChange={setEndTime}
+                editable={true}
+                outerContainerStyle={{ flex: 1 }}
+              />
+            </View>
+            <Specification
+              specification={specification}
+              onChange={onSetSpecification}
+              outerContainerStyle={{ width: "100%", marginTop: 10 }}
             />
-            <TimeInput
-              title="Start time"
-              value={startTime}
-              onTimeChange={setStartTime}
-              editable={true}
-              outerContainerStyle={{ flex: 1 }}
+            <MyTextInput
+              inputMode={InputType.Decimal}
+              value={radius}
+              title="Radius (km)"
+              placeholder="Enter radius in km"
+              onChangeText={setRadius}
+              containerStyle={{ width: "100%" }}
             />
           </View>
-          <View style={styles.dateTimeContainer}>
-            <DayInput
-              title="Check out"
-              date={endDate}
-              displayDateFormatter={formatHumanReadableDateFromDateString}
-              onChange={setEndDate}
-              setMinimumDate={true}
-              editable={true}
-              outerContainerStyle={{ flex: 1 }}
-            />
-            <TimeInput
-              title="End time"
-              value={endTime}
-              onTimeChange={setEndTime}
-              editable={true}
-              outerContainerStyle={{ flex: 1 }}
-            />
-          </View>
-          <Specification
-            specification={specification}
-            onChange={onSetSpecification}
-            outerContainerStyle={{ width: "100%", marginTop: 10 }}
-          />
           <View style={styles.buttonContainer}>
             <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
             <PrimaryButton title="Filter" onPress={onSubmit} />
@@ -549,11 +563,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
-    marginTop: 10,
   },
   buttonContainer: {
     flexDirection: "row",
     marginTop: 10,
     gap: 20,
+  },
+  inputContainer: {
+    gap: 10,
+    width: "100%",
+    marginTop: 10,
   },
 });
