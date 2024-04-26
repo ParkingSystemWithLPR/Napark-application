@@ -1,8 +1,14 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -24,8 +30,8 @@ export type ParkingLotsListProps = CompositeScreenProps<
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
-  const today = format(new Date(), "eeee").toLocaleLowerCase();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const getParkingLots = useGetMyParkingLots({
@@ -39,21 +45,37 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
     }
   }, [getParkingLots.data]);
 
+  const refreshRequest = useCallback(async () => {
+    await getParkingLots.refetch();
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshRequest();
+    setRefreshing(false);
+  }, []);
+
   if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
   const NoParkingLot = () => {
     return (
-      <View style={styles.noParkingContainer}>
-        <MaterialCommunityIcons
-          name={"emoticon-sad-outline"}
-          size={100}
-          color={Colors.gray[700]}
-        />
-        <HeaderText
-          text="You don't have any parking space"
-          textStyle={styles.noParkingText}
-        />
-      </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.noParkingContainer}>
+          <MaterialCommunityIcons
+            name={"emoticon-sad-outline"}
+            size={100}
+            color={Colors.gray[700]}
+          />
+          <HeaderText
+            text="You don't have any parking space"
+            textStyle={styles.noParkingText}
+          />
+        </View>
+      </ScrollView>
     );
   };
 
@@ -91,6 +113,9 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                 />
               );
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             overScrollMode="never"
           />
         </View>

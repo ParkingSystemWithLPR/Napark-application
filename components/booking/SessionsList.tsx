@@ -17,7 +17,7 @@ import DetailText from "../text/DetailText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
-import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
+import { BookingStatus } from "@/enum/BookingStatus";
 import { AuthenticatedStackParamList } from "@/types";
 import { Booking } from "@/types/booking";
 import { formatToSentenceCase } from "@/utils/text";
