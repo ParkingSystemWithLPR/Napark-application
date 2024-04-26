@@ -33,12 +33,12 @@ const ConfigInfo: React.FC<ConfigInfoProps> = ({ form }) => {
   }>({ hour: "0", minute: "15" });
 
   useEffect(() => {
-    setValue("minimumBookingDuration", "0h15m");
+    setValue("minimum_booking_duration", "0h15m");
   }, []);
 
   useEffect(() => {
     if (!minimumBookingDuration.hour || !minimumBookingDuration.minute) {
-      setError("minimumBookingDuration", {
+      setError("minimum_booking_duration", {
         type: "required",
         message: "Please enter valid minimum booking duration",
       });
@@ -77,7 +77,7 @@ const ConfigInfo: React.FC<ConfigInfoProps> = ({ form }) => {
         )}
       />
       <Controller
-        name={"minimumBookingDuration"}
+        name={"minimum_booking_duration"}
         control={control}
         rules={{ required: "Please enter minimum booking duration" }}
         render={({ field: { onChange } }) => (
@@ -116,9 +116,9 @@ const ConfigInfo: React.FC<ConfigInfoProps> = ({ form }) => {
               />
               <BodyText text="Minute" textStyle={styles.text} />
             </View>
-            {errors.minimumBookingDuration && (
+            {errors.minimum_booking_duration && (
               <BodyText
-                text={errors.minimumBookingDuration.message as string}
+                text={errors.minimum_booking_duration.message as string}
                 textStyle={styles.errorText}
               />
             )}
