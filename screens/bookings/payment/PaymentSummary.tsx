@@ -46,7 +46,7 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     slot_name,
     start_time,
     status,
-    actual_price,
+    actual_total_price,
   } = booking;
   const startTimeFormat = parseISO(start_time);
   const endTimeFormat = parseISO(end_time);
@@ -174,7 +174,7 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
                 attribute: "TOTAL",
                 value: `${(status === BookingStatus.UPCOMING
                   ? estimated_price
-                  : actual_price
+                  : actual_total_price
                 ).toFixed(2)}`,
               })}
             </View>

@@ -75,6 +75,6 @@ export interface Booking {
   start_time: string;
   status: BookingStatus;
   payment_status: PaymentStatus;
-  actual_price: number;
+  actual_total_price: number;
   user_id: string;
 }
