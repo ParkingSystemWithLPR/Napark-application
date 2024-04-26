@@ -72,7 +72,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
       case BookingStatus.CANCELLED:
         return <></>;
       case BookingStatus.COMPLETED:
-        return <BodyText text={`฿ ${booking.estimated_price}`} />;
+        return <BodyText text={`฿ ${booking.estimated_price.toFixed(2)}`} />;
       default:
         return <BodyText text="Unknown" />;
     }
