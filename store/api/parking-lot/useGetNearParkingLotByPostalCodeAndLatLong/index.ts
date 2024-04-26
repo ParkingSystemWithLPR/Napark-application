@@ -9,15 +9,15 @@ import apiRequest, { HTTPMethod } from "@/utils/http";
 
 type GerParkingSpacesInput = {
   queryParams: {
-    postal_code: string | undefined;
-    lat: number | undefined;
-    long: number | undefined;
+    postal_code?: string;
+    lat?: number;
+    long?: number;
     radius?: string;
     start_date?: string;
     end_date?: string;
     start_time?: string;
     end_time?: string;
-    slot_type?: string;
+    slot_type?: SlotType;
   };
   auth: {
     accessToken: string;
@@ -69,6 +69,7 @@ export const useGetParkingSpacesByLatLong = (
     queryFn: async () => getParkingSpacesByLatLong(input),
     refetchOnWindowFocus: false,
     refetchInterval: 60000,
+    retry: 0,
     enabled:
       !!queryParams.postal_code && !!queryParams.lat && !!queryParams.long,
   });

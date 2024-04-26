@@ -10,8 +10,8 @@ import { SlotType } from "@/enum/SlotType";
 import { formatToSentenceCase } from "@/utils/text";
 
 export type SpecificationProps = {
-  specification: string | undefined;
-  onChange: (id: string | undefined) => void;
+  specification: SlotType;
+  onChange: (id: string) => void;
   outerContainerStyle?: object;
 };
 

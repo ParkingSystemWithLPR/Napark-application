@@ -90,11 +90,9 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [postalCode, setPostalCode] = useState<string>();
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [startTime, setStartTime] = useState<string | null>(null);
-  const [endTime, setEndTime] = useState<string | null>(null);
-  const [specification, setSpecification] = useState<string | undefined>(
-    SlotType.Normal
-  );
+  const [startTime, setStartTime] = useState<string>();
+  const [endTime, setEndTime] = useState<string>();
+  const [specification, setSpecification] = useState<SlotType>(SlotType.Normal);
   const [radius, setRadius] = useState<string>("");
 
   const getParkingSpaces = useGetParkingSpacesByLatLong({
@@ -102,11 +100,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       postal_code: postalCode,
       lat: region?.latitude,
       long: region?.longitude,
-      radius: radius || undefined,
-      start_date: startDate || undefined,
-      end_date: endDate || undefined,
-      start_time: startTime || undefined,
-      end_time: endTime || undefined,
+      radius: radius,
+      start_date: startDate,
+      end_date: endDate,
+      start_time: startTime,
+      end_time: endTime,
       slot_type: specification || SlotType.Normal,
     },
     auth: { accessToken, authenticate },
@@ -115,33 +113,38 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const onSubmit = async () => {
     const isAllEmpty = !startTime && !startDate && !endTime && !endDate;
     const isAllFilled = startTime && startDate && endTime && endDate;
+
+    if (!isAllEmpty) {
+      Alert.alert("Please select date and time or leave them empty");
+      return;
+    }
+
     if (isAllFilled) {
       const isDateValid = startDate <= endDate;
       const isTimeValid = startTime < endTime;
+
       if (!isDateValid || !isTimeValid) {
         Alert.alert("Please insert valid date/time");
-      } else {
-        getParkingSpaces.refetch();
-        setShowFilterOption(false);
+        return;
       }
-    } else if (!isAllEmpty) {
-      Alert.alert("Please select all date/time or select nothing");
-    } else {
-      getParkingSpaces.refetch();
-      setShowFilterOption(false);
     }
+
+    if (postalCode && region) {
+      getParkingSpaces.refetch();
+    }
+    setShowFilterOption(false);
   };
 
   const onClearButtonPressed = () => {
     setStartDate("");
-    setStartTime(null);
+    setStartTime(undefined);
     setEndDate("");
-    setEndTime(null);
+    setEndTime(undefined);
     setSpecification(SlotType.Normal);
   };
 
-  const onSetSpecification = (id: string | undefined) => {
-    setSpecification(id);
+  const onSetSpecification = (id: string) => {
+    setSpecification(id as SlotType);
   };
 
   useLayoutEffect(() => {
@@ -237,76 +240,86 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     );
   }, []);
 
-  const renderfilterOptionsModal = (
-    <ModalOverlay
-      visible={showFilterOption}
-      closeModal={() => setShowFilterOption(false)}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.filterContainer}>
-          <View style={styles.closeContainer}>
-            <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
-          </View>
-          <SubHeaderText text="Filter options" />
-          <View style={styles.inputContainer}>
-            <View style={styles.dateTimeContainer}>
-              <DayInput
-                title="Check in"
-                date={startDate}
-                displayDateFormatter={formatHumanReadableDateFromDateString}
-                onChange={setStartDate}
-                setMinimumDate={true}
-                editable={true}
-                outerContainerStyle={{ flex: 1 }}
+  const renderfilterOptionsModal = useCallback(() => {
+    return (
+      <ModalOverlay
+        visible={showFilterOption}
+        closeModal={() => setShowFilterOption(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.filterContainer}>
+            <View style={styles.closeContainer}>
+              <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
+            </View>
+            <SubHeaderText text="Filter options" />
+            <View style={styles.inputContainer}>
+              <View style={styles.dateTimeContainer}>
+                <DayInput
+                  title="Check in"
+                  date={startDate}
+                  displayDateFormatter={formatHumanReadableDateFromDateString}
+                  onChange={setStartDate}
+                  setMinimumDate={true}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+                <TimeInput
+                  title="Start time"
+                  value={startTime ?? null}
+                  onTimeChange={setStartTime}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+              </View>
+              <View style={styles.dateTimeContainer}>
+                <DayInput
+                  title="Check out"
+                  date={endDate}
+                  displayDateFormatter={formatHumanReadableDateFromDateString}
+                  onChange={setEndDate}
+                  setMinimumDate={true}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+                <TimeInput
+                  title="End time"
+                  value={endTime ?? null}
+                  onTimeChange={setEndTime}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+              </View>
+              <Specification
+                specification={specification}
+                onChange={onSetSpecification}
+                outerContainerStyle={{ width: "100%", marginTop: 10 }}
               />
-              <TimeInput
-                title="Start time"
-                value={startTime}
-                onTimeChange={setStartTime}
-                editable={true}
-                outerContainerStyle={{ flex: 1 }}
+              <MyTextInput
+                inputMode={InputType.Decimal}
+                value={radius}
+                title="Radius (km)"
+                placeholder="Enter radius in km"
+                onChangeText={setRadius}
+                containerStyle={{ width: "100%" }}
               />
             </View>
-            <View style={styles.dateTimeContainer}>
-              <DayInput
-                title="Check out"
-                date={endDate}
-                displayDateFormatter={formatHumanReadableDateFromDateString}
-                onChange={setEndDate}
-                setMinimumDate={true}
-                editable={true}
-                outerContainerStyle={{ flex: 1 }}
-              />
-              <TimeInput
-                title="End time"
-                value={endTime}
-                onTimeChange={setEndTime}
-                editable={true}
-                outerContainerStyle={{ flex: 1 }}
-              />
+            <View style={styles.buttonContainer}>
+              <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
+              <PrimaryButton title="Filter" onPress={onSubmit} />
             </View>
-            <Specification
-              specification={specification}
-              onChange={onSetSpecification}
-              outerContainerStyle={{ width: "100%", marginTop: 10 }}
-            />
-            <MyTextInput
-              inputMode={InputType.Decimal}
-              value={radius}
-              title="Radius (km)"
-              placeholder="Enter radius in km"
-              onChangeText={setRadius}
-              containerStyle={{ width: "100%" }}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
-            <PrimaryButton title="Filter" onPress={onSubmit} />
           </View>
         </View>
-      </View>
-    </ModalOverlay>
-  );
+      </ModalOverlay>
+    );
+  }, [
+    showFilterOption,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    specification,
+    radius,
+  ]);
 
   const renderRecommendedParkingSpaces = useCallback(() => {
     return (
@@ -476,7 +489,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
               {renderHeader()}
-              {renderfilterOptionsModal}
+              {renderfilterOptionsModal()}
               {renderRecommendedParkingSpaces()}
               {renderParkingSpaceDetail()}
             </SafeAreaView>
