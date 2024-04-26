@@ -7,10 +7,10 @@ import { AxiosError } from "axios";
 
 import { PAYMENT_URL } from "..";
 
-import { QRCode } from "@/types/payment";
+import { QRcode } from "@/types/payment";
 import apiRequest, { HTTPMethod } from "@/utils/http";
 
-export type GetTopUpQRCodeInput = {
+export type GetTopUpQRcodeInput = {
   body: {
     amount: number;
   };
@@ -20,10 +20,10 @@ export type GetTopUpQRCodeInput = {
   };
 };
 
-type GetTopUpQRCodeService = (input: GetTopUpQRCodeInput) => Promise<QRCode>;
+type GetTopUpQRcodeService = (input: GetTopUpQRcodeInput) => Promise<QRcode>;
 
-export const getTopUpQRCode: GetTopUpQRCodeService = async ({ body, auth }) => {
-  const data = await apiRequest<QRCode>(
+export const getTopUpQRcode: GetTopUpQRcodeService = async ({ body, auth }) => {
+  const data = await apiRequest<QRcode>(
     PAYMENT_URL + "/payment_v1/payment/topup",
     HTTPMethod.POST,
     auth.accessToken,
@@ -33,11 +33,11 @@ export const getTopUpQRCode: GetTopUpQRCodeService = async ({ body, auth }) => {
   return data;
 };
 
-export const useGetTopUpQRCode = (
-  options?: MutationOptions<QRCode, AxiosError, GetTopUpQRCodeInput>
-): UseMutationResult<QRCode, AxiosError, GetTopUpQRCodeInput> =>
+export const useGetTopUpQRcode = (
+  options?: MutationOptions<QRcode, AxiosError, GetTopUpQRcodeInput>
+): UseMutationResult<QRcode, AxiosError, GetTopUpQRcodeInput> =>
   useMutation({
-    mutationFn: getTopUpQRCode,
+    mutationFn: getTopUpQRcode,
     retry: 0,
     ...options,
   });
