@@ -27,6 +27,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+import Specification from "@/components/booking/Specification";
 import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetModal";
 import PrimaryButton from "@/components/button/PrimaryButton";
 import SecondaryButton from "@/components/button/SecondaryButton";
@@ -42,6 +43,7 @@ import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
+import { SlotType } from "@/enum/SlotType";
 import { GG_PLACE_API_KEY } from "@/store/api/google-maps/place";
 import { useGetParkingSpacesByLatLong } from "@/store/api/parking-lot/useGetNearParkingLotByPostalCodeAndLatLong";
 import { useAuth } from "@/store/context/auth";
@@ -88,6 +90,9 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [endDate, setEndDate] = useState<string>("");
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
+  const [specification, setSpecification] = useState<string | undefined>(
+    SlotType.Normal
+  );
 
   const getParkingSpaces = useGetParkingSpacesByLatLong({
     queryParams: {
@@ -98,6 +103,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
       end_date: endDate || undefined,
       start_time: startTime || undefined,
       end_time: endTime || undefined,
+      slot_type: specification || SlotType.Normal,
     },
     auth: { accessToken, authenticate },
   });
@@ -127,6 +133,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
     setStartTime(null);
     setEndDate("");
     setEndTime(null);
+    setSpecification(SlotType.Normal);
+  };
+
+  const onSetSpecification = (id: string | undefined) => {
+    setSpecification(id);
   };
 
   useLayoutEffect(() => {
@@ -269,6 +280,11 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               outerContainerStyle={{ flex: 1 }}
             />
           </View>
+          <Specification
+            specification={specification}
+            onChange={onSetSpecification}
+            outerContainerStyle={{ width: "100%", marginTop: 10 }}
+          />
           <View style={styles.buttonContainer}>
             <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
             <PrimaryButton title="Filter" onPress={onSubmit} />
@@ -489,7 +505,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-    paddingVertical: 10,
+    padding: 10,
     shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
@@ -533,7 +549,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
-    paddingHorizontal: 10,
     marginTop: 10,
   },
   buttonContainer: {
