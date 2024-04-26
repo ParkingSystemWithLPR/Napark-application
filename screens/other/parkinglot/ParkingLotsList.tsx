@@ -76,6 +76,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
               return (
                 <ParkingSpaceCard
                   parkingSpaceName={item.name}
+                  parkingImage={item.images[0]}
                   businessHours={
                     businessDay
                       ? getBusinessHours(businessDay)

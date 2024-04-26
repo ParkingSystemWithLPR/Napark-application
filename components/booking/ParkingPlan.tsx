@@ -7,7 +7,7 @@ import DropdownInput, { DropdownItem } from "../input/DropdownInput";
 import BodyText from "../text/BodyText";
 
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
-import { FloorProfile, SlotProfileWithPrivilege } from "@/types/booking";
+import { FloorProfile } from "@/types/booking";
 import { FloorImage } from "@/types/parking-lot";
 import {
   defaultBookingDetailState,
