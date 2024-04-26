@@ -162,7 +162,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
                 searchInputRef.current?.blur();
                 dismissAll();
               } else {
-                recommendedBottomSheetRef.current?.snapToIndex(0);
+                recommendedBottomSheetRef.current?.present();
               }
             },
           }}

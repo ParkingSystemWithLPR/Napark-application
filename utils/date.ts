@@ -27,13 +27,13 @@ export const formatTime = (date: Date) => {
 };
 
 export const formatTimeWithSecond = (timeString: string) => {
-  const hourWithSecond = timeString.split(':').slice(0,2).join(':');
+  const hourWithSecond = timeString.split(":").slice(0, 2).join(":");
   return `${hourWithSecond}:00`;
 };
 
 export const formatDisplayTime = (timeString: string) => {
-  return timeString.split(':').slice(0,2).join(':');
-}
+  return timeString.split(":").slice(0, 2).join(":");
+};
 
 export const formatStringDate = (date: string) => {
   return date.replaceAll("/", "-");
@@ -60,7 +60,7 @@ export const isCheckOutTimeout = (date: Date) => {
 };
 
 export const duration = (minTime: Date, maxTime: Date): string => {
-  return `open ${formatTime(minTime)} - ${formatTime(maxTime)}`;
+  return `${formatTime(minTime)} - ${formatTime(maxTime)}`;
 };
 
 export const getDateFromDateAndTime = (date: string, time?: string) => {
@@ -110,29 +110,34 @@ export const isEqualBusinessHour = (a: BusinessHour, b: BusinessHour) => {
 
 export const formatDayRange = (days: DayInAWeek[]): string => {
   if (days.length === 7) return "everyday";
-  const dayInaWeek =
-  [...Object.values(DayInAWeek).slice(1), Object.values(DayInAWeek)[0], "freeday"];
+  const dayInaWeek = [
+    ...Object.values(DayInAWeek).slice(1),
+    Object.values(DayInAWeek)[0],
+    "freeday",
+  ];
   let result = "";
   days.sort((a, b) => {
     return (
       dayInaWeek.indexOf(a as DayInAWeek) - dayInaWeek.indexOf(b as DayInAWeek)
-      );
-    });
+    );
+  });
   let startDay = "";
-  let lastDay = ""; 
+  let lastDay = "";
   dayInaWeek.forEach((day) => {
-    if(days.includes(day as DayInAWeek)) {
-      if(!startDay) startDay = day;
+    if (days.includes(day as DayInAWeek)) {
+      if (!startDay) startDay = day;
       lastDay = day;
-    } else if(startDay){
-        if(startDay === lastDay) {
-            result += `${formatToSentenceCase(startDay)}, `;
-        } else {
-            result += `${formatToSentenceCase(startDay)} - ${formatToSentenceCase(lastDay)}, `;
-        }
-        startDay="";
+    } else if (startDay) {
+      if (startDay === lastDay) {
+        result += `${formatToSentenceCase(startDay)}, `;
+      } else {
+        result += `${formatToSentenceCase(startDay)} - ${formatToSentenceCase(
+          lastDay
+        )}, `;
+      }
+      startDay = "";
     }
-  })
+  });
 
-  return result.slice(0,-2);
+  return result.slice(0, -2);
 };
