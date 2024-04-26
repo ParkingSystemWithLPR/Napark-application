@@ -242,7 +242,7 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
       />
       <View style={styles.dateTimeContainer}>
         <DayInput
-          title={"Check-in"} 
+          title={"Check-in"}
           date={checkInDate}
           displayDateFormatter={formatHumanReadableDateFromDateString}
           onChange={(value: string) => {
