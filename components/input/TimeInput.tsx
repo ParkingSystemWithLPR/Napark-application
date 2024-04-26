@@ -138,8 +138,4 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2,
   },
-  errorText: {
-    color: Colors.red[400],
-    fontSize: 12,
-  },
 });
