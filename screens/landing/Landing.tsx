@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  Alert,
 } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import {
@@ -28,8 +29,10 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetModal";
 import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
-import RangeInput from "@/components/input/RangeInput";
+import DayInput from "@/components/input/DayInput";
+import TimeInput from "@/components/input/TimeInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
 import BodyText from "@/components/text/BodyText";
@@ -48,7 +51,12 @@ import {
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { estimateDistance } from "@/utils/address";
-import { getBusinessHours, getDateFromTime, getDayInAWeek } from "@/utils/date";
+import {
+  formatHumanReadableDateFromDateString,
+  getBusinessHours,
+  getDateFromTime,
+  getDayInAWeek,
+} from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
@@ -72,20 +80,54 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
 
   const [region, setRegion] = useState<RegionType>();
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
-  const [priceRange, setPriceRange] = useState<number[]>([20, 50]);
   const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>();
   const [selectedParkingSpace, setSelectedParkingSpace] =
     useState<ParkingLot>();
   const [postalCode, setPostalCode] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [startTime, setStartTime] = useState<string | null>(null);
+  const [endTime, setEndTime] = useState<string | null>(null);
 
   const getParkingSpaces = useGetParkingSpacesByLatLong({
     queryParams: {
       postal_code: postalCode,
       lat: region?.latitude,
       long: region?.longitude,
+      start_date: startDate || undefined,
+      end_date: endDate || undefined,
+      start_time: startTime || undefined,
+      end_time: endTime || undefined,
     },
     auth: { accessToken, authenticate },
   });
+
+  const onSubmit = async () => {
+    const isAllEmpty = !startTime && !startDate && !endTime && !endDate;
+    const isAllFilled = startTime && startDate && endTime && endDate;
+    if (isAllFilled) {
+      const isDateValid = startDate <= endDate;
+      const isTimeValid = startTime < endTime;
+      if (!isDateValid || !isTimeValid) {
+        Alert.alert("Please insert valid date/time");
+      } else {
+        getParkingSpaces.refetch();
+        setShowFilterOption(false);
+      }
+    } else if (!isAllEmpty) {
+      Alert.alert("Please select all date/time or select nothing");
+    } else {
+      getParkingSpaces.refetch();
+      setShowFilterOption(false);
+    }
+  };
+
+  const onClearButtonPressed = () => {
+    setStartDate("");
+    setStartTime(null);
+    setEndDate("");
+    setEndTime(null);
+  };
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -167,7 +209,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             },
           }}
         />
-        {/* <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+        <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
             <MaterialIcons
               name="more-vert"
@@ -175,35 +217,66 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               color={Colors.gray[800]}
             />
           </View>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     );
   }, []);
 
-  const renderfilterOptionsModal = useCallback(() => {
-    return (
-      <ModalOverlay
-        visible={showFilterOption}
-        closeModal={() => setShowFilterOption(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.filterContainer}>
-            <View style={styles.closeContainer}>
-              <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
-            </View>
-            <SubHeaderText text="Filter options" />
-            <RangeInput
-              values={priceRange}
-              onChange={setPriceRange}
-              title="Parking fee (per hour)"
-              snapped
-              allowOverlap
+  const renderfilterOptionsModal = (
+    <ModalOverlay
+      visible={showFilterOption}
+      closeModal={() => setShowFilterOption(false)}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.filterContainer}>
+          <View style={styles.closeContainer}>
+            <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
+          </View>
+          <SubHeaderText text="Filter options" />
+          <View style={styles.dateTimeContainer}>
+            <DayInput
+              title="Check in"
+              date={startDate}
+              displayDateFormatter={formatHumanReadableDateFromDateString}
+              onChange={setStartDate}
+              setMinimumDate={true}
+              editable={true}
+              outerContainerStyle={{ flex: 1 }}
+            />
+            <TimeInput
+              title="Start time"
+              value={startTime}
+              onTimeChange={setStartTime}
+              editable={true}
+              outerContainerStyle={{ flex: 1 }}
             />
           </View>
+          <View style={styles.dateTimeContainer}>
+            <DayInput
+              title="Check out"
+              date={endDate}
+              displayDateFormatter={formatHumanReadableDateFromDateString}
+              onChange={setEndDate}
+              setMinimumDate={true}
+              editable={true}
+              outerContainerStyle={{ flex: 1 }}
+            />
+            <TimeInput
+              title="End time"
+              value={endTime}
+              onTimeChange={setEndTime}
+              editable={true}
+              outerContainerStyle={{ flex: 1 }}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
+            <PrimaryButton title="Filter" onPress={onSubmit} />
+          </View>
         </View>
-      </ModalOverlay>
-    );
-  }, [showFilterOption]);
+      </View>
+    </ModalOverlay>
+  );
 
   const renderRecommendedParkingSpaces = useCallback(() => {
     return (
@@ -373,7 +446,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
           <View style={{ position: "absolute", width: "100%" }}>
             <SafeAreaView>
               {renderHeader()}
-              {renderfilterOptionsModal()}
+              {renderfilterOptionsModal}
               {renderRecommendedParkingSpaces()}
               {renderParkingSpaceDetail()}
             </SafeAreaView>
@@ -412,11 +485,11 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: Colors.white,
-    width: "80%",
+    width: "90%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-    padding: 10,
+    paddingVertical: 10,
     shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
@@ -455,5 +528,17 @@ const styles = StyleSheet.create({
     height: 1,
     width: "100%",
     backgroundColor: Colors.gray[800],
+  },
+  dateTimeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+    gap: 20,
   },
 });

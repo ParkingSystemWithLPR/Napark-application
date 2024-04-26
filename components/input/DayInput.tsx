@@ -28,6 +28,7 @@ export type DayInputProps = {
   editable?: boolean;
   outerContainerStyle?: object;
   containerStyle?: object;
+  errorText?: string;
 };
 
 const DayInput: React.FC<DayInputProps> = ({
@@ -43,6 +44,7 @@ const DayInput: React.FC<DayInputProps> = ({
   editable = false,
   outerContainerStyle,
   containerStyle,
+  errorText,
 }) => {
   const minimumDate = MINIMUM_DATE;
   const startDate = new Date();
@@ -118,6 +120,7 @@ const DayInput: React.FC<DayInputProps> = ({
           </TouchableWithoutFeedback>
         </View>
       </ModalOverlay>
+      {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
     </View>
   );
 };
@@ -186,5 +189,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 2,
+  },
+  errorText: {
+    color: Colors.red[400],
+    fontSize: 12,
   },
 });
