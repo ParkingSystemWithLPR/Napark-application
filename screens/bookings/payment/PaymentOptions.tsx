@@ -27,7 +27,7 @@ const PaymentOptions: React.FC<PaymentOptionsProps> = ({
         screenName="QR Code"
         onPress={() =>
           navigation.navigate("BookingsStack", {
-            screen: "PaymentQRcode",
+            screen: "PaymentQRCode",
             params: {
               amount: route.params.amount,
             },

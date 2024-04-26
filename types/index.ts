@@ -79,7 +79,7 @@ export type BookingsStackParamList = {
   RoleMember: undefined;
   TopUp: { balance: number };
   PaymentOptions: { amount: number };
-  PaymentQRcode: { amount: number };
+  PaymentQRCode: { amount: number };
   PaymentSummary: { booking: Booking };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;

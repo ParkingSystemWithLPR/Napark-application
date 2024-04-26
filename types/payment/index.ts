@@ -1,4 +1,4 @@
-export type QRcode = {
+export type QRCode = {
   id: string;
   booking_id: string;
   owner_id: string;

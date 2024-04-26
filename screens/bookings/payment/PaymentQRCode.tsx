@@ -8,35 +8,35 @@ import BodyText from "@/components/text/BodyText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import Colors from "@/constants/color";
 import { useConfirmTransaction } from "@/store/api/payment/useConfirmTransaction";
-import { useGetTopUpQRcode } from "@/store/api/payment/useGetTopUpQRcode";
+import { useGetTopUpQRCode } from "@/store/api/payment/useGetTopUpQRCode";
 import { useAuth } from "@/store/context/auth";
 import { BookingsStackParamList, AuthenticatedStackParamList } from "@/types";
-import { QRcode } from "@/types/payment";
+import { QRCode } from "@/types/payment";
 import { formatDateAndTime } from "@/utils/date";
 
-export type PaymentQRcodeProps = CompositeScreenProps<
-  NativeStackScreenProps<BookingsStackParamList, "PaymentQRcode">,
+export type PaymentQRCodeProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingsStackParamList, "PaymentQRCode">,
   NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const IMAGE_SIZE = 250;
 
-const PaymentQRcode: React.FC<PaymentQRcodeProps> = ({ navigation, route }) => {
+const PaymentQRCode: React.FC<PaymentQRCodeProps> = ({ navigation, route }) => {
   const amount = route.params.amount;
   const { accessToken, authenticate } = useAuth();
-  const { mutateAsync: getTopUpQRcode } = useGetTopUpQRcode();
+  const { mutateAsync: getTopUpQRCode } = useGetTopUpQRCode();
   const { mutateAsync: confirmTransaction } = useConfirmTransaction();
-  const [QRcode, setQRcode] = useState<QRcode>();
+  const [QRCode, setQRCode] = useState<QRCode>();
 
-  const getQRcode = async () => {
-    await getTopUpQRcode(
+  const getQRCode = async () => {
+    await getTopUpQRCode(
       {
         body: { amount: amount },
         auth: { accessToken, authenticate },
       },
       {
         onSuccess(data) {
-          setQRcode(data);
+          setQRCode(data);
         },
       }
     );
@@ -44,7 +44,7 @@ const PaymentQRcode: React.FC<PaymentQRcodeProps> = ({ navigation, route }) => {
 
   const onConfirmationClick = async () => {
     await confirmTransaction({
-      queryParams: { transactionId: QRcode?.id ?? "" },
+      queryParams: { transactionId: QRCode?.id ?? "" },
       auth: { accessToken, authenticate },
     })
       .then()
@@ -54,29 +54,29 @@ const PaymentQRcode: React.FC<PaymentQRcodeProps> = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    getQRcode();
+    getQRCode();
   }, []);
 
   const renderImage = useCallback(() => {
     return (
       <Image
-        source={{ uri: QRcode?.image }}
+        source={{ uri: QRCode?.image }}
         height={IMAGE_SIZE}
         width={IMAGE_SIZE}
         style={styles.image}
       />
     );
-  }, [QRcode]);
+  }, [QRCode]);
 
   const renderEndTimeText = useCallback(() => {
-    const { date, time } = formatDateAndTime(new Date(QRcode?.expire_at ?? ""));
+    const { date, time } = formatDateAndTime(new Date(QRCode?.expire_at ?? ""));
     return (
       <BodyText
         text={`Please pay before ${date} ${time}`}
         containerStyle={{ alignSelf: "center" }}
       />
     );
-  }, [QRcode]);
+  }, [QRCode]);
 
   return (
     <BodyContainer innerContainerStyle={styles.innerContainer}>
@@ -93,7 +93,7 @@ const PaymentQRcode: React.FC<PaymentQRcodeProps> = ({ navigation, route }) => {
   );
 };
 
-export default PaymentQRcode;
+export default PaymentQRCode;
 
 const styles = StyleSheet.create({
   innerContainer: {

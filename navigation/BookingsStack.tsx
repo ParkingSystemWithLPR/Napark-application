@@ -9,7 +9,7 @@ import { BookingStatus } from "@/enum/BookingStatus";
 import BookingDetail from "@/screens/bookings/booking/BookingDetail";
 import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
-import PaymentQRcode from "@/screens/bookings/payment/PaymentQRcode";
+import PaymentQRCode from "@/screens/bookings/payment/PaymentQRCode";
 import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
 import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
 import TopUp from "@/screens/bookings/payment/TopUp";
@@ -85,14 +85,14 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
         name="PaymentOptions"
         component={PaymentOptions}
         options={{
-          title: "Payment Options",
+          title: "Payment options",
         }}
       />
       <Stack.Screen
-        name="PaymentQRcode"
-        component={PaymentQRcode}
+        name="PaymentQRCode"
+        component={PaymentQRCode}
         options={{
-          title: "QR Code",
+          title: "QR code",
           headerBackTitle: "Back",
         }}
       />
