@@ -19,6 +19,7 @@ export type ParkingLot = {
   management_roles: ManagementRoleProfile[];
   parking_privileges: ParkingPrivilegeProfile[];
   coord: LatLng;
+  minimum_booking_duration: string;
   images: string[];
   floor_images: FloorImage[];
   business_days: BusinessDay[];
@@ -46,7 +47,7 @@ export type ParkingLotRequest = {
 export type Penalty = {
   price: number;
   price_unit: PriceRateUnit;
-}
+};
 
 export type Address = {
   address1: string;

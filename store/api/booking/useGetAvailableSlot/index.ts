@@ -59,6 +59,7 @@ export const useGetAvailableSlot = (
     queryFn: async () => getAvailableSlot(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
+    retry: 0,
     enabled:
       !!queryParams.start_date &&
       !!queryParams.start_time &&

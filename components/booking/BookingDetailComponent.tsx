@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { isEqual, max } from "date-fns";
 import { useLayoutEffect, useState } from "react";
-import { Alert, Platform, StyleSheet, View } from "react-native";
+import { Alert, Platform, ScrollView, StyleSheet, View } from "react-native";
 
 import Specification from "./Specification";
 import Colors from "../../constants/color";
@@ -9,6 +9,8 @@ import PrimaryButton from "../button/PrimaryButton";
 import DayInput from "../input/DayInput";
 import DropdownInput from "../input/DropdownInput";
 import TimeInput from "../input/TimeInput";
+import BodyText from "../text/BodyText";
+import DetailText from "../text/DetailText";
 
 import { ActionMode } from "@/enum/ActionMode";
 import { BookingDetailState } from "@/screens/bookings/booking/BookingDetail";
@@ -170,12 +172,8 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
     const value = business_days && getOpenCloseTime(date, business_days);
     if (value) {
       const { open_time, close_time } = value;
-      const openTimeObject = open_time
-        ? getDateFromDateAndTime(date, open_time)
-        : undefined;
-      const closeTimeObject = close_time
-        ? getDateFromDateAndTime(date, close_time)
-        : undefined;
+      const openTimeObject = getDateFromDateAndTime(date, open_time);
+      const closeTimeObject = getDateFromDateAndTime(date, close_time);
       setMinTime(openTimeObject && max([openTimeObject, now]));
       setMaxTime(closeTimeObject && max([closeTimeObject, now]));
       setDisplay(
@@ -225,81 +223,95 @@ const BookingDetailComponent: React.FC<BookingDetailComponentProps> = ({
   }, [checkOutDate, checkInTime]);
 
   return (
-    <View style={styles.outerContainer}>
-      <DropdownInput
-        selectedValue={carId}
-        placeholder={"ex.  กข1234"}
-        onSelect={setLicensePlateHandler}
-        items={[
-          ...licensePlateDropdown,
-          {
-            label: "Not found your license plate",
-            value: "Not found your license plate",
-          },
-        ]}
-        title="License Plate"
-        isRequired={true}
-      />
-      <View style={styles.dateTimeContainer}>
-        <DayInput
-          title={"Check-in"}
-          date={checkInDate}
-          displayDateFormatter={formatHumanReadableDateFromDateString}
-          onChange={(value: string) => {
-            setCheckInDate(value);
-          }}
-          setMinimumDate={true}
-          outerContainerStyle={styles.dateContainer}
-          editable={true}
+    <ScrollView>
+      <View style={styles.outerContainer}>
+        <DropdownInput
+          selectedValue={carId}
+          placeholder={"ex.  กข1234"}
+          onSelect={setLicensePlateHandler}
+          items={[
+            ...licensePlateDropdown,
+            {
+              label: "Not found your license plate",
+              value: "Not found your license plate",
+            },
+          ]}
+          title="License Plate"
           isRequired={true}
-          disableDate={disableDateHandler}
         />
-        <TimeInput
-          title={isCheckInDateNotNull ? displayCheckInTime : ""}
-          value={checkInTime}
-          onTimeChange={checkInTimeHandler}
-          outerContainerStyle={styles.timeContainer}
-          editable={isCheckInTimeEditable}
-          minTime={minCheckInTime}
-          maxTime={maxCheckInTime}
+        <View style={styles.dateTimeContainer}>
+          <DayInput
+            title={"Check-in"}
+            date={checkInDate}
+            displayDateFormatter={formatHumanReadableDateFromDateString}
+            onChange={(value: string) => {
+              setCheckInDate(value);
+            }}
+            setMinimumDate={true}
+            outerContainerStyle={styles.dateContainer}
+            editable={true}
+            isRequired={true}
+            disableDate={disableDateHandler}
+          />
+          <TimeInput
+            value={checkInTime}
+            onTimeChange={checkInTimeHandler}
+            outerContainerStyle={styles.timeContainer}
+            editable={isCheckInTimeEditable}
+            minTime={minCheckInTime}
+            maxTime={maxCheckInTime}
+          />
+        </View>
+        <View style={styles.dateTimeContainer}>
+          <DayInput
+            title={"Check-out"}
+            date={checkOutDate}
+            displayDateFormatter={formatHumanReadableDateFromDateString}
+            onChange={(value: string) => {
+              setCheckOutDate(value);
+            }}
+            setMinimumDate={true}
+            outerContainerStyle={styles.dateContainer}
+            editable={false} //{isCheckInTimeEditable} for first version that only booking in same day
+            minDateValue={checkInDate}
+            isRequired={true}
+            disableDate={disableDateHandler}
+          />
+          <TimeInput
+            value={checkOutTime}
+            onTimeChange={checkOutTimeHandler}
+            outerContainerStyle={styles.timeContainer}
+            editable={isCheckOutTimeEditable}
+            minTime={minCheckOutTime}
+            maxTime={maxCheckOutTime}
+          />
+        </View>
+        <Specification
+          specification={specification}
+          onChange={setSpecification}
+        />
+        {bookingDetailState.checkInDate && (
+          <View>
+            <BodyText text={"Note *"} />
+            <DetailText
+              text={`you need to Checkin during ${displayCheckInTime}`}
+            />
+            <DetailText
+              text={`you need to Checkout during ${displayCheckOutTime}`}
+            />
+            <DetailText
+              text={`minimum booking time is ${parkingLot.minimum_booking_duration}`}
+            />
+          </View>
+        )}
+        <PrimaryButton
+          title={"Next"}
+          onPress={closeSetting}
+          outerContainerStyle={styles.buttonContainer}
+          buttonStyle={styles.button}
         />
       </View>
-      <View style={styles.dateTimeContainer}>
-        <DayInput
-          title={"Check-out"}
-          date={checkOutDate}
-          displayDateFormatter={formatHumanReadableDateFromDateString}
-          onChange={(value: string) => {
-            setCheckOutDate(value);
-          }}
-          setMinimumDate={true}
-          outerContainerStyle={styles.dateContainer}
-          editable={false} //{isCheckInTimeEditable} for first version that only booking in same day
-          minDateValue={checkInDate}
-          isRequired={true}
-          disableDate={disableDateHandler}
-        />
-        <TimeInput
-          title={isCheckOutTimeEditable ? displayCheckOutTime : ""}
-          value={checkOutTime}
-          onTimeChange={checkOutTimeHandler}
-          outerContainerStyle={styles.timeContainer}
-          editable={isCheckOutTimeEditable}
-          minTime={minCheckOutTime}
-          maxTime={maxCheckOutTime}
-        />
-      </View>
-      <Specification
-        specification={specification}
-        onChange={setSpecification}
-      />
-      <PrimaryButton
-        title={"Next"}
-        onPress={closeSetting}
-        outerContainerStyle={styles.buttonContainer}
-        buttonStyle={styles.button}
-      />
-    </View>
+    </ScrollView>
   );
 };
 export default BookingDetailComponent;
@@ -315,6 +327,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     borderRadius: 12,
+    marginBottom: 100,
   },
   dateTimeContainer: {
     flexDirection: "row",

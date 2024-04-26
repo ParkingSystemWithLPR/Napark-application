@@ -154,6 +154,7 @@ const ParkingPlan: React.FC<ParkingPlanProps> = ({
             placeholder={"Select Slot"}
             renderItem={renderItem}
             withSearch
+            dropdownPosition="top"
           />
           {canClickConfirm ? (
             <PrimaryButton

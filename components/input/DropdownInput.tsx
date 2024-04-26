@@ -25,6 +25,7 @@ export type DropdownInputProps<T> = {
   errorText?: string;
   editable?: boolean;
   containerStyle?: object;
+  dropdownPosition?: "auto" | "top" | "bottom";
 };
 
 const DropdownInput = <T,>({
@@ -41,6 +42,7 @@ const DropdownInput = <T,>({
   errorText,
   editable = true,
   containerStyle,
+  dropdownPosition,
 }: DropdownInputProps<T>) => {
   const handleOnChange = (item: DropdownItem<T>) => {
     if (onSpecialSelect) {
@@ -82,6 +84,7 @@ const DropdownInput = <T,>({
         iconStyle={{
           tintColor: editable ? Colors.gray[800] : Colors.gray[600],
         }}
+        dropdownPosition={dropdownPosition}
       />
       {errorText && <BodyText text={errorText} textStyle={styles.errorText} />}
     </View>
