@@ -9,6 +9,7 @@ import Colors from "@/constants/color";
 
 export type ParkingSpaceCardProps = {
   parkingSpaceName: string;
+  parkingImage: string;
   businessHours: string;
   availabilty: number;
   onPress: () => void;
@@ -16,6 +17,7 @@ export type ParkingSpaceCardProps = {
 
 const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
   parkingSpaceName,
+  parkingImage,
   businessHours,
   availabilty,
   onPress,
@@ -30,7 +32,7 @@ const ParkingSpaceCard: React.FC<ParkingSpaceCardProps> = ({
         <View style={styles.innerContainer}>
           <Image
             style={styles.image}
-            source={require("../../assets/images/icon.png")}
+            source={{ uri: parkingImage }}
           />
           <View style={styles.textContainer}>
             <BodyText
