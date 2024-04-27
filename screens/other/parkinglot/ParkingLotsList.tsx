@@ -82,7 +82,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
               data={parkingLots}
               renderItem={({ item }) => {
                 const businessDay = item.business_days.find((businessday) => {
-                  businessday.weekday == getDayInAWeek(new Date());
+                  return businessday.weekday == getDayInAWeek(new Date());
                 });
                 return (
                   <ParkingSpaceCard
@@ -93,7 +93,7 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
                         ? getBusinessHours(businessDay)
                         : "Not available"
                     }
-                    availabilty={0}
+                    availabilty={item.available_slots_count ?? 0}
                     onPress={() =>
                       navigation.navigate("ParkingLotDetail", {
                         parkingLotId: item._id,

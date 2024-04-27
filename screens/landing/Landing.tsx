@@ -217,7 +217,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             data={parkingSpaces}
             renderItem={({ item }) => {
               const businessDay = item.business_days.find((businessday) => {
-                businessday.weekday == getDayInAWeek(new Date());
+                return businessday.weekday == getDayInAWeek(new Date());
               });
               return (
                 <ParkingSpaceCard
