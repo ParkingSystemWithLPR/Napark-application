@@ -22,8 +22,8 @@ const ExtendBooking: React.FC<ExtendBookingProps> = ({ navigation, route }) => {
   const { booking_id, start_time, end_time } = route.params;
   const { accessToken, authenticate } = useAuth();
   const [extendTime, setExtendTime] = useState<string>("");
-  const [latestTime, setLatestTime] = useState<string>("");
-  const [maxTime, setMaxTime] = useState<Date>();
+  const [maxTime, setMaxTime] = useState<string>("");
+  const [maxDateTime, setMaxDateTime] = useState<Date>();
   const minTime = new Date(end_time);
   const { mutateAsync: updateBookingTime } = useUpdateBookingTime();
 
@@ -33,17 +33,15 @@ const ExtendBooking: React.FC<ExtendBookingProps> = ({ navigation, route }) => {
   });
 
   useEffect(() => {
-    if (getExtendTime.isSuccess && getExtendTime.data.available_extend_time) {
-      setMaxTime(
-        new Date(
-          start_time.substring(0, 10) +
-            getExtendTime.data.available_extend_time.substring(10)
-        )
-      );
+    if (getExtendTime.isSuccess) {
+      const formattedMaxDateTime =
+        start_time.substring(0, 10) +
+        getExtendTime.data.available_extend_time.substring(10);
       const time = formatTime(
         new Date(getExtendTime.data.available_extend_time)
       );
-      setLatestTime(time);
+      setMaxDateTime(new Date(formattedMaxDateTime));
+      setMaxTime(time);
     }
   }, [getExtendTime.data]);
 
@@ -70,14 +68,14 @@ const ExtendBooking: React.FC<ExtendBookingProps> = ({ navigation, route }) => {
 
   return (
     <BodyContainer innerContainerStyle={{ gap: 10 }}>
-      <BodyText text={`You can extend time until : ${latestTime}`} />
+      <BodyText text={`You can extend time until : ${maxTime}`} />
       <TimeInput
         title=""
         onTimeChange={setExtendTime}
         value={extendTime}
         editable
         minTime={minTime}
-        maxTime={maxTime}
+        maxTime={maxDateTime}
       />
       <PrimaryButton title="Confirm" onPress={onClick} />
     </BodyContainer>

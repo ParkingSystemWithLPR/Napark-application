@@ -40,7 +40,7 @@ export const useGetPossibleExtendTime = (
   input: GetPossibleExtendTimeInput
 ): UseQueryResult<ExtendedTime, AxiosError> => {
   return useQuery({
-    queryKey: [],
+    queryKey: ["extend-time", input.queryParams.booking_id],
     queryFn: async () => getPossibleExtendTime(input),
     refetchOnWindowFocus: false,
     refetchInterval: 0,
