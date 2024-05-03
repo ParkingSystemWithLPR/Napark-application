@@ -78,3 +78,7 @@ export interface Booking {
   actual_total_price: number;
   user_id: string;
 }
+
+export interface ExtendedTime {
+  available_extend_time: string;
+}

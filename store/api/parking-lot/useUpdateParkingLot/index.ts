@@ -1,8 +1,10 @@
-import { ParkingLot } from "@/types/parking-lot";
-import apiRequest, { HTTPMethod } from "@/utils/http";
-import { PARKING_LOT_URL } from "..";
 import { MutationOptions, UseMutationResult, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+
+import { PARKING_LOT_URL } from "..";
+
+import { ParkingLot } from "@/types/parking-lot";
+import apiRequest, { HTTPMethod } from "@/utils/http";
 
 export type UpdateParkingLotInput = {
   parkingLotId: string;

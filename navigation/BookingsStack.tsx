@@ -8,6 +8,7 @@ import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import BookingDetail from "@/screens/bookings/booking/BookingDetail";
 import BookingSummary from "@/screens/bookings/booking/BookingSummary";
+import ExtendBooking from "@/screens/bookings/booking/ExtendBooking";
 import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
 import PaymentQRCode from "@/screens/bookings/payment/PaymentQRCode";
 import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
@@ -111,6 +112,11 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name="ExtendBooking"
+        component={ExtendBooking}
+        options={{ title: "Extend Booking", headerLeft: backToPreviousPage }}
       />
     </Stack.Navigator>
   );

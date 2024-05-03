@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import PrimaryButton from "../button/PrimaryButton";
 import BodyText from "../text/BodyText";
 import DetailText from "../text/DetailText";
 import SubHeaderText from "../text/SubHeaderText";
@@ -25,9 +26,14 @@ import { formatToSentenceCase } from "@/utils/text";
 interface SessionCardProps {
   booking: Booking;
   onPress: () => void;
+  navigation: NavigationProp<AuthenticatedStackParamList>;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
+const SessionCard: React.FC<SessionCardProps> = ({
+  booking,
+  onPress,
+  navigation,
+}) => {
   const getColor = useCallback((status: BookingStatus): ColorValue => {
     switch (status) {
       case BookingStatus.UPCOMING:
@@ -117,6 +123,21 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               </View>
             </View>
             <View>{renderSpecificInformation()}</View>
+            {booking.status === BookingStatus.PARKING && (
+              <PrimaryButton
+                onPress={() =>
+                  navigation.navigate("BookingsStack", {
+                    screen: "ExtendBooking",
+                    params: {
+                      booking_id: booking._id,
+                      start_time: booking.start_time,
+                      end_time: booking.end_time,
+                    },
+                  })
+                }
+                title="Extend"
+              />
+            )}
           </View>
         </View>
       </TouchableOpacity>
@@ -160,6 +181,7 @@ const SessionsList: React.FC<sessionsProps> = ({
         return (
           <SessionCard
             booking={item}
+            navigation={navigation}
             onPress={() => {
               handleOnClick(item);
             }}

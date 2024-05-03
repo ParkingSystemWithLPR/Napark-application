@@ -83,6 +83,11 @@ export type BookingsStackParamList = {
   PaymentSummary: { booking: Booking };
   PaymentSuccessful: undefined;
   PaymentChooseLicensePlate: undefined;
+  ExtendBooking: {
+    booking_id: string;
+    start_time: string;
+    end_time: string;
+  };
 };
 
 export type ParkingFlowStackParamList = {
