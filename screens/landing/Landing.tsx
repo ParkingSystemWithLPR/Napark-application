@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  Alert,
   RefreshControl,
 } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -27,10 +28,14 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+import Specification from "@/components/booking/Specification";
 import CustomBottomSheetModal from "@/components/bottomSheet/CustomBottomSheetModal";
 import PrimaryButton from "@/components/button/PrimaryButton";
+import SecondaryButton from "@/components/button/SecondaryButton";
 import ParkingSpaceCard from "@/components/card/ParkingSpaceCard";
-import RangeInput from "@/components/input/RangeInput";
+import DayInput from "@/components/input/DayInput";
+import MyTextInput from "@/components/input/TextInput";
+import TimeInput from "@/components/input/TimeInput";
 import ParkingBasicInfo from "@/components/parking/ParkingBasicInfo";
 import StatusDetail from "@/components/parking/StatusDetail";
 import BodyText from "@/components/text/BodyText";
@@ -39,7 +44,9 @@ import ImageContainer from "@/components/ui/ImageContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import ModalOverlay from "@/components/ui/ModalOverlay";
 import Colors from "@/constants/color";
+import { InputType } from "@/enum/InputType";
 import { ParkingLotStatus } from "@/enum/ParkingLot";
+import { SlotType } from "@/enum/SlotType";
 import { GG_PLACE_API_KEY } from "@/store/api/google-maps/place";
 import { useGetParkingSpacesByLatLong } from "@/store/api/parking-lot/useGetNearParkingLotByPostalCodeAndLatLong";
 import { useAuth } from "@/store/context/auth";
@@ -49,7 +56,12 @@ import {
 } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { estimateDistance } from "@/utils/address";
-import { getBusinessHours, getDateFromTime, getDayInAWeek } from "@/utils/date";
+import {
+  formatHumanReadableDateFromDateString,
+  getBusinessHours,
+  getDateFromTime,
+  getDayInAWeek,
+} from "@/utils/date";
 
 export type LandingProps = CompositeScreenProps<
   NativeStackScreenProps<MainPageBottomTabParamList, "Landing">,
@@ -74,20 +86,68 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const [region, setRegion] = useState<RegionType>();
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [priceRange, setPriceRange] = useState<number[]>([20, 50]);
   const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>();
   const [selectedParkingSpace, setSelectedParkingSpace] =
     useState<ParkingLot>();
   const [postalCode, setPostalCode] = useState<string>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [startTime, setStartTime] = useState<string>();
+  const [endTime, setEndTime] = useState<string>();
+  const [specification, setSpecification] = useState<SlotType>(SlotType.Normal);
+  const [radius, setRadius] = useState<string>("");
 
   const getParkingSpaces = useGetParkingSpacesByLatLong({
     queryParams: {
       postal_code: postalCode,
       lat: region?.latitude,
       long: region?.longitude,
+      radius: radius,
+      start_date: startDate,
+      end_date: endDate,
+      start_time: startTime,
+      end_time: endTime,
+      slot_type: specification || SlotType.Normal,
     },
     auth: { accessToken, authenticate },
   });
+
+  const onSubmit = async () => {
+    const isAllEmpty = !startTime && !startDate && !endTime && !endDate;
+    const isAllFilled = startTime && startDate && endTime && endDate;
+
+    if (!isAllEmpty) {
+      Alert.alert("Please select date and time or leave them empty");
+      return;
+    }
+
+    if (isAllFilled) {
+      const isDateValid = startDate <= endDate;
+      const isTimeValid = startTime < endTime;
+
+      if (!isDateValid || !isTimeValid) {
+        Alert.alert("Please insert valid date/time");
+        return;
+      }
+    }
+
+    if (postalCode && region) {
+      getParkingSpaces.refetch();
+    }
+    setShowFilterOption(false);
+  };
+
+  const onClearButtonPressed = () => {
+    setStartDate("");
+    setStartTime(undefined);
+    setEndDate("");
+    setEndTime(undefined);
+    setSpecification(SlotType.Normal);
+  };
+
+  const onSetSpecification = (id: string) => {
+    setSpecification(id as SlotType);
+  };
 
   useLayoutEffect(() => {
     getCurrentLocation();
@@ -179,7 +239,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
             },
           }}
         />
-        {/* <TouchableOpacity onPress={() => setShowFilterOption(true)}>
+        <TouchableOpacity onPress={() => setShowFilterOption(true)}>
           <View style={styles.iconContainer}>
             <MaterialIcons
               name="more-vert"
@@ -187,7 +247,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               color={Colors.gray[800]}
             />
           </View>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     );
   }, []);
@@ -204,18 +264,74 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
               <MaterialIcons name="clear" size={20} color={Colors.gray[800]} />
             </View>
             <SubHeaderText text="Filter options" />
-            <RangeInput
-              values={priceRange}
-              onChange={setPriceRange}
-              title="Parking fee (per hour)"
-              snapped
-              allowOverlap
-            />
+            <View style={styles.inputContainer}>
+              <View style={styles.dateTimeContainer}>
+                <DayInput
+                  title="Check in"
+                  date={startDate}
+                  displayDateFormatter={formatHumanReadableDateFromDateString}
+                  onChange={setStartDate}
+                  setMinimumDate={true}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+                <TimeInput
+                  title="Start time"
+                  value={startTime ?? null}
+                  onTimeChange={setStartTime}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+              </View>
+              <View style={styles.dateTimeContainer}>
+                <DayInput
+                  title="Check out"
+                  date={endDate}
+                  displayDateFormatter={formatHumanReadableDateFromDateString}
+                  onChange={setEndDate}
+                  setMinimumDate={true}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+                <TimeInput
+                  title="End time"
+                  value={endTime ?? null}
+                  onTimeChange={setEndTime}
+                  editable={true}
+                  outerContainerStyle={{ flex: 1 }}
+                />
+              </View>
+              <Specification
+                specification={specification}
+                onChange={onSetSpecification}
+                outerContainerStyle={{ width: "100%", marginTop: 10 }}
+              />
+              <MyTextInput
+                inputMode={InputType.Decimal}
+                value={radius}
+                title="Radius (km)"
+                placeholder="Enter radius in km"
+                onChangeText={setRadius}
+                containerStyle={{ width: "100%" }}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <SecondaryButton title="Clear" onPress={onClearButtonPressed} />
+              <PrimaryButton title="Filter" onPress={onSubmit} />
+            </View>
           </View>
         </View>
       </ModalOverlay>
     );
-  }, [showFilterOption]);
+  }, [
+    showFilterOption,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    specification,
+    radius,
+  ]);
 
   const renderRecommendedParkingSpaces = useCallback(() => {
     return (
@@ -428,7 +544,7 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     backgroundColor: Colors.white,
-    width: "80%",
+    width: "90%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
@@ -471,5 +587,20 @@ const styles = StyleSheet.create({
     height: 1,
     width: "100%",
     backgroundColor: Colors.gray[800],
+  },
+  dateTimeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+    gap: 20,
+  },
+  inputContainer: {
+    gap: 10,
+    width: "100%",
+    marginTop: 10,
   },
 });

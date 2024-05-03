@@ -10,13 +10,15 @@ import { SlotType } from "@/enum/SlotType";
 import { formatToSentenceCase } from "@/utils/text";
 
 export type SpecificationProps = {
-  specification: string | undefined;
-  onChange: (id: string | undefined) => void;
+  specification: SlotType;
+  onChange: (id: string) => void;
+  outerContainerStyle?: object;
 };
 
 const Specification: React.FC<SpecificationProps> = ({
   specification,
   onChange,
+  outerContainerStyle,
 }) => {
   const radioButtons: RadioButtonProps[] = useMemo(
     () =>
@@ -32,7 +34,7 @@ const Specification: React.FC<SpecificationProps> = ({
 
   return (
     <>
-      <View style={styles.outerContainer}>
+      <View style={[styles.outerContainer, outerContainerStyle]}>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <MaterialCommunityIcons name="alpha-p-circle-outline" size={20} />
