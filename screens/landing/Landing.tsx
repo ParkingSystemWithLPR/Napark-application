@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Platform,
   Image,
+  RefreshControl,
 } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import {
@@ -72,6 +73,7 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
 
   const [region, setRegion] = useState<RegionType>();
   const [showFilterOption, setShowFilterOption] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [priceRange, setPriceRange] = useState<number[]>([20, 50]);
   const [parkingSpaces, setParkingSpaces] = useState<ParkingLot[]>();
   const [selectedParkingSpace, setSelectedParkingSpace] =
@@ -125,6 +127,16 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
   const handleChooseParkingSpace = (parkingSpace: ParkingLot) => {
     setSelectedParkingSpace(parkingSpace);
   };
+
+  const refreshRequest = useCallback(async () => {
+    await getParkingSpaces.refetch();
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshRequest();
+    setRefreshing(false);
+  }, []);
 
   const renderHeader = useCallback(() => {
     return (
@@ -215,6 +227,9 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
         {parkingSpaces && parkingSpaces.length > 0 ? (
           <FlatList
             data={parkingSpaces}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderItem={({ item }) => {
               const businessDay = item.business_days.find((businessday) => {
                 return businessday.weekday == getDayInAWeek(new Date());
