@@ -22,7 +22,7 @@ type DeleteUserCarService = (input: DeleteUserCarInput) => Promise<Profile>;
 
 export const deleteUserCar: DeleteUserCarService = async ({ body, auth }) => {
   const profile = await apiRequest<Profile>(
-    USER_URL + "/user/delete-car",
+    USER_URL + "/user/remove-user-car",
     HTTPMethod.POST,
     auth.accessToken,
     auth.authenticate,
