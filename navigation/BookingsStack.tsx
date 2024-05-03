@@ -9,6 +9,7 @@ import { BookingStatus } from "@/enum/BookingStatus";
 import BookingDetail from "@/screens/bookings/booking/BookingDetail";
 import BookingSummary from "@/screens/bookings/booking/BookingSummary";
 import PaymentOptions from "@/screens/bookings/payment/PaymentOptions";
+import PaymentQRCode from "@/screens/bookings/payment/PaymentQRCode";
 import PaymentSuccessful from "@/screens/bookings/payment/PaymentSuccessful";
 import PaymentSummary from "@/screens/bookings/payment/PaymentSummary";
 import TopUp from "@/screens/bookings/payment/TopUp";
@@ -37,11 +38,11 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
   const selectHeaderTitle = (bookingStatus: BookingStatus) => {
     switch (bookingStatus) {
       case BookingStatus.UPCOMING:
-        return "Upcoming Booking";
-      case BookingStatus.ACTIVE:
-        return "Active Booking";
+        return "Upcoming booking";
+      case BookingStatus.OVERDUE || BookingStatus.PARKING:
+        return "Active booking";
       default:
-        return "Complete Booking";
+        return "Complete booking";
     }
   };
   return (
@@ -84,7 +85,15 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
         name="PaymentOptions"
         component={PaymentOptions}
         options={{
-          title: "Payment Options",
+          title: "Payment options",
+        }}
+      />
+      <Stack.Screen
+        name="PaymentQRCode"
+        component={PaymentQRCode}
+        options={{
+          title: "QR code",
+          headerBackTitle: "Back",
         }}
       />
       <Stack.Screen

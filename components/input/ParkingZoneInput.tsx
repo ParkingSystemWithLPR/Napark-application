@@ -92,7 +92,7 @@ const ParkingZoneInput: React.FC<ParkingZoneInputProps> = ({
             <IconButton
               icon={"close"}
               size={0}
-              color={""}
+              color={Colors.black}
               buttonStyle={styles.closeButton}
               onPress={() => onDelete(index)}
             />

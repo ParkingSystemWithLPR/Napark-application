@@ -123,14 +123,14 @@ const OtherStack: React.FC<OtherProps> = ({ navigation }) => {
           name="ManagingCategory"
           component={ManagingCategory}
           options={{
-            title: "Managing Category",
+            title: "Managing category",
           }}
         />
         <Stack.Screen
           name="ManagingList"
           component={ManagingList}
           options={{
-            title: "Managing List",
+            title: "Managing list",
           }}
         />
         <Stack.Screen

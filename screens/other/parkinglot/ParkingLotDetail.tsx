@@ -73,37 +73,31 @@ const ParkingLotDetail: React.FC<ParkingLotDetailProps> = ({
               title="Your Parking Space Location"
             />
           </MapView>
-          <View style={styles.buttonContainer}>
-            <IconButtonWithTitle
-              title={"Info"}
-              icon={"information-outline"}
-              onPress={() =>
-                navigation.navigate("OtherStack", {
-                  screen: "EditParkingInfo",
-                })
-              }
-            />
-            <IconButtonWithTitle
-              title={"Plan"}
-              icon={"floor-plan"}
-              onPress={() => {}}
-            />
-            <IconButtonWithTitle
-              title={"Pricing"}
-              icon={"bank"}
-              onPress={() => {}}
-            />
-            <IconButtonWithTitle
-              title={"Config"}
-              icon={"account-settings"}
-              onPress={() => {
-                navigation.navigate("OtherStack", {
-                  screen: "ManagingCategory",
-                  params: { parkingLotId: parkingLotId },
-                });
-              }}
-            />
-          </View>
+          <SectionAppForm title={"Setting"} icon={"cog"}>
+            <View style={styles.buttonContainer}>
+              <IconButtonWithTitle
+                title={"Config Info"}
+                icon={"information-outline"}
+                containerStyle={{ flex: 1}}
+                onPress={() =>
+                  navigation.navigate("OtherStack", {
+                    screen: "EditParkingInfo",
+                  })
+                }
+              />
+              <IconButtonWithTitle
+                title={"Config User"}
+                icon={"account-settings"}
+                containerStyle={{ flex: 1}}
+                onPress={() => {
+                  navigation.navigate("OtherStack", {
+                    screen: "ManagingCategory",
+                    params: { parkingLotId: parkingLotId },
+                  });
+                }}
+              />
+            </View>
+          </SectionAppForm>
           {parkingLot.images && (
             <SectionAppForm title={"Photos"} icon={"camera"}>
               <ImageContainer images={parkingLot.images} />
@@ -123,8 +117,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingTop: 8,
     paddingBottom: 20,
+    marginLeft: -25,
     gap: 15,
-    marginLeft: -20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -133,6 +127,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     gap: 10,
+    paddingRight: 10,
     paddingBottom: 15,
   },
   textWrapper: {

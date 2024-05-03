@@ -1,11 +1,10 @@
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { parseISO } from "date-fns";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Alert } from "react-native";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
-import SecondaryButton from "@/components/button/SecondaryButton";
-import DropdownInput from "@/components/input/DropdownInput";
 import AttributeText, {
   AttributeTextProps,
 } from "@/components/text/AttributeText";
@@ -15,12 +14,11 @@ import SubHeaderText from "@/components/text/SubHeaderText";
 import BodyContainer from "@/components/ui/BodyContainer";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import Colors from "@/constants/color";
-import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
-import { PaymentMethod } from "@/enum/PaymentMethod";
+import { BookingStatus } from "@/enum/BookingStatus";
+import { useCancelBooking } from "@/store/api/booking/useCancelBooking";
 import { useGetParkingLot } from "@/store/api/parking-lot/useGetParkingLotById";
 import { useAuth } from "@/store/context/auth";
-import { useProfile } from "@/store/context/profile";
-import { BookingsStackParamList } from "@/types";
+import { AuthenticatedStackParamList, BookingsStackParamList } from "@/types";
 import { ParkingLot } from "@/types/parking-lot";
 import { formatDefaultBookingValue } from "@/utils/bookingRequest";
 import {
@@ -29,9 +27,9 @@ import {
 } from "@/utils/date";
 import { formatToSentenceCase } from "@/utils/text";
 
-export type PaymentSummaryProps = NativeStackScreenProps<
-  BookingsStackParamList,
-  "PaymentSummary"
+export type PaymentSummaryProps = CompositeScreenProps<
+  NativeStackScreenProps<BookingsStackParamList, "PaymentSummary">,
+  NativeStackScreenProps<AuthenticatedStackParamList>
 >;
 
 const PaymentSummary: React.FC<PaymentSummaryProps> = ({
@@ -39,8 +37,8 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   route,
 }) => {
   const { booking } = route.params;
-  const { profile } = useProfile();
   const {
+    _id,
     license_plate,
     end_time,
     estimated_price,
@@ -48,42 +46,17 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     slot_name,
     start_time,
     status,
-    payment_status,
-    actual_price,
+    actual_total_price,
   } = booking;
   const startTimeFormat = parseISO(start_time);
   const endTimeFormat = parseISO(end_time);
   const { accessToken, authenticate } = useAuth();
-  const [paymentMethod, setPaymentMethod] = useState<string>("");
-  const [isButtonEnable, setIsButtonEnable] = useState(false);
   const [parkingLot, setParkingLot] = useState<ParkingLot>();
   const getParkingLot = useGetParkingLot({
     queryParams: { parkingLotId: booking.parkinglot_id },
     auth: { accessToken, authenticate },
   });
-
-  const creditPaymentHandler = () => {
-    if (profile.credit < booking.estimated_price) {
-      navigation.navigate("TopUp", { balance: profile.credit });
-    } else {
-      navigation.navigate("PaymentSuccessful");
-    }
-  }; // if credit is not enough navigate to top up else deduct credit
-
-  const QRPaymentHandler = () => {
-    navigation.navigate("PaymentSuccessful"); //will change to QR page later
-  }; // navigate to QR page
-
-  const handlePayment = () => {
-    switch (paymentMethod) {
-      case PaymentMethod.CREDIT:
-        creditPaymentHandler();
-        break;
-      case PaymentMethod.QR:
-        QRPaymentHandler();
-        break;
-    }
-  };
+  const { mutateAsync: cancelBooking } = useCancelBooking();
 
   const handleReBooking = () => {
     const newDefaultBooking = formatDefaultBookingValue(booking);
@@ -95,8 +68,21 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     }
   };
 
-  const handleNotFillInfo = () => {
-    alert("Please choose payment method");
+  const handleCancelBooking = async () => {
+    await cancelBooking(
+      {
+        bookingId: _id,
+        auth: { accessToken, authenticate },
+      },
+      {
+        onSuccess() {
+          navigation.navigate("MainScreen", { screen: "Bookings" });
+        },
+        onError() {
+          Alert.alert("Error", "Failed to cancel booking");
+        },
+      }
+    );
   };
 
   const renderAttribute = useCallback(
@@ -109,22 +95,6 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
           attributeTextStyle={styles.attributeTextColor}
           valueContainerStyle={styles.container}
           valueTextStyle={styles.text}
-        />
-      );
-    },
-    []
-  );
-
-  const renderPrice = useCallback(
-    ({ attribute, value }: AttributeTextProps) => {
-      return (
-        <AttributeText
-          attribute={attribute}
-          value={value}
-          attributeContainerStyle={styles.container}
-          attributeTextStyle={[styles.attributeTextColor, styles.bigText]}
-          valueContainerStyle={styles.container}
-          valueTextStyle={[styles.text, styles.bigText, styles.blueText]}
         />
       );
     },
@@ -150,50 +120,12 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
     switch (status) {
       case (BookingStatus.CANCELLED, BookingStatus.COMPLETED):
         return <PrimaryButton title={"Book Again"} onPress={handleReBooking} />;
-      case BookingStatus.ACTIVE:
-        switch (payment_status) {
-          case PaymentStatus.UNPAID:
-            return (
-              <>
-                <DropdownInput
-                  selectedValue={paymentMethod}
-                  placeholder={"Choose payment method"}
-                  onSelect={setPaymentMethod}
-                  items={[
-                    {
-                      label: PaymentMethod.CREDIT.toString(),
-                      value: PaymentMethod.CREDIT.toString(),
-                    },
-                    {
-                      label: PaymentMethod.QR.toString(),
-                      value: PaymentMethod.QR.toString(),
-                    },
-                  ]}
-                />
-                {isButtonEnable ? (
-                  <PrimaryButton
-                    title={"Pay the bill"}
-                    onPress={handlePayment}
-                  />
-                ) : (
-                  <SecondaryButton
-                    title={"Pay the bill"}
-                    onPress={handleNotFillInfo}
-                  />
-                )}
-              </>
-            );
-          default:
-            return <></>;
-        }
+      case BookingStatus.UPCOMING:
+        return <PrimaryButton title={"Cancel"} onPress={handleCancelBooking} />;
       default:
         return <></>;
     }
-  }, [paymentMethod, isButtonEnable]);
-
-  useLayoutEffect(() => {
-    setIsButtonEnable(paymentMethod !== undefined);
-  }, [paymentMethod]);
+  }, []);
 
   useLayoutEffect(() => {
     if (getParkingLot.data) {
@@ -235,17 +167,14 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
                 })}
                 {renderAttribute({
                   attribute: "Status",
-                  value:
-                    booking.status === BookingStatus.ACTIVE
-                      ? formatToSentenceCase(booking.payment_status)
-                      : formatToSentenceCase(booking.status),
+                  value: formatToSentenceCase(booking.status),
                 })}
               </View>
               {renderTotal({
                 attribute: "TOTAL",
                 value: `${(status === BookingStatus.UPCOMING
                   ? estimated_price
-                  : actual_price
+                  : actual_total_price
                 ).toFixed(2)}`,
               })}
             </View>
@@ -288,7 +217,6 @@ const styles = StyleSheet.create({
   attribute: { gap: Platform.OS == "ios" ? 15 : 10 },
   text: { alignSelf: "flex-end", textAlign: "right" },
   bigText: { fontSize: 16 },
-  blueText: { color: Colors.blue[600] },
   redText: { color: Colors.red[400] },
   routeContainer: {
     alignSelf: "center",
@@ -296,6 +224,6 @@ const styles = StyleSheet.create({
     columnGap: 5,
   },
   colorLinkText: {
-    color: Colors.lightBlue[800],
+    color: Colors.blue[600],
   },
 });

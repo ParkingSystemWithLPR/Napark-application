@@ -1,8 +1,14 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import PrimaryButton from "@/components/button/PrimaryButton";
@@ -24,8 +30,8 @@ export type ParkingLotsListProps = CompositeScreenProps<
 
 const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   const { accessToken, authenticate } = useAuth();
-  const today = format(new Date(), "eeee").toLocaleLowerCase();
   const [parkingLots, setParkingLots] = useState<ParkingLot[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const getParkingLots = useGetMyParkingLots({
@@ -38,6 +44,16 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
       setLoading(false);
     }
   }, [getParkingLots.data]);
+
+  const refreshRequest = useCallback(async () => {
+    await getParkingLots.refetch();
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshRequest();
+    setRefreshing(false);
+  }, []);
 
   if (isLoading) return <LoadingOverlay message={"Loading..."} />;
 
@@ -58,48 +74,59 @@ const ParkingLotsList: React.FC<ParkingLotsListProps> = ({ navigation }) => {
   };
 
   return (
-    <BodyContainer
-      innerContainerStyle={
-        parkingLots.length !== 0
-          ? styles.bodyContainer
-          : styles.bodyContainerNoParking
-      }
-    >
+    <BodyContainer innerContainerStyle={{ flex: 1 }}>
       {parkingLots.length !== 0 ? (
-        <View style={styles.parkingSpaceCardContainer}>
-          <FlatList
-            data={parkingLots}
-            renderItem={({ item }) => {
-              const businessDay = item.business_days.find((businessday) => {
-                businessday.weekday == getDayInAWeek(new Date());
-              });
-              return (
-                <ParkingSpaceCard
-                  parkingSpaceName={item.name}
-                  businessHours={
-                    businessDay
-                      ? getBusinessHours(businessDay)
-                      : "Not available"
-                  }
-                  availabilty={0}
-                  onPress={() =>
-                    navigation.navigate("ParkingLotDetail", {
-                      parkingLotId: item._id,
-                    })
-                  }
-                />
-              );
-            }}
-            overScrollMode="never"
+        <View style={styles.bodyContainer}>
+          <View style={styles.parkingSpaceCardContainer}>
+            <FlatList
+              data={parkingLots}
+              renderItem={({ item }) => {
+                const businessDay = item.business_days.find((businessday) => {
+                  return businessday.weekday == getDayInAWeek(new Date());
+                });
+                return (
+                  <ParkingSpaceCard
+                    parkingSpaceName={item.name}
+                    parkingImage={item.images[0]}
+                    businessHours={
+                      businessDay
+                        ? getBusinessHours(businessDay)
+                        : "Not available"
+                    }
+                    availabilty={item.available_slots_count ?? 0}
+                    onPress={() =>
+                      navigation.navigate("ParkingLotDetail", {
+                        parkingLotId: item._id,
+                      })
+                    }
+                  />
+                );
+              }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              overScrollMode="never"
+            />
+          </View>
+          <PrimaryButton
+            title="Request for your parking space"
+            onPress={() => navigation.navigate("RequestParkingLot")}
           />
         </View>
       ) : (
-        <NoParkingLot></NoParkingLot>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={styles.bodyContainerNoParking}
+        >
+          <NoParkingLot></NoParkingLot>
+          <PrimaryButton
+            title="Request for your parking space"
+            onPress={() => navigation.navigate("RequestParkingLot")}
+          />
+        </ScrollView>
       )}
-      <PrimaryButton
-        title="Request for your parking space"
-        onPress={() => navigation.navigate("RequestParkingLot")}
-      />
     </BodyContainer>
   );
 };
@@ -108,11 +135,13 @@ export default ParkingLotsList;
 
 const styles = StyleSheet.create({
   bodyContainer: {
+    flex: 1,
     gap: 20,
     justifyContent: "space-between",
     paddingBottom: 25,
   },
   bodyContainerNoParking: {
+    flex: 1,
     gap: 20,
     justifyContent: "center",
     alignItems: "center",

@@ -11,12 +11,14 @@ export type ParkingLot = {
   _id: string;
   owner_id: string;
   name: string;
+  penalty: Penalty;
   slots: SlotProfile[];
   available_slots_count: number;
   address: Address;
   management_roles: ManagementRoleProfile[];
   parking_privileges: ParkingPrivilegeProfile[];
   coord: LatLng;
+  minimum_booking_duration: string;
   images: string[];
   floor_images: FloorImage[];
   business_days: BusinessDay[];
@@ -32,11 +34,18 @@ export type FloorImage = {
 
 export type ParkingLotRequest = {
   name: string;
+  penalty: Penalty;
+  minimum_booking_duration: string;
   images?: ImageProps[];
   business_days: BusinessDay[];
   coord: LatLng;
   address: Address;
   plan: Plan[];
+};
+
+export type Penalty = {
+  price: number;
+  price_unit: PriceRateUnit;
 };
 
 export type Address = {

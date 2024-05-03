@@ -193,18 +193,38 @@ const BookingDetail: React.FC<BookingDetailProps> = ({ navigation, route }) => {
   }, [isSetting]);
 
   useLayoutEffect(() => {
-    if (getAvailableSlot.isSuccess) {
-      if (getAvailableSlot.data.recommended_slots) {
-        setAvailableSlot(getAvailableSlot.data);
-      } else {
-        Alert.alert(
-          "No Available Slot from the selected duration or specification"
+    switch (getAvailableSlot.status) {
+      case "success":
+        if (getAvailableSlot.data.recommended_slots) {
+          setAvailableSlot(getAvailableSlot.data);
+        } else {
+          Alert.alert(
+            "No Available Slot from the selected duration or specification"
+          );
+          setIsSetting(true);
+          setAvailableSlotQueryParam(
+            getQueryParamFromBookingDetailState(
+              defaultBookingDetailState,
+              parkingLot
+            )
+          );
+        }
+        break;
+      case "error":
+        Alert.alert("please check notes again");
+        setAvailableSlotQueryParam(
+          getQueryParamFromBookingDetailState(
+            defaultBookingDetailState,
+            parkingLot
+          )
         );
-        setIsSetting(true);
-      }
-    }
-  }, [getAvailableSlot.data]);
 
+        setIsSetting(true);
+        break;
+      default:
+        break;
+    }
+  }, [getAvailableSlot]);
   return (
     <BodyContainer innerContainerStyle={styles.screen}>
       <View style={styles.bookingDetailContainer}>
@@ -310,5 +330,5 @@ const styles = StyleSheet.create({
     gap: Platform.OS == "ios" ? 25 : 20,
     marginBottom: 10,
   },
-  scrollViewContent: { marginBottom: 100 },
+  scrollViewContent: { marginBottom: 50 },
 });

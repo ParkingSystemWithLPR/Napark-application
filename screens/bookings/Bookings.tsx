@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { CompositeScreenProps, useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -14,6 +14,7 @@ import Colors from "@/constants/color";
 import { BookingStatus } from "@/enum/BookingStatus";
 import { BookingType } from "@/enum/BookingType";
 import { useGetMyBookings } from "@/store/api/booking/useGetMyBookings";
+import { useGetProfile } from "@/store/api/user/useGetProfile";
 import { useAuth } from "@/store/context/auth";
 import { useProfile } from "@/store/context/profile";
 import {
@@ -30,12 +31,20 @@ export type BookingsProps = CompositeScreenProps<
 >;
 
 const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const { profile } = useProfile();
   const { accessToken, authenticate } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const getMyBookings = useGetMyBookings({
     auth: { accessToken, authenticate },
   });
+  const getProfile = useGetProfile({ auth: { accessToken, authenticate } });
+
+  useEffect(() => {
+    if (isFocused) {
+      getProfile.refetch();
+    }
+  }, [isFocused]);
 
   useLayoutEffect(() => {
     if (getMyBookings.isSuccess) {
@@ -45,6 +54,7 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
 
   const refreshRequest = useCallback(async () => {
     await getMyBookings.refetch();
+    await getProfile.refetch();
   }, []);
 
   const renderUpcomingBookings = useCallback(() => {
@@ -61,7 +71,9 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
 
   const renderActiveBookings = useCallback(() => {
     const activeBookings = bookings.filter(
-      (booking) => booking.status === BookingStatus.ACTIVE
+      (booking) =>
+        booking.status === BookingStatus.OVERDUE ||
+        booking.status === BookingStatus.PARKING
     );
     return (
       <SessionsList bookings={activeBookings} refreshRequest={refreshRequest} />
@@ -93,7 +105,7 @@ const Bookings: React.FC<BookingsProps> = ({ navigation }) => {
         </View>
         <View style={styles.walletRow}>
           <HeaderText
-            text={`฿ ${profile.credit}`}
+            text={`฿ ${profile.credit.toFixed(2)}`}
             textStyle={{ color: Colors.black, fontSize: 18 }}
           />
           <SecondaryButton

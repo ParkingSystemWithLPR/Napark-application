@@ -68,8 +68,7 @@ export const useGetParkingSpacesByLatLong = (
     queryKey: ["postal-code-latlng-radius", queryParams],
     queryFn: async () => getParkingSpacesByLatLong(input),
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
-    retry: 0,
+    refetchInterval: 0,
     enabled:
       !!queryParams.postal_code && !!queryParams.lat && !!queryParams.long,
   });

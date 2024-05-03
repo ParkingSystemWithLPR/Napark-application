@@ -5,6 +5,7 @@ import {
   ColorValue,
   FlatList,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -16,7 +17,7 @@ import DetailText from "../text/DetailText";
 import SubHeaderText from "../text/SubHeaderText";
 
 import Colors from "@/constants/color";
-import { BookingStatus, PaymentStatus } from "@/enum/BookingStatus";
+import { BookingStatus } from "@/enum/BookingStatus";
 import { AuthenticatedStackParamList } from "@/types";
 import { Booking } from "@/types/booking";
 import { formatToSentenceCase } from "@/utils/text";
@@ -27,66 +28,51 @@ interface SessionCardProps {
 }
 
 const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
-  const getColor = useCallback(
-    (status: BookingStatus, paymentStatus: PaymentStatus): ColorValue => {
-      switch (status) {
-        case BookingStatus.UPCOMING:
-          return Colors.black;
-        case BookingStatus.ACTIVE:
-          switch (paymentStatus) {
-            case PaymentStatus.UNPAID:
-              return Colors.red[600];
-            case PaymentStatus.PAID:
-              return Colors.blue[600];
-            default:
-              return Colors.red[600];
-          }
-        case BookingStatus.CANCELLED:
-          return Colors.gray[800];
-        case BookingStatus.COMPLETED:
-          return Colors.green[800];
-        default:
-          return Colors.black;
-      }
-    },
-    []
-  );
+  const getColor = useCallback((status: BookingStatus): ColorValue => {
+    switch (status) {
+      case BookingStatus.UPCOMING:
+        return Colors.black;
+      case BookingStatus.OVERDUE:
+        return Colors.red[600];
+      case BookingStatus.PARKING:
+        return Colors.blue[600];
+      case BookingStatus.CANCELLED:
+        return Colors.gray[800];
+      case BookingStatus.COMPLETED:
+        return Colors.green[800];
+      default:
+        return Colors.black;
+    }
+  }, []);
 
-  const getIcon = useCallback(
-    (status: BookingStatus, paymentStatus: PaymentStatus): string => {
-      switch (status) {
-        case BookingStatus.UPCOMING:
-          return "car-clock";
-        case BookingStatus.ACTIVE:
-          switch (paymentStatus) {
-            case PaymentStatus.UNPAID:
-              return "barcode-scan";
-            case PaymentStatus.PAID:
-              return "cash-fast";
-            default:
-              return "barcode-scan";
-          }
-        case BookingStatus.CANCELLED:
-          return "car-off";
-        case BookingStatus.COMPLETED:
-          return "car";
-        default:
-          return "car";
-      }
-    },
-    []
-  );
+  const getIcon = useCallback((status: BookingStatus): string => {
+    switch (status) {
+      case BookingStatus.UPCOMING:
+        return "car-clock";
+      case BookingStatus.OVERDUE:
+        return "clock-alert";
+      case BookingStatus.PARKING:
+        return "car-side";
+      case BookingStatus.CANCELLED:
+        return "car-off";
+      case BookingStatus.COMPLETED:
+        return "car";
+      default:
+        return "car";
+    }
+  }, []);
 
   const renderSpecificInformation = useCallback(() => {
     switch (booking.status) {
       case BookingStatus.UPCOMING:
         return <BodyText text={""} />;
-      case BookingStatus.ACTIVE:
+      case BookingStatus.OVERDUE:
+      case BookingStatus.PARKING:
         return <BodyText text={""} />;
       case BookingStatus.CANCELLED:
         return <></>;
       case BookingStatus.COMPLETED:
-        return <BodyText text={`฿ ${booking.estimated_price}`} />;
+        return <BodyText text={`฿ ${booking.actual_total_price.toFixed(2)}`} />;
       default:
         return <BodyText text="Unknown" />;
     }
@@ -98,9 +84,9 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
         <View style={styles.container}>
           <View style={styles.buttonContainer}>
             <MaterialCommunityIcons
-              name={getIcon(booking.status, booking.payment_status)}
+              name={getIcon(booking.status)}
               size={20}
-              color={getColor(booking.status, booking.payment_status)}
+              color={getColor(booking.status)}
             />
           </View>
           <View style={styles.informationContainer}>
@@ -114,21 +100,14 @@ const SessionCard: React.FC<SessionCardProps> = ({ booking, onPress }) => {
               />
               <View style={styles.subDetailContainer}>
                 <DetailText
-                  text={
-                    booking.status === BookingStatus.ACTIVE
-                      ? formatToSentenceCase(booking.payment_status)
-                      : formatToSentenceCase(booking.status)
-                  }
+                  text={formatToSentenceCase(booking.status)}
                   containerStyle={{
                     borderRightWidth: 1,
-                    borderRightColor: getColor(
-                      booking.status,
-                      booking.payment_status
-                    ),
+                    borderRightColor: getColor(booking.status),
                     paddingRight: 5,
                   }}
                   textStyle={{
-                    color: getColor(booking.status, booking.payment_status),
+                    color: getColor(booking.status),
                   }}
                 />
                 <DetailText
@@ -190,14 +169,21 @@ const SessionsList: React.FC<sessionsProps> = ({
       overScrollMode="never"
     />
   ) : (
-    <BodyText
-      text="No bookings"
-      containerStyle={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    />
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      contentContainerStyle={{ flex: 1 }}
+    >
+      <BodyText
+        text="No bookings"
+        containerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+    </ScrollView>
   );
 };
 
