@@ -39,7 +39,7 @@ const BookingsStack: React.FC<BookingsProps> = ({ navigation }) => {
     switch (bookingStatus) {
       case BookingStatus.UPCOMING:
         return "Upcoming booking";
-      case BookingStatus.OVERDUE || BookingStatus.PARKING:
+      case (BookingStatus.OVERDUE, BookingStatus.PARKING):
         return "Active booking";
       default:
         return "Complete booking";
